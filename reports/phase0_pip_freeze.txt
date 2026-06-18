@@ -1,0 +1,63 @@
+brotlicffi @ file:///C:/miniconda3/conda-bld/brotlicffi_1764961372591/work
+certifi @ file:///C:/Users/task_177937038000344/croot/certifi_1779370454774/work/certifi
+cffi @ file:///C:/miniconda3/conda-bld/cffi_1761832794697/work
+charset-normalizer @ file:///C:/miniconda3/conda-bld/charset-normalizer_1761744944645/work
+click==8.4.1
+colorama==0.4.6
+contourpy==1.3.2
+cryptography==49.0.0
+cycler==0.12.1
+exceptiongroup==1.3.1
+filelock==3.29.4
+fonttools==4.63.0
+fsspec @ file:///C:/Users/task_178160995707489/croot/fsspec_1781610069631/work
+gmpy2 @ file:///C:/miniconda3/conda-bld/gmpy2_1764748105976/work
+idna @ file:///C:/Users/task_178056140106162/croot/idna_1780561468696/work
+iniconfig==2.3.0
+intel-openmp==2021.4.0
+Jinja2 @ file:///C:/b/abs_920kup4e6u/croot/jinja2_1741711580669/work
+jmespath==0.10.0
+kiwisolver==1.5.0
+markdown-it-py==4.2.0
+MarkupSafe @ file:///C:/b/abs_a0ma7ge0jc/croot/markupsafe_1738584052792/work
+matplotlib==3.10.9
+mdurl==0.1.2
+mkl==2021.4.0
+mkl-fft==1.3.1
+mkl-random @ file:///C:/ci_310/mkl_random_1643050563308/work
+mkl-service==2.4.0
+mpmath @ file:///C:/b/abs_7833jrbiox/croot/mpmath_1690848321154/work
+networkx @ file:///C:/b/abs_b054htfn9t/croot/networkx_1737043671910/work
+numpy @ file:///C:/b/abs_54abayvc9j/croot/numpy_and_numpy_base_1682520598361/work
+opencv-python==4.11.0.86
+packaging==26.2
+pandas==2.3.3
+pillow @ file:///C:/b/abs_b50vowcrzo/croot/pillow_1738010273782/work
+pluggy==1.6.0
+pycocotools==2.0.11
+pycparser @ file:///C:/Users/task_177495971250430/croot/pycparser_1774959822609/work
+pydicom==3.0.2
+Pygments==2.20.0
+pyparsing==3.3.2
+PySocks @ file:///C:/miniconda3/conda-bld/pysocks_1761753030270/work
+pytest==9.1.0
+python-dateutil==2.9.0.post0
+pytz==2026.2
+pywin32==312
+PyYAML @ file:///C:/miniconda3/conda-bld/pyyaml_1763465513320/work
+requests==2.34.2
+rich==15.0.0
+scipy==1.15.3
+seaborn==0.13.2
+six @ file:///C:/b/abs_149wuyuo1o/croot/six_1744271521515/work
+sympy @ file:///C:/miniconda3/conda-bld/sympy_1764762978780/work
+tbb==2021.13.1
+tomli==2.4.1
+torch==2.3.1
+torchaudio==2.3.1
+torchvision==0.18.1
+tqdm==4.68.3
+typing_extensions @ file:///C:/b/abs_ecq8gc0vbm/croot/typing_extensions_1756281142218/work
+tzdata==2026.2
+urllib3==2.7.0
+win_inet_pton @ file:///C:/miniconda3/conda-bld/win_inet_pton_1761746276406/work

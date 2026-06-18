@@ -1,0 +1,50 @@
+# Conda environment for ssl_detection_xray_v2
+# Primary detection framework: MMDetection. Detectron2 is optional.
+#
+# Create with:
+#   conda env create -f environment.yml
+#   conda activate ssl_xray
+# Then install the MMDetection stack via mim (see scripts/00_setup_environment.sh).
+
+name: ssl_xray
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10
+  - pip>=23.0
+
+  # Core scientific stack
+  - numpy>=1.24,<2.0
+  - pandas>=2.0
+  - scipy>=1.10
+  - pyyaml>=6.0
+  - tqdm>=4.66
+
+  # Imaging
+  - matplotlib>=3.7
+  - seaborn>=0.13
+
+  # Testing
+  - pytest>=7.4
+
+  # PyTorch — adjust pytorch-cuda to your driver, or drop for CPU-only.
+  - pytorch>=2.1
+  - torchvision>=0.16
+  - pytorch-cuda=12.1
+
+  # pip-only deps (MMDetection stack + medical IO installed via pip/mim)
+  - pip:
+      - openmim>=0.3
+      - mmengine>=0.10
+      - mmcv>=2.1
+      - mmdet>=3.3
+      - opencv-python>=4.8
+      - pydicom>=2.4
+      - Pillow>=10.0
+      - pycocotools>=2.0.7
+      - rich>=13.0
+      # - detectron2   # OPTIONAL: build manually per platform if needed

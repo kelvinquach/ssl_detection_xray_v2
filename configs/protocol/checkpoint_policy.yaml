@@ -1,0 +1,20 @@
+# Checkpoint & evaluation policy (protocol)
+# Phase 0 — fixed before any training. Enforces clean train/val/test hygiene
+# for semi-supervised chest X-ray detection on VinBigData.
+
+primary_metric: "mAP@0.5:0.95"
+checkpoint_selection_split: "val"
+test_usage: "final_evaluation_only"
+
+# Hard rules. Violating any of these invalidates reported results.
+forbidden:
+  - "Do not use test set for threshold tuning"
+  - "Do not use test set for checkpoint selection"
+  - "Do not use test set for model/backbone selection"
+  - "Do not use test set for augmentation/backbone decisions"
+
+# Rationale (informative, not enforced by code):
+notes:
+  - "All hyperparameter, threshold and architecture decisions are made on the val split."
+  - "Test split is touched exactly once, for the final reported numbers."
+  - "Semi-supervised pseudo-label thresholds are tuned on val only."

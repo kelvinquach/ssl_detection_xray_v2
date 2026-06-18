@@ -1,0 +1,34 @@
+# ===== Data (never commit raw / heavy artifacts) =====
+data/raw/
+data/interim/
+data/processed/images/
+
+# ===== Models, logs, experiment checkpoints =====
+models/
+logs/
+experiments/*/checkpoints/
+
+# ===== Model weight files =====
+*.pth
+*.pt
+*.ckpt
+
+# ===== Medical imaging (DICOM) =====
+*.dcm
+
+# ===== Python =====
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ===== OS / editor =====
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Keep directory placeholders even when ignoring contents.
+!**/.gitkeep

@@ -1,0 +1,43 @@
+{
+  "manifest_type": "seed_state_manifest",
+  "phase": "phase0",
+  "created_utc": "2026-06-18T08:39:17.588001+00:00",
+  "host": "DESKTOP-RP0LS4T",
+  "seed": 2026,
+  "deterministic_config": {
+    "seed": 2026,
+    "deterministic": true,
+    "applied": {
+      "PYTHONHASHSEED": "2026",
+      "python_random": true,
+      "numpy": true,
+      "torch_cpu": true,
+      "torch_cuda": false,
+      "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+      "use_deterministic_algorithms": true,
+      "cudnn_deterministic": true,
+      "cudnn_benchmark": false
+    }
+  },
+  "rng_state_summary": {
+    "timestamp_utc": "2026-06-18T08:39:17.588001+00:00",
+    "python_random": {
+      "version": 3,
+      "state_len": 625,
+      "fingerprint": 4064073236
+    },
+    "numpy": {
+      "bit_generator": "MT19937",
+      "state_len": 624,
+      "pos": 624,
+      "fingerprint": 2460259854
+    },
+    "torch": {
+      "cpu": {
+        "state_len": 5056,
+        "fingerprint": 241
+      },
+      "cuda_available": false
+    }
+  }
+}

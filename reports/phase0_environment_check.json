@@ -1,0 +1,101 @@
+{
+  "report_type": "phase0_environment_check",
+  "created_utc": "2026-06-18T08:39:17.582446+00:00",
+  "platform": {
+    "python_version": "3.10.20 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:13:20) [MSC v.1942 64 bit (AMD64)]",
+    "python_version_info": [
+      3,
+      10,
+      20
+    ],
+    "executable": "C:\\Users\\USER\\anaconda3\\envs\\sslxray\\python.exe",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "system": "Windows",
+    "release": "10",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+    "node": "DESKTOP-RP0LS4T"
+  },
+  "imports": {
+    "torch": {
+      "import_ok": true,
+      "version": "2.3.1",
+      "error": null
+    },
+    "torchvision": {
+      "import_ok": true,
+      "version": "0.18.1",
+      "error": null
+    },
+    "numpy": {
+      "import_ok": true,
+      "version": "1.24.3",
+      "error": null
+    },
+    "pandas": {
+      "import_ok": true,
+      "version": "2.3.3",
+      "error": null
+    },
+    "cv2": {
+      "import_ok": true,
+      "version": "4.11.0",
+      "error": null
+    },
+    "pydicom": {
+      "import_ok": true,
+      "version": "3.0.2",
+      "error": null
+    },
+    "pycocotools": {
+      "import_ok": true,
+      "version": "2.0.11",
+      "error": null
+    },
+    "mmengine": {
+      "import_ok": false,
+      "version": null,
+      "error": "ModuleNotFoundError(\"No module named 'mmengine'\")"
+    },
+    "mmcv": {
+      "import_ok": false,
+      "version": null,
+      "error": "ModuleNotFoundError(\"No module named 'mmcv'\")"
+    },
+    "mmdet": {
+      "import_ok": false,
+      "version": null,
+      "error": "ModuleNotFoundError(\"No module named 'mmdet'\")"
+    }
+  },
+  "cuda": {
+    "torch_available": true,
+    "cuda_available": false,
+    "torch_cuda_version": null,
+    "device_count": 0,
+    "devices": [],
+    "error": null
+  },
+  "summary": {
+    "core_import_ok": true,
+    "framework_import_ok": false,
+    "primary_framework": "mmdetection",
+    "detectron2": "optional"
+  },
+  "seed": 2026,
+  "deterministic_config": {
+    "seed": 2026,
+    "deterministic": true,
+    "applied": {
+      "PYTHONHASHSEED": "2026",
+      "python_random": true,
+      "numpy": true,
+      "torch_cpu": true,
+      "torch_cuda": false,
+      "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+      "use_deterministic_algorithms": true,
+      "cudnn_deterministic": true,
+      "cudnn_benchmark": false
+    }
+  }
+}
