@@ -1,0 +1,22 @@
+# Normalize text files for cross-platform reproducibility
+* text=auto
+
+# Keep source/config/docs as LF for Windows/Linux/Colab compatibility
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.sh text eol=lf
+*.csv text eol=lf
+
+# Binary files
+*.xlsx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.dcm binary
+*.pth binary
+*.pt binary
+*.ckpt binary
