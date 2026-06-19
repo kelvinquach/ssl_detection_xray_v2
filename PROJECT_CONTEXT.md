@@ -412,6 +412,48 @@ Không được làm trong Phase 1A:
 - không tune threshold;
 - không dùng test set.
 
+### Phase 1A — Dataset Overview
+
+Status: PASS
+
+Phase 1A was performed on the full VinBigData `train.csv` source metadata.
+
+Key findings:
+
+```text
+Total source images: 15,000
+Abnormal images: 4,394
+No Finding images: 10,606
+Annotation rows: 67,914
+Abnormal bbox rows: 36,096
+Abnormal detection classes excluding No Finding: 14
+Invalid bbox count: 0
+No Finding rows with bbox: 0
+Images with both No Finding and abnormal labels: 0
+```
+
+Research decision:
+
+```text
+Downstream controlled working scope is locked to 4,894 images:
+4,394 abnormal images + 500 No Finding images.
+```
+
+Important note:
+
+```text
+The full 15,000-image CSV is source metadata only.
+It must not be confused with the downstream controlled working subset.
+The 4,894-image subset has not been constructed in Phase 1A.
+```
+
+Next phase:
+
+```text
+Phase 1B — Annotation Quality
+```
+
+
 **Phase tiếp theo dự kiến sau khi Phase 1A pass DoD:**  
 Phase 1B — Annotation Quality.
 

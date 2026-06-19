@@ -336,3 +336,45 @@ python -m pytest tests\test_phase0.py -q
 Sau khi `reproducibility_settings.md` tồn tại và test Phase 0 pass, có thể đóng **Phase 0 core** và xin review để mở **Phase 1A — Data Overview**.
 
 ---
+## 2026-06-19 — PHASE 1A: Khởi tạo repo & môi trường
+
+### Dataset scope clarification after Phase 1A
+
+Phase 1A dataset overview was performed on the full VinBigData `train.csv` source metadata.
+
+Observed source metadata:
+
+```text
+Total images: 15,000
+Abnormal images: 4,394
+No Finding images: 10,606
+Annotation rows: 67,914
+Abnormal bbox rows: 36,096
+Abnormal detection classes: 14
+```
+
+Research decision:
+
+```text
+Downstream controlled working scope is locked to 4,894 images:
+- 4,394 abnormal images
+- 500 No Finding images
+```
+
+Important distinction:
+
+```text
+The full 15,000-image CSV is source metadata only.
+It is not the downstream working dataset.
+The 4,894-image subset has not been constructed in Phase 1A.
+Subset manifest creation belongs to a later dataset scope / manifest phase.
+```
+
+Scope lock:
+
+```text
+No split was created in Phase 1A.
+No COCO conversion was performed in Phase 1A.
+No image files were copied or read in Phase 1A.
+No training, pseudo-labeling, or threshold tuning was performed in Phase 1A.
+```
