@@ -648,6 +648,7 @@ remote: origin/main
 
 ### Phase 1A — Dataset Overview
 
+Date: 2026-06-19
 Status: **OPEN / NEXT**
 
 Current focus:
@@ -690,6 +691,78 @@ DoD:
 
 Next phase after pass:
 
-- Phase 1B — Annotation Quality.
+- Phase 1B — Annotation Quality (kiểm tra chất lượng Annotation).
 
----
+### Phase 1B — Annotation Quality (kiểm tra chất lượng Annotation).
+
+Status: PASS
+
+Date: 2026-06-19
+
+Scripts run:
+
+```cmd
+python scripts\01B_annotation_quality.py --train-csv data\raw\vinbigdata\annotations\train.csv
+
+Outputs generated:
+
+reports/phase1B_annotation_quality.json
+reports/phase1B_annotation_quality.md
+reports/annotation_sanity_report.md
+reports/invalid_bbox_rows.csv
+reports/duplicate_bbox_candidates.csv
+reports/phase1B_class_mapping.csv
+reports/phase1B_bbox_quality_by_class.csv
+reports/phase1B_image_label_consistency.csv
+
+DoD result:
+
+Annotation-level bbox sanity: PASS
+No Finding policy: PASS
+Abnormal bbox completeness: PASS
+Class mapping consistency: PASS
+Duplicate/near-duplicate candidates reported: PASS
+Boundary check: DEFERRED to image-level validation because train.csv has no image dimensions
+Forbidden actions avoided: PASS
+
+Key findings:
+
+Total rows: 67,914
+Unique images: 15,000
+Abnormal rows: 36,096
+No Finding rows: 31,818
+Abnormal images: 4,394
+No Finding images: 10,606
+Abnormal detection classes excluding No Finding: 14
+Invalid bbox total: 0
+No Finding rows with bbox: 0
+Abnormal rows missing bbox: 0
+Mixed No Finding + abnormal images: 0
+Class mapping issues: 0
+Exact duplicate candidates: 0
+Near-duplicate candidates IoU >= 0.95: 147
+Boundary check status: not_evaluable_without_image_dimensions
+
+Research decisions:
+
+Do not delete or modify near-duplicate bbox candidates in Phase 1B.
+Treat near-duplicate boxes as multi-radiologist annotation candidates requiring later fusion/handling decision.
+Defer image-boundary validation to Phase 2A because Phase 1B is CSV-only.
+
+Issues / risks:
+
+Boundary validity cannot be concluded from CSV alone.
+No Finding rows are repeated reader-level rows; future processing must operate at image level for negative images.
+
+Next phase:
+
+Phase 1C — Dataset Scope Decision
+
+
+Lệnh commit:
+
+```cmd
+git status
+git add scripts/01B_annotation_quality.py reports/phase1B_annotation_quality.json reports/phase1B_annotation_quality.md reports/annotation_sanity_report.md reports/invalid_bbox_rows.csv reports/duplicate_bbox_candidates.csv reports/phase1B_class_mapping.csv reports/phase1B_bbox_quality_by_class.csv reports/phase1B_image_label_consistency.csv PROJECT_CONTEXT.md research_log.md CHECKLIST_TRIEN_KHAI_FULL.xlsx
+git commit -m "phase1B: validate annotation quality"
+git push

@@ -1,0 +1,16 @@
+class_id,class_name,is_no_finding,rows,rows_with_full_bbox,rows_missing_bbox
+0,Aortic enlargement,False,7162,7162,0
+1,Atelectasis,False,279,279,0
+2,Calcification,False,960,960,0
+3,Cardiomegaly,False,5427,5427,0
+4,Consolidation,False,556,556,0
+5,ILD,False,1000,1000,0
+6,Infiltration,False,1247,1247,0
+7,Lung Opacity,False,2483,2483,0
+8,Nodule/Mass,False,2580,2580,0
+9,Other lesion,False,2203,2203,0
+10,Pleural effusion,False,2476,2476,0
+11,Pleural thickening,False,4842,4842,0
+12,Pneumothorax,False,226,226,0
+13,Pulmonary fibrosis,False,4655,4655,0
+14,No finding,True,31818,0,31818
