@@ -6,8 +6,9 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 **Trọng tâm:** Semi-supervised object detection trên **VinBigData Chest X-ray**.
 **Framework chính:** [MMDetection](https://github.com/open-mmlab/mmdetection) (OpenMMLab). Detectron2 là *optional*.
 
-> **Trạng thái hiện tại: PHASE 0 — Setup repo & môi trường.**
+> **Trạng thái hiện tại: PHASE 1B — Annotation Quality**
 > Phase 0 *không* đọc dataset, *không* convert COCO, *không* tạo split, *không* train.
+> Phase 1A: dataset overview
 
 ## Vai trò trong dự án
 
