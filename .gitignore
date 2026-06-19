@@ -32,3 +32,4 @@ Thumbs.db
 
 # Keep directory placeholders even when ignoring contents.
 !**/.gitkeep
+.vs/

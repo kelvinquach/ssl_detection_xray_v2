@@ -1,0 +1,2 @@
+has_bbox_columns,bbox_rows_considered,missing_coordinate,x_min_ge_x_max,y_min_ge_y_max,nonpositive_width_or_height,valid_bbox_count,width_min,width_mean,width_max,height_min,height_mean,height_max,area_min,area_mean,area_max
+True,36096,0,0,0,0,36096,11.0,440.93664117907804,2938.0,3.0,391.3984375,2803.0,180.0,218415.70672650708,4575318.0

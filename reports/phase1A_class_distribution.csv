@@ -1,0 +1,16 @@
+class_name,is_no_finding,rows,images
+Aortic enlargement,False,7162,3067
+Atelectasis,False,279,186
+Calcification,False,960,452
+Cardiomegaly,False,5427,2300
+Consolidation,False,556,353
+ILD,False,1000,386
+Infiltration,False,1247,613
+Lung Opacity,False,2483,1322
+No finding,True,31818,10606
+Nodule/Mass,False,2580,826
+Other lesion,False,2203,1134
+Pleural effusion,False,2476,1032
+Pleural thickening,False,4842,1981
+Pneumothorax,False,226,96
+Pulmonary fibrosis,False,4655,1617

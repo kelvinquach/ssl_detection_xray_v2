@@ -1,0 +1,150 @@
+{
+  "report_type": "phase1A_dataset_overview",
+  "created_utc": "2026-06-19T13:04:56.740255+00:00",
+  "source_csv": "data\\raw\\vinbigdata\\annotations\\train.csv",
+  "columns_present": {
+    "class_id": true,
+    "x_min": true,
+    "y_min": true,
+    "x_max": true,
+    "y_max": true,
+    "has_all_bbox_columns": true
+  },
+  "summary": {
+    "total_rows": 67914,
+    "unique_images": 15000,
+    "class_names": [
+      "Aortic enlargement",
+      "Atelectasis",
+      "Calcification",
+      "Cardiomegaly",
+      "Consolidation",
+      "ILD",
+      "Infiltration",
+      "Lung Opacity",
+      "No finding",
+      "Nodule/Mass",
+      "Other lesion",
+      "Pleural effusion",
+      "Pleural thickening",
+      "Pneumothorax",
+      "Pulmonary fibrosis"
+    ],
+    "class_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "num_abnormal_classes_excluding_no_finding": 14,
+    "rows_per_class_name": {
+      "Aortic enlargement": 7162,
+      "Atelectasis": 279,
+      "Calcification": 960,
+      "Cardiomegaly": 5427,
+      "Consolidation": 556,
+      "ILD": 1000,
+      "Infiltration": 1247,
+      "Lung Opacity": 2483,
+      "No finding": 31818,
+      "Nodule/Mass": 2580,
+      "Other lesion": 2203,
+      "Pleural effusion": 2476,
+      "Pleural thickening": 4842,
+      "Pneumothorax": 226,
+      "Pulmonary fibrosis": 4655
+    },
+    "images_per_class_name": {
+      "Aortic enlargement": 3067,
+      "Atelectasis": 186,
+      "Calcification": 452,
+      "Cardiomegaly": 2300,
+      "Consolidation": 353,
+      "ILD": 386,
+      "Infiltration": 613,
+      "Lung Opacity": 1322,
+      "No finding": 10606,
+      "Nodule/Mass": 826,
+      "Other lesion": 1134,
+      "Pleural effusion": 1032,
+      "Pleural thickening": 1981,
+      "Pneumothorax": 96,
+      "Pulmonary fibrosis": 1617
+    },
+    "bbox_per_abnormal_class": {
+      "Aortic enlargement": 7162,
+      "Atelectasis": 279,
+      "Calcification": 960,
+      "Cardiomegaly": 5427,
+      "Consolidation": 556,
+      "ILD": 1000,
+      "Infiltration": 1247,
+      "Lung Opacity": 2483,
+      "Nodule/Mass": 2580,
+      "Other lesion": 2203,
+      "Pleural effusion": 2476,
+      "Pleural thickening": 4842,
+      "Pneumothorax": 226,
+      "Pulmonary fibrosis": 4655
+    },
+    "no_finding_rows": 31818,
+    "no_finding_images": 10606,
+    "abnormal_images": 4394,
+    "images_with_both_no_finding_and_abnormal": 0,
+    "_both_image_ids_sample": []
+  },
+  "no_finding_policy_check": {
+    "no_finding_labels_recognized": [
+      "no finding"
+    ],
+    "no_finding_excluded_from_detection_classes": true,
+    "no_finding_rows_with_bbox": 0,
+    "abnormal_rows_missing_bbox": 0,
+    "images_with_both_no_finding_and_abnormal": 0
+  },
+  "bbox_quality": {
+    "has_bbox_columns": true,
+    "bbox_rows_considered": 36096,
+    "missing_coordinate": 0,
+    "x_min_ge_x_max": 0,
+    "y_min_ge_y_max": 0,
+    "nonpositive_width_or_height": 0,
+    "valid_bbox_count": 36096,
+    "dimensions": {
+      "width": {
+        "min": 11.0,
+        "mean": 440.93664117907804,
+        "max": 2938.0
+      },
+      "height": {
+        "min": 3.0,
+        "mean": 391.3984375,
+        "max": 2803.0
+      },
+      "area": {
+        "min": 180.0,
+        "mean": 218415.70672650708,
+        "max": 4575318.0
+      }
+    }
+  },
+  "warnings": [],
+  "generated_files": {
+    "overview_json": "reports/phase1A_dataset_overview.json",
+    "class_distribution_csv": "reports/phase1A_class_distribution.csv",
+    "image_level_summary_csv": "reports/phase1A_image_level_summary.csv",
+    "bbox_quality_csv": "reports/phase1A_bbox_quality_summary.csv",
+    "report_md": "reports/phase1A_dataset_overview.md"
+  }
+}
