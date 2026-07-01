@@ -292,170 +292,83 @@ Lưu ý thống nhất tên file:
 
 ---
 
+
 ## 7. Trạng thái hiện tại
 
-**Current phase:** Phase 1A — Dataset Overview  
-**Previous phase:** Phase 0 — Setup repo và môi trường  
-**Git status:** Phase 0 core đã commit và push lên GitHub.
+**Current phase:** Phase 1D — Kappa feasibility / limitation-aware analysis
+**Previous phase:** Phase 1C — Dataset Scope Decision
+**Git status:** Phase 1C committed and pushed.
 
-### 7.1 Phase 0 — Core setup & reproducibility
-
-Status: **DONE / CORE PASS**
-
-Date: 2026-06-18
-
-Commit:
-
-```text
-b5127fd phase0: setup reproducible core environment
-```
-
-Remote:
-
-```text
-origin/main — https://github.com/kelvinquach/ssl_detection_xray_v2.git
-```
-
-Scripts run:
-
-```cmd
-python scripts/00_check_environment.py --seed 2026 --output reports/phase0_environment_check.json --seed-manifest data/manifests/seed_state_manifest.json --freeze-output reports/phase0_pip_freeze.txt
-python -m pytest tests	est_phase0.py -q
-pip check
-```
-
-Outputs generated:
-
-- `reports/phase0_environment_check.json`
-- `reports/phase0_pip_freeze.txt`
-- `reports/reproducibility_settings.md`
-- `data/manifests/seed_state_manifest.json`
-
-DoD result:
-
-- Repo structure: **PASS**
-- Core Python environment: **PASS**
-- Dependency check: **PASS**
-- Seed/RNG/deterministic settings: **PASS**
-- Checkpoint/evaluation policy: **PASS**
-- Phase 0 tests: **PASS** (`5 passed`)
-- Local MMDetection/GPU training environment: **DEFERRED**
-
-Key findings:
-
-- Python: `3.10.20`
-- Conda env: `sslxray`
-- Platform: `Windows-10-10.0.26200-SP0`
-- PyTorch: `2.3.1`
-- torchvision: `0.18.1`
-- numpy: `1.24.3`
-- pandas: `2.3.3`
-- OpenCV/cv2: `4.11.0`
-- pydicom: `3.0.2`
-- pycocotools: `2.0.11`
-- `pip check`: `No broken requirements found.`
-- CUDA available: `False`
-- MMDetection stack: not installed locally
-
-Research decisions:
-
-- Local Windows CPU-only environment is accepted for repo/data/script/report validation.
-- Local environment is **not** accepted as training-ready.
-- MMDetection/GPU setup will be done separately in a remote/GPU environment.
-- Phase 1A is opened.
-- Split, COCO conversion, training, pseudo-labeling, threshold tuning and test-set usage remain locked.
-
-Issues / risks:
-
-- Local machine has no CUDA.
-- `mmengine/mmcv/mmdet` are not installed locally.
-- Do not accidentally interpret Phase 0 core pass as training environment pass.
-
-### 7.2 Current gate
+### 7.1 Current gate
 
 ```text
 Phase 0 core: PASS
-Phase 0 committed: PASS
-Phase 0 pushed to GitHub: PASS
+Phase 0 committed/pushed: PASS
 Phase 0 training framework: DEFERRED
-Phase 1A: OPEN
-Split: LOCKED
+Phase 1A — Dataset Overview: PASS
+Phase 1B — Annotation Quality: PASS
+Phase 1C — Dataset Scope Decision: PASS
+Phase 1D — Kappa feasibility / limitation-aware analysis: OPEN / NEXT
+
+Split train/val/test: LOCKED
 COCO conversion: LOCKED
 Training: LOCKED
 Pseudo-labeling: LOCKED
 Threshold tuning: LOCKED
 Test-set usage: LOCKED
+DICOM/image-boundary validation: DEFERRED to Phase 2A
 ```
 
-### 7.3 Phase hiện tại cần làm
-
-Phase 1A — Dataset Overview.
-
-Mục tiêu:
-
-- đọc annotation CSV;
-- thống kê số dòng annotation;
-- thống kê số unique image_id;
-- thống kê class distribution;
-- kiểm tra sơ bộ bbox validity;
-- kiểm tra No Finding policy;
-- tạo evidence report.
-
-Không được làm trong Phase 1A:
-
-- không split;
-- không convert COCO;
-- không copy ảnh;
-- không đọc DICOM/PNG;
-- không train;
-- không pseudo-label;
-- không tune threshold;
-- không dùng test set.
-
-### Phase 1A — Dataset Overview
-
-Status: PASS
-
-Phase 1A was performed on the full VinBigData `train.csv` source metadata.
-
-Key findings:
+### 7.2 Controlled working scope locked by Phase 1C
 
 ```text
-Total source images: 15,000
-Abnormal images: 4,394
-No Finding images: 10,606
-Annotation rows: 67,914
-Abnormal bbox rows: 36,096
-Abnormal detection classes excluding No Finding: 14
-Invalid bbox count: 0
-No Finding rows with bbox: 0
-Images with both No Finding and abnormal labels: 0
+Controlled working scope: 4,894 images
+- Abnormal images: 4,394 / 4,394 retained
+- No Finding images: 500 / 10,606 selected
+- Selection unit: image_id
+- No Finding row-level sampling used: false
+- Source metadata: full VinBigData train.csv with 15,000 images and 67,914 rows
 ```
 
-Research decision:
+The controlled scope was validated using three evidence sources:
 
 ```text
-Downstream controlled working scope is locked to 4,894 images:
-4,394 abnormal images + 500 No Finding images.
+1. Full train.csv metadata
+2. DICOM package manifests: dicom_package_manifest_part_001.csv to dicom_package_manifest_part_035.csv
+3. DICOM filename inventory from dicom_subset/train/*.dicom
 ```
 
-Important note:
+Phase 1C confirmed:
 
 ```text
-The full 15,000-image CSV is source metadata only.
-It must not be confused with the downstream controlled working subset.
-The 4,894-image subset has not been constructed in Phase 1A.
+selected_total_images = 4,894
+selected_abnormal_images = 4,394
+selected_no_finding_images = 500
+lost_abnormal_image_count = 0
+abnormal_retention_rate = 1.0
+manifest_unique_images = 4,894
+dicom_unique_image_ids = 4,894
+unknown_manifest_image_id_count = 0
+selected_mixed_images = 0
+image_type_label_mismatch_count = 0
+abnormal_detection_classes_excluding_no_finding = 14
 ```
 
-Next phase:
+### 7.3 What remains locked after Phase 1C
 
 ```text
-Phase 1B — Annotation Quality
+Do not create train/val/test split yet.
+Do not convert COCO yet.
+Do not train yet.
+Do not generate pseudo-labels yet.
+Do not tune thresholds yet.
+Do not use test set yet.
+Do not claim image-boundary bbox validity yet.
+Do not delete/fuse near-duplicate bbox candidates yet.
 ```
 
+Boundary validation is deferred to Phase 2A because Phase 1C did not read DICOM headers, image pixels, or image dimensions.
 
-**Phase tiếp theo dự kiến sau khi Phase 1A pass DoD:**  
-Phase 1B — Annotation Quality.
 
 ---
 
@@ -649,9 +562,9 @@ remote: origin/main
 ### Phase 1A — Dataset Overview
 
 Date: 2026-06-19
-Status: **OPEN / NEXT**
+Status: **PASS**
 
-Current focus:
+Completed focus:
 
 - tạo `scripts/01A_dataset_overview.py`;
 - đọc annotation CSV;
@@ -703,7 +616,7 @@ Scripts run:
 
 ```cmd
 python scripts\01B_annotation_quality.py --train-csv data\raw\vinbigdata\annotations\train.csv
-
+```
 Outputs generated:
 
 reports/phase1B_annotation_quality.json
@@ -754,10 +667,6 @@ Issues / risks:
 Boundary validity cannot be concluded from CSV alone.
 No Finding rows are repeated reader-level rows; future processing must operate at image level for negative images.
 
-Next phase:
-
-Phase 1C — Dataset Scope Decision
-
 
 Lệnh commit:
 
@@ -766,3 +675,125 @@ git status
 git add scripts/01B_annotation_quality.py reports/phase1B_annotation_quality.json reports/phase1B_annotation_quality.md reports/annotation_sanity_report.md reports/invalid_bbox_rows.csv reports/duplicate_bbox_candidates.csv reports/phase1B_class_mapping.csv reports/phase1B_bbox_quality_by_class.csv reports/phase1B_image_label_consistency.csv PROJECT_CONTEXT.md research_log.md CHECKLIST_TRIEN_KHAI_FULL.xlsx
 git commit -m "phase1B: validate annotation quality"
 git push
+```
+
+### Phase 1C — Dataset Scope Decision
+
+Status: **PASS**
+
+Date: 2026-07-01
+
+Scripts run:
+
+```cmd
+python scripts\01C_dataset_scope_decision.py ^
+  --train-csv D:\ssl_detection_xray_v2\data\raw\vinbigdata\annotations\train.csv ^
+  --manifest-glob "D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset_chunks\dicom_package_manifest_part_*.csv" ^
+  --dicom-root D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train ^
+  --chunk-summary D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset_chunks\dicom_chunk_summary.csv
+```
+
+Outputs generated:
+
+```text
+reports/scope_decision.md
+reports/phase1C_dataset_scope_decision.json
+reports/phase1C_scope_class_distribution.csv
+reports/phase1C_image_level_scope_summary.csv
+reports/phase1C_no_finding_selection_audit.csv
+data/manifests/phase1C_selected_images_manifest.csv
+data/manifests/phase1C_downloaded_image_inventory.csv
+data/manifests/phase1C_combined_package_manifest.csv
+data/interim/vinbigdata_phase1C_scope_annotations.csv
+```
+
+DoD result:
+
+```text
+Dataset scope decision: PASS
+Image-level manifest: PASS
+DICOM filename inventory cross-check: PASS
+Package manifest cross-check: PASS
+train.csv metadata cross-check: PASS
+Abnormal retention: PASS
+No Finding image-level handling: PASS
+Class distribution report: PASS
+Forbidden actions avoided: PASS
+```
+
+Key findings:
+
+```text
+Source total rows: 67,914
+Source unique images: 15,000
+Source abnormal images: 4,394
+Source No Finding images: 10,606
+
+Manifest rows: 4,894
+Manifest unique image_id: 4,894
+DICOM files listed: 4,894
+DICOM unique image_id: 4,894
+
+Selected total images: 4,894
+Selected abnormal images: 4,394
+Selected No Finding images: 500
+Selected mixed No Finding + abnormal images: 0
+Lost abnormal image count: 0
+Abnormal retention rate: 1.0
+
+Selected subset rows: 37,596
+Selected abnormal rows: 36,096
+Selected No Finding rows: 1,500
+
+Abnormal detection classes excluding No Finding: 14
+No Finding is detection class: false
+No Finding row-level sampling used: false
+Image type / train.csv label mismatch count: 0
+Unknown manifest image_id count: 0
+Chunk summary match: true
+```
+
+Research decisions:
+
+```text
+Controlled working scope is officially locked to 4,894 image-level samples:
+4,394 abnormal images + 500 No Finding images.
+
+The 500 No Finding samples are selected and verified at image_id level, not row level.
+The controlled scope is based on the already-downloaded DICOM package manifests and validated against train.csv and DICOM filename inventory.
+No Finding remains a negative image label, not a detection class.
+The metadata-only subset annotation CSV is created for selected image_id values only.
+```
+
+Issues / risks:
+
+```text
+The controlled scope uses 500 out of 10,606 No Finding images, not the full No Finding pool.
+This is a deliberate controlled-scope design decision and must be stated as a limitation.
+Boundary validity is not concluded in Phase 1C because image dimensions were not read.
+147 near-duplicate bbox candidates from Phase 1B are retained, not deleted or fused.
+Fusion/handling of multi-radiologist boxes is deferred to a later phase.
+```
+
+Forbidden actions confirmed:
+
+```text
+No train/val/test split created.
+No COCO conversion created.
+No training started.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No image copied.
+No DICOM header read.
+No pixel read.
+No image dimension read.
+No original annotation deleted or edited.
+No near-duplicate bbox candidate deleted.
+```
+
+Next phase:
+
+```text
+Phase 1D — Kappa feasibility / limitation-aware analysis
+```

@@ -1,0 +1,15 @@
+class_id,class_name,row_count,image_count,bbox_count,percentage_of_abnormal_images,percentage_of_selected_images
+0,Aortic enlargement,7162,3067,7162,69.7997,62.6686
+1,Atelectasis,279,186,279,4.233,3.8006
+2,Calcification,960,452,960,10.2868,9.2358
+3,Cardiomegaly,5427,2300,5427,52.3441,46.9963
+4,Consolidation,556,353,556,8.0337,7.2129
+5,ILD,1000,386,1000,8.7847,7.8872
+6,Infiltration,1247,613,1247,13.9508,12.5255
+7,Lung Opacity,2483,1322,2483,30.0865,27.0127
+8,Nodule/Mass,2580,826,2580,18.7984,16.8778
+9,Other lesion,2203,1134,2203,25.8079,23.1712
+10,Pleural effusion,2476,1032,2476,23.4866,21.087
+11,Pleural thickening,4842,1981,4842,45.0842,40.4781
+12,Pneumothorax,226,96,226,2.1848,1.9616
+13,Pulmonary fibrosis,4655,1617,4655,36.8002,33.0405

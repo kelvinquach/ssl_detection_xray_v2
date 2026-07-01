@@ -1,6 +1,6 @@
 # PHASE HANDOFF — `ssl_detection_xray_v2`
 
-Ngày cập nhật: 2026-06-18
+Ngày cập nhật: 2026-07-01
 
 Dự án: **Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi**
 
@@ -44,19 +44,20 @@ Không tick checklist nếu chưa có evidence.
 ## 3. Trạng thái hiện tại
 
 ```text
-Current phase: Phase 1C — Dataset Scope Decision
-Previous phase: Phase 1B — Annotation Quality
+Current phase: Phase 1D — Kappa feasibility / limitation-aware analysis
+Previous phase: Phase 1C — Dataset Scope Decision
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
-Phase 1A: PASS
-Phase 1B: PASS
+Phase 1A — Dataset Overview: PASS
+Phase 1B — Annotation Quality: PASS
+Phase 1C — Dataset Scope Decision: PASS
+Git status: Phase 1C PASS, waiting commit/push confirmation if not committed yet
 ```
 
-Được mở:
+Được mở / tiếp theo:
 
 ```text
-Được mở:
-Phase 1C — Dataset Scope Decision
+Phase 1D — Kappa feasibility / limitation-aware analysis
 ```
 
 Chưa được làm:
@@ -69,6 +70,16 @@ Train SSL detector
 Generate pseudo-label
 Tune threshold
 Use test set
+DICOM/image-boundary validation
+COCO master conversion
+```
+
+Ghi chú:
+
+```text
+Phase 1C đã khóa controlled working scope 4,894 image-level samples.
+Phase 2A chưa được mở.
+Không được đọc DICOM header / pixel / image dimensions cho đến Phase 2A.
 ```
 
 ---
@@ -506,21 +517,33 @@ powershell -Command "Get-Content reports\phase1A_image_level_summary.csv -TotalC
 
 ---
 
-## 15. Gate 1A
+## 15. Gate sau Phase 1C
 
 ```text
 Phase 0 core: PASS
 Phase 0 training framework: DEFERRED
-Phase 1A: PASS
-Phase 1B: PASS
-Phase 1C: OPEN
-Split: LOCKED
+Phase 1A — Dataset Overview: PASS
+Phase 1B — Annotation Quality: PASS
+Phase 1C — Dataset Scope Decision: PASS
+Phase 1D — Kappa feasibility / limitation-aware analysis: OPEN / NEXT
+
+Controlled working scope: LOCKED
+Controlled scope size: 4,894 images
+Abnormal images retained: 4,394 / 4,394
+No Finding images selected: 500 / 10,606
+Selection unit: image_id
+No Finding row-level sampling used: false
+
+Split train/val/test: LOCKED
 COCO conversion: LOCKED
 Training: LOCKED
 Pseudo-labeling: LOCKED
 Threshold tuning: LOCKED
 Test-set usage: LOCKED
+DICOM/image-boundary validation: DEFERRED to Phase 2A
 ```
+
+---
 
 ### Phase 1B — Annotation Quality (kiểm tra chất lượng Annotation).
 
@@ -791,6 +814,160 @@ Issues / risks:
 Boundary validity cannot be concluded from CSV alone.
 No Finding rows are repeated reader-level rows; future processing must operate at image level for negative images.
 
-Next phase:
+Next phase at that time:
 
-Phase 1C — Dataset Scope Decision
+Phase 1C — Dataset Scope Decision, now completed PASS.
+
+
+---
+
+## 16. Phase 1C — Dataset Scope Decision
+
+Status: **PASS**
+
+Date: 2026-07-01
+
+### Mục tiêu
+
+Chính thức hóa downstream controlled working scope ở mức image-level:
+
+```text
+4,894 images
+= 4,394 abnormal images
++ 500 No Finding images
+```
+
+Phase 1C chỉ làm metadata/image-level scope decision.
+
+Không tạo split, không convert COCO, không train, không pseudo-label, không tune threshold, không dùng test set, không đọc DICOM header, không đọc pixel và không đọc image dimensions.
+
+---
+
+### Scripts run
+
+```cmd
+python scripts\01C_dataset_scope_decision.py ^
+  --train-csv D:\ssl_detection_xray_v2\data\raw\vinbigdata\annotations\train.csv ^
+  --manifest-glob "D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset_chunks\dicom_package_manifest_part_*.csv" ^
+  --dicom-root D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train ^
+  --chunk-summary D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset_chunks\dicom_chunk_summary.csv
+```
+
+---
+
+### Outputs generated
+
+```text
+reports/scope_decision.md
+reports/phase1C_dataset_scope_decision.json
+reports/phase1C_scope_class_distribution.csv
+reports/phase1C_image_level_scope_summary.csv
+reports/phase1C_no_finding_selection_audit.csv
+data/manifests/phase1C_selected_images_manifest.csv
+data/manifests/phase1C_downloaded_image_inventory.csv
+data/manifests/phase1C_combined_package_manifest.csv
+data/interim/vinbigdata_phase1C_scope_annotations.csv
+```
+
+---
+
+### DoD result
+
+```text
+Dataset scope decision: PASS
+Image-level manifest: PASS
+DICOM filename inventory cross-check: PASS
+Package manifest cross-check: PASS
+train.csv metadata cross-check: PASS
+Abnormal retention: PASS
+No Finding image-level handling: PASS
+Class distribution report: PASS
+Forbidden actions avoided: PASS
+```
+
+---
+
+### Key findings
+
+```text
+Source total rows: 67,914
+Source unique images: 15,000
+Source abnormal images: 4,394
+Source No Finding images: 10,606
+
+Manifest rows: 4,894
+Manifest unique image_id: 4,894
+DICOM files listed: 4,894
+DICOM unique image_id: 4,894
+
+Selected total images: 4,894
+Selected abnormal images: 4,394
+Selected No Finding images: 500
+Selected mixed No Finding + abnormal images: 0
+Lost abnormal image count: 0
+Abnormal retention rate: 1.0
+
+Selected subset rows: 37,596
+Selected abnormal rows: 36,096
+Selected No Finding rows: 1,500
+
+Abnormal detection classes excluding No Finding: 14
+No Finding is detection class: false
+No Finding row-level sampling used: false
+Image type / train.csv label mismatch count: 0
+Unknown manifest image_id count: 0
+Chunk summary match: true
+```
+
+---
+
+### Research decisions
+
+```text
+Controlled working scope is officially locked to 4,894 image-level samples:
+4,394 abnormal images + 500 No Finding images.
+
+The 500 No Finding samples are selected and verified at image_id level, not row level.
+The controlled scope is based on the already-downloaded DICOM package manifests and validated against train.csv and DICOM filename inventory.
+No Finding remains a negative image label, not a detection class.
+The metadata-only subset annotation CSV is created for selected image_id values only.
+```
+
+---
+
+### Issues / risks
+
+```text
+The controlled scope uses 500 out of 10,606 No Finding images, not the full No Finding pool.
+This is a deliberate controlled-scope design decision and must be stated as a limitation.
+Boundary validity is not concluded in Phase 1C because image dimensions were not read.
+147 near-duplicate bbox candidates from Phase 1B are retained, not deleted or fused.
+Fusion/handling of multi-radiologist boxes is deferred to a later phase.
+```
+
+---
+
+### Forbidden actions confirmed
+
+```text
+No train/val/test split created.
+No COCO conversion created.
+No training started.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No image copied.
+No DICOM header read.
+No pixel read.
+No image dimension read.
+No original annotation deleted or edited.
+No near-duplicate bbox candidate deleted.
+```
+
+---
+
+### Next phase
+
+```text
+Phase 1D — Kappa feasibility / limitation-aware analysis
+```

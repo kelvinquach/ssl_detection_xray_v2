@@ -336,7 +336,7 @@ python -m pytest tests\test_phase0.py -q
 Sau khi `reproducibility_settings.md` tồn tại và test Phase 0 pass, có thể đóng **Phase 0 core** và xin review để mở **Phase 1A — Data Overview**.
 
 ---
-## 2026-06-19 — PHASE 1A: Khởi tạo repo & môi trường
+## 2026-06-19 — PHASE 1A: Dataset Overview
 
 ### Dataset scope clarification after Phase 1A
 
@@ -389,7 +389,7 @@ Scripts run:
 
 ```cmd
 python scripts\01B_annotation_quality.py --train-csv data\raw\vinbigdata\annotations\train.csv
-
+```
 Outputs generated:
 
 reports/phase1B_annotation_quality.json
@@ -452,3 +452,387 @@ git status
 git add scripts/01B_annotation_quality.py reports/phase1B_annotation_quality.json reports/phase1B_annotation_quality.md reports/annotation_sanity_report.md reports/invalid_bbox_rows.csv reports/duplicate_bbox_candidates.csv reports/phase1B_class_mapping.csv reports/phase1B_bbox_quality_by_class.csv reports/phase1B_image_label_consistency.csv PROJECT_CONTEXT.md research_log.md CHECKLIST_TRIEN_KHAI_FULL.xlsx
 git commit -m "phase1B: validate annotation quality"
 git push
+```
+---
+
+## 2026-07-01 — PHASE 1C: Dataset Scope Decision
+
+### Mục tiêu
+
+Chính thức hóa downstream controlled working scope cho đề tài:
+
+**“Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi.”**
+
+Mục tiêu Phase 1C:
+
+```text
+Controlled working scope = 4,894 image-level samples
+= 4,394 abnormal images
++ 500 No Finding images
+```
+
+Phase 1C chỉ khóa phạm vi dữ liệu ở mức metadata/image-level. Phase này không tạo split, không convert COCO, không train, không pseudo-label, không tune threshold, không dùng test set, không đọc pixel ảnh, không đọc DICOM header và không kiểm tra image-boundary validity.
+
+---
+
+### Đã làm
+
+#### 1. Tạo script Phase 1C
+
+Đã tạo:
+
+```text
+scripts/01C_dataset_scope_decision.py
+```
+
+Script có nhiệm vụ:
+
+* đọc full VinBigData `train.csv`;
+* đọc DICOM package manifests `dicom_package_manifest_part_*.csv`;
+* scan DICOM filename inventory từ `dicom_subset/train/*.dicom`;
+* đọc `dicom_chunk_summary.csv`;
+* đối chiếu `image_id` giữa package manifest, DICOM filename và `train.csv`;
+* tạo selected image-level manifest;
+* tạo metadata-only subset annotation CSV;
+* tạo class distribution trong controlled scope;
+* tạo No Finding audit;
+* xác nhận các hành động bị cấm không xảy ra.
+
+#### 2. Khóa scope theo package manifest đã tải
+
+Phase 1C không random sample lại 500 No Finding từ `train.csv`.
+
+Scope chính thức được lấy từ package manifests đã tải trước đó:
+
+```text
+D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset_chunks\dicom_package_manifest_part_*.csv
+```
+
+Nguồn kiểm tra chéo:
+
+```text
+D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train\*.dicom
+```
+
+Nguồn metadata gốc:
+
+```text
+D:\ssl_detection_xray_v2\data\raw\vinbigdata\annotations\train.csv
+```
+
+#### 3. Đối chiếu package manifest với DICOM filename inventory
+
+Kết quả xác nhận:
+
+```text
+Manifest parts found: 35
+Manifest rows: 4,894
+Manifest unique image_id: 4,894
+Manifest duplicate image_id count: 0
+
+DICOM files listed: 4,894
+DICOM unique image_id: 4,894
+DICOM duplicate image_id count: 0
+
+manifest_not_in_dicom_count: 0
+dicom_not_in_manifest_count: 0
+```
+
+DICOM inventory chỉ dùng filename/path để lấy `image_id`. Không đọc DICOM header, không đọc pixel và không đọc image dimensions.
+
+#### 4. Đối chiếu selected scope với train.csv
+
+Kết quả xác nhận:
+
+```text
+Source total rows: 67,914
+Source unique images: 15,000
+Source abnormal images: 4,394
+Source No Finding images: 10,606
+Source mixed No Finding + abnormal images: 0
+
+Selected total images: 4,894
+Selected abnormal images: 4,394
+Selected No Finding images: 500
+Selected mixed images: 0
+Lost abnormal image count: 0
+Abnormal retention rate: 1.0
+Unknown manifest image_id count: 0
+Image type / train.csv label mismatch count: 0
+```
+
+#### 5. Tạo selected image-level manifest
+
+Đã tạo:
+
+```text
+data/manifests/phase1C_selected_images_manifest.csv
+```
+
+Manifest này chứa 4,894 dòng, mỗi dòng là một `image_id`.
+
+Các cột chính:
+
+```text
+image_id
+scope_label
+is_abnormal
+is_no_finding
+source_row_count
+abnormal_row_count
+no_finding_row_count
+bbox_row_count
+abnormal_class_count
+abnormal_class_names
+package_image_type
+chunk_id
+zip_name
+source_path
+source_size_bytes
+selected_from
+selection_reason
+```
+
+#### 6. Tạo metadata-only subset annotation CSV
+
+Đã tạo:
+
+```text
+data/interim/vinbigdata_phase1C_scope_annotations.csv
+```
+
+File này gồm toàn bộ annotation rows trong `train.csv` có `image_id` thuộc selected manifest.
+
+Kết quả:
+
+```text
+Selected subset rows: 37,596
+Selected abnormal rows: 36,096
+Selected No Finding rows: 1,500
+```
+
+Điểm quan trọng:
+
+```text
+36,096 abnormal rows + 1,500 No Finding rows = 37,596 selected rows
+```
+
+Điều này xác nhận subset annotation CSV lấy toàn bộ rows thuộc selected image_id, không sampling theo row.
+
+#### 7. Chứng minh No Finding xử lý theo image-level
+
+Kết quả:
+
+```text
+Selected No Finding images: 500
+Selected No Finding rows: 1,500
+No Finding row-level sampling used: false
+```
+
+No Finding có nhiều row do reader-level annotation. Phase 1C đã chọn 500 unique No Finding `image_id`, không chọn 500 No Finding rows.
+
+#### 8. Tạo class distribution trong controlled scope
+
+Đã tạo:
+
+```text
+reports/phase1C_scope_class_distribution.csv
+```
+
+Kết quả:
+
+```text
+Abnormal detection classes excluding No Finding: 14
+No Finding is detection class: false
+```
+
+Class distribution trong controlled scope:
+
+```text
+Aortic enlargement: row_count=7162, image_count=3067, bbox_count=7162
+Atelectasis: row_count=279, image_count=186, bbox_count=279
+Calcification: row_count=960, image_count=452, bbox_count=960
+Cardiomegaly: row_count=5427, image_count=2300, bbox_count=5427
+Consolidation: row_count=556, image_count=353, bbox_count=556
+ILD: row_count=1000, image_count=386, bbox_count=1000
+Infiltration: row_count=1247, image_count=613, bbox_count=1247
+Lung Opacity: row_count=2483, image_count=1322, bbox_count=2483
+Nodule/Mass: row_count=2580, image_count=826, bbox_count=2580
+Other lesion: row_count=2203, image_count=1134, bbox_count=2203
+Pleural effusion: row_count=2476, image_count=1032, bbox_count=2476
+Pleural thickening: row_count=4842, image_count=1981, bbox_count=4842
+Pneumothorax: row_count=226, image_count=96, bbox_count=226
+Pulmonary fibrosis: row_count=4655, image_count=1617, bbox_count=4655
+```
+
+No Finding không nằm trong detection class distribution.
+
+---
+
+### Evidence đã tạo
+
+Scripts run:
+
+```cmd
+python scripts\01C_dataset_scope_decision.py ^
+  --train-csv D:\ssl_detection_xray_v2\data\raw\vinbigdata\annotations\train.csv ^
+  --manifest-glob "D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset_chunks\dicom_package_manifest_part_*.csv" ^
+  --dicom-root D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train ^
+  --chunk-summary D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset_chunks\dicom_chunk_summary.csv
+```
+
+Outputs generated:
+
+```text
+reports/scope_decision.md
+reports/phase1C_dataset_scope_decision.json
+reports/phase1C_scope_class_distribution.csv
+reports/phase1C_image_level_scope_summary.csv
+reports/phase1C_no_finding_selection_audit.csv
+data/manifests/phase1C_selected_images_manifest.csv
+data/manifests/phase1C_downloaded_image_inventory.csv
+data/manifests/phase1C_combined_package_manifest.csv
+data/interim/vinbigdata_phase1C_scope_annotations.csv
+```
+
+Key JSON evidence:
+
+```text
+dod_pass_candidate: true
+selected_scope_source: package_manifest_validated_by_train_csv_and_dicom_inventory
+chunk_summary_match: true
+warnings: []
+```
+
+---
+
+### Review GPT
+
+Phase 1C — Dataset Scope Decision: **PASS**
+
+DoD review:
+
+```text
+selected_total_images = 4,894: PASS
+selected_abnormal_images = 4,394: PASS
+selected_no_finding_images = 500: PASS
+lost_abnormal_image_count = 0: PASS
+abnormal_retention_rate = 1.0: PASS
+manifest_total_rows = 4,894: PASS
+manifest_unique_images = 4,894: PASS
+dicom_file_count = 4,894: PASS
+dicom_unique_image_ids = 4,894: PASS
+manifest_not_in_dicom_count = 0: PASS
+dicom_not_in_manifest_count = 0: PASS
+unknown_manifest_image_id_count = 0: PASS
+selected_mixed_images = 0: PASS
+image_type_label_mismatch_count = 0: PASS
+abnormal_detection_classes_excluding_no_finding = 14: PASS
+No Finding is not detection class: PASS
+No Finding row-level sampling used = false: PASS
+No split: PASS
+No COCO: PASS
+No train: PASS
+No pseudo-label: PASS
+No threshold tuning: PASS
+No test set: PASS
+No pixel read: PASS
+No DICOM header read: PASS
+No image dimension read: PASS
+```
+
+---
+
+### Quyết định
+
+Controlled working scope chính thức được khóa:
+
+```text
+4,894 image-level samples
+= 4,394 abnormal images
++ 500 No Finding images
+```
+
+Quyết định nghiên cứu:
+
+* Giữ toàn bộ 4,394 abnormal images.
+* Chỉ dùng 500/10,606 No Finding images trong controlled working scope.
+* 500 No Finding được xác nhận ở `image_id` level, không phải row-level.
+* Full 15,000-image `train.csv` vẫn là source metadata.
+* 4,894-image scope là downstream controlled working dataset.
+* No Finding tiếp tục là ảnh âm tính không có bbox, không phải detection class.
+* Metadata-only subset annotation CSV được tạo để dùng cho các phase chuẩn hóa tiếp theo.
+* 147 near-duplicate bbox candidates từ Phase 1B được giữ nguyên, không tự động xóa hoặc fuse.
+* Boundary validation vẫn deferred sang Phase 2A vì Phase 1C không đọc image dimensions.
+
+---
+
+### Vấn đề / rủi ro
+
+* Controlled scope chỉ dùng 500/10,606 No Finding images, không phải toàn bộ normal pool.
+* Việc giới hạn negative pool là quyết định thiết kế controlled scope và cần ghi rõ như limitation trong thesis/paper.
+* Phase 1C chưa kết luận bbox có nằm trong biên ảnh hay không.
+* Chưa được claim image-boundary validity cho bbox.
+* Fusion/handling near-duplicate bbox candidates là quyết định ở phase sau.
+* Chưa có train/val/test split; không được dùng 4,894-image scope như training split.
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 1C đã tuân thủ:
+
+```text
+Không split train/val/test.
+Không convert COCO.
+Không train.
+Không pseudo-label.
+Không tune threshold.
+Không dùng test set.
+Không copy ảnh.
+Không đọc DICOM header.
+Không đọc pixel ảnh.
+Không đọc image dimensions.
+Không xóa/sửa annotation gốc.
+Không xóa/fuse near-duplicate bbox candidates.
+```
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+* Phase 1C — Dataset Scope Decision
+* Controlled working scope 4,894 images
+* Retain all abnormal images
+* Select/validate 500 No Finding images
+* Image-level selected manifest
+* Metadata-only subset annotation CSV
+* No Finding image-level handling
+* Controlled-scope class distribution
+* Forbidden actions avoided
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo:
+
+```text
+Phase 1D — Kappa feasibility / limitation-aware analysis
+```
+
+Chưa được làm ở thời điểm này:
+
+```text
+Split train/val/test
+COCO conversion
+DICOM/image-boundary validation
+Training
+Pseudo-labeling
+Threshold tuning
+Test-set usage
+```
+
+Phase 2A chỉ được mở sau khi Phase 1D hoàn tất hoặc sau khi có quyết định chính thức bỏ/khóa Phase 1D theo protocol.
