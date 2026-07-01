@@ -1,0 +1,67 @@
+{
+  "phase": "phase1D_kappa_feasibility",
+  "created_utc": "2026-07-01T15:09:11.999071+00:00",
+  "input_files": [
+    "data\\interim\\vinbigdata_phase1C_scope_annotations.csv"
+  ],
+  "rad_id_available": true,
+  "rad_id_column_used": "rad_id",
+  "rad_id_missing_count": 0,
+  "total_images": 4894,
+  "total_rows": 37596,
+  "radiologists_total": 17,
+  "radiologists_per_image_distribution": {
+    "3": 4894
+  },
+  "rater_panel_uniform": true,
+  "uniform_rater_count_per_image": true,
+  "same_rater_identity_panel_across_images": false,
+  "rater_panel_size": 3,
+  "binary_matrix_feasible": true,
+  "cohen_kappa_feasible": false,
+  "fleiss_kappa_feasible": true,
+  "overall_fleiss_kappa_mean": 0.4879,
+  "classwise_feasibility_summary": "14 abnormal classes assessed; 14 with feasible Fleiss' Kappa; mean kappa=0.4879",
+  "rare_class_instability_summary": "5/14 classes carry kappa_instability_risk (severe=2, moderate=3, low=9); risk is prevalence/rarity-driven, not measured instability",
+  "label_level_agreement_status": "evaluable_fleiss_computed",
+  "bbox_level_consistency_status": "evaluated_descriptive_only",
+  "bbox_level_consistency_detail": {
+    "evaluated": true,
+    "reason": null,
+    "pairs_compared": 35521,
+    "near_duplicate_pairs_iou_ge_threshold": 78,
+    "iou_threshold": 0.95,
+    "note": "Descriptive spatial proximity only. Near-duplicate bboxes are multi-radiologist annotations, NOT confirmed errors. Nothing is deleted or fused."
+  },
+  "limitations": [
+    "Negatives are inferred from read-coverage (rater read image but did not mark class C). This assumes 'No finding' / absence of a positive row faithfully encodes a negative decision, which is the VinBigData labelling convention.",
+    "Panel size is 3; Fleiss' Kappa is appropriate, while Cohen's Kappa applies only to two-rater strata.",
+    "Kappa instability RISK: 2 class(es) at severe risk and 3 at moderate risk from low positive count / prevalence imbalance. This is a prevalence-driven risk, not measured instability; such classes can yield deflated Kappa (the well-known kappa paradox under class imbalance).",
+    "0.95 IoU near-duplicate bbox candidates are retained as multi-reader evidence; they are not fused or deleted, and are not used to conclude annotation errors."
+  ],
+  "decision": "Kappa/agreement analysis in Phase 1D is used ONLY as data-quality evidence and limitation evidence. It is NOT used as a model metric, NOT used to select split/model/threshold, NOT used to modify annotations, and NOT used to evaluate SSL performance. Because every image has a uniform number of radiologist ratings (identities may vary across images) and 'No finding' rows encode read-coverage, negatives are validly inferable and per-class Fleiss' Kappa IS computed and reported as agreement evidence.",
+  "dod_status": "PASS_agreement_computed_and_documented",
+  "forbidden_actions_confirmed": {
+    "split_created": false,
+    "coco_created": false,
+    "training_started": false,
+    "pseudo_label_generated": false,
+    "threshold_tuned": false,
+    "test_set_used": false,
+    "pixel_read": false,
+    "dicom_or_header_read": false,
+    "image_dimensions_read": false,
+    "boundary_validation": false,
+    "annotations_deleted_or_edited": false,
+    "near_duplicate_bbox_deleted_or_fused": false,
+    "kappa_used_as_model_metric": false,
+    "kappa_used_for_split_model_threshold": false
+  },
+  "generated_files": {
+    "output_json": "reports/phase1D_kappa_feasibility.json",
+    "report_md": "reports/phase1D_kappa_feasibility.md",
+    "rad_per_image_csv": "reports/phase1D_radiologist_per_image.csv",
+    "classwise_csv": "reports/phase1D_classwise_agreement_feasibility.csv",
+    "rare_class_csv": "reports/phase1D_rare_class_kappa_instability.csv"
+  }
+}

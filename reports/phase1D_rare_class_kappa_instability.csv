@@ -1,0 +1,15 @@
+class_id,class_name,positive_images,prevalence,fleiss_kappa,n_radiologists,kappa_instability_risk,instability_risk_flags
+12,Pneumothorax,96,0.019616,0.7402,17,severe,severe_rare_positive_count;severe_prevalence_imbalance
+1,Atelectasis,186,0.038006,0.3568,17,severe,moderate_rare_positive_count;severe_prevalence_imbalance
+4,Consolidation,353,0.072129,0.3397,17,moderate,moderate_rare_positive_count;moderate_prevalence_imbalance
+5,ILD,386,0.078872,0.4604,17,moderate,moderate_rare_positive_count;moderate_prevalence_imbalance
+2,Calcification,452,0.092358,0.396,17,moderate,moderate_rare_positive_count;moderate_prevalence_imbalance
+6,Infiltration,613,0.125255,0.4119,17,low,
+8,Nodule/Mass,826,0.168778,0.4946,17,low,
+10,Pleural effusion,1032,0.21087,0.6711,17,low,
+9,Other lesion,1134,0.231712,0.3024,17,low,
+7,Lung Opacity,1322,0.270127,0.3414,17,low,
+13,Pulmonary fibrosis,1617,0.330405,0.6126,17,low,
+11,Pleural thickening,1981,0.404781,0.3583,17,low,
+3,Cardiomegaly,2300,0.469963,0.7065,17,low,
+0,Aortic enlargement,3067,0.626686,0.6393,17,low,

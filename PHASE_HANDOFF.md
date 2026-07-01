@@ -44,20 +44,21 @@ Không tick checklist nếu chưa có evidence.
 ## 3. Trạng thái hiện tại
 
 ```text
-Current phase: Phase 1D — Kappa feasibility / limitation-aware analysis
-Previous phase: Phase 1C — Dataset Scope Decision
+Current phase: Phase 2A — Data Standardization / Image-Boundary Validation
+Previous phase: Phase 1D — Label Reliability & Kappa Feasibility
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
 Phase 1A — Dataset Overview: PASS
 Phase 1B — Annotation Quality: PASS
 Phase 1C — Dataset Scope Decision: PASS
-Git status: Phase 1C PASS, waiting commit/push confirmation if not committed yet
+Phase 1D — Label Reliability & Kappa Feasibility: PASS
+Git status: Phase 1D evidence pending commit/push
 ```
 
 Được mở / tiếp theo:
 
 ```text
-Phase 1D — Kappa feasibility / limitation-aware analysis
+Phase 2A — Data Standardization / Image-Boundary Validation
 ```
 
 Chưa được làm:
@@ -70,7 +71,6 @@ Train SSL detector
 Generate pseudo-label
 Tune threshold
 Use test set
-DICOM/image-boundary validation
 COCO master conversion
 ```
 
@@ -78,8 +78,9 @@ Ghi chú:
 
 ```text
 Phase 1C đã khóa controlled working scope 4,894 image-level samples.
-Phase 2A chưa được mở.
-Không được đọc DICOM header / pixel / image dimensions cho đến Phase 2A.
+Phase 1D đã xác nhận label reliability / Fleiss' Kappa agreement evidence.
+Phase 2A là phase tiếp theo để kiểm tra data standardization và image-boundary validation.
+Không được tạo split, COCO, train, pseudo-label hoặc tune threshold trong Phase 2A nếu chưa được scope rõ.
 ```
 
 ---
@@ -517,7 +518,7 @@ powershell -Command "Get-Content reports\phase1A_image_level_summary.csv -TotalC
 
 ---
 
-## 15. Gate sau Phase 1C
+## 15. Gate sau Phase 1D
 
 ```text
 Phase 0 core: PASS
@@ -525,7 +526,7 @@ Phase 0 training framework: DEFERRED
 Phase 1A — Dataset Overview: PASS
 Phase 1B — Annotation Quality: PASS
 Phase 1C — Dataset Scope Decision: PASS
-Phase 1D — Kappa feasibility / limitation-aware analysis: OPEN / NEXT
+Phase 1D — Label Reliability & Kappa Feasibility: PASS
 
 Controlled working scope: LOCKED
 Controlled scope size: 4,894 images
@@ -534,13 +535,27 @@ No Finding images selected: 500 / 10,606
 Selection unit: image_id
 No Finding row-level sampling used: false
 
+Label reliability:
+rad_id available: true
+rad_id missing count: 0
+radiologists_total: 17
+radiologists_per_image_distribution: {'3': 4894}
+uniform_rater_count_per_image: true
+same_rater_identity_panel_across_images: false
+binary_matrix_feasible: true
+cohen_kappa_feasible: false
+fleiss_kappa_feasible: true
+overall_fleiss_kappa_mean: 0.4879
+
 Split train/val/test: LOCKED
 COCO conversion: LOCKED
 Training: LOCKED
 Pseudo-labeling: LOCKED
 Threshold tuning: LOCKED
 Test-set usage: LOCKED
-DICOM/image-boundary validation: DEFERRED to Phase 2A
+
+Next phase:
+Phase 2A — Data Standardization / Image-Boundary Validation
 ```
 
 ---
@@ -966,8 +981,142 @@ No near-duplicate bbox candidate deleted.
 
 ---
 
-### Next phase
+:::writing{variant="document" id="12370"}
+### Next phase at that time
 
 ```text
 Phase 1D — Kappa feasibility / limitation-aware analysis
+Update:
+Phase 1D has now been completed with PASS_agreement_computed_and_documented.
+The current next phase is Phase 2A — Data Standardization / Image-Boundary Validation.
+```
+:::
+
+---
+
+## 17. Phase 1D — Label Reliability & Kappa Feasibility
+
+Status: **PASS**
+
+Date: 2026-07-01
+
+### Mục tiêu
+
+Kiểm tra tính khả thi của inter-radiologist agreement / Kappa analysis từ metadata trong controlled working scope đã khóa ở Phase 1C.
+
+Phase 1D chỉ dùng metadata annotation. Không tạo split, không convert COCO, không train, không pseudo-label, không tune threshold, không dùng test set, không đọc pixel ảnh, không đọc DICOM/header/image dimensions và không sửa annotation gốc.
+
+---
+
+### Scripts run
+
+```cmd
+python scripts/01D_kappa_feasibility.py
+```
+
+---
+
+### Outputs generated
+
+```text
+reports/phase1D_kappa_feasibility.md
+reports/phase1D_kappa_feasibility.json
+reports/phase1D_classwise_agreement_feasibility.csv
+reports/phase1D_radiologist_per_image.csv
+reports/phase1D_rare_class_kappa_instability.csv
+```
+
+---
+
+### DoD result
+
+```text
+rad_id availability: PASS
+radiologists per image: PASS
+image-class-radiologist binary matrix feasibility: PASS
+Cohen's Kappa feasibility: PASS
+Fleiss' Kappa feasibility: PASS
+class-wise image-level agreement: PASS
+rare-class kappa instability risk: PASS
+label-level agreement vs bbox-level consistency: PASS
+forbidden actions avoided: PASS
+```
+
+---
+
+### Key findings
+
+```text
+rad_id_available: true
+rad_id_missing_count: 0
+total_images: 4894
+total_rows: 37596
+radiologists_total: 17
+radiologists_per_image_distribution: {'3': 4894}
+uniform_rater_count_per_image: true
+same_rater_identity_panel_across_images: false
+binary_matrix_feasible: true
+cohen_kappa_feasible: false
+fleiss_kappa_feasible: true
+overall_fleiss_kappa_mean: 0.4879
+classwise_feasibility_summary: 14 abnormal classes assessed; 14 with feasible Fleiss' Kappa; mean kappa=0.4879
+rare_class_instability_summary: 5/14 classes carry kappa_instability_risk (severe=2, moderate=3, low=9); risk is prevalence/rarity-driven, not measured instability
+label_level_agreement_status: evaluable_fleiss_computed
+bbox_level_consistency_status: evaluated_descriptive_only
+```
+
+---
+
+### Research decisions
+
+```text
+Fleiss' Kappa is computed at image-level class agreement.
+Cohen's Kappa is not used as the main agreement statistic because each image has 3 radiologist ratings.
+Kappa/agreement is used only as data-quality evidence and limitation evidence.
+Kappa is not a model metric.
+Kappa is not used for split/model/threshold selection.
+Kappa is not used for training or pseudo-labeling.
+Kappa is not used to delete, fuse, or edit annotations.
+BBox-level consistency is kept separate from label-level agreement and remains descriptive only.
+```
+
+---
+
+### Issues / risks
+
+```text
+Negative class decisions are inferred from read-coverage according to VinBigData labelling convention.
+Kappa can be affected by prevalence imbalance.
+5/14 abnormal classes carry kappa_instability_risk.
+BBox-level consistency is not a bbox fusion policy.
+Near-duplicate bbox handling is still deferred to a later annotation standardization decision.
+```
+
+---
+
+### Forbidden actions confirmed
+
+```text
+No train/val/test split created.
+No COCO conversion created.
+No training started.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No pixel read.
+No DICOM/header read.
+No image dimensions read.
+No boundary validation performed.
+No annotation deleted or edited.
+No near-duplicate bbox deleted or fused.
+No Kappa used as model metric.
+No Kappa used for split/model/threshold.
+```
+
+---
+
+### Next phase
+
+```text
+Phase 2A — Data Standardization / Image-Boundary Validation
 ```

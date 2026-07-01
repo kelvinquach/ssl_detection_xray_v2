@@ -379,11 +379,9 @@ No image files were copied or read in Phase 1A.
 No training, pseudo-labeling, or threshold tuning was performed in Phase 1A.
 ```
 
-### Phase 1B — Annotation Quality (kiểm tra chất lượng Annotation).
+## 2026-06-19 — PHASE 1B: Annotation Quality
 
 Status: PASS
-
-Date: 2026-06-19
 
 Scripts run:
 
@@ -836,3 +834,436 @@ Test-set usage
 ```
 
 Phase 2A chỉ được mở sau khi Phase 1D hoàn tất hoặc sau khi có quyết định chính thức bỏ/khóa Phase 1D theo protocol.
+
+---
+
+## 2026-07-01 — PHASE 1D: Label Reliability & Kappa Feasibility
+
+### Mục tiêu
+
+Kiểm tra tính khả thi của inter-radiologist agreement / Kappa analysis từ metadata hiện có trong controlled working scope của đề tài:
+
+**“Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi.”**
+
+Phase 1D chỉ dùng metadata annotation đã khóa từ Phase 1C. Không tạo split, không convert COCO, không train, không pseudo-label, không tune threshold, không dùng test set, không đọc pixel ảnh, không đọc DICOM/header/image dimensions và không sửa annotation gốc.
+
+Mục tiêu chính:
+
+```text
+Kiểm tra rad_id availability.
+Đếm số radiologist trên mỗi image_id.
+Kiểm tra khả năng xây image-class-radiologist binary matrix.
+Đánh giá Cohen’s Kappa feasibility.
+Đánh giá Fleiss’ Kappa feasibility.
+Báo cáo class-wise image-level agreement.
+Phân tích rare-class kappa instability risk.
+Tách label-level agreement khỏi bbox-level consistency.
+Ghi rõ Kappa chỉ là data-quality evidence, không phải model metric.
+```
+
+---
+
+### Đã làm
+
+#### 1. Tạo script Phase 1D
+
+Đã tạo:
+
+```text
+scripts/01D_kappa_feasibility.py
+```
+
+Script đọc metadata từ:
+
+```text
+data/interim/vinbigdata_phase1C_scope_annotations.csv
+```
+
+Không đọc ảnh, không đọc DICOM, không đọc DICOM header, không đọc image dimensions.
+
+#### 2. Kiểm tra `rad_id`
+
+Kết quả:
+
+```text
+rad_id_available: True
+rad_id_column_used: rad_id
+rad_id_missing_count: 0
+radiologists_total: 17
+```
+
+#### 3. Đếm số radiologist trên mỗi image
+
+Kết quả:
+
+```text
+total_images: 4894
+radiologists_per_image_distribution: {'3': 4894}
+uniform_rater_count_per_image: True
+rater_panel_size: 3
+same_rater_identity_panel_across_images: False
+```
+
+Diễn giải:
+
+```text
+Mỗi ảnh có đúng 3 radiologist ratings.
+Toàn dataset có 17 radiologists khác nhau.
+Số lượng rater trên mỗi ảnh là cố định, nhưng danh tính bộ 3 radiologists có thể thay đổi giữa các ảnh.
+```
+
+#### 4. Kiểm tra image-class-radiologist binary matrix
+
+Kết quả:
+
+```text
+binary_matrix_feasible: True
+```
+
+Giả định/logic được ghi rõ:
+
+```text
+Nếu một radiologist có record trên image_id, radiologist đó được xem là đã đọc ảnh.
+Nếu radiologist đó không đánh dấu class C trên ảnh đã đọc, class C được suy ra là negative cho radiologist đó.
+No Finding rows có rad_id và được dùng như read-coverage signal.
+```
+
+Đây là reconstructed image-level class decision matrix, không phải metric mô hình.
+
+#### 5. Đánh giá Cohen’s Kappa feasibility
+
+Kết quả:
+
+```text
+cohen_kappa_feasible: False
+```
+
+Lý do:
+
+```text
+Mỗi ảnh có 3 raters.
+Cohen’s Kappa là thống kê cho 2 raters.
+Do đó Cohen’s Kappa không phải lựa chọn tự nhiên cho protocol chính.
+```
+
+Pairwise Cohen có thể tính trong phân tích phụ nếu sau này thật sự cần, nhưng không dùng trong Phase 1D.
+
+#### 6. Đánh giá Fleiss’ Kappa feasibility
+
+Kết quả:
+
+```text
+fleiss_kappa_feasible: True
+overall_fleiss_kappa_mean: 0.4879
+```
+
+Lý do:
+
+```text
+Mỗi ảnh có uniform rater count = 3.
+Fleiss’ Kappa cho phép nhiều raters trên mỗi item và không bắt buộc cùng danh tính raters cho mọi item.
+Negative class decisions có thể suy ra từ read-coverage theo VinBigData labelling convention.
+```
+
+#### 7. Báo cáo class-wise image-level agreement
+
+Đã báo cáo Fleiss’ Kappa cho 14 abnormal detection classes:
+
+```text
+Aortic enlargement: 0.6393
+Atelectasis: 0.3568
+Calcification: 0.3960
+Cardiomegaly: 0.7065
+Consolidation: 0.3397
+ILD: 0.4604
+Infiltration: 0.4119
+Lung Opacity: 0.3414
+Nodule/Mass: 0.4946
+Other lesion: 0.3024
+Pleural effusion: 0.6711
+Pleural thickening: 0.3583
+Pneumothorax: 0.7402
+Pulmonary fibrosis: 0.6126
+```
+
+Tóm tắt:
+
+```text
+14 abnormal classes assessed.
+14 classes with feasible Fleiss’ Kappa.
+Mean Fleiss’ Kappa = 0.4879.
+```
+
+#### 8. Phân tích rare-class Kappa instability risk
+
+Kết quả:
+
+```text
+rare_class_instability_summary:
+5/14 classes carry kappa_instability_risk
+severe = 2
+moderate = 3
+low = 9
+```
+
+Diễn giải:
+
+```text
+Đây là prevalence/rarity-driven risk, không phải measured instability.
+Một class có thể có Kappa cao nhưng vẫn có risk nếu positive count thấp hoặc prevalence quá lệch.
+```
+
+Các class đáng chú ý:
+
+```text
+Severe risk:
+- Pneumothorax
+- Atelectasis
+
+Moderate risk:
+- Consolidation
+- ILD
+- Calcification
+```
+
+#### 9. Tách label-level agreement khỏi bbox-level consistency
+
+Label-level agreement:
+
+```text
+label_level_agreement_status: evaluable_fleiss_computed
+```
+
+BBox-level consistency:
+
+```text
+bbox_level_consistency_status: evaluated_descriptive_only
+pairs_compared: 35521
+near_duplicate_pairs_iou_ge_threshold: 78
+iou_threshold: 0.95
+```
+
+Nguyên tắc:
+
+```text
+Label-level agreement dùng present/absent class decisions.
+BBox-level consistency chỉ là descriptive spatial proximity.
+Không xóa bbox.
+Không fuse bbox.
+Không sửa annotation.
+Không xem near-duplicate bbox là lỗi chắc chắn.
+```
+
+#### 10. Ghi chú về khác biệt Phase 1B và Phase 1D near-duplicate count
+
+Phase 1B báo:
+
+```text
+Near-duplicate candidates IoU >= 0.95: 147
+```
+
+Phase 1D báo:
+
+```text
+Near-duplicate bbox pairs IoU >= 0.95: 78
+```
+
+Hai con số này không mâu thuẫn vì khác đơn vị đếm và khác mục tiêu:
+
+```text
+Phase 1B đếm candidate bbox records/rows liên quan đến near-duplicate để phục vụ annotation-quality review.
+Phase 1D đếm bbox pairs có IoU >= 0.95 để mô tả inter-rater spatial consistency.
+```
+
+Nếu 78 pairs hoàn toàn rời nhau, chúng có thể tương ứng tối đa 156 bbox records. Việc Phase 1B có 147 candidate records là hợp lý vì một số bbox có thể tham gia nhiều pair và được tính một lần ở mức candidate record.
+
+Phase 1D vẫn giữ bbox-level consistency là descriptive only. Không bbox nào bị xóa, fuse hoặc xem là annotation error chắc chắn.
+
+---
+
+### Evidence đã tạo
+
+Script run:
+
+```cmd
+python scripts/01D_kappa_feasibility.py
+```
+
+Outputs generated:
+
+```text
+reports/phase1D_kappa_feasibility.md
+reports/phase1D_kappa_feasibility.json
+reports/phase1D_classwise_agreement_feasibility.csv
+reports/phase1D_radiologist_per_image.csv
+reports/phase1D_rare_class_kappa_instability.csv
+```
+
+Key JSON evidence:
+
+```text
+rad_id_available: true
+rad_id_missing_count: 0
+total_images: 4894
+total_rows: 37596
+radiologists_total: 17
+radiologists_per_image_distribution: {'3': 4894}
+uniform_rater_count_per_image: true
+same_rater_identity_panel_across_images: false
+binary_matrix_feasible: true
+cohen_kappa_feasible: false
+fleiss_kappa_feasible: true
+overall_fleiss_kappa_mean: 0.4879
+classwise_feasibility_summary: 14 abnormal classes assessed; 14 with feasible Fleiss’ Kappa; mean kappa=0.4879
+rare_class_instability_summary: 5/14 classes carry kappa_instability_risk (severe=2, moderate=3, low=9); risk is prevalence/rarity-driven, not measured instability
+label_level_agreement_status: evaluable_fleiss_computed
+bbox_level_consistency_status: evaluated_descriptive_only
+dod_status: PASS_agreement_computed_and_documented
+```
+
+Forbidden actions confirmed:
+
+```text
+split_created: false
+coco_created: false
+training_started: false
+pseudo_label_generated: false
+threshold_tuned: false
+test_set_used: false
+pixel_read: false
+dicom_or_header_read: false
+image_dimensions_read: false
+boundary_validation: false
+annotations_deleted_or_edited: false
+near_duplicate_bbox_deleted_or_fused: false
+kappa_used_as_model_metric: false
+kappa_used_for_split_model_threshold: false
+```
+
+---
+
+### Review GPT
+
+Phase 1D — Label Reliability & Kappa Feasibility: **PASS**
+
+DoD review:
+
+```text
+rad_id availability checked: PASS
+radiologists per image reported: PASS
+image-class-radiologist binary matrix feasibility checked: PASS
+Cohen’s Kappa feasibility documented: PASS
+Fleiss’ Kappa feasibility documented: PASS
+Kappa unit/assumption/limitation documented: PASS
+Class-wise image-level agreement reported: PASS
+Rare-class kappa instability risk analyzed: PASS
+Label-level agreement separated from bbox-level consistency: PASS
+No annotation deletion/fusion/editing: PASS
+Kappa not used as model metric: PASS
+Kappa not used for split/tune/train/pseudo-label: PASS
+Markdown report saved: PASS
+JSON metrics saved: PASS
+Forbidden actions avoided: PASS
+```
+
+---
+
+### Quyết định
+
+Phase 1D được khóa với trạng thái:
+
+```text
+PASS_agreement_computed_and_documented
+```
+
+Quyết định nghiên cứu:
+
+* Fleiss’ Kappa được tính ở mức image-level class agreement.
+* Cohen’s Kappa không dùng làm metric chính vì mỗi ảnh có 3 raters.
+* Mean Fleiss’ Kappa across abnormal classes = 0.4879.
+* Kappa/agreement chỉ dùng làm data-quality evidence và limitation evidence.
+* Kappa không dùng làm model metric.
+* Kappa không dùng để chọn split/model/threshold.
+* Kappa không dùng để train hoặc pseudo-label.
+* Kappa không dùng để sửa/xóa/fuse annotation.
+* Rare-class risk được ghi nhận để giải thích độ tin cậy annotation theo class.
+* BBox-level consistency được giữ riêng với label-level agreement và chỉ dùng mô tả.
+
+---
+
+### Vấn đề / rủi ro
+
+* Negative decisions được suy ra từ read-coverage theo VinBigData labelling convention; đây là giả định cần ghi rõ trong thesis.
+* Mean Fleiss’ Kappa ở mức trung bình, cho thấy annotation reliability không đồng đều tuyệt đối.
+* Một số class có Kappa thấp, ví dụ Other lesion, Consolidation, Lung Opacity, Pleural thickening và Atelectasis.
+* Một số class có rare/prevalence risk, đặc biệt Pneumothorax và Atelectasis.
+* Kappa chịu ảnh hưởng bởi prevalence imbalance; không nên diễn giải như chất lượng annotation tuyệt đối.
+* BBox-level consistency chưa phải bbox fusion policy.
+* Việc xử lý multi-radiologist boxes / near-duplicate boxes vẫn cần quyết định ở phase chuẩn hóa annotation sau.
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 1D đã tuân thủ:
+
+```text
+Không split train/val/test.
+Không convert COCO.
+Không train.
+Không pseudo-label.
+Không tune threshold.
+Không dùng test set.
+Không đọc pixel ảnh.
+Không đọc DICOM/PNG.
+Không đọc DICOM header.
+Không đọc image dimensions.
+Không boundary validation.
+Không xóa/sửa annotation gốc.
+Không xóa/fuse near-duplicate bbox candidates.
+Không dùng Kappa làm model metric.
+Không dùng Kappa để split/model/threshold.
+```
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+* Phase 1D — Label Reliability & Kappa Feasibility
+* rad_id availability
+* radiologists per image
+* image-class-radiologist binary matrix feasibility
+* Cohen’s Kappa feasibility
+* Fleiss’ Kappa feasibility
+* class-wise image-level agreement
+* rare-class kappa instability risk
+* label-level agreement vs bbox-level consistency
+* Kappa as data-quality evidence only
+* reports/phase1D_kappa_feasibility.md
+* reports/phase1D_kappa_feasibility.json
+* forbidden actions avoided
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo:
+
+```text
+Phase 2A — Data Standardization / Image-Boundary Validation
+```
+
+Chưa được làm trước khi mở Phase 2A:
+
+```text
+Train/val/test split
+COCO conversion
+Training
+Pseudo-labeling
+Threshold tuning
+Test-set usage
+```
+
+Phase 2A chỉ được mở sau khi Phase 1D evidence đã commit và push GitHub.
