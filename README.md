@@ -13,7 +13,7 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 > > PHASE 1C — Dataset Scope Decision;
 > > PHASE 1B — Annotation Quality;
 > > PHASE 1A: dataset overview;
-> > PHASE 0: Cài đặt - Kiểm tra môi trường. *không* đọc dataset, *không* convert COCO, *không* tạo split, *không* train.
+> > PHASE 0: setup environment
 
 ## Vai trò trong dự án
 
