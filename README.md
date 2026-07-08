@@ -8,12 +8,12 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 
 > **Trạng thái hiện tại: PHASE 2C — Framework & Format Decision / COCO conversion planning**
 > >> PHASE 2B — Canonical Detection Annotation Schema;
-> PHASE 2A — Data Standardization / Image-Boundary Validation;
-> PHASE 1D — Label Reliability & Kappa Feasibility;
-> PHASE 1C — Dataset Scope Decision;
-> PHASE 1B — Annotation Quality;
-> PHASE 1A: dataset overview;
-> PHASE 0: Cài đặt - Kiểm tra môi trường. *không* đọc dataset, *không* convert COCO, *không* tạo split, *không* train.
+> > PHASE 2A — Data Standardization / Image-Boundary Validation;
+> > PHASE 1D — Label Reliability & Kappa Feasibility;
+> > PHASE 1C — Dataset Scope Decision;
+> > PHASE 1B — Annotation Quality;
+> > PHASE 1A: dataset overview;
+> > PHASE 0: Cài đặt - Kiểm tra môi trường. *không* đọc dataset, *không* convert COCO, *không* tạo split, *không* train.
 
 ## Vai trò trong dự án
 
