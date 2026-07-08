@@ -1,0 +1,15 @@
+canonical_class_id,class_id_original,class_name,is_detection_class,is_no_finding,row_count,image_count,bbox_count
+0,0,Aortic enlargement,True,False,7162,3067,7162
+1,1,Atelectasis,True,False,279,186,279
+2,2,Calcification,True,False,960,452,960
+3,3,Cardiomegaly,True,False,5427,2300,5427
+4,4,Consolidation,True,False,556,353,556
+5,5,ILD,True,False,1000,386,1000
+6,6,Infiltration,True,False,1247,613,1247
+7,7,Lung Opacity,True,False,2483,1322,2483
+8,8,Nodule/Mass,True,False,2580,826,2580
+9,9,Other lesion,True,False,2203,1134,2203
+10,10,Pleural effusion,True,False,2476,1032,2476
+11,11,Pleural thickening,True,False,4842,1981,4842
+12,12,Pneumothorax,True,False,226,96,226
+13,13,Pulmonary fibrosis,True,False,4655,1617,4655

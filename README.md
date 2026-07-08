@@ -14,7 +14,6 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 > PHASE 1A: dataset overview;
 > PHASE 0: Cài đặt - Kiểm tra môi trường. *không* đọc dataset, *không* convert COCO, *không* tạo split, *không* train.
 
-
 ## Vai trò trong dự án
 
 | Vai trò | Trách nhiệm |
