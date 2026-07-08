@@ -11,8 +11,9 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 > Phase 1D — Label Reliability & Kappa Feasibility
 > Phase 1C — Dataset Scope Decision
 > PHASE 1B — Annotation Quality
-> Phase 0: Cài đặt - Kiểm tra môi trường. *không* đọc dataset, *không* convert COCO, *không* tạo split, *không* train.
 > Phase 1A: dataset overview
+> Phase 0: Cài đặt - Kiểm tra môi trường. *không* đọc dataset, *không* convert COCO, *không* tạo split, *không* train.
+
 
 ## Vai trò trong dự án
 
