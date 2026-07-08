@@ -7,7 +7,7 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 **Framework chính:** [MMDetection](https://github.com/open-mmlab/mmdetection) (OpenMMLab). Detectron2 là *optional*.
 
 > **Trạng thái hiện tại: Phase 2B — Canonical Schema**
-> Phase 2A — Data Standardization / Image-Boundary Validation**
+> Phase 2A — Data Standardization / Image-Boundary Validation
 > > Phase 1D — Label Reliability & Kappa Feasibility
 > Phase 1C — Dataset Scope Decision
 > PHASE 1B — Annotation Quality
