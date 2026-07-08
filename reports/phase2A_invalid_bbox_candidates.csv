@@ -1,0 +1,1 @@
+source_row_index,image_id,rad_id,class_id,class_name,x_min,y_min,x_max,y_max,image_width,image_height,bbox_width,bbox_height,boundary_valid,invalid_reasons

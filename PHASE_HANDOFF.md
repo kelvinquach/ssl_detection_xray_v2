@@ -1,6 +1,6 @@
 # PHASE HANDOFF — `ssl_detection_xray_v2`
 
-Ngày cập nhật: 2026-07-01
+Ngày cập nhật: 2026-07-08
 
 Dự án: **Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi**
 
@@ -43,22 +43,25 @@ Không tick checklist nếu chưa có evidence.
 
 ## 3. Trạng thái hiện tại
 
+## 3. Trạng thái hiện tại
+
 ```text
-Current phase: Phase 2A — Data Standardization / Image-Boundary Validation
-Previous phase: Phase 1D — Label Reliability & Kappa Feasibility
+Current phase: Phase 2B — Canonical Schema
+Previous phase: Phase 2A — Data Standardization / Image-Boundary Validation
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
 Phase 1A — Dataset Overview: PASS
 Phase 1B — Annotation Quality: PASS
 Phase 1C — Dataset Scope Decision: PASS
 Phase 1D — Label Reliability & Kappa Feasibility: PASS
-Git status: Phase 1D evidence pending commit/push
+Phase 2A — Data Standardization / Image-Boundary Validation: PASS
+Git status: Phase 2A completed; pending commit/push or committed/pushed after evidence update
 ```
 
 Được mở / tiếp theo:
 
 ```text
-Phase 2A — Data Standardization / Image-Boundary Validation
+Phase 2B — Canonical Schema
 ```
 
 Chưa được làm:
@@ -72,16 +75,17 @@ Generate pseudo-label
 Tune threshold
 Use test set
 COCO master conversion
+Labeled/unlabeled split
 ```
 
 Ghi chú:
 
 ```text
-Phase 1C đã khóa controlled working scope 4,894 image-level samples.
-Phase 1D đã xác nhận label reliability / Fleiss' Kappa agreement evidence.
-Phase 2A là phase tiếp theo để kiểm tra data standardization và image-boundary validation.
-Không được tạo split, COCO, train, pseudo-label hoặc tune threshold trong Phase 2A nếu chưa được scope rõ.
-```
+Phase 2A đã xác nhận 4,894 DICOM files tồn tại và đọc được metadata/header.
+Image dimensions available cho toàn bộ 4,894 images.
+Toàn bộ 36,096 abnormal bbox hợp lệ trong image boundary.
+No Finding vẫn là negative image không có bbox, không phải detection class.
+Không được tạo split, COCO, train, pseudo-label hoặc tune threshold khi chưa mở đúng phase.```
 
 ---
 
@@ -1120,3 +1124,155 @@ No Kappa used for split/model/threshold.
 ```text
 Phase 2A — Data Standardization / Image-Boundary Validation
 ```
+
+:::writing{variant="document" id="93016"}
+---
+
+## 18. Phase 2A — Data Standardization / Image-Boundary Validation
+
+Status: **PASS**
+
+Date: 2026-07-08
+
+### Mục tiêu
+
+Kiểm tra DICOM availability, image dimensions và bbox boundary validity trong controlled working scope 4,894 images.
+
+Phase 2A chỉ đọc DICOM metadata/header để lấy dimensions và validate bbox. Không tạo split, không convert COCO, không train, không pseudo-label, không tune threshold, không dùng test set, không sửa annotation và không tạo processed training images.
+
+---
+
+### Scripts run
+
+```cmd
+python scripts\02A_dicom_bbox_boundary_validation.py ^
+  --annotations-csv data\interim\vinbigdata_phase1C_scope_annotations.csv ^
+  --manifest-csv data\manifests\phase1C_selected_images_manifest.csv ^
+  --dicom-root D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train
+
+  ### Outputs generated
+
+```text
+reports/phase2A_dicom_bbox_validation.md
+reports/phase2A_dicom_bbox_validation.json
+reports/phase2A_image_metadata.csv
+reports/phase2A_image_availability.csv
+reports/phase2A_bbox_boundary_validation.csv
+reports/phase2A_invalid_bbox_candidates.csv
+reports/phase2A_dicom_read_errors.csv
+```
+---
+
+  ### DoD result
+
+```text
+DICOM availability: PASS
+DICOM metadata/header read: PASS
+Image dimension extraction: PASS
+BBox boundary validation: PASS
+No Finding policy: PASS
+Forbidden actions avoided: PASS
+```
+---
+
+  ### Key findings
+
+```text
+dicom_files_indexed_under_root: 4894
+total_annotation_rows: 37596
+unique_annotation_images: 4894
+manifest_rows: 4894
+manifest_unique_images: 4894
+selected_scope_expected_images: 4894
+availability_checked_image_count: 4894
+abnormal_images: 4394
+no_finding_images: 500
+abnormal_rows: 36096
+no_finding_rows: 1500
+dicom_available_count: 4894
+dicom_missing_count: 0
+dicom_read_success_count: 4894
+dicom_read_error_count: 0
+image_dimension_available_count: 4894
+image_dimension_missing_count: 0
+abnormal_bbox_rows_checked: 36096
+bbox_boundary_valid_count: 36096
+bbox_boundary_invalid_count: 0
+no_finding_with_bbox_count: 0
+abnormal_missing_bbox_count: 0
+annotation_not_in_manifest_count: 0
+manifest_not_in_annotation_count: 0
+duplicate_manifest_image_id_count: 0
+warnings: []
+dod_pass_candidate: true
+```
+---
+
+  ### Image dimension summary
+
+```text
+width_min: 1320
+width_max: 3320
+width_mean: 2491.66
+height_min: 1416
+height_max: 3408
+height_mean: 2835.09
+distinct_wh_pairs: 2186
+```
+---
+
+  ### Research decisions
+
+```text
+All 4,894 controlled-scope DICOM files are available on local disk.
+All 4,894 DICOM files are readable at metadata/header level.
+Image dimensions are available for all controlled-scope images.
+All 36,096 abnormal bbox rows are valid within original image boundaries.
+BBox convention is treated as xyxy on original image coordinates.
+No Finding remains a negative image label without bbox and is not a detection class.
+No bbox was edited, clamped, deleted or fused.
+No image was copied, converted, normalized or saved as processed training data.
+```
+---
+
+  ### Issues / risks
+
+```text
+Pixel array decoding was not checked in the main run because pixel_array_checked=false.
+This is acceptable for Phase 2A because the phase objective is metadata/header dimension and bbox boundary validation.
+Canonical schema is not created yet.
+COCO conversion is not created yet.
+Train/val/test split is not created yet.
+Framework dataloader / empty image loading is not checked yet.
+Training is still locked.
+Pseudo-labeling is still locked.
+Threshold tuning is still locked.
+```
+---
+
+  ### Forbidden actions confirmed
+
+```text
+No train/val/test split created.
+No COCO conversion created.
+No training started.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No annotation deleted or edited.
+No bbox clamped or modified.
+No near-duplicate bbox deleted or fused.
+No processed training images created.
+No image files copied.
+No image files converted.
+No PNG/JPG created.
+```
+---
+
+  ### Next phase
+
+```text
+Phase 2B — Canonical Schema
+```
+---
+:::

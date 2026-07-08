@@ -295,9 +295,9 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-**Current phase:** Phase 2A — Data Standardization / Image-Boundary Validation
-**Previous phase:** Phase 1D — Kappa feasibility / limitation-aware analysis
-**Git status:** Phase 1D evidence pending commit/push.
+**Current phase:** Phase 2B — Canonical Schema
+**Previous phase:** Phase 2A — Data Standardization / Image-Boundary Validation
+**Git status:** Phase 2A completed; pending commit/push or committed/pushed after evidence update.
 
 ### 7.1 Current gate
 
@@ -310,7 +310,8 @@ Phase 1B — Annotation Quality: PASS
 Phase 1C — Dataset Scope Decision: PASS
 Phase 1D — Label Reliability & Kappa Feasibility: PASS
 
-Phase 2A — Data Standardization / Image-Boundary Validation: OPEN / NEXT
+Phase 2A — Data Standardization / Image-Boundary Validation: PASS
+Phase 2B — Canonical Schema: OPEN / NEXT
 
 Split train/val/test: LOCKED
 COCO conversion: LOCKED
@@ -318,7 +319,6 @@ Training: LOCKED
 Pseudo-labeling: LOCKED
 Threshold tuning: LOCKED
 Test-set usage: LOCKED
-DICOM/image-boundary validation: OPEN ONLY WITHIN PHASE 2A SCOPE
 ```
 
 ### 7.2 Controlled working scope locked by Phase 1C
@@ -959,4 +959,83 @@ BBox near-duplicate handling remains deferred.
 Next phase:
 ```text
 Phase 2A — Data Standardization / Image-Boundary Validation
+```
+
+### Phase 2A — Data Standardization / Image-Boundary Validation
+
+Status: **PASS**
+
+Date: 2026-07-08
+
+Scripts run:
+
+```cmd
+python scripts\02A_dicom_bbox_boundary_validation.py ^
+  --annotations-csv data\interim\vinbigdata_phase1C_scope_annotations.csv ^
+  --manifest-csv data\manifests\phase1C_selected_images_manifest.csv ^
+  --dicom-root D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train
+```
+
+Outputs generated:
+
+```text
+reports/phase2A_dicom_bbox_validation.md
+reports/phase2A_dicom_bbox_validation.json
+reports/phase2A_image_metadata.csv
+reports/phase2A_image_availability.csv
+reports/phase2A_bbox_boundary_validation.csv
+reports/phase2A_invalid_bbox_candidates.csv
+reports/phase2A_dicom_read_errors.csv
+```
+
+DoD result:
+
+```text
+DICOM availability: PASS
+DICOM metadata/header read: PASS
+Image dimensions extraction: PASS
+BBox boundary validation: PASS
+No Finding bbox policy: PASS
+Forbidden actions avoided: PASS
+```
+
+Key findings:
+
+```text
+DICOM files indexed under root: 4,894
+Selected scope expected images: 4,894
+Availability checked images: 4,894
+DICOM available/missing: 4,894 / 0
+DICOM read success/error: 4,894 / 0
+Image dimensions available/missing: 4,894 / 0
+Abnormal bbox rows checked: 36,096
+BBox boundary valid/invalid: 36,096 / 0
+No Finding rows with bbox: 0
+Abnormal rows missing bbox: 0
+Warnings: none
+dod_pass_candidate: true
+```
+
+Research decisions:
+
+```text
+All controlled-scope DICOM files are available and readable at metadata/header level.
+All abnormal bbox coordinates are valid within original image boundaries under xyxy convention.
+No Finding remains a negative image label with no bbox and is not a detection class.
+No bbox was edited, clamped, deleted or fused.
+No image was copied, converted or normalized.
+```
+
+Issues / risks:
+
+```text
+Pixel array decoding was not checked in the main Phase 2A run.
+Canonical schema, COCO conversion, split, dataloader loading and training remain locked for later phases.
+Dataset is not yet training-ready until schema/COCO/split/loading phases pass DoD.
+```
+
+Next phase:
+
+```text
+Phase 2B — Canonical Schema
 ```

@@ -1267,3 +1267,369 @@ Test-set usage
 ```
 
 Phase 2A chỉ được mở sau khi Phase 1D evidence đã commit và push GitHub.
+
+---
+
+## 2026-07-08 — PHASE 2A: Data Standardization / Image-Boundary Validation
+
+### Mục tiêu
+
+Kiểm tra image availability, DICOM metadata/image dimensions và bbox boundary validity trong controlled working scope đã khóa của đề tài:
+
+**“Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi.”**
+
+Phase 2A chỉ thực hiện data standardization / image-boundary validation ở mức DICOM metadata và annotation boundary.
+
+Phase 2A không tạo split, không convert COCO, không train, không pseudo-label, không tune threshold, không dùng test set, không sửa annotation gốc, không xóa/clamp/fuse bbox và không tạo processed training images.
+
+Mục tiêu chính:
+
+```text
+Kiểm tra đủ 4,894 DICOM files trong controlled scope.
+Đọc DICOM metadata/header để lấy image_width/image_height.
+Xác nhận bbox abnormal nằm trong biên ảnh gốc.
+Xác nhận No Finding là ảnh âm tính không có bbox.
+Ghi evidence trước khi sang canonical schema / COCO / split.
+```
+
+---
+
+### Đã làm
+
+#### 1. Tạo script Phase 2A
+
+Đã tạo:
+
+```text
+scripts/02A_dicom_bbox_boundary_validation.py
+```
+
+Script có nhiệm vụ:
+
+* đọc controlled-scope annotation CSV;
+* đọc selected image manifest;
+* index DICOM files trong local DICOM root;
+* kiểm tra image availability cho toàn bộ 4,894 image_id;
+* đọc DICOM header bằng `pydicom.dcmread(..., stop_before_pixels=True, force=True)`;
+* lấy `Rows`, `Columns` làm `image_height`, `image_width`;
+* validate bbox theo image boundary;
+* tạo báo cáo Markdown, JSON và các CSV evidence;
+* xác nhận các forbidden actions không xảy ra.
+
+#### 2. Chạy script với đúng DICOM root
+
+Lệnh đã chạy:
+
+```cmd
+python scripts\02A_dicom_bbox_boundary_validation.py ^
+  --annotations-csv data\interim\vinbigdata_phase1C_scope_annotations.csv ^
+  --manifest-csv data\manifests\phase1C_selected_images_manifest.csv ^
+  --dicom-root D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train
+```
+
+#### 3. Kiểm tra image availability
+
+Kết quả:
+
+```text
+dicom files indexed under root: 4,894
+total selected images: 4,894
+availability checked images: 4,894
+DICOM available: 4,894
+DICOM missing: 0
+```
+
+Điều này xác nhận toàn bộ 4,894 image_id trong controlled scope đều có file DICOM local tương ứng.
+
+#### 4. Đọc DICOM metadata / image dimensions
+
+Kết quả:
+
+```text
+DICOM read success: 4,894
+DICOM read error: 0
+image_dimension_available_count: 4,894
+image_dimension_missing_count: 0
+```
+
+Image dimension summary:
+
+```text
+width_min: 1320
+width_max: 3320
+width_mean: 2491.66
+height_min: 1416
+height_max: 3408
+height_mean: 2835.09
+distinct_wh_pairs: 2186
+```
+
+Phase 2A đọc DICOM metadata/header để lấy dimensions. Pixel array không được đọc trong run chính:
+
+```text
+pixel_array_checked: false
+pixel_array_check_count: 0
+pixel_array_error_count: 0
+```
+
+#### 5. Validate bbox boundary
+
+Quy ước bbox:
+
+```text
+xyxy trên ảnh gốc:
+x_min, y_min, x_max, y_max
+```
+
+Điều kiện hợp lệ:
+
+```text
+0 <= x_min < x_max <= image_width
+0 <= y_min < y_max <= image_height
+```
+
+Kết quả:
+
+```text
+abnormal_bbox_rows_checked: 36,096
+bbox_boundary_valid_count: 36,096
+bbox_boundary_invalid_count: 0
+```
+
+Invalid bbox by reason:
+
+```text
+missing_coordinate: 0
+non_numeric_coordinate: 0
+x_min_negative: 0
+y_min_negative: 0
+x_max_negative: 0
+y_max_negative: 0
+x_min_ge_x_max: 0
+y_min_ge_y_max: 0
+bbox_width_le_0: 0
+bbox_height_le_0: 0
+x_max_gt_image_width: 0
+y_max_gt_image_height: 0
+image_dimension_missing: 0
+dicom_missing_or_read_error: 0
+```
+
+#### 6. Kiểm tra No Finding policy
+
+Kết quả:
+
+```text
+no_finding_images: 500
+no_finding_rows: 1,500
+no_finding_with_bbox_count: 0
+abnormal_missing_bbox_count: 0
+```
+
+Diễn giải:
+
+```text
+No Finding tiếp tục được xử lý là ảnh âm tính không có bbox.
+No Finding không phải detection class.
+Không có No Finding row nào có bbox.
+```
+
+---
+
+### Evidence đã tạo
+
+Outputs generated:
+
+```text
+reports/phase2A_dicom_bbox_validation.md
+reports/phase2A_dicom_bbox_validation.json
+reports/phase2A_image_metadata.csv
+reports/phase2A_image_availability.csv
+reports/phase2A_bbox_boundary_validation.csv
+reports/phase2A_invalid_bbox_candidates.csv
+reports/phase2A_dicom_read_errors.csv
+```
+
+Key JSON evidence:
+
+```text
+dicom_files_indexed_under_root: 4894
+total_annotation_rows: 37596
+unique_annotation_images: 4894
+manifest_rows: 4894
+manifest_unique_images: 4894
+selected_scope_expected_images: 4894
+availability_checked_image_count: 4894
+abnormal_images: 4394
+no_finding_images: 500
+abnormal_rows: 36096
+no_finding_rows: 1500
+dicom_available_count: 4894
+dicom_missing_count: 0
+dicom_read_success_count: 4894
+dicom_read_error_count: 0
+image_dimension_available_count: 4894
+image_dimension_missing_count: 0
+abnormal_bbox_rows_checked: 36096
+bbox_boundary_valid_count: 36096
+bbox_boundary_invalid_count: 0
+no_finding_with_bbox_count: 0
+abnormal_missing_bbox_count: 0
+annotation_not_in_manifest_count: 0
+manifest_not_in_annotation_count: 0
+duplicate_manifest_image_id_count: 0
+warnings: []
+dod_pass_candidate: true
+```
+
+Forbidden actions confirmed:
+
+```text
+split_created: false
+coco_created: false
+training_started: false
+pseudo_label_generated: false
+threshold_tuned: false
+test_set_used: false
+annotations_deleted_or_edited: false
+bbox_clamped_or_modified: false
+near_duplicate_bbox_deleted_or_fused: false
+processed_training_images_created: false
+image_files_copied: false
+image_files_converted: false
+png_or_jpg_created: false
+```
+
+---
+
+### Review GPT
+
+Phase 2A — Data Standardization / Image-Boundary Validation: **PASS**
+
+DoD review:
+
+```text
+Controlled scope expected images = 4,894: PASS
+Manifest unique images = 4,894: PASS
+Annotation unique images = 4,894: PASS
+DICOM files indexed under root = 4,894: PASS
+Availability checked images = 4,894: PASS
+DICOM available/missing = 4,894 / 0: PASS
+DICOM read success/error = 4,894 / 0: PASS
+Image dimensions available/missing = 4,894 / 0: PASS
+Abnormal bbox rows checked = 36,096: PASS
+BBox valid/invalid = 36,096 / 0: PASS
+No Finding rows with bbox = 0: PASS
+Abnormal rows missing bbox = 0: PASS
+Annotation not in manifest = 0: PASS
+Manifest not in annotation = 0: PASS
+Duplicate manifest image_id = 0: PASS
+Forbidden actions avoided: PASS
+dod_pass_candidate = true: PASS
+```
+
+---
+
+### Quyết định
+
+Phase 2A được khóa với trạng thái:
+
+```text
+PASS
+```
+
+Quyết định nghiên cứu:
+
+* Toàn bộ 4,894 DICOM files trong controlled working scope tồn tại trên local disk.
+* Toàn bộ 4,894 DICOM files đọc được metadata/header thành công.
+* Image dimensions được lấy thành công cho toàn bộ 4,894 images.
+* Toàn bộ 36,096 abnormal bbox nằm hợp lệ trong image boundary theo quy ước xyxy.
+* Không có bbox nào bị missing coordinate, non-numeric, negative, zero-area hoặc vượt biên ảnh.
+* No Finding tiếp tục là ảnh âm tính không có bbox, không phải detection class.
+* Không có No Finding row nào có bbox.
+* Không sửa, clamp, xóa hoặc fuse bbox.
+* Không tạo split, COCO, training data, pseudo-label hoặc threshold.
+* Pixel array chưa được kiểm tra trong run chính; Phase 2A chỉ xác nhận metadata/header và bbox boundary.
+
+---
+
+### Vấn đề / rủi ro
+
+* Phase 2A chưa kiểm tra pixel array decoding toàn bộ ảnh vì `pixel_array_checked = false`.
+* Phase 2A chưa tạo canonical schema.
+* Phase 2A chưa convert COCO.
+* Phase 2A chưa tạo train/val/test split.
+* Phase 2A chưa kiểm tra framework dataloader / empty image loading.
+* Việc xử lý near-duplicate bbox candidates vẫn chưa được quyết định; Phase 2A chỉ xác nhận bbox nằm trong biên ảnh.
+* Dataset chưa được xem là training-ready cho detector cho đến khi các phase schema/COCO/split/loading pass DoD.
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 2A đã tuân thủ:
+
+```text
+Không split train/val/test.
+Không convert COCO.
+Không train.
+Không pseudo-label.
+Không tune threshold.
+Không dùng test set.
+Không sửa annotation gốc.
+Không xóa bbox.
+Không clamp bbox.
+Không fuse near-duplicate bbox.
+Không xóa/sửa 147 near-duplicate bbox candidates.
+Không copy ảnh.
+Không convert ảnh sang PNG/JPG.
+Không tạo processed training dataset.
+Không dùng Kappa làm model metric.
+Không dùng Kappa để split/model/threshold.
+```
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+* Phase 2A — Data Standardization / Image-Boundary Validation
+* DICOM availability check
+* DICOM metadata/header read
+* Image dimension extraction
+* BBox boundary validation
+* No Finding bbox policy check
+* reports/phase2A_dicom_bbox_validation.md
+* reports/phase2A_dicom_bbox_validation.json
+* reports/phase2A_image_metadata.csv
+* reports/phase2A_image_availability.csv
+* reports/phase2A_bbox_boundary_validation.csv
+* reports/phase2A_invalid_bbox_candidates.csv
+* reports/phase2A_dicom_read_errors.csv
+* forbidden actions avoided
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo:
+
+```text
+Phase 2B — Canonical Schema
+```
+
+Chưa được làm trước khi mở Phase 2B:
+
+```text
+Canonical annotation schema
+COCO conversion
+Train/val/test split
+Labeled/unlabeled split
+Training
+Pseudo-labeling
+Threshold tuning
+Test-set usage
+```
+
+Phase 2B chỉ được mở sau khi Phase 2A evidence đã commit và push GitHub.
