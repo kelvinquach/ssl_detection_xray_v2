@@ -1633,3 +1633,438 @@ Test-set usage
 ```
 
 Phase 2B chỉ được mở sau khi Phase 2A evidence đã commit và push GitHub.
+
+## 2026-07-08 — PHASE 2B: Canonical Detection Annotation Schema
+
+### Mục tiêu
+
+Tạo canonical detection annotation schema cho controlled working scope đã khóa của đề tài:
+
+**“Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi.”**
+
+Phase 2B chỉ chuẩn hóa annotation thành schema canonical trung gian. Phase này không convert COCO, không tạo train/val/test split, không train, không pseudo-label, không tune threshold, không dùng test set, không sửa annotation gốc, không clamp bbox, không xóa bbox và không fuse near-duplicate bbox.
+
+Mục tiêu chính:
+
+```text
+Tạo canonical image table.
+Tạo canonical bbox / detection annotation table.
+Tạo canonical class mapping.
+Audit No Finding policy.
+Validate schema consistency.
+Thiết kế path portable, không phụ thuộc tuyệt đối vào ổ D:\.
+```
+
+---
+
+### Đã làm
+
+#### 1. Tạo script Phase 2B
+
+Đã tạo:
+
+```text
+scripts/02B_build_canonical_schema.py
+```
+
+Script có nhiệm vụ:
+
+* đọc controlled-scope annotation CSV từ Phase 1C;
+* đọc selected image manifest;
+* đọc image metadata từ Phase 2A;
+* đọc bbox boundary validation từ Phase 2A;
+* tạo canonical image table;
+* tạo canonical bbox table;
+* tạo canonical class mapping;
+* audit No Finding policy;
+* validate consistency/schema;
+* xác nhận các forbidden actions không xảy ra.
+
+#### 2. Chạy script Phase 2B
+
+Lệnh đã chạy:
+
+```cmd
+python scripts\02B_build_canonical_schema.py ^
+  --annotations-csv data\interim\vinbigdata_phase1C_scope_annotations.csv ^
+  --manifest-csv data\manifests\phase1C_selected_images_manifest.csv ^
+  --image-metadata-csv reports\phase2A_image_metadata.csv ^
+  --bbox-boundary-csv reports\phase2A_bbox_boundary_validation.csv ^
+  --output-dir data\processed\canonical ^
+  --report-md reports\phase2B_canonical_schema_report.md ^
+  --validation-json reports\phase2B_canonical_schema_validation.json ^
+  --no-finding-audit-csv reports\phase2B_no_finding_policy_audit.csv ^
+  --schema-errors-csv reports\phase2B_schema_consistency_errors.csv
+```
+
+#### 3. Tạo canonical image table
+
+Đã tạo:
+
+```text
+data/processed/canonical/canonical_image_table.csv
+```
+
+Kết quả:
+
+```text
+canonical_image_rows: 4894
+canonical_image_unique_images: 4894
+abnormal_images: 4394
+no_finding_images: 500
+```
+
+Mỗi dòng tương ứng một `image_id` trong controlled working scope.
+
+Các cột chính gồm:
+
+```text
+canonical_image_id
+image_id
+dicom_filename
+relative_dicom_path
+dicom_path
+local_dicom_path
+local_dicom_path_is_absolute
+path_root_variable
+image_width
+image_height
+scope_label
+is_abnormal
+is_negative
+has_bbox
+bbox_count
+no_finding_bbox_count
+abnormal_class_count
+abnormal_class_names
+source_row_count
+abnormal_row_count
+no_finding_row_count
+```
+
+#### 4. Tạo canonical bbox table
+
+Đã tạo:
+
+```text
+data/processed/canonical/canonical_bbox_table.csv
+```
+
+Kết quả:
+
+```text
+canonical_bbox_rows: 36096
+bbox_without_image_count: 0
+bbox_missing_dimension_count: 0
+bbox_invalid_count: 0
+```
+
+Mỗi dòng tương ứng một abnormal bbox row.
+
+BBox format được giữ là:
+
+```text
+xyxy_original_image
+```
+
+Không bbox nào bị sửa, clamp, xóa, fuse hoặc convert sang COCO trong Phase 2B.
+
+#### 5. Tạo canonical class mapping
+
+Đã tạo:
+
+```text
+data/processed/canonical/canonical_class_mapping.csv
+```
+
+Kết quả:
+
+```text
+canonical_class_count: 14
+no_finding_in_detection_classes: false
+class_mapping_issue_count: 0
+```
+
+Canonical class mapping gồm 14 abnormal detection classes:
+
+```text
+Aortic enlargement
+Atelectasis
+Calcification
+Cardiomegaly
+Consolidation
+ILD
+Infiltration
+Lung Opacity
+Nodule/Mass
+Other lesion
+Pleural effusion
+Pleural thickening
+Pneumothorax
+Pulmonary fibrosis
+```
+
+No Finding không nằm trong detection class mapping.
+
+#### 6. Audit No Finding policy
+
+Đã tạo:
+
+```text
+reports/phase2B_no_finding_policy_audit.csv
+```
+
+Kết quả:
+
+```text
+no_finding_images: 500
+no_finding_policy_pass: true
+no_finding_in_detection_classes: false
+```
+
+Quyết định tiếp tục giữ:
+
+```text
+No Finding là ảnh âm tính ở image-level.
+No Finding không có bbox.
+No Finding không phải detection class.
+No Finding không xuất hiện trong canonical bbox table.
+```
+
+#### 7. Thiết kế portable path policy
+
+Phase 2B đã sửa canonical path schema để không phụ thuộc tuyệt đối vào ổ `D:\`.
+
+Kết quả validation:
+
+```text
+portable_path_policy_pass: true
+relative_dicom_path_missing_count: 0
+relative_dicom_path_absolute_count: 0
+local_dicom_path_absolute_count: 4894
+path_root_variable: VINBIGDATA_DICOM_ROOT
+```
+
+Quy ước path:
+
+```text
+relative_dicom_path = train/<image_id>.dicom
+dicom_path = train/<image_id>.dicom
+local_dicom_path = local evidence path trên máy hiện tại
+local_dicom_path_is_absolute = true nếu local_dicom_path là absolute path
+path_root_variable = VINBIGDATA_DICOM_ROOT
+```
+
+Downstream phase phải resolve image path bằng:
+
+```text
+VINBIGDATA_DICOM_ROOT + relative_dicom_path
+```
+
+Không dùng absolute `D:\...` làm canonical downstream identifier.
+
+---
+
+### Evidence đã tạo
+
+Outputs generated:
+
+```text
+data/processed/canonical/canonical_image_table.csv
+data/processed/canonical/canonical_bbox_table.csv
+data/processed/canonical/canonical_class_mapping.csv
+reports/phase2B_canonical_schema_report.md
+reports/phase2B_canonical_schema_validation.json
+reports/phase2B_no_finding_policy_audit.csv
+reports/phase2B_schema_consistency_errors.csv
+```
+
+Key JSON evidence:
+
+```text
+total_annotation_rows: 37596
+unique_annotation_images: 4894
+manifest_rows: 4894
+manifest_unique_images: 4894
+canonical_image_rows: 4894
+canonical_image_unique_images: 4894
+canonical_bbox_rows: 36096
+canonical_class_count: 14
+abnormal_images: 4394
+no_finding_images: 500
+no_finding_policy_pass: true
+no_finding_in_detection_classes: false
+bbox_without_image_count: 0
+image_without_metadata_count: 0
+bbox_missing_dimension_count: 0
+bbox_invalid_count: 0
+class_mapping_issue_count: 0
+portable_path_policy_pass: true
+relative_dicom_path_missing_count: 0
+relative_dicom_path_absolute_count: 0
+local_dicom_path_absolute_count: 4894
+path_root_variable: VINBIGDATA_DICOM_ROOT
+schema_error_count: 0
+warnings: []
+dod_pass_candidate: true
+```
+
+Forbidden actions confirmed:
+
+```text
+split_created: false
+coco_created: false
+training_started: false
+pseudo_label_generated: false
+threshold_tuned: false
+test_set_used: false
+annotations_deleted_or_edited: false
+bbox_clamped_or_modified: false
+near_duplicate_bbox_deleted_or_fused: false
+image_files_copied: false
+image_files_converted: false
+processed_training_images_created: false
+```
+
+---
+
+### Review GPT
+
+Phase 2B — Canonical Detection Annotation Schema: **PASS**
+
+DoD review:
+
+```text
+canonical_image_rows = 4,894: PASS
+canonical_image_unique_images = 4,894: PASS
+canonical_bbox_rows = 36,096: PASS
+canonical_class_count = 14: PASS
+No Finding policy audit: PASS
+No Finding excluded from detection classes: PASS
+No Finding excluded from bbox table: PASS
+bbox_without_image_count = 0: PASS
+image_without_metadata_count = 0: PASS
+bbox_missing_dimension_count = 0: PASS
+bbox_invalid_count = 0: PASS
+class_mapping_issue_count = 0: PASS
+schema_error_count = 0: PASS
+portable_path_policy_pass = true: PASS
+relative_dicom_path_absolute_count = 0: PASS
+Forbidden actions avoided: PASS
+dod_pass_candidate = true: PASS
+```
+
+---
+
+### Quyết định
+
+Phase 2B được khóa với trạng thái:
+
+```text
+PASS
+```
+
+Quyết định nghiên cứu:
+
+* Canonical schema được chấp nhận là intermediate detection annotation schema.
+* Canonical image table giữ toàn bộ 4,894 images.
+* Canonical bbox table giữ toàn bộ 36,096 abnormal bbox rows.
+* Canonical class mapping gồm đúng 14 abnormal detection classes.
+* No Finding tiếp tục là ảnh âm tính không có bbox, không phải detection class.
+* No Finding không nằm trong canonical bbox table.
+* No Finding không nằm trong detection class mapping.
+* BBox format tiếp tục là `xyxy_original_image`.
+* Không bbox nào bị sửa, clamp, xóa, fuse hoặc convert.
+* 147 near-duplicate bbox candidates vẫn được giữ nguyên; fusion/handling vẫn deferred.
+* Path schema đã portable: downstream dùng `VINBIGDATA_DICOM_ROOT + relative_dicom_path`, không dùng absolute local path làm canonical key.
+* Phase 2B chưa phải COCO dataset.
+* Phase 2B chưa phải train/val/test split.
+* Dataset vẫn chưa được xem là training-ready cho detector.
+
+---
+
+### Vấn đề / rủi ro
+
+* `local_dicom_path` vẫn lưu absolute local path như một evidence path, nhưng không được dùng làm canonical downstream identifier.
+* Khi chuyển sang GPU/remote/Linux/Kaggle/Vast.ai, cần set `VINBIGDATA_DICOM_ROOT` hoặc data-root config tương đương.
+* `source_row_id` trace về file Phase 1C controlled-scope annotation, không nhất thiết là row index gốc của full VinBigData `train.csv`.
+* Phase 2B chưa kiểm tra framework dataloader.
+* Phase 2B chưa kiểm tra empty-image loading.
+* Phase 2B chưa convert COCO.
+* Phase 2B chưa tạo split.
+* Phase 2B chưa quyết định xử lý near-duplicate bbox candidates.
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 2B đã tuân thủ:
+
+```text
+Không split train/val/test.
+Không convert COCO.
+Không train.
+Không pseudo-label.
+Không tune threshold.
+Không dùng test set.
+Không đọc pixel_array.
+Không copy ảnh.
+Không convert ảnh.
+Không tạo processed training images.
+Không sửa annotation gốc.
+Không xóa bbox.
+Không clamp bbox.
+Không fuse near-duplicate bbox.
+Không xóa/sửa 147 near-duplicate bbox candidates.
+No Finding không được đưa thành detection class.
+No Finding không được đưa vào canonical bbox table.
+```
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+* Phase 2B — Canonical Detection Annotation Schema
+* Canonical image table
+* Canonical bbox table
+* Canonical class mapping
+* No Finding policy audit
+* Schema consistency validation
+* Portable path policy
+* No Finding excluded from detection classes
+* No Finding excluded from bbox annotations
+* Traceability preserved
+* reports/phase2B_canonical_schema_report.md
+* reports/phase2B_canonical_schema_validation.json
+* reports/phase2B_no_finding_policy_audit.csv
+* reports/phase2B_schema_consistency_errors.csv
+* forbidden actions avoided
+* GPT review PASS
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo:
+
+```text
+Phase 2C — Framework & Format Decision / COCO conversion planning
+```
+
+Chưa được làm trước khi mở Phase 2C:
+
+```text
+COCO conversion
+Train/val/test split
+Labeled/unlabeled split
+Training
+Pseudo-labeling
+Threshold tuning
+Test-set usage
+Framework dataloader validation
+Empty image loading check
+```
+
+Phase 2C chỉ được mở sau khi Phase 2B evidence đã commit và push GitHub.

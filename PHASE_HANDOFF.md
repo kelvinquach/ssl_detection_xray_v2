@@ -43,11 +43,9 @@ Không tick checklist nếu chưa có evidence.
 
 ## 3. Trạng thái hiện tại
 
-## 3. Trạng thái hiện tại
-
 ```text
-Current phase: Phase 2B — Canonical Schema
-Previous phase: Phase 2A — Data Standardization / Image-Boundary Validation
+Current phase: Phase 2C — Framework & Format Decision / COCO Conversion Planning
+Previous phase: Phase 2B — Canonical Detection Annotation Schema
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
 Phase 1A — Dataset Overview: PASS
@@ -55,27 +53,29 @@ Phase 1B — Annotation Quality: PASS
 Phase 1C — Dataset Scope Decision: PASS
 Phase 1D — Label Reliability & Kappa Feasibility: PASS
 Phase 2A — Data Standardization / Image-Boundary Validation: PASS
-Git status: Phase 2A completed; pending commit/push or committed/pushed after evidence update
+Phase 2B — Canonical Detection Annotation Schema: PASS
+Git status: Phase 2B completed; pending rebase/commit/push after evidence update
 ```
 
 Được mở / tiếp theo:
 
 ```text
-Phase 2B — Canonical Schema
+Phase 2C — Framework & Format Decision / COCO Conversion Planning
 ```
 
 Chưa được làm:
 
 ```text
 Split train/val/test
-Convert COCO
+COCO master conversion
 Train supervised detector
 Train SSL detector
 Generate pseudo-label
 Tune threshold
 Use test set
-COCO master conversion
 Labeled/unlabeled split
+Framework dataloader validation
+Empty image loading check
 ```
 
 Ghi chú:
@@ -84,9 +84,14 @@ Ghi chú:
 Phase 2A đã xác nhận 4,894 DICOM files tồn tại và đọc được metadata/header.
 Image dimensions available cho toàn bộ 4,894 images.
 Toàn bộ 36,096 abnormal bbox hợp lệ trong image boundary.
+Phase 2B đã tạo portable canonical detection schema.
+Canonical image table có 4,894 images.
+Canonical bbox table có 36,096 abnormal bbox rows.
+Canonical class mapping có đúng 14 abnormal detection classes.
 No Finding vẫn là negative image không có bbox, không phải detection class.
-Không được tạo split, COCO, train, pseudo-label hoặc tune threshold khi chưa mở đúng phase.```
-
+No Finding không nằm trong canonical bbox table hoặc detection class mapping.
+Path policy đã portable: downstream dùng VINBIGDATA_DICOM_ROOT + relative_dicom_path.
+Không được tạo split, COCO master, train, pseudo-label hoặc tune threshold khi chưa mở đúng phase.
 ---
 
 ## 4. Phase 0 — Kết quả bàn giao
@@ -1276,3 +1281,142 @@ Phase 2B — Canonical Schema
 ```
 ---
 :::
+
+## Phase 2B — Canonical Detection Annotation Schema
+
+Status: **PASS**
+
+Date: 2026-07-08
+
+### Mục tiêu
+
+Tạo canonical detection annotation schema cho controlled working scope 4,894 images.
+
+Phase 2B chỉ tạo schema canonical trung gian. Không convert COCO, không tạo split, không train, không pseudo-label, không tune threshold, không dùng test set, không sửa annotation gốc, không clamp bbox, không xóa bbox và không fuse near-duplicate bbox.
+
+### Scripts run
+
+```cmd
+python scripts\02B_build_canonical_schema.py ^
+  --annotations-csv data\interim\vinbigdata_phase1C_scope_annotations.csv ^
+  --manifest-csv data\manifests\phase1C_selected_images_manifest.csv ^
+  --image-metadata-csv reports\phase2A_image_metadata.csv ^
+  --bbox-boundary-csv reports\phase2A_bbox_boundary_validation.csv ^
+  --output-dir data\processed\canonical ^
+  --report-md reports\phase2B_canonical_schema_report.md ^
+  --validation-json reports\phase2B_canonical_schema_validation.json ^
+  --no-finding-audit-csv reports\phase2B_no_finding_policy_audit.csv ^
+  --schema-errors-csv reports\phase2B_schema_consistency_errors.csv
+  ```
+
+ ### Outputs generated
+
+```text
+data/processed/canonical/canonical_image_table.csv
+data/processed/canonical/canonical_bbox_table.csv
+data/processed/canonical/canonical_class_mapping.csv
+reports/phase2B_canonical_schema_report.md
+reports/phase2B_canonical_schema_validation.json
+reports/phase2B_no_finding_policy_audit.csv
+reports/phase2B_schema_consistency_errors.csv
+```
+---
+
+ ### DoD result
+
+```text
+Canonical image table: PASS
+Canonical bbox table: PASS
+Canonical class mapping: PASS
+No Finding policy audit: PASS
+Schema consistency validation: PASS
+Portable path policy: PASS
+Forbidden actions avoided: PASS
+```
+---
+
+ ### Key findings
+
+```text
+canonical_image_rows: 4894
+canonical_image_unique_images: 4894
+canonical_bbox_rows: 36096
+canonical_class_count: 14
+abnormal_images: 4394
+no_finding_images: 500
+no_finding_policy_pass: true
+no_finding_in_detection_classes: false
+bbox_without_image_count: 0
+image_without_metadata_count: 0
+bbox_missing_dimension_count: 0
+bbox_invalid_count: 0
+class_mapping_issue_count: 0
+schema_error_count: 0
+portable_path_policy_pass: true
+relative_dicom_path_missing_count: 0
+relative_dicom_path_absolute_count: 0
+local_dicom_path_absolute_count: 4894
+path_root_variable: VINBIGDATA_DICOM_ROOT
+warnings: []
+dod_pass_candidate: true
+```
+---
+
+ ### Research decisions
+
+```text
+Canonical schema is accepted as the intermediate detection annotation schema.
+Canonical image table keeps all 4,894 controlled-scope images.
+Canonical bbox table keeps all 36,096 abnormal bbox rows.
+Canonical class mapping contains exactly 14 abnormal detection classes.
+No Finding remains a negative image-level sample with no bbox and is not a detection class.
+No Finding is excluded from canonical bbox annotations and detection class mapping.
+BBox format remains xyxy_original_image.
+No bbox was edited, clamped, deleted, fused, or converted.
+147 near-duplicate bbox candidates remain retained; fusion/handling remains deferred.
+Portable path policy is adopted: downstream should resolve image files using VINBIGDATA_DICOM_ROOT + relative_dicom_path.
+Phase 2B is not a COCO dataset and not a train/val/test split.
+Dataset is still not training-ready until COCO/split/loading phases pass DoD.
+```
+---
+
+ ### Issues / risks
+
+```text
+local_dicom_path stores absolute local evidence paths but must not be used as canonical downstream identifiers.
+Remote/GPU environments must set VINBIGDATA_DICOM_ROOT or an equivalent data-root config.
+source_row_id traces to the Phase 1C controlled-scope annotation file, not necessarily the original full VinBigData train.csv row index.
+Framework dataloader validation has not been performed.
+Empty image loading check has not been performed.
+COCO conversion has not been performed.
+Train/val/test split has not been created.
+Near-duplicate bbox handling is still deferred.
+```
+---
+
+ ### Forbidden actions confirmed
+
+```text
+No train/val/test split created.
+No COCO conversion created.
+No training started.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No pixel_array read.
+No image copied.
+No image converted.
+No processed training images created.
+No annotation deleted or edited.
+No bbox clamped or modified.
+No near-duplicate bbox deleted or fused.
+No Finding was not added as a detection class.
+```
+---
+
+ ### Next phase
+
+```text
+Phase 2C — Framework & Format Decision / COCO Conversion Planning
+```
+---
