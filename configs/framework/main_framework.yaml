@@ -1,0 +1,34 @@
+phase: phase2C_framework_format_decision
+primary_framework: MMDetection
+fallback_framework: Detectron2_optional
+fallback_condition: Use Detectron2 ONLY if MMDetection remote/GPU setup fails AND
+  the fallback is re-reviewed and approved by GPT review.
+framework_decision_status: decided_pending_remote_setup
+local_training_framework_ready: false
+remote_gpu_training_required: true
+phase2c_requires_mmdet_import: false
+mmdet_stack_import_probe:
+  mmengine:
+    import_ok: false
+    version: null
+    error: ModuleNotFoundError("No module named 'mmengine'")
+  mmcv:
+    import_ok: false
+    version: null
+    error: ModuleNotFoundError("No module named 'mmcv'")
+  mmdet:
+    import_ok: false
+    version: null
+    error: ModuleNotFoundError("No module named 'mmdet'")
+primary_annotation_format: COCO_detection_JSON
+detection_num_classes: 14
+no_finding_is_detection_class: false
+required_future_mmdet_config_rules:
+- 'filter_empty_gt: false  # negatives (No Finding) MUST be retained'
+- No background class is added; 14 detection classes only.
+- category_id must be contiguous 1..14 in COCO; model num_classes = 14.
+- Dataset must resolve images via VINBIGDATA_DICOM_ROOT + relative_dicom_path.
+- Default LoadImageFromFile is NOT validated for DICOM; a custom loader or a processed-image
+  protocol is required before training.
+dicom_loader_validated: false
+custom_dicom_loader_or_processed_image_phase_required: true

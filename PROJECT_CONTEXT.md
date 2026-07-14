@@ -44,7 +44,7 @@ Object detection bằng bounding box, **không phải classification**, **không
 ### 2.2 Metric và đánh giá
 
 - Metric chính để kết luận: **mAP@0.5:0.95**.
-- Metric phụ: `mAP@0.5`, class-wise AP, recall/sensitivity, FP/image, FP per negative image.
+- Metric phụ: AP50 (`mAP@0.5`), AP75, class-wise AP, recall/sensitivity, FP/image, FP per negative image.
 - FP per negative image chỉ có ý nghĩa khi **test set có đủ ảnh No Finding**.
 - Test set chỉ dùng để đánh giá cuối, **không dùng để chọn checkpoint, threshold, model tốt nhất, backbone hoặc hyperparameter**.
 - Checkpoint được chọn bằng **validation mAP@0.5:0.95**.
@@ -295,9 +295,9 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-**Current phase:** Phase 2C — Framework & Format Decision / COCO Conversion Planning
-**Previous phase:** Phase 2B — Canonical Detection Annotation Schema
-**Git status:** Phase 2B completed; pending rebase/commit/push after evidence update.
+**Current phase:** Phase 2D — COCO Master Conversion & Validation
+**Previous phase:** Phase 2C — Framework & Format Decision / COCO Conversion Planning
+**Git status:** Phase 2C PASS; pending commit/push after documentation update.
 
 ### 7.1 Current gate
 
@@ -312,14 +312,16 @@ Phase 1D — Label Reliability & Kappa Feasibility: PASS
 
 Phase 2A — Data Standardization / Image-Boundary Validation: PASS
 Phase 2B — Canonical Detection Annotation Schema: PASS
-Phase 2C — Framework & Format Decision / COCO Conversion Planning: OPEN / NEXT
+Phase 2C — Framework & Format Decision / COCO Conversion Planning: PASS
+Phase 2D — COCO Master Conversion & Validation: OPEN / NEXT
 
 Split train/val/test: LOCKED
-COCO master conversion: LOCKED until Phase 2D
+Labeled/unlabeled split: LOCKED
 Training: LOCKED
 Pseudo-labeling: LOCKED
 Threshold tuning: LOCKED
 Test-set usage: LOCKED
+
 ```
 
 ### 7.2 Controlled working scope locked by Phase 1C
@@ -464,6 +466,118 @@ Next phase:
 ```text
 Phase 2A — Data Standardization / Image-Boundary Validation
 ```
+
+### 7.5 Phase 2C locked evidence
+
+Phase 2C — Framework & Format Decision / COCO Conversion Planning: **PASS**
+
+```text
+Status: PASS
+Date: 2026-07-14
+Script: scripts/02C_framework_format_decision.py
+```
+
+Outputs generated:
+
+```text
+reports/phase2C_framework_format_decision.md
+reports/phase2C_framework_format_decision.json
+configs/framework/main_framework.yaml
+configs/dataset/coco_paths.yaml
+configs/protocol/coco_conversion_policy.yaml
+```
+
+Key decisions:
+
+```text
+Primary framework: MMDetection
+Fallback framework: Detectron2_optional, only after GPT re-review
+Primary annotation format: COCO_detection_JSON
+Source schema: canonical_detection_schema from Phase 2B
+Actual COCO conversion: deferred to Phase 2D
+No Finding: negative image with zero annotations, not a detection class
+No Finding in planned COCO images: true
+No Finding in planned COCO annotations: false
+No Finding in planned COCO categories: false
+BBox target format for Phase 2D: coco_xywh_absolute
+COCO category_id policy: contiguous integer 1..14
+Path policy: VINBIGDATA_DICOM_ROOT + relative_dicom_path
+Dataset training-ready: false
+```
+
+Framework rationale:
+
+```text
+MMDetection is selected because it best matches the planned COCO-based teacher-student SSOD workflow:
+- native object detection support;
+- native COCO dataset and COCO-style mAP evaluation;
+- official/semi-official SSOD-oriented components and configuration patterns;
+- labeled/unlabeled pipeline compatibility;
+- config-driven reproducibility;
+- lower custom training/evaluation implementation burden than Detectron2/custom PyTorch for this project.
+
+Detectron2 remains a fallback because it is a strong detection framework, but the teacher-student SSOD layer would require more project-specific custom implementation.
+YOLO-based frameworks are rejected as primary because their annotation/evaluation stack diverges from the locked COCO/MMDetection protocol and represents negatives differently.
+Custom PyTorch/torchvision is rejected because dataset/evaluator/trainer/pseudo-label loop/EMA teacher/COCO metric integration would create excessive engineering and silent-bug risk.
+```
+
+Format rationale:
+
+```text
+COCO detection JSON is selected because it best preserves:
+- image-level negatives separate from detection categories;
+- COCO mAP@0.5:0.95 / pycocotools evaluation compatibility;
+- AP50, AP75 and class-wise AP readiness;
+- traceability to canonical/source rows;
+- pseudo-label output compatibility for later SSOD phases.
+```
+
+Metric readiness:
+
+```text
+Phase 2C does not compute AP metrics.
+Primary metric remains mAP@0.5:0.95.
+Secondary diagnostics planned: AP50, AP75, class-wise AP, recall/sensitivity, FP/image, FP per negative image.
+Metrics are computable only after COCO conversion, fixed split creation, model training, and prediction generation.
+Test-set metric is forbidden for checkpoint selection, threshold tuning, model selection, and augmentation decisions.
+```
+
+Issues / risks:
+
+```text
+MMDetection stack is not importable locally; this is expected because local training framework is deferred.
+Remote/GPU environment is still required for detector training.
+DICOM loader is not validated.
+Empty image loading is not validated.
+If filter_empty_gt is configured incorrectly, 500 No Finding images may be silently dropped.
+COCO annotation format alone does not make the dataset training-ready.
+```
+
+Forbidden actions confirmed:
+
+```text
+No COCO master JSON created.
+No train/val/test split created.
+No labeled/unlabeled split created.
+No training started.
+No inference run.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No pixel_array read.
+No image copied or converted.
+No bbox modified, clamped, deleted or fused.
+No source annotation modified.
+No Phase 2B canonical schema modified.
+No AP metrics computed.
+```
+
+Next phase:
+
+```text
+Phase 2D — COCO Master Conversion & Validation
+```
+
 
 
 ## 8. Nguyên tắc review bắt buộc
@@ -1042,9 +1156,6 @@ Phase 2B — Canonical Schema
 ```
 
 
-Dán thêm đoạn này:
-
-:::writing{variant="document" id="74391"}
 ### Phase 2B — Canonical Detection Annotation Schema
 
 Status: **PASS**
@@ -1151,4 +1262,154 @@ Next phase:
 Phase 2C — Framework & Format Decision / COCO Conversion Planning
 ```
 
-:::
+### Phase 2C — Framework & Format Decision / COCO Conversion Planning
+
+Status: **PASS**
+
+Date: 2026-07-14
+
+Scripts run:
+
+```cmd
+python scripts\02C_framework_format_decision.py
+```
+
+Outputs generated:
+
+```text
+reports/phase2C_framework_format_decision.md
+reports/phase2C_framework_format_decision.json
+configs/framework/main_framework.yaml
+configs/dataset/coco_paths.yaml
+configs/protocol/coco_conversion_policy.yaml
+```
+
+DoD result:
+
+```text
+Framework decision: PASS
+Framework rationale: PASS
+Format comparison: PASS
+Format rationale: PASS
+COCO planning: PASS
+No Finding / empty image policy: PASS
+BBox conversion policy: PASS
+Category id policy: PASS
+Path portability policy: PASS
+DICOM loader risk: PASS
+Metric readiness policy: PASS
+Forbidden actions avoided: PASS
+No COCO master created: PASS
+Dataset training-ready claim avoided: PASS
+```
+
+Key findings:
+
+```text
+primary_framework = MMDetection
+fallback_framework = Detectron2_optional
+primary_annotation_format = COCO_detection_JSON
+actual_coco_conversion_done = false
+canonical_image_rows = 4894
+canonical_bbox_rows = 36096
+canonical_class_count = 14
+abnormal_images = 4394
+no_finding_images = 500
+dataset_training_ready = false
+dod_pass_candidate = true
+```
+
+Framework comparison decision:
+
+```text
+MMDetection: CHOSEN
+Detectron2: FALLBACK_ONLY
+Ultralytics YOLO / YOLO-based framework: REJECTED as primary framework
+Custom PyTorch / torchvision: REJECTED
+```
+
+Framework rationale:
+
+```text
+MMDetection is selected as the primary framework because it most directly matches the thesis pipeline:
+COCO-based detection, COCO mAP evaluation, teacher-student semi-supervised object detection, labeled/unlabeled data handling, and config-driven reproducibility.
+
+Detectron2 remains a fallback because it is a strong PyTorch detection framework with COCO support, but the teacher-student SSOD pipeline would require more project-specific custom implementation.
+
+YOLO-based frameworks are rejected as primary because their annotation/evaluation pipeline is YOLO-native and less aligned with the locked COCO master + MMDetection SSOD protocol.
+
+Custom PyTorch / torchvision is rejected because the project would need custom dataset, dataloader, evaluator, trainer, pseudo-label loop, EMA teacher, COCO metric integration, logging, and config protocol. This would increase implementation risk and reproducibility risk.
+```
+
+Format comparison decision:
+
+```text
+COCO detection JSON: CHOSEN
+YOLO txt: REJECTED
+Pascal VOC XML: REJECTED
+JSONL/custom: REJECTED
+```
+
+Format rationale:
+
+```text
+COCO detection JSON is selected as the downstream annotation format because it supports:
+- explicit images / annotations / categories;
+- images with zero annotations for No Finding negatives;
+- standard COCO mAP@0.5:0.95 / pycocotools evaluation;
+- AP50, AP75 and class-wise AP readiness;
+- traceability fields such as canonical_ann_id and source_row_id;
+- pseudo-label output compatibility in later SSOD phases.
+```
+
+Research decisions:
+
+```text
+COCO detection JSON is selected as the downstream annotation format.
+MMDetection is selected as the primary framework.
+Detectron2 is retained only as optional fallback after GPT re-review.
+COCO conversion is deferred to Phase 2D.
+No Finding remains a negative image with zero annotations and is not a detection class.
+No background class is created.
+BBox conversion for Phase 2D is xyxy_original_image -> coco_xywh_absolute.
+COCO category_id should be contiguous integer 1..14.
+Path resolution should use VINBIGDATA_DICOM_ROOT + relative_dicom_path.
+Metric readiness is documented for mAP@0.5:0.95, AP50, AP75 and class-wise AP.
+```
+
+Issues / risks:
+
+```text
+MMDetection stack is not importable locally, which is expected because local training framework is deferred.
+Remote/GPU environment is still required for detector training.
+DICOM loader is not validated.
+Empty image loading is not validated.
+If filter_empty_gt is configured incorrectly, 500 No Finding images may be silently dropped.
+COCO annotation format alone does not make the dataset training-ready.
+AP50, AP75 and class-wise AP are not computed in Phase 2C.
+```
+
+Forbidden actions confirmed:
+
+```text
+No COCO master JSON created.
+No train/val/test split created.
+No labeled/unlabeled split created.
+No training started.
+No inference run.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No pixel_array read.
+No image copied or converted.
+No bbox modified, clamped, deleted or fused.
+No source annotation modified.
+No Phase 2B canonical schema modified.
+No AP metrics computed.
+```
+
+Next phase:
+
+```text
+Phase 2D — COCO Master Conversion & Validation
+```

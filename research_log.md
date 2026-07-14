@@ -2068,3 +2068,542 @@ Empty image loading check
 ```
 
 Phase 2C chỉ được mở sau khi Phase 2B evidence đã commit và push GitHub.
+
+## 2026-07-14 — PHASE 2C: Framework & Format Decision / COCO Conversion Planning
+
+### Mục tiêu
+
+Chốt framework chính, annotation format chính và protocol lập kế hoạch COCO conversion cho đề tài:
+
+**“Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi.”**
+
+Phase 2C chỉ ra quyết định framework/format và tạo decision/protocol evidence. Phase này không convert COCO master thật, không tạo train/val/test split, không tạo labeled/unlabeled split, không train, không pseudo-label, không tune threshold, không dùng test set, không đọc pixel array, không copy/convert ảnh và không sửa annotation/canonical schema.
+
+Mục tiêu chính:
+
+```text
+Chọn framework chính cho downstream detection/SSOD.
+So sánh MMDetection / Detectron2 / YOLO-based / Custom PyTorch-torchvision.
+Chọn annotation format chính.
+So sánh COCO / YOLO / Pascal VOC / JSONL-custom.
+Lập kế hoạch COCO conversion cho Phase 2D.
+Ghi rõ No Finding / empty image policy.
+Ghi rõ bbox conversion policy.
+Ghi rõ category_id policy.
+Ghi rõ path portability policy.
+Ghi rõ metric readiness cho mAP@0.5:0.95, AP50, AP75 và class-wise AP.
+Ghi rõ DICOM loader risk và dataset chưa training-ready.
+```
+
+---
+
+### Đã làm
+
+#### 1. Tạo script Phase 2C
+
+Đã tạo:
+
+```text
+scripts/02C_framework_format_decision.py
+```
+
+Script có nhiệm vụ:
+
+* đọc canonical schema từ Phase 2B;
+* xác nhận lại số lượng image, bbox và class;
+* defensive import probe cho `mmengine`, `mmcv`, `mmdet`;
+* chọn framework chính;
+* chọn annotation format chính;
+* tạo framework/config protocol;
+* tạo report Markdown và JSON evidence;
+* xác nhận các forbidden actions không xảy ra.
+
+#### 2. Chạy script Phase 2C
+
+Lệnh đã chạy:
+
+```cmd
+python scripts\02C_framework_format_decision.py
+```
+
+Console summary:
+
+```text
+primary_framework          : MMDetection
+primary_annotation_format  : COCO_detection_JSON
+canonical_image_rows       : 4894
+canonical_bbox_rows        : 36096
+canonical_class_count      : 14
+no_finding_images          : 500
+actual_coco_conversion_done: False
+dataset_training_ready     : False
+dod_pass_candidate         : True
+```
+
+Warning được ghi nhận:
+
+```text
+MMDetection stack not importable locally; this is EXPECTED in Phase 2C.
+Local training framework remains deferred.
+Remote/GPU environment is required for detector training.
+```
+
+#### 3. Chốt framework và bổ sung framework selection rationale
+
+Quyết định:
+
+```text
+Primary framework: MMDetection
+Fallback framework: Detectron2_optional
+```
+
+Detectron2 chỉ được dùng nếu MMDetection remote/GPU setup thất bại và phải được GPT review lại.
+
+Phase 2C không yêu cầu `mmdet` import thành công trên local vì local environment chỉ dùng cho validation/reporting, chưa training-ready.
+
+Đã bổ sung framework rationale evidence gồm:
+
+```text
+Table 3 — High-level framework comparison
+Table 4 — Detailed framework suitability matrix
+```
+
+Các framework được so sánh:
+
+```text
+MMDetection
+Detectron2
+Ultralytics YOLO / YOLO-based framework
+Custom PyTorch / torchvision
+```
+
+Các tiêu chí so sánh:
+
+```text
+Native object detection support
+COCO dataset compatibility
+COCO mAP@0.5:0.95 / pycocotools compatibility
+Teacher-student / SSOD readiness
+Labeled/unlabeled pipeline support
+Config-based reproducibility
+Empty / No Finding image handling risk
+Custom DICOM loader extensibility
+Pseudo-label workflow compatibility
+Class-wise AP / AP50 / AP75 evaluation readiness
+Implementation burden
+Research reproducibility
+Fit for this thesis
+```
+
+Kết luận framework:
+
+```text
+MMDetection được chọn không chỉ vì phổ biến, mà vì khớp trực tiếp với pipeline luận văn:
+COCO-based detection
+COCO mAP evaluation
+Teacher-student semi-supervised object detection
+Labeled/unlabeled data handling
+Config-driven reproducibility
+Giảm lượng custom training/evaluation code cần tự viết
+```
+
+Detectron2 được giữ làm fallback vì vẫn là framework detection mạnh, có hỗ trợ COCO/custom dataset và COCOEvaluator, nhưng pipeline teacher-student SSOD trong project này sẽ cần nhiều custom implementation hơn MMDetection.
+
+YOLO-based framework bị loại khỏi vai trò framework chính vì annotation/evaluation pipeline thiên về YOLO-native, lệch khỏi COCO master + MMDetection SSOD protocol, và biểu diễn negative image bằng empty label files làm tăng rủi ro với 500 ảnh No Finding.
+
+Custom PyTorch/torchvision bị loại vì tuy linh hoạt nhất, nhưng sẽ phải tự viết dataset, dataloader, evaluator, trainer, pseudo-label loop, EMA teacher, COCO metric integration, logging và config protocol. Rủi ro engineering và silent bug quá cao so với mục tiêu nghiên cứu của luận văn.
+
+#### 4. Chốt annotation format
+
+Quyết định:
+
+```text
+Primary annotation format: COCO_detection_JSON
+Source of truth: canonical_detection_schema từ Phase 2B
+Actual COCO conversion phase: Phase 2D
+```
+
+Phase 2C không tạo file COCO thật.
+
+Planned COCO output cho Phase 2D:
+
+```text
+data/processed/coco/coco_master.json
+```
+
+#### 5. So sánh COCO / YOLO / Pascal VOC / JSONL-custom
+
+Đã bổ sung comparison evidence gồm:
+
+```text
+Table 1 — High-level format comparison
+Table 2 — Detailed format suitability matrix
+```
+
+Các tiêu chí so sánh:
+
+```text
+MMDetection compatibility
+COCO mAP@0.5:0.95 / pycocotools compatibility
+Negative / No Finding image support
+Multi-class object detection support
+Category metadata support
+BBox coordinate fidelity
+Traceability to canonical/source rows
+SSOD teacher-student compatibility
+Pseudo-label output compatibility
+Reproducibility / ecosystem support
+Implementation risk
+```
+
+Kết luận:
+
+```text
+COCO detection JSON được chọn vì phù hợp nhất với MMDetection/SSOD, hỗ trợ ảnh No Finding không annotation, tương thích COCO mAP@0.5:0.95 / pycocotools, hỗ trợ category metadata và traceability.
+```
+
+YOLO txt, Pascal VOC XML và JSONL/custom bị loại vì tăng rủi ro conversion/evaluation/custom pipeline hoặc biểu diễn negative images không sạch bằng COCO.
+
+#### 6. COCO conversion plan cho Phase 2D
+
+Protocol Phase 2D được lập kế hoạch như sau:
+
+```text
+COCO images: toàn bộ 4,894 controlled-scope images
+COCO annotations: chỉ 36,096 abnormal bbox
+COCO categories: chỉ 14 abnormal detection classes
+No Finding: có trong images, không có annotation, không nằm trong categories
+Không tạo background class
+```
+
+Traceability:
+
+```text
+Mỗi COCO annotation cần giữ canonical_ann_id và source_row_id.
+```
+
+#### 7. No Finding / empty image policy
+
+Quyết định:
+
+```text
+No Finding là ảnh âm tính không có bbox.
+No Finding không phải detection class.
+No Finding không nằm trong COCO categories.
+No Finding không có dòng trong COCO annotations.
+500 No Finding images phải được giữ trong COCO images.
+```
+
+Risk bắt buộc cho MMDetection:
+
+```text
+MMDetection phải set filter_empty_gt=False hoặc cấu hình tương đương để không lọc mất 500 ảnh No Finding.
+```
+
+#### 8. BBox conversion policy
+
+Quyết định:
+
+```text
+Source format: xyxy_original_image
+Target Phase 2D format: coco_xywh_absolute
+width = x_max - x_min
+height = y_max - y_min
+area = width * height
+iscrowd = 0
+```
+
+Ràng buộc:
+
+```text
+Không clamp bbox.
+Không xóa bbox.
+Không fuse bbox.
+147 near-duplicate bbox candidates tiếp tục được giữ nguyên.
+```
+
+#### 9. Category id policy
+
+Quyết định:
+
+```text
+COCO category_id là số nguyên liên tục 1..14.
+No Finding bị loại khỏi category_id.
+canonical_class_id và class_id_original được giữ trong category metadata để traceability.
+```
+
+#### 10. Path portability policy
+
+Quyết định:
+
+```text
+COCO file_name dùng relative_dicom_path.
+Path được resolve bằng VINBIGDATA_DICOM_ROOT + relative_dicom_path.
+local_dicom_path chỉ là evidence path, không phải downstream identifier.
+```
+
+#### 11. DICOM loader risk
+
+Phase 2C ghi rõ:
+
+```text
+COCO annotation format chưa làm dataset training-ready.
+MMDetection default LoadImageFromFile chưa được validate cho DICOM.
+Phase sau cần custom DICOM loader hoặc processed-image conversion protocol trước khi train.
+```
+
+#### 12. Metric readiness policy
+
+Đã bổ sung metric readiness:
+
+```text
+Phase 2C không tính AP metrics vì chưa có split, model training, inference hoặc prediction file.
+COCO được chọn để bảo toàn khả năng tính metric downstream.
+```
+
+Metric chính và phụ được chuẩn bị ở mức protocol:
+
+```text
+Primary metric: mAP@0.5:0.95
+Secondary diagnostics:
+- AP50
+- AP75
+- class-wise AP
+- recall/sensitivity
+- FP/image
+- FP per negative image
+```
+
+Ràng buộc:
+
+```text
+Các metric này chỉ được tính sau COCO conversion, fixed split creation, model training và prediction generation.
+Không dùng test-set metric để chọn checkpoint, tune threshold, chọn model hoặc quyết định augmentation.
+```
+
+---
+
+### Evidence đã tạo
+
+Outputs generated:
+
+```text
+reports/phase2C_framework_format_decision.md
+reports/phase2C_framework_format_decision.json
+configs/framework/main_framework.yaml
+configs/dataset/coco_paths.yaml
+configs/protocol/coco_conversion_policy.yaml
+```
+
+Key JSON evidence:
+
+```text
+primary_framework: MMDetection
+fallback_framework: Detectron2_optional
+framework_comparison_matrix: present
+framework_selection_conclusion: present
+primary_annotation_format: COCO_detection_JSON
+source_schema: canonical_detection_schema
+canonical_image_rows: 4894
+canonical_image_unique_images: 4894
+canonical_bbox_rows: 36096
+canonical_class_count: 14
+abnormal_images: 4394
+no_finding_images: 500
+no_finding_is_detection_class: false
+no_finding_in_coco_categories_planned: false
+no_finding_in_coco_annotations_planned: false
+no_finding_in_coco_images_planned: true
+background_class_planned: false
+bbox_source_format: xyxy_original_image
+bbox_target_format_phase2D: coco_xywh_absolute
+path_root_variable: VINBIGDATA_DICOM_ROOT
+near_duplicate_bbox_candidates_retained: 147
+actual_coco_conversion_done: false
+dicom_loader_validated: false
+dataset_training_ready: false
+dod_pass_candidate: true
+```
+
+Metric readiness evidence:
+
+```text
+ap_metrics_computed_in_phase2c: false
+primary_metric: mAP@0.5:0.95
+secondary_diagnostics: AP50, AP75, class-wise AP, recall/sensitivity, FP/image, FP per negative image
+coco_format_preserves_metric_compatibility: true
+```
+
+Forbidden actions confirmed:
+
+```text
+coco_master_json_created: false
+any_coco_json_created: false
+train_val_test_split_created: false
+labeled_unlabeled_split_created: false
+training_started: false
+inference_run: false
+pseudo_label_generated: false
+threshold_tuned: false
+test_set_used: false
+pixel_array_read: false
+image_copied_or_converted: false
+bbox_modified_clamped_deleted_or_fused: false
+source_annotation_modified: false
+phase2b_canonical_schema_modified: false
+```
+
+---
+
+### Review GPT
+
+Phase 2C — Framework & Format Decision / COCO Conversion Planning: **PASS**
+
+DoD review:
+
+```text
+Script chạy được: PASS
+Framework decision: PASS
+Framework selection rationale: PASS
+Format decision: PASS
+Detailed format comparison: PASS
+COCO planning: PASS
+No Finding policy: PASS
+BBox policy: PASS
+Category id policy: PASS
+Path portability policy: PASS
+DICOM loader risk documented: PASS
+Metric readiness policy: PASS
+Forbidden actions avoided: PASS
+No COCO master created: PASS
+Dataset training-ready claim avoided: PASS
+dod_pass_candidate = true: PASS
+```
+
+---
+
+### Quyết định
+
+Phase 2C được khóa với trạng thái:
+
+```text
+PASS
+```
+
+Quyết định nghiên cứu:
+
+* Framework chính: MMDetection.
+* MMDetection được chọn vì phù hợp nhất với COCO-based detection, COCO mAP evaluation, teacher-student SSOD, labeled/unlabeled pipeline và config-driven reproducibility.
+* Detectron2 chỉ là fallback optional, cần GPT review lại nếu dùng.
+* YOLO-based framework và Custom PyTorch/torchvision không được chọn làm framework chính vì tăng rủi ro custom pipeline/evaluation và lệch khỏi protocol COCO/MMDetection đã khóa.
+* Format chính: COCO detection JSON.
+* Canonical schema Phase 2B là source of truth.
+* COCO conversion thật thuộc Phase 2D, không làm trong Phase 2C.
+* COCO sau này phải chứa toàn bộ 4,894 images.
+* COCO annotations chỉ chứa 36,096 abnormal bboxes.
+* COCO categories chỉ chứa 14 abnormal detection classes.
+* No Finding là ảnh âm tính không bbox, không phải detection class.
+* No Finding phải nằm trong images, không nằm trong annotations/categories.
+* Không tạo background class.
+* BBox conversion Phase 2D: xyxy_original_image → coco_xywh_absolute.
+* COCO category_id dùng contiguous integer 1..14.
+* Path downstream dùng VINBIGDATA_DICOM_ROOT + relative_dicom_path.
+* Dataset chưa training-ready vì DICOM loader và empty image loading chưa được validate.
+* Phase sau cần kiểm tra custom DICOM loader hoặc processed-image protocol trước training.
+
+---
+
+### Vấn đề / rủi ro
+
+* MMDetection stack chưa import được local; đây là expected vì local training framework deferred.
+* Remote/GPU environment vẫn cần setup riêng.
+* COCO annotation format chưa đảm bảo MMDetection đọc được DICOM pixel.
+* Empty image loading chưa được kiểm tra thật.
+* Nếu `filter_empty_gt` cấu hình sai, 500 ảnh No Finding có thể bị lọc khỏi dataloader.
+* Metrics AP50/AP75/class-wise AP chưa được tính và không được tính ở Phase 2C.
+* Metric evaluation chỉ được thực hiện sau COCO conversion, fixed split, training và prediction generation.
+* Test set vẫn bị cấm dùng cho checkpoint/threshold/model/augmentation decisions.
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 2C đã tuân thủ:
+
+```text
+Không tạo COCO master thật.
+Không tạo bất kỳ COCO JSON thật nào.
+Không split train/val/test.
+Không tạo labeled/unlabeled split.
+Không train.
+Không inference.
+Không pseudo-label.
+Không tune threshold.
+Không dùng test set.
+Không đọc pixel_array.
+Không copy ảnh.
+Không convert ảnh.
+Không sửa annotation gốc.
+Không sửa canonical schema.
+Không xóa bbox.
+Không clamp bbox.
+Không fuse near-duplicate bbox.
+Không xóa/sửa 147 near-duplicate bbox candidates.
+Không claim dataset training-ready.
+Không tính AP metrics.
+```
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+* Phase 2C — Framework & Format Decision / COCO Conversion Planning
+* Framework comparison: MMDetection / Detectron2 / YOLO-based / Custom PyTorch-torchvision
+* Framework selection rationale
+* Format comparison: COCO / YOLO / VOC / JSONL-custom
+* Primary framework decision: MMDetection
+* Primary format decision: COCO detection JSON
+* COCO conversion planning
+* No Finding / empty image policy
+* BBox conversion policy
+* Category id policy
+* Path portability policy
+* DICOM loader risk
+* Metric readiness policy
+* reports/phase2C_framework_format_decision.md
+* reports/phase2C_framework_format_decision.json
+* configs/framework/main_framework.yaml
+* configs/dataset/coco_paths.yaml
+* configs/protocol/coco_conversion_policy.yaml
+* forbidden actions avoided
+* GPT review PASS
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo:
+
+```text
+Phase 2D — COCO Master Conversion & Validation
+```
+
+Chưa được làm trước khi mở Phase 2D:
+
+```text
+Train/val/test split
+Labeled/unlabeled split
+Training
+Inference
+Pseudo-labeling
+Threshold tuning
+Test-set usage
+Framework dataloader validation
+Empty image loading check
+Pixel array reading
+Image copy/convert
+```
+
+Phase 2D chỉ được mở sau khi Phase 2C evidence đã commit và push GitHub.

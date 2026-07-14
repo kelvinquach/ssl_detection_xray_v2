@@ -1,0 +1,25 @@
+phase_2c_policy: planning_only
+actual_conversion_phase: Phase 2D
+forbidden_in_phase_2c:
+- create data/processed/coco/coco_master.json
+- create any COCO JSON file
+- create train/val/test split
+- create labeled/unlabeled split
+- train a model
+- run inference
+- generate pseudo-labels
+- tune thresholds
+- use the test set
+- read pixel_array
+- copy or convert image files
+- modify, delete, clamp, or fuse any bbox
+- modify source annotations
+- modify the Phase 2B canonical schema
+allowed_in_phase_2c:
+- read the canonical image/bbox/class tables (read-only)
+- read the Phase 2B validation JSON (read-only)
+- defensively probe mmengine/mmcv/mmdet imports (failure is acceptable)
+- write framework decision YAML
+- write COCO path planning YAML
+- write this conversion policy YAML
+- write the Phase 2C decision JSON and Markdown report

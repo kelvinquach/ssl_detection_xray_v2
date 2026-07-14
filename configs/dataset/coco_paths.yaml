@@ -1,0 +1,42 @@
+phase: phase2C_framework_format_decision
+status: planning_only
+canonical_inputs:
+  canonical_image_table: data/processed/canonical/canonical_image_table.csv
+  canonical_bbox_table: data/processed/canonical/canonical_bbox_table.csv
+  canonical_class_mapping: data/processed/canonical/canonical_class_mapping.csv
+  phase2b_validation_json: reports/phase2B_canonical_schema_validation.json
+planned_coco_outputs_phase2D:
+  coco_master: data/processed/coco/coco_master.json
+  created_in_phase_2c: false
+  note: Phase 2C does NOT create this file.
+image_root_env_var: VINBIGDATA_DICOM_ROOT
+image_path_field:
+  coco_file_name_source: relative_dicom_path
+  resolution: os.path.join(${VINBIGDATA_DICOM_ROOT}, relative_dicom_path)
+  local_dicom_path: evidence_only_not_a_downstream_identifier
+format_policy:
+  primary_annotation_format: COCO_detection_JSON
+  source_of_truth: canonical_detection_schema
+  bbox_source_format: xyxy_original_image
+  bbox_target_format_phase2D: coco_xywh_absolute
+bbox_policy:
+  conversion: xyxy_original_image -> [x, y, width, height]
+  width: x_max - x_min
+  height: y_max - y_min
+  area: width * height
+  iscrowd: 0
+  clamp: false
+  delete: false
+  fuse_near_duplicates: false
+  near_duplicate_candidates_retained: 147
+  traceability: keep canonical_ann_id and source_row_id in annotation metadata
+no_finding_policy:
+  in_coco_images: true
+  in_coco_annotations: false
+  in_coco_categories: false
+  background_class_created: false
+  expected_no_finding_images: 500
+split_policy:
+  train_val_test_split_created: false
+  labeled_unlabeled_split_created: false
+  note: No split of any kind is created in Phase 2C or Phase 2D planning.
