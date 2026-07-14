@@ -295,16 +295,20 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-**Current phase:** Phase 2D — COCO Master Conversion & Validation
-**Previous phase:** Phase 2C — Framework & Format Decision / COCO Conversion Planning
-**Git status:** Phase 2C PASS; pending commit/push after documentation update.
+Current phase: Phase 2D — COCO Master Conversion & Validation: PASS
+Previous phase: Phase 2C — Framework & Format Decision / COCO Conversion Planning
+Next phase: Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
+Git status: Phase 2D GPT review PASS; documentation/checklist update and commit/push are pass.
+### 7.1 Current gate
 
+```text
 ### 7.1 Current gate
 
 ```text
 Phase 0 core: PASS
 Phase 0 committed/pushed: PASS
 Phase 0 training framework: DEFERRED
+
 Phase 1A — Dataset Overview: PASS
 Phase 1B — Annotation Quality: PASS
 Phase 1C — Dataset Scope Decision: PASS
@@ -313,14 +317,18 @@ Phase 1D — Label Reliability & Kappa Feasibility: PASS
 Phase 2A — Data Standardization / Image-Boundary Validation: PASS
 Phase 2B — Canonical Detection Annotation Schema: PASS
 Phase 2C — Framework & Format Decision / COCO Conversion Planning: PASS
-Phase 2D — COCO Master Conversion & Validation: OPEN / NEXT
+Phase 2D — COCO Master Conversion & Validation: PASS
+Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation: OPEN / NEXT
 
 Split train/val/test: LOCKED
 Labeled/unlabeled split: LOCKED
 Training: LOCKED
+Inference: LOCKED
 Pseudo-labeling: LOCKED
 Threshold tuning: LOCKED
 Test-set usage: LOCKED
+
+Dataset training-ready: FALSE
 
 ```
 
@@ -578,6 +586,166 @@ Next phase:
 Phase 2D — COCO Master Conversion & Validation
 ```
 
+### 7.6 Phase 2D locked evidence
+
+Phase 2D — COCO Master Conversion & Validation: **PASS**
+
+```text
+Status: PASS
+Date: 2026-07-14
+Script: scripts/02D_build_coco_master.py
+Protocol: configs/protocol/phase2D_coco_master_validation.yaml
+Unit tests: tests/test_phase2D_guardrails.py
+```
+
+Primary output:
+
+```text
+data/processed/coco/coco_master.json
+```
+
+Validation evidence:
+
+```text
+reports/phase2D_coco_master_validation.json
+reports/phase2D_coco_master_validation.md
+reports/phase2D_coco_image_annotation_counts.csv
+reports/phase2D_coco_category_summary.csv
+reports/phase2D_coco_invalid_annotations.csv
+reports/phase2D_coco_no_finding_audit.csv
+```
+
+Key findings:
+
+```text
+COCO images: 4,894
+COCO annotations: 36,096
+COCO categories: 14
+Abnormal images: 4,394
+No Finding images: 500
+No Finding annotations: 0
+
+Invalid annotations: 0
+Boundary violations: 0
+Area mismatches: 0
+Broken image/category references: 0
+Absolute paths: 0
+
+Image IDs: unique and contiguous
+Annotation IDs: unique and contiguous
+Category IDs: contiguous 1..14
+Category ID 0: absent
+No Finding category: absent
+Background category: absent
+
+Traceability mismatches: 0
+Missing canonical annotations: 0
+Duplicated canonical annotations: 0
+Extra COCO annotations: 0
+One-to-one preservation: PASS
+
+JSON parse: PASS
+pycocotools load: PASS
+Protocol strict load: PASS
+Protocol / Phase 2B drift count: 0
+Pre-promotion validation: PASS
+Atomic output promotion: PASS
+Guardrail unit tests: 22/22 PASS
+Warnings: 0
+Hard errors: 0
+dod_pass_candidate: true
+```
+
+Research decisions:
+
+```text
+The Phase 2B canonical schema has been converted to the official COCO master.
+
+All 4,894 controlled-scope images are retained in COCO images.
+
+All 36,096 abnormal bbox rows are preserved one-to-one in COCO annotations.
+
+COCO categories contain exactly 14 abnormal detection classes.
+
+No Finding remains an image-level negative:
+- retained in COCO images;
+- zero annotations;
+- excluded from categories.
+
+No background category is created.
+
+BBox format is converted from xyxy_original_image to coco_xywh_absolute:
+[x, y, width, height].
+
+Area is calculated as width * height and iscrowd is fixed to 0.
+
+No bbox was clamped, deleted, fused, rounded, or processed using NMS.
+
+COCO file_name uses relative_dicom_path and does not contain an absolute local path.
+
+The protocol YAML is strict-loaded and cross-checked against Phase 2B validation and canonical tables.
+
+The final COCO output is atomically replaced only after all hard validations pass.
+```
+
+Issues / risks:
+
+```text
+A valid COCO annotation file does not make the dataset training-ready.
+
+DICOM pixel decoding has not been validated in the MMDetection-compatible pipeline.
+
+The default MMDetection LoadImageFromFile must not be assumed to support .dicom.
+
+No Finding / empty-image loading has not been validated using the framework dataloader.
+
+filter_empty_gt=False or an equivalent configuration has not been validated.
+
+Train/val/test split has not been created.
+
+Labeled/unlabeled SSL subsets have not been created.
+
+Training, inference, pseudo-labeling, threshold tuning, and test-set usage remain locked.
+```
+
+Forbidden actions confirmed:
+
+```text
+No DICOM file read.
+No DICOM existence check.
+No DICOM header read.
+No pixel_array read.
+No pydicom, cv2, or PIL image loading.
+No image copying or conversion.
+No train/val/test split.
+No labeled/unlabeled split.
+No MMDetection/Detectron2 dataset loading.
+No filter_empty_gt validation.
+No training.
+No inference.
+No pseudo-label generation.
+No threshold tuning.
+No test-set usage.
+No AP/mAP computation.
+No canonical annotation modification.
+No bbox clamp/delete/fusion/NMS.
+No dataset training-ready claim.
+```
+
+Next phase:
+
+```text
+Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
+```
+
+Opening condition:
+
+```text
+Phase 2D documents and checklist updated.
+Phase 2D evidence staged.
+Phase 2D committed and pushed to origin/main.
+Working tree checked.
+```
 
 
 ## 8. Nguyên tắc review bắt buộc
@@ -1412,4 +1580,93 @@ Next phase:
 
 ```text
 Phase 2D — COCO Master Conversion & Validation
+```
+
+
+### Phase 2D — COCO Master Conversion & Validation
+
+Status: **PASS**
+
+Date: 2026-07-14
+
+Scripts run:
+
+```cmd
+python scripts\02D_build_coco_master.py
+python -m unittest discover -s tests -p "test_phase2D_guardrails.py" -v
+```
+
+Outputs generated:
+
+```text
+data/processed/coco/coco_master.json
+configs/protocol/phase2D_coco_master_validation.yaml
+reports/phase2D_coco_master_validation.json
+reports/phase2D_coco_master_validation.md
+reports/phase2D_coco_image_annotation_counts.csv
+reports/phase2D_coco_category_summary.csv
+reports/phase2D_coco_invalid_annotations.csv
+reports/phase2D_coco_no_finding_audit.csv
+tests/test_phase2D_guardrails.py
+```
+
+DoD result:
+
+```text
+COCO conversion: PASS
+COCO structure and relationships: PASS
+BBox xyxy-to-xywh conversion: PASS
+Area and boundary validation: PASS
+No Finding policy: PASS
+Category policy: PASS
+Traceability and one-to-one preservation: PASS
+JSON parse: PASS
+pycocotools load: PASS
+Strict YAML protocol: PASS
+Protocol drift protection: PASS
+Atomic output promotion: PASS
+Guardrail tests 22/22: PASS
+Forbidden actions avoided: PASS
+GPT review: PASS
+```
+
+Key findings:
+
+```text
+images = 4894
+annotations = 36096
+categories = 14
+abnormal_images = 4394
+no_finding_images = 500
+no_finding_annotations = 0
+invalid_annotations = 0
+absolute_paths = 0
+hard_errors = 0
+warnings = 0
+dataset_training_ready = false
+```
+
+Research decisions:
+
+```text
+coco_master.json is accepted as the official controlled-scope COCO master.
+No Finding remains an image-level negative with zero annotations.
+No Finding and background are excluded from categories.
+All canonical bbox rows are preserved one-to-one.
+The final COCO output is promoted only after all hard validation passes.
+```
+
+Issues / risks:
+
+```text
+DICOM loader and pixel decoding are not validated.
+Framework empty-image loading is not validated.
+filter_empty_gt=False is not validated.
+Split, training, inference, and pseudo-labeling remain locked.
+```
+
+Next phase:
+
+```text
+Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
 ```

@@ -2607,3 +2607,631 @@ Image copy/convert
 ```
 
 Phase 2D chỉ được mở sau khi Phase 2C evidence đã commit và push GitHub.
+
+## 2026-07-14 — PHASE 2D: COCO Master Conversion & Validation
+
+### Mục tiêu
+
+Chuyển canonical detection schema đã khóa ở Phase 2B thành COCO detection JSON chính thức cho controlled working scope của đề tài:
+
+**“Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi.”**
+
+Mục tiêu Phase 2D:
+
+```text
+Tạo COCO master từ canonical image table, bbox table và class mapping.
+Giữ toàn bộ 4,894 images trong controlled scope.
+Giữ toàn bộ 36,096 abnormal bbox annotations.
+Chỉ tạo 14 abnormal detection categories.
+Chuyển bbox từ xyxy_original_image sang coco_xywh_absolute.
+Giữ 500 ảnh No Finding trong images nhưng không có annotation.
+Không tạo No Finding hoặc background thành detection category.
+Validate COCO structure, geometry, relationships và traceability.
+Không đọc DICOM, header hoặc pixel array.
+Không chạy framework dataloader, training, inference hoặc pseudo-labeling.
+```
+
+---
+
+### Đã làm
+
+#### 1. Tạo script Phase 2D
+
+Đã tạo:
+
+```text
+scripts/02D_build_coco_master.py
+```
+
+Script đọc các input canonical từ Phase 2B:
+
+```text
+data/processed/canonical/canonical_image_table.csv
+data/processed/canonical/canonical_bbox_table.csv
+data/processed/canonical/canonical_class_mapping.csv
+reports/phase2B_canonical_schema_validation.json
+```
+
+Script không đọc file DICOM, không đọc DICOM header, không đọc pixel array và không import `pydicom`, `cv2` hoặc `PIL`.
+
+#### 2. Tạo protocol YAML Phase 2D
+
+Đã tạo:
+
+```text
+configs/protocol/phase2D_coco_master_validation.yaml
+```
+
+Protocol khóa:
+
+```text
+Expected images: 4,894
+Expected annotations: 36,096
+Expected categories: 14
+Expected abnormal images: 4,394
+Expected No Finding images: 500
+BBox source format: xyxy_original_image
+BBox target format: coco_xywh_absolute
+Category IDs: contiguous 1..14
+No Finding category: forbidden
+Background category: forbidden
+Path root variable: VINBIGDATA_DICOM_ROOT
+```
+
+Sau maintenance patch, YAML được strict-load và được đối chiếu với Phase 2B validation cùng canonical tables.
+
+Nếu có protocol drift, script hard-fail và không thay thế output COCO hiện có.
+
+#### 3. Tạo COCO master
+
+Đã tạo:
+
+```text
+data/processed/coco/coco_master.json
+```
+
+COCO structure:
+
+```text
+images[]
+annotations[]
+categories[]
+```
+
+Count:
+
+```text
+images: 4,894
+annotations: 36,096
+categories: 14
+abnormal images: 4,394
+No Finding images: 500
+```
+
+#### 4. Chính sách COCO images
+
+`images[]` chứa toàn bộ 4,894 images trong controlled scope.
+
+Các field chính:
+
+```text
+id
+file_name
+width
+height
+original_image_id
+canonical_image_id
+scope_label
+is_negative
+```
+
+Path policy:
+
+```text
+file_name lấy từ relative_dicom_path.
+Không dùng absolute local path.
+Path separator được chuẩn hóa thành "/".
+absolute_path_count = 0.
+```
+
+#### 5. Chính sách COCO annotations
+
+`annotations[]` chỉ chứa abnormal bbox.
+
+Kết quả:
+
+```text
+COCO annotation rows: 36,096
+Canonical bbox rows: 36,096
+No Finding annotations: 0
+```
+
+BBox conversion:
+
+```text
+x = x_min
+y = y_min
+width = x_max - x_min
+height = y_max - y_min
+area = width * height
+iscrowd = 0
+```
+
+Không thực hiện:
+
+```text
+Không clamp bbox.
+Không delete bbox.
+Không fuse bbox.
+Không NMS.
+Không rounding bbox.
+```
+
+#### 6. Chính sách COCO categories
+
+`categories[]` chỉ chứa 14 abnormal detection classes.
+
+Category IDs:
+
+```text
+1..14
+```
+
+Category metadata giữ:
+
+```text
+canonical_class_id
+class_id_original
+supercategory = chest_abnormality
+```
+
+Kết quả:
+
+```text
+No Finding category: absent
+Normal category: absent
+Background category: absent
+Category ID 0: absent
+```
+
+#### 7. Audit No Finding
+
+No Finding được xác định từ canonical image metadata, không suy ra đơn thuần từ zero annotation.
+
+Kết quả:
+
+```text
+No Finding images: 500
+No Finding images with annotations: 0
+No Finding category present: false
+Negative images lost: 0
+```
+
+500 ảnh No Finding vẫn nằm trong `images[]`, nhưng không có record trong `annotations[]`.
+
+#### 8. Validation bbox và relationship
+
+Kết quả:
+
+```text
+Invalid bbox count: 0
+Boundary violation count: 0
+Area mismatch count: 0
+iscrowd violation count: 0
+Broken image reference count: 0
+Broken category reference count: 0
+Absolute path count: 0
+```
+
+Validation rule:
+
+```text
+x >= 0
+y >= 0
+width > 0
+height > 0
+x + width <= image_width
+y + height <= image_height
+area == width * height
+```
+
+#### 9. Traceability và one-to-one preservation
+
+Mỗi annotation giữ các field:
+
+```text
+canonical_ann_id
+source_row_id
+original_image_id
+rad_id
+canonical_class_id
+class_id_original
+```
+
+Kết quả:
+
+```text
+Coordinate mismatch count: 0
+Image mapping mismatch count: 0
+Category mapping mismatch count: 0
+Missing canonical annotations: 0
+Duplicated canonical annotations: 0
+Extra COCO annotations: 0
+canonical_ann_id sets equal: true
+```
+
+Điều này chứng minh toàn bộ 36,096 canonical bbox được giữ one-to-one trong COCO.
+
+147 near-duplicate bbox candidates không bị xóa hoặc fuse.
+
+Phase 2D không chạy lại near-duplicate detection vì đây không phải mục tiêu của phase.
+
+#### 10. Strict protocol guardrail
+
+Maintenance patch đã bổ sung strict YAML validation:
+
+```text
+protocol strict load: PASS
+protocol / Phase 2B drift: 0
+```
+
+Guardrail kiểm tra:
+
+```text
+YAML file phải tồn tại.
+YAML phải parse được.
+Required sections và keys phải đầy đủ.
+Count phải là integer không âm.
+Tolerance phải finite và không âm.
+YAML expected counts phải khớp Phase 2B validation.
+YAML expected counts phải khớp canonical tables.
+```
+
+Không còn silent fallback về empty dictionary.
+
+#### 11. Atomic output promotion
+
+Maintenance patch đã sửa thứ tự output:
+
+```text
+Build COCO in memory.
+Chạy toàn bộ internal validation.
+Kiểm tra per-image annotation count.
+Ghi temporary JSON.
+Parse temporary JSON.
+Chạy pycocotools trên temporary JSON.
+Chỉ atomic replace final COCO khi toàn bộ hard checks PASS.
+```
+
+Kết quả:
+
+```text
+pre-promotion checks: PASS
+atomic promotion: PASS
+```
+
+Nếu run thất bại, output COCO hợp lệ từ lần trước được giữ nguyên.
+
+#### 12. Unit tests guardrail
+
+Đã tạo:
+
+```text
+tests/test_phase2D_guardrails.py
+```
+
+Lệnh chạy:
+
+```cmd
+python -m unittest discover -s tests -p "test_phase2D_guardrails.py" -v
+```
+
+Kết quả:
+
+```text
+Ran 22 tests
+OK
+```
+
+Các test bao gồm:
+
+```text
+Strict YAML loading.
+Missing/malformed YAML.
+Missing required sections/keys.
+Invalid count/tolerance.
+Protocol drift detection.
+Output preservation on failure.
+Successful atomic promotion.
+Temporary-file cleanup.
+```
+
+---
+
+### Evidence đã tạo
+
+Outputs:
+
+```text
+data/processed/coco/coco_master.json
+reports/phase2D_coco_master_validation.json
+reports/phase2D_coco_master_validation.md
+reports/phase2D_coco_image_annotation_counts.csv
+reports/phase2D_coco_category_summary.csv
+reports/phase2D_coco_invalid_annotations.csv
+reports/phase2D_coco_no_finding_audit.csv
+configs/protocol/phase2D_coco_master_validation.yaml
+tests/test_phase2D_guardrails.py
+```
+
+Lệnh chạy chính:
+
+```cmd
+python scripts\02D_build_coco_master.py
+```
+
+Console result:
+
+```text
+images                     : 4894
+annotations                : 36096
+categories                 : 14
+abnormal images            : 4394
+No Finding images          : 500
+invalid annotations        : 0
+No Finding annotations     : 0
+absolute paths             : 0
+pycocotools                : load PASS
+protocol strict load       : PASS
+protocol / Phase 2B drift  : 0
+pre-promotion checks       : PASS
+atomic promotion           : PASS
+hard errors                : 0
+warnings                   : 0
+dataset_training_ready     : False
+dod_pass_candidate         : True
+```
+
+JSON syntax validation:
+
+```cmd
+python -m json.tool data\processed\coco\coco_master.json > NUL
+```
+
+Result:
+
+```text
+JSON_PARSE_PASS
+```
+
+pycocotools validation:
+
+```cmd
+python -c "from pycocotools.coco import COCO; c=COCO(r'data\processed\coco\coco_master.json'); print('images=',len(c.imgs)); print('annotations=',len(c.anns)); print('categories=',len(c.cats))"
+```
+
+Result:
+
+```text
+images=4894
+annotations=36096
+categories=14
+```
+
+Dependency check:
+
+```cmd
+python -m pip check
+```
+
+Result:
+
+```text
+No broken requirements found.
+```
+
+Environment:
+
+```text
+Conda environment: ssl
+Python executable: C:\Users\USER\anaconda3\envs\ssl\python.exe
+pycocotools: 2.0.11
+```
+
+---
+
+### Review GPT
+
+Phase 2D — COCO Master Conversion & Validation: **PASS**
+
+DoD review:
+
+```text
+Canonical schema converted to COCO master: PASS
+COCO images contain all 4,894 scope images: PASS
+COCO annotations contain 36,096 abnormal bbox only: PASS
+COCO categories contain 14 abnormal classes only: PASS
+BBox format xywh: PASS
+Area calculation: PASS
+No Finding retained in images: PASS
+No Finding annotations = 0: PASS
+No Finding excluded from categories: PASS
+Background class excluded: PASS
+Negative image count = 500: PASS
+Annotation count matches canonical bbox table: PASS
+Image IDs unique and contiguous: PASS
+Annotation IDs unique and contiguous: PASS
+Category IDs contiguous 1..14: PASS
+Category ID 0 absent: PASS
+Invalid annotations = 0: PASS
+Boundary violations = 0: PASS
+Area mismatches = 0: PASS
+Broken references = 0: PASS
+Absolute paths = 0: PASS
+Traceability preservation: PASS
+One-to-one annotation preservation: PASS
+JSON parse: PASS
+pycocotools load: PASS
+Strict protocol loading: PASS
+Protocol drift count = 0: PASS
+Pre-promotion checks: PASS
+Atomic output promotion: PASS
+Guardrail tests 22/22: PASS
+Warnings = 0: PASS
+Hard errors = 0: PASS
+Forbidden actions avoided: PASS
+```
+
+---
+
+### Quyết định
+
+Phase 2D được khóa với trạng thái:
+
+```text
+PASS
+```
+
+Quyết định nghiên cứu:
+
+* `coco_master.json` là COCO master chính thức cho controlled working scope.
+* COCO chứa toàn bộ 4,894 images.
+* COCO giữ toàn bộ 36,096 abnormal bbox annotations.
+* COCO categories chỉ gồm 14 abnormal detection classes.
+* No Finding là ảnh âm tính trong `images[]`, không có annotation và không phải category.
+* Không tạo background class.
+* BBox được chuyển từ `xyxy_original_image` sang `coco_xywh_absolute`.
+* Area được tính bằng `width * height`.
+* Không bbox nào bị clamp, delete, fuse, NMS hoặc rounding.
+* Traceability từ canonical schema được bảo toàn.
+* YAML protocol được strict-load và cross-check với Phase 2B.
+* Final COCO chỉ được atomic promote sau khi toàn bộ validation PASS.
+* COCO JSON hợp lệ chưa làm dataset training-ready.
+* Dataset vẫn có trạng thái `dataset_training_ready = false`.
+
+---
+
+### Vấn đề / rủi ro còn lại
+
+* DICOM loader chưa được triển khai hoặc validate trong MMDetection.
+* MMDetection default `LoadImageFromFile` không được giả định là đọc được `.dicom`.
+* Pixel decoding chưa được kiểm tra trong Phase 2D.
+* Empty-image loading chưa được kiểm tra thật bằng framework dataloader.
+* `filter_empty_gt=False` hoặc cơ chế tương đương chưa được validate.
+* COCO master chưa được chia train/val/test.
+* Labeled/unlabeled subsets chưa được tạo.
+* Dataset chưa được phép dùng để train detector.
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 2D đã tuân thủ:
+
+```text
+Không đọc DICOM file.
+Không kiểm tra DICOM file existence.
+Không đọc DICOM header.
+Không đọc pixel_array.
+Không import pydicom, cv2 hoặc PIL.
+Không copy hoặc convert image.
+Không tạo train/val/test split.
+Không tạo labeled/unlabeled split.
+Không load MMDetection/Detectron2 dataset.
+Không kiểm tra filter_empty_gt.
+Không train.
+Không inference.
+Không pseudo-label.
+Không tune threshold.
+Không dùng test set.
+Không tính AP/mAP.
+Không sửa canonical schema.
+Không sửa source annotation.
+Không clamp bbox.
+Không delete bbox.
+Không fuse bbox.
+Không NMS.
+Không claim dataset training-ready.
+```
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+* Phase 2D — COCO Master Conversion & Validation
+* Convert canonical schema sang COCO master
+* COCO images chứa toàn bộ ảnh trong scope
+* COCO annotations chỉ chứa abnormal bbox
+* COCO categories chỉ chứa 14 abnormal classes
+* BBox format `[x, y, width, height]`
+* Area calculation
+* No Finding retained in images
+* No Finding zero annotations
+* No Finding excluded from categories
+* Background class excluded
+* Negative image count matches controlled scope
+* Annotation count matches canonical bbox table
+* COCO validator pass
+* JSON parse pass
+* pycocotools load pass
+* Traceability preservation
+* One-to-one annotation preservation
+* Strict protocol YAML validation
+* Protocol drift detection
+* Atomic output promotion
+* Guardrail unit tests
+* Forbidden actions avoided
+* GPT review PASS
+
+Checklist output path được chuẩn hóa thành:
+
+```text
+reports/phase2D_coco_master_validation.json
+```
+
+Tên cũ:
+
+```text
+reports/coco_validation_report.json
+```
+
+không còn được dùng.
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo:
+
+```text
+Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
+```
+
+Phase 2D.1 chỉ được mở sau khi:
+
+```text
+Phase 2D evidence được stage.
+PROJECT_CONTEXT.md được cập nhật.
+PHASE_HANDOFF.md được cập nhật.
+research_log.md được cập nhật.
+CHECKLIST_TRIEN_KHAI_FULL.xlsx được cập nhật.
+Commit và push GitHub thành công.
+```
+
+Nội dung Phase 2D.1 dự kiến:
+
+```text
+Custom DICOM loader.
+Pixel decoding validation.
+MMDetection-compatible image loading.
+No Finding / empty-image loading.
+filter_empty_gt=False hoặc cấu hình tương đương.
+Framework dataset smoke test.
+Không training.
+Không split.
+Không pseudo-label.
+Không threshold tuning.
+Không test-set usage.
+```

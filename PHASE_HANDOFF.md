@@ -45,8 +45,8 @@ Không tick checklist nếu chưa có evidence.
 ## 3. Trạng thái hiện tại
 
 ```text
-Current phase: Phase 2D — COCO Master Conversion & Validation
-Previous phase: Phase 2C — Framework & Format Decision / COCO Conversion Planning
+Current phase: Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation: OPEN / NEXT
+Previous phase: Phase 2D — COCO Master Conversion & Validation: PASS
 
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
@@ -57,17 +57,36 @@ Phase 1D — Label Reliability & Kappa Feasibility: PASS
 Phase 2A — Data Standardization / Image-Boundary Validation: PASS
 Phase 2B — Canonical Detection Annotation Schema: PASS
 Phase 2C — Framework & Format Decision / COCO Conversion Planning: PASS
+Phase 2D — COCO Master Conversion & Validation: PASS
 
-Git status: Phase 2C completed; pending commit/push after documentation update
+Dataset training-ready: FALSE
+
+Git status:
+Phase 2D GPT review PASS.
+Documentation and checklist update are in progress.
+Phase 2D commit/push is pending.
+Do not execute Phase 2D.1 until Phase 2D evidence is committed and pushed.
 ```
 
 Được mở / tiếp theo:
 
 ```text
-Phase 2D — COCO Master Conversion & Validation
+Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
 ```
 
-Chưa được làm:
+Điều kiện bắt đầu thực thi Phase 2D.1:
+
+```text
+PROJECT_CONTEXT.md updated.
+PHASE_HANDOFF.md updated.
+research_log.md updated.
+CHECKLIST_TRIEN_KHAI_FULL.xlsx updated.
+Phase 2D evidence staged.
+Phase 2D committed and pushed to origin/main.
+Working tree checked.
+```
+
+Vẫn chưa được làm:
 
 ```text
 Train/val/test split
@@ -77,10 +96,23 @@ Train SSL detector
 Generate pseudo-label
 Tune threshold
 Use test set
-Framework dataloader validation
-Empty image loading check
-Pixel array reading
-Image copy/convert
+Compute AP/mAP
+Select checkpoint/model/threshold
+```
+
+Phạm vi Phase 2D.1 sau khi commit/push:
+
+```text
+Implement or validate DICOM pixel loader.
+Decode controlled-scope DICOM pixel data.
+Validate image shape and dtype.
+Validate framework-compatible image output.
+Validate No Finding / empty-image loading.
+Validate filter_empty_gt=False or an equivalent mechanism.
+Run dataset/dataloader smoke tests only.
+Do not train.
+Do not split.
+Do not generate pseudo-labels.
 ```
 
 Ghi chú trạng thái:
@@ -90,25 +122,42 @@ Phase 2A đã xác nhận 4,894 DICOM files tồn tại và đọc được meta
 Image dimensions available cho toàn bộ 4,894 images.
 Toàn bộ 36,096 abnormal bbox hợp lệ trong image boundary.
 
-Phase 2B đã tạo portable canonical detection schema.
-Canonical image table có 4,894 images.
-Canonical bbox table có 36,096 abnormal bbox rows.
-Canonical class mapping có đúng 14 abnormal detection classes.
-No Finding vẫn là negative image không có bbox, không phải detection class.
-No Finding không nằm trong canonical bbox table hoặc detection class mapping.
-Path policy đã portable: downstream dùng VINBIGDATA_DICOM_ROOT + relative_dicom_path.
+Phase 2B đã tạo portable canonical detection schema:
+- 4,894 canonical images;
+- 36,096 abnormal bbox rows;
+- 14 abnormal detection classes;
+- No Finding là negative image, không phải detection class;
+- downstream path dùng VINBIGDATA_DICOM_ROOT + relative_dicom_path.
 
 Phase 2C đã chốt:
-Primary framework: MMDetection.
-Fallback framework: Detectron2_optional, chỉ dùng nếu được GPT review lại.
-Primary annotation format: COCO_detection_JSON.
-COCO conversion thật deferred sang Phase 2D.
-No Finding phải nằm trong COCO images, không nằm trong annotations/categories.
-BBox conversion Phase 2D: xyxy_original_image → coco_xywh_absolute.
-Metric readiness đã ghi cho mAP@0.5:0.95, AP50, AP75 và class-wise AP.
-Dataset vẫn chưa training-ready vì DICOM loader và empty image loading chưa được validate.
+- Primary framework: MMDetection;
+- Fallback: Detectron2_optional, chỉ sau GPT re-review;
+- Primary annotation format: COCO_detection_JSON;
+- BBox target format: coco_xywh_absolute;
+- category IDs: contiguous 1..14.
 
-Không được tạo split, train, pseudo-label hoặc tune threshold khi chưa mở đúng phase.
+Phase 2D đã hoàn thành:
+- COCO images: 4,894;
+- COCO annotations: 36,096;
+- COCO categories: 14;
+- abnormal images: 4,394;
+- No Finding images: 500;
+- No Finding annotations: 0;
+- invalid annotations: 0;
+- boundary violations: 0;
+- area mismatches: 0;
+- absolute paths: 0;
+- JSON parse: PASS;
+- pycocotools load: PASS;
+- strict YAML protocol: PASS;
+- protocol drift count: 0;
+- atomic output promotion: PASS;
+- guardrail tests: 22/22 PASS;
+- hard errors: 0;
+- warnings: 0.
+
+COCO master đã hợp lệ nhưng dataset vẫn chưa training-ready.
+DICOM pixel decoding và framework empty-image loading thuộc Phase 2D.1.
 ```
 
 ---
@@ -861,155 +910,343 @@ Phase 2D chỉ được mở sau khi Phase 2C evidence đã commit và push GitH
 
 ---
 
-## 8. Phase 2D — next-phase guardrail
+### Phase 2D — COCO Master Conversion & Validation
 
-Phase 2D chỉ được làm:
+Status: **PASS**
 
-```text
-COCO Master Conversion & Validation
+Date: 2026-07-14
+
+Scripts run:
+
+```cmd
+python scripts\02D_build_coco_master.py
+python -m unittest discover -s tests -p "test_phase2D_guardrails.py" -v
+python -m json.tool data\processed\coco\coco_master.json > NUL
+python -c "from pycocotools.coco import COCO; c=COCO(r'data\processed\coco\coco_master.json'); print(len(c.imgs), len(c.anns), len(c.cats))"
 ```
 
-Phase 2D được phép:
+Outputs generated:
 
 ```text
-Read canonical_image_table.csv.
-Read canonical_bbox_table.csv.
-Read canonical_class_mapping.csv.
-Create data/processed/coco/coco_master.json.
-Validate COCO image/annotation/category counts.
-Validate bbox conversion xyxy_original_image → coco_xywh_absolute.
-Validate No Finding images appear in images with zero annotations.
-Validate No Finding is absent from annotations and categories.
-Validate category_id contiguous 1..14.
-Validate traceability fields.
-Generate reports/phase2D_coco_validation_report.md.
-Generate reports/phase2D_coco_validation_report.json.
+data/processed/coco/coco_master.json
+configs/protocol/phase2D_coco_master_validation.yaml
+reports/phase2D_coco_master_validation.json
+reports/phase2D_coco_master_validation.md
+reports/phase2D_coco_image_annotation_counts.csv
+reports/phase2D_coco_category_summary.csv
+reports/phase2D_coco_invalid_annotations.csv
+reports/phase2D_coco_no_finding_audit.csv
+tests/test_phase2D_guardrails.py
 ```
 
-Phase 2D chưa được làm:
+DoD result:
 
 ```text
-Train/val/test split.
-Labeled/unlabeled split.
-Training.
-Inference.
-Pseudo-labeling.
-Threshold tuning.
-Test-set usage.
-Framework dataloader validation.
-Empty image loading check.
-Pixel array reading.
-Image copy/convert.
+COCO master conversion: PASS
+COCO image coverage: PASS
+COCO annotation preservation: PASS
+COCO category policy: PASS
+BBox xyxy-to-xywh conversion: PASS
+BBox boundary validation: PASS
+Area validation: PASS
+No Finding policy: PASS
+Reference integrity: PASS
+Traceability preservation: PASS
+One-to-one bbox preservation: PASS
+Strict JSON validation: PASS
+pycocotools loading: PASS
+Strict YAML protocol validation: PASS
+Protocol drift protection: PASS
+Atomic output promotion: PASS
+Guardrail unit tests: PASS
+Forbidden actions avoided: PASS
+GPT review: PASS
 ```
 
-Definition of Done Phase 2D dự kiến:
+Key findings:
 
 ```text
-coco_master.json created: true
-image_count = 4,894
-annotation_count = 36,096
-category_count = 14
-No Finding category count = 0
-No Finding annotations count = 0
-No Finding images retained = 500
-All bbox converted to valid COCO xywh absolute
-All areas valid
-iscrowd = 0 for all annotations
-category_id contiguous 1..14
-All annotation image_id exist in images
-All annotation category_id exist in categories
-No split/train/pseudo-label/test actions performed
+COCO images: 4,894
+COCO annotations: 36,096
+COCO categories: 14
+Abnormal images: 4,394
+No Finding images: 500
+No Finding annotations: 0
+
+Invalid annotations: 0
+Boundary violations: 0
+Area mismatches: 0
+Broken image references: 0
+Broken category references: 0
+Absolute paths: 0
+
+Image IDs unique and contiguous: true
+Annotation IDs unique and contiguous: true
+Category IDs contiguous 1..14: true
+Category ID 0 present: false
+
+No Finding in categories: false
+Background in categories: false
+
+Coordinate mismatches: 0
+Image mapping mismatches: 0
+Category mapping mismatches: 0
+Missing canonical annotations: 0
+Duplicated canonical annotations: 0
+Extra COCO annotations: 0
+One-to-one preservation: true
+
+JSON parse: PASS
+pycocotools load: PASS
+Protocol strict load: PASS
+Protocol drift count: 0
+Pre-promotion checks: PASS
+Atomic promotion: PASS
+Guardrail unit tests: 22/22 PASS
+Hard errors: 0
+Warnings: 0
+dod_pass_candidate: true
+dataset_training_ready: false
+```
+
+Research decisions:
+
+```text
+The Phase 2B canonical detection schema is accepted as the source of truth for COCO conversion.
+
+data/processed/coco/coco_master.json is accepted as the official controlled-scope COCO master.
+
+All 4,894 controlled-scope images are retained in COCO images.
+
+All 36,096 abnormal canonical bbox rows are retained one-to-one in COCO annotations.
+
+COCO categories contain exactly 14 abnormal detection classes.
+
+No Finding remains an image-level negative:
+- retained in COCO images;
+- zero annotations;
+- excluded from COCO categories.
+
+No background category is created.
+
+BBox format is converted from xyxy_original_image to coco_xywh_absolute:
+[x, y, width, height].
+
+Area is calculated as width * height.
+iscrowd is fixed to 0.
+
+No bbox was clamped, deleted, fused, rounded, or processed using NMS.
+
+COCO file_name uses relative_dicom_path and does not contain absolute local paths.
+
+The Phase 2D YAML protocol is strict-loaded and cross-checked against Phase 2B validation and the canonical tables.
+
+The final COCO output is atomically promoted only after all required hard validations pass.
+```
+
+Issues / risks:
+
+```text
+A valid COCO annotation file does not make the dataset training-ready.
+
+DICOM pixel decoding has not been validated in a framework-compatible loading pipeline.
+
+MMDetection default LoadImageFromFile must not be assumed to support .dicom files.
+
+No Finding / empty-image loading has not been validated using the framework dataset pipeline.
+
+filter_empty_gt=False or an equivalent mechanism has not been validated.
+
+Train/val/test split has not been created.
+
+Labeled/unlabeled SSL subsets have not been created.
+
+Training, inference, pseudo-labeling, threshold tuning, AP/mAP computation, and test-set usage remain locked.
+```
+
+Forbidden actions confirmed:
+
+```text
+No DICOM file read.
+No DICOM file existence check.
+No DICOM header read.
+No pixel_array read.
+No pydicom, cv2, or PIL image loading.
+No image copying or conversion.
+No train/val/test split created.
+No labeled/unlabeled split created.
+No MMDetection or Detectron2 dataset loaded.
+No filter_empty_gt validation performed.
+No training started.
+No inference run.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No AP/mAP computed.
+No canonical schema modified.
+No source annotation modified.
+No bbox clamped, deleted, fused, rounded, or processed using NMS.
+No dataset training-ready claim made.
+```
+
+Next phase:
+
+```text
+Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
+```
+
+Opening condition:
+
+```text
+Phase 2D documentation updated.
+Phase 2D checklist updated.
+Phase 2D evidence staged.
+Phase 2D committed and pushed to origin/main.
+Working tree checked.
+```
+
+---
+
+## 8. Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
+
+Status: **OPEN / NEXT — EXECUTION LOCKED UNTIL PHASE 2D COMMIT AND PUSH**
+
+### 8.1 Mục tiêu
+
+```text
+Validate DICOM pixel decoding.
+Validate framework-compatible image loading.
+Validate No Finding / empty-image retention.
+Validate filter_empty_gt=False or an equivalent mechanism.
+Run dataset and dataloader smoke tests without training.
+```
+
+### 8.2 Inputs dự kiến
+
+```text
+data/processed/coco/coco_master.json
+data/processed/canonical/canonical_image_table.csv
+reports/phase2A_image_metadata.csv
+VINBIGDATA_DICOM_ROOT
+```
+
+### 8.3 Outputs dự kiến
+
+```text
+Custom DICOM loader source code
+DICOM pixel decoding validation report
+Framework image-loading validation report
+No Finding / empty-image loading audit
+Dataset parsing smoke-test report
+Dataloader smoke-test report
+Phase 2D.1 validation JSON
+Phase 2D.1 validation Markdown report
+```
+
+### 8.4 Được phép
+
+```text
+Read the Phase 2D COCO master.
+Read canonical image metadata.
+Resolve DICOM paths using VINBIGDATA_DICOM_ROOT.
+Read DICOM files and headers.
+Decode DICOM pixel arrays.
+Inspect decoded image shape, dtype, min, max, and finite values.
+Inspect PhotometricInterpretation.
+Handle MONOCHROME1 inversion where required.
+Document RescaleSlope and RescaleIntercept handling.
+Document windowing and normalization policy.
+Implement a custom DICOM loader.
+Convert decoded arrays in memory to framework-compatible arrays or tensors.
+Load abnormal images with annotations.
+Load No Finding images with zero annotations.
+Test dataset parsing.
+Test dataloader iteration.
+Validate filter_empty_gt=False or an equivalent mechanism.
+Generate loading-validation evidence.
+```
+
+### 8.5 Không được phép
+
+```text
+Do not create train/val/test split.
+Do not create labeled/unlabeled split.
+Do not train a detector.
+Do not run detector inference.
+Do not generate pseudo-labels.
+Do not tune confidence thresholds.
+Do not use the test set.
+Do not compute AP/mAP.
+Do not select checkpoint, model, or backbone.
+Do not modify canonical annotations.
+Do not modify COCO bbox coordinates.
+Do not delete No Finding images.
+Do not permanently convert the full DICOM dataset to PNG/JPG without a separately reviewed protocol.
+```
+
+### 8.6 Bắt buộc kiểm tra
+
+```text
+All controlled-scope DICOM paths resolve correctly.
+DICOM pixel decoding succeeds.
+Decoded image dimensions match COCO metadata.
+Decoded arrays have valid dimensions.
+Decoded arrays contain finite values.
+Decoded image dtype is documented.
+PhotometricInterpretation is handled explicitly.
+MONOCHROME1 inversion is handled where present.
+Rescale slope/intercept handling is documented.
+Windowing/normalization policy is documented.
+Loader output is compatible with the selected framework pipeline.
+BBox coordinates remain aligned with decoded image dimensions.
+Abnormal images load with their annotations.
+No Finding images load with zero annotations.
+No Finding images are retained by the dataset.
+filter_empty_gt=False or equivalent protection is proven by evidence.
+Dataset parsing smoke test passes.
+Dataloader smoke test passes.
+No training is executed.
+```
+
+### 8.7 Definition of Done dự kiến
+
+```text
+DICOM path resolution pass: true
+DICOM pixel decoding pass: true
+Decoded dimensions match COCO metadata: true
+Non-finite pixel count: 0
+Loader output shape documented: true
+Loader output dtype documented: true
+Photometric interpretation handling pass: true
+Abnormal-image loading pass: true
+No Finding loading pass: true
+No Finding retained with zero annotations: true
+filter_empty_gt protection pass: true
+Dataset parsing pass: true
+Dataloader smoke test pass: true
+BBox/image alignment pass: true
+No split created: true
+No training started: true
+No inference run: true
+No pseudo-label generated: true
+No threshold tuned: true
+No test set used: true
+No AP/mAP computed: true
 GPT review PASS
 ```
 
----
-
-## 9. Nguyên tắc review bắt buộc
-
-Khi đưa code/log/output, GPT phải kiểm tra:
-
-1. Output đã đủ chưa?
-2. Có đạt Definition of Done chưa?
-3. Có lỗi logic nghiên cứu không?
-4. Có rủi ro leakage không?
-5. Có sai split/seed/metric không?
-6. Có xử lý đúng No Finding không?
-7. Có pseudo-bbox generation đúng bản chất SSOD không?
-8. Có NMS và box quality filtering không?
-9. Có rủi ro confirmation bias không?
-10. Có rủi ro threshold làm rare class biến mất không?
-11. Có test set bị dùng để tune không?
-12. Có được tick checklist chưa?
-13. Nếu chưa đạt, viết prompt sửa lỗi cho Claude.
-
----
-
-## 10. Những lỗi nguy hiểm cần luôn nhắc
-
-### 10.1 Data / COCO / No Finding
-
-- No Finding bị đưa nhầm thành detection class.
-- Ảnh No Finding bị framework lọc khỏi dataloader.
-- Ảnh No Finding không nằm trong test set nên không đo được FP/negative.
-- Bbox nhầm `xyxy` / `xywh`.
-- Bbox bị lệch sau resize, flip, crop, scale.
-- Split leakage.
-- Unlabeled vô tình dùng ground truth.
-
-### 10.2 Training / SSL
-
-- Supervised và SSL không cùng labeled split.
-- So sánh SSL vs supervised nhưng không cùng `split_seed`.
-- Khóa nhầm `training_seed` giống nhau cho mọi run làm variance giả thấp.
-- Chỉ chạy 1 seed rồi kết luận.
-- Checkpoint chọn bằng test set.
-- Threshold tune bằng test set.
-- SSL gain nhỏ hơn std nhưng vẫn over-claim.
-- Teacher bật pseudo-label quá sớm, gây confirmation bias.
-- Không có burn-in.
-- Không log λ của unlabeled loss.
-
-### 10.3 SSOD-specific
-
-- Pseudo-label chỉ ghi class/confidence mà quên bbox.
-- Không dùng NMS trước khi lấy pseudo-bbox.
-- Quá nhiều bbox trùng lặp làm student học nhiễu.
-- Không transform bbox từ weak view sang strong view.
-- Không kiểm tra box quality.
-- Threshold cao làm rare class biến mất.
-- Threshold thấp làm ảnh negative sinh nhiều pseudo-box sai.
-- Không theo dõi pseudo-box trên unlabeled negative images.
-- Không có fallback khi SSL không cải thiện.
-
-### 10.4 Compute
-
-- Teacher–Student OOM do batch quá lớn.
-- Không có AMP / gradient accumulation / checkpoint resume.
-- Chạy full training trước khi smoke test.
-- Không ghi compute budget, GPU, VRAM, thời gian train.
-
----
-
-## 11. Prompt mở chat mới
-
-Dán đoạn này khi mở chat mới:
+### 8.8 Training-readiness rule
 
 ```text
-Tôi đang tiếp tục đề tài đã khóa:
-“Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi”.
+dataset_training_ready remains false before Phase 2D.1 GPT review PASS.
 
-Hãy đọc PROJECT_CONTEXT.md và PHASE_HANDOFF.md trước.
+Passing Phase 2D.1 confirms only image-loading and empty-image handling readiness.
 
-Trạng thái hiện tại:
-- Phase 2C — Framework & Format Decision / COCO Conversion Planning: PASS.
-- Current phase: Phase 2D — COCO Master Conversion & Validation.
-- Không train, không split, không pseudo-label, không tune threshold, không dùng test set.
+Passing Phase 2D.1 does not create a fixed train/val/test split.
 
-Làm việc theo quy trình:
-script → output → DoD → GPT review → tôi tick checklist.
+Passing Phase 2D.1 does not authorize detector training.
 
-Không nhảy phase.
-Không train khi data/split/COCO/No Finding/seed/checkpoint criterion chưa pass DoD.
-Nếu cần code, hãy viết prompt rõ ràng để tôi giao cho Claude.
-Nếu tôi đưa output/log, hãy review theo DoD và chỉ ra lỗi logic nếu có.
+Training remains locked until the required split, seed, dataset, and protocol phases pass their own Definition of Done.
 ```
+
+---

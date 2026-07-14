@@ -1,0 +1,147 @@
+# Phase 2D — COCO Master Conversion & Validation protocol.
+#
+# This file LOCKS the expected counts and the conversion/validation policy.
+# The Phase 2D script reads these values; it must not silently drift from them.
+#
+# Source of truth: the Phase 2B canonical schema. Phase 2D reorganizes that
+# metadata into COCO detection JSON. It does NOT touch image files.
+
+phase: phase2D_coco_master_conversion
+status: conversion_and_validation
+
+# --- Expected counts (locked by Phase 2B) ---------------------------------
+expected_counts:
+  images: 4894
+  annotations: 36096
+  categories: 14
+  abnormal_images: 4394
+  no_finding_images: 500
+  no_finding_annotations: 0
+
+# --- Category policy ------------------------------------------------------
+category_policy:
+  id_scheme: contiguous_integer_1_to_14
+  id_min: 1
+  id_max: 14
+  id_zero_allowed: false
+  order_source: canonical_class_id          # follow canonical order, never alphabetical
+  supercategory: chest_abnormality
+  no_finding_in_categories: false
+  normal_in_categories: false
+  background_in_categories: false
+  keep_canonical_class_id: true
+  keep_class_id_original: true
+  # Names that must NEVER appear as a detection category (compared lower-cased).
+  forbidden_category_names:
+    - no finding
+    - nofinding
+    - normal
+    - background
+    - __background__
+
+# --- ID policy ------------------------------------------------------------
+id_policy:
+  image_id:
+    scheme: contiguous_integer_1_to_N
+    sort_by: canonical_image_id             # fallback: image_id
+    keep_canonical_image_id: true
+    keep_original_image_id: true
+  annotation_id:
+    scheme: contiguous_integer_1_to_N
+    sort_by: canonical_ann_id               # final fallback: source_row_id
+    keep_canonical_ann_id: true
+    keep_source_row_id: true
+
+# --- BBox conversion policy ----------------------------------------------
+bbox_policy:
+  source_format: xyxy_original_image
+  target_format: coco_xywh_absolute
+  conversion:
+    x: x_min
+    y: y_min
+    width: x_max - x_min
+    height: y_max - y_min
+    area: width * height
+  iscrowd: 0
+  clamp: false
+  delete: false
+  fuse: false
+  nms: false
+  rounding: false                            # no unnecessary rounding
+  one_to_one_canonical_mapping_required: true
+
+# --- Path policy ----------------------------------------------------------
+path_policy:
+  file_name_source: relative_dicom_path
+  local_dicom_path_used: false
+  separator: "/"
+  strict_relative: true
+  absolute_paths_allowed: false
+  drive_letter_allowed: false
+  leading_slash_allowed: false
+  resolve_against_filesystem: false
+  image_root_env_var: VINBIGDATA_DICOM_ROOT
+
+# --- DICOM access policy (hard constraint) --------------------------------
+dicom_access_policy:
+  read_dicom_file: false
+  check_dicom_file_exists: false
+  use_pydicom: false
+  read_dicom_header: false
+  read_pixel_array: false
+  use_cv2_imread: false
+  use_pil_image_open: false
+  use_any_image_loader: false
+  copy_or_convert_image: false
+  width_height_source: canonical_image_table_only
+
+# --- JSON serialization policy -------------------------------------------
+json_policy:
+  strict: true
+  allow_nan: false                           # json.dump(allow_nan=False)
+  allow_infinity: false
+  atomic_write: true                         # temp file -> rename only after pass
+  required_top_level_keys:
+    - images
+    - annotations
+    - categories
+
+# --- Numerical tolerance --------------------------------------------------
+tolerance:
+  area_rel_tol: 1.0e-9
+  area_abs_tol: 1.0e-6
+  boundary_abs_tol: 1.0e-6                   # x + width <= image_width (+ tol)
+  coordinate_abs_tol: 1.0e-9                 # COCO x == canonical x_min
+
+# --- pycocotools policy ---------------------------------------------------
+pycocotools_policy:
+  used_for: annotation_json_parsing_only     # never used to read images
+  unavailable_is: warning                    # ImportError -> warning, validation continues
+  installed_but_load_failure_is: hard_error  # -> dod_pass_candidate must be false
+
+# --- Forbidden in Phase 2D ------------------------------------------------
+forbidden_in_phase_2d:
+  - read any .dicom file
+  - check .dicom file existence
+  - import or use pydicom
+  - read DICOM header or pixel_array
+  - use cv2 / PIL / any image loader
+  - copy or convert image files
+  - create train/val/test split
+  - create labeled/unlabeled split
+  - load the dataset with MMDetection or Detectron2
+  - check filter_empty_gt
+  - train, infer, pseudo-label, or tune thresholds
+  - use the test set
+  - compute AP/mAP
+  - modify the canonical schema or source annotations
+  - delete, clamp, fuse, or NMS any bbox
+  - claim dataset_training_ready
+
+# --- Definition of Done ---------------------------------------------------
+dod:
+  dataset_training_ready: false              # DICOM loader belongs to Phase 2D.1
+  dod_pass_candidate_requires:
+    - hard_errors == 0
+    - all hard DoD checks pass
+  next_phase_locked_until_gpt_review: true

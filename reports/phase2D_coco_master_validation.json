@@ -1,0 +1,315 @@
+{
+  "phase": "phase2D_coco_master_conversion",
+  "created_utc": "2026-07-14T13:38:09.036754+00:00",
+  "input_paths": {
+    "canonical_image_table": "data/processed/canonical/canonical_image_table.csv",
+    "canonical_bbox_table": "data/processed/canonical/canonical_bbox_table.csv",
+    "canonical_class_mapping": "data/processed/canonical/canonical_class_mapping.csv",
+    "phase2b_validation_json": "reports/phase2B_canonical_schema_validation.json",
+    "protocol_yaml": "configs/protocol/phase2D_coco_master_validation.yaml"
+  },
+  "input_sha256": {
+    "canonical_image_table": "8b3a2368eaf806a1a17ad1912cf4983b3683238318274c382e8753a124e5e829",
+    "canonical_bbox_table": "d04d11025eda6038848d35593e77ef1531dbb0fa2158a57a2b3c86af73580378",
+    "canonical_class_mapping": "443f79cbadc7ab9a12729e42e8bc06193f38c64f363face246cc4acebecd6163",
+    "phase2b_validation_json": "8c5c57acc60d4a61a502aa4d9484a21d409b4002dceb01aec25ce2cedf7daf3f",
+    "protocol_yaml": "d841a34e6633e1c3421a3af42aabc87658e2d00eaa2eef6413d75cd477b745af"
+  },
+  "output_path": "data/processed/coco/coco_master.json",
+  "output_written": true,
+  "output_sha256": "36f09d1b1477ea4a63153a04d775c938752e224c26079a0d44881c14b9bb4d75",
+  "counts": {
+    "images": 4894,
+    "annotations": 36096,
+    "categories": 14,
+    "abnormal_images": 4394,
+    "no_finding_images": 500,
+    "no_finding_annotations": 0,
+    "canonical_bbox_rows": 36096
+  },
+  "protocol_validation": {
+    "yaml_path": "configs/protocol/phase2D_coco_master_validation.yaml",
+    "yaml_loaded": true,
+    "strict_schema_pass": true,
+    "phase2b_crosscheck_pass": true,
+    "protocol_drift_count": 0,
+    "protocol_drift": [],
+    "effective_protocol": {
+      "expected_counts": {
+        "images": 4894,
+        "annotations": 36096,
+        "categories": 14,
+        "abnormal_images": 4394,
+        "no_finding_images": 500,
+        "no_finding_annotations": 0
+      },
+      "tolerance": {
+        "area_rel_tol": 1e-09,
+        "area_abs_tol": 1e-06,
+        "boundary_abs_tol": 1e-06,
+        "coordinate_abs_tol": 1e-09
+      },
+      "bbox_source_format": "xyxy_original_image",
+      "bbox_target_format": "coco_xywh_absolute",
+      "supercategory": "chest_abnormality",
+      "image_root_env_var": "VINBIGDATA_DICOM_ROOT",
+      "forbidden_category_names": [
+        "__background__",
+        "background",
+        "no finding",
+        "nofinding",
+        "normal"
+      ]
+    }
+  },
+  "id_validation": {
+    "image_ids_unique": true,
+    "image_ids_contiguous_from_1": true,
+    "annotation_ids_unique": true,
+    "annotation_ids_contiguous_from_1": true,
+    "category_ids_contiguous_1_to_n": true,
+    "category_id_zero_present": false
+  },
+  "image_validation": {
+    "image_count": 4894,
+    "image_count_pass": true,
+    "image_ids_unique": true,
+    "image_ids_contiguous_from_1": true,
+    "file_names_unique": true,
+    "width_height_positive": true,
+    "non_positive_dim_count": 0,
+    "absolute_path_count": 0,
+    "relative_path_only": true,
+    "abnormal_images": 4394,
+    "abnormal_images_pass": true,
+    "no_finding_images": 500,
+    "no_finding_images_pass": true
+  },
+  "annotation_validation": {
+    "annotation_count": 36096,
+    "annotation_count_pass": true,
+    "annotation_ids_unique": true,
+    "annotation_ids_contiguous_from_1": true,
+    "broken_reference_count": 0,
+    "all_image_ids_exist": true,
+    "all_category_ids_exist": true,
+    "invalid_bbox_count": 0,
+    "boundary_violation_count": 0,
+    "area_mismatch_count": 0,
+    "iscrowd_violation_count": 0,
+    "invalid_annotation_total": 0
+  },
+  "relationship_validation": {
+    "all_image_ids_exist": true,
+    "all_category_ids_exist": true,
+    "broken_reference_count": 0
+  },
+  "bbox_validation": {
+    "source_format": "xyxy_original_image",
+    "target_format": "coco_xywh_absolute",
+    "invalid_bbox_count": 0,
+    "clamped": false,
+    "deleted": false,
+    "fused": false,
+    "nms_applied": false,
+    "rounded": false
+  },
+  "area_validation": {
+    "area_formula": "width * height",
+    "area_rel_tol": 1e-09,
+    "area_abs_tol": 1e-06,
+    "area_mismatch_count": 0,
+    "area_pass": true
+  },
+  "boundary_validation": {
+    "rule": "x + width <= image_width AND y + height <= image_height",
+    "boundary_abs_tol": 1e-06,
+    "boundary_violation_count": 0,
+    "boundary_pass": true
+  },
+  "no_finding_validation": {
+    "no_finding_images": 500,
+    "no_finding_images_pass": true,
+    "determined_from": "canonical_image_metadata_not_zero_annotation",
+    "no_finding_with_annotation_count": 0,
+    "all_zero_annotation": true,
+    "no_finding_in_categories": false,
+    "negative_images_lost": 0
+  },
+  "category_validation": {
+    "category_count": 14,
+    "category_count_pass": true,
+    "ids_contiguous_1_to_n": true,
+    "ids_unique": true,
+    "names_unique": true,
+    "category_id_zero_present": false,
+    "no_finding_absent": true,
+    "background_absent": true,
+    "normal_absent": true,
+    "forbidden_names_present": [],
+    "supercategory_uniform": true
+  },
+  "path_validation": {
+    "file_name_source": "relative_dicom_path",
+    "local_dicom_path_used": false,
+    "separator": "/",
+    "absolute_path_count": 0,
+    "strict_relative_pass": true,
+    "resolved_against_filesystem": false,
+    "image_root_env_var": "VINBIGDATA_DICOM_ROOT"
+  },
+  "traceability_validation": {
+    "coordinate_mismatch_count": 0,
+    "image_mapping_mismatch_count": 0,
+    "category_mapping_mismatch_count": 0,
+    "coordinate_abs_tol": 1e-09,
+    "traceability_pass": true,
+    "fields_preserved": [
+      "canonical_ann_id",
+      "source_row_id",
+      "original_image_id",
+      "rad_id",
+      "canonical_class_id",
+      "class_id_original"
+    ]
+  },
+  "one_to_one_preservation": {
+    "canonical_bbox_rows": 36096,
+    "coco_annotation_rows": 36096,
+    "canonical_ann_id_sets_equal": true,
+    "missing_canonical_annotation_count": 0,
+    "duplicated_canonical_annotation_count": 0,
+    "extra_coco_annotation_count": 0,
+    "one_to_one_pass": true,
+    "note": "Set equality of canonical_ann_id is the evidence that no bbox \u2014 including near-duplicate candidates \u2014 was deleted or fused. Phase 2D did NOT re-run near-duplicate detection; the candidate file is not an input here."
+  },
+  "json_validation": {
+    "strict_allow_nan": false,
+    "temporary_json_parse_pass": true,
+    "top_level_keys_present": true,
+    "temporary_counts_match": true,
+    "atomic_write": true
+  },
+  "pycocotools_validation": {
+    "used_for": "annotation_json_parsing_only",
+    "pycocotools_available": true,
+    "pycocotools_load_pass": true,
+    "exception": null,
+    "images_loaded": 4894,
+    "annotations_loaded": 36096,
+    "categories_loaded": 14
+  },
+  "atomic_output_validation": {
+    "temporary_file_used": true,
+    "temporary_written": true,
+    "all_pre_promotion_checks_pass": true,
+    "final_output_replaced": true,
+    "previous_output_existed": true,
+    "previous_valid_output_preserved": false,
+    "previous_valid_output_preserved_on_failure": true,
+    "final_output_sha256": "36f09d1b1477ea4a63153a04d775c938752e224c26079a0d44881c14b9bb4d75",
+    "final_reparse_pass": true,
+    "validation_completed_before_promotion": true,
+    "per_image_count_checked_before_promotion": true,
+    "temporary_json_parse_pass": true,
+    "pycocotools_checked_before_promotion": true
+  },
+  "column_mapping": {
+    "image_table": {
+      "canonical_image_id": "canonical_image_id",
+      "image_id": "image_id",
+      "relative_dicom_path": "relative_dicom_path",
+      "image_width": "image_width",
+      "image_height": "image_height",
+      "is_negative": "is_negative",
+      "is_abnormal": "is_abnormal",
+      "scope_label": "scope_label",
+      "bbox_count": "bbox_count"
+    },
+    "bbox_table": {
+      "canonical_ann_id": "canonical_ann_id",
+      "image_id": "image_id",
+      "canonical_class_id": "canonical_class_id",
+      "class_name": "class_name",
+      "x_min": "x_min",
+      "y_min": "y_min",
+      "x_max": "x_max",
+      "y_max": "y_max",
+      "source_row_id": "source_row_id",
+      "rad_id": "rad_id",
+      "class_id_original": "class_id_original",
+      "bbox_format": "bbox_format"
+    },
+    "class_mapping": {
+      "canonical_class_id": "canonical_class_id",
+      "class_name": "class_name",
+      "class_id_original": "class_id_original",
+      "is_no_finding": "is_no_finding"
+    }
+  },
+  "image_annotation_count_mismatches": 0,
+  "forbidden_actions": {
+    "dicom_file_read": false,
+    "dicom_file_existence_checked": false,
+    "pydicom_used": false,
+    "dicom_header_read": false,
+    "pixel_array_read": false,
+    "cv2_imread_used": false,
+    "pil_image_open_used": false,
+    "any_image_loader_used": false,
+    "image_copied_or_converted": false,
+    "train_val_test_split_created": false,
+    "labeled_unlabeled_split_created": false,
+    "mmdet_or_detectron2_dataset_loaded": false,
+    "filter_empty_gt_checked": false,
+    "training_started": false,
+    "inference_run": false,
+    "pseudo_label_generated": false,
+    "threshold_tuned": false,
+    "test_set_used": false,
+    "ap_map_computed": false,
+    "canonical_schema_modified": false,
+    "source_annotation_modified": false,
+    "bbox_deleted": false,
+    "bbox_clamped": false,
+    "bbox_fused": false,
+    "nms_applied": false,
+    "dataset_training_ready_claimed": false
+  },
+  "dataset_training_ready": false,
+  "next_phase_locked_until_gpt_review": true,
+  "hard_errors": [],
+  "warnings": [],
+  "dod_checklist": {
+    "protocol_yaml_strict_load_pass": true,
+    "protocol_phase2b_crosscheck_pass": true,
+    "images_expected": true,
+    "annotations_expected": true,
+    "categories_expected": true,
+    "abnormal_images_expected": true,
+    "no_finding_images_expected": true,
+    "no_finding_zero_annotations": true,
+    "no_finding_not_a_category": true,
+    "category_ids_contiguous_1_to_n": true,
+    "category_id_zero_absent": true,
+    "image_ids_unique": true,
+    "annotation_ids_unique": true,
+    "file_names_unique": true,
+    "relative_paths_only": true,
+    "all_references_valid": true,
+    "zero_invalid_annotations": true,
+    "boundary_pass": true,
+    "area_pass": true,
+    "traceability_pass": true,
+    "one_to_one_preservation_pass": true,
+    "per_image_bbox_count_pass": true,
+    "category_annotation_total_pass": true,
+    "json_parse_pass": true,
+    "json_top_level_keys_pass": true,
+    "pycocotools_pass_or_unavailable": true,
+    "all_hard_checks_completed_before_output_replace": true,
+    "per_image_bbox_count_checked_before_output_replace": true,
+    "atomic_output_promotion_pass": true
+  },
+  "dod_pass_candidate": true
+}
