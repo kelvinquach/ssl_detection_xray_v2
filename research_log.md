@@ -3683,3 +3683,758 @@ Thiết kế và review Phase 2D.1A —
 Image Representation Protocol Decision.
 ```
 
+---
+
+## 2026-07-15 — PHASE 2D.1A: Image Representation Protocol Decision
+
+### Mục tiêu
+
+Khóa protocol kỹ thuật để chuyển nguồn DICOM y khoa gốc thành JPG training representation cho MMDetection trước khi đọc pixel hoặc thực hiện chuyển đổi ảnh thật.
+
+Phase 2D.1A là decision-only phase. Mục tiêu của phase này là:
+
+```text
+Khóa vai trò của DICOM, JPG, coco_master.json và coco_master_jpg.json.
+
+Khóa thứ tự DICOM pixel transformation.
+
+Khóa Modality LUT / RescaleSlope / RescaleIntercept policy.
+
+Khóa VOI LUT / WindowCenter / WindowWidth policy.
+
+Khóa PhotometricInterpretation, PresentationLUTShape
+và MONOCHROME1 inversion policy.
+
+Khóa intensity clipping và uint8 conversion policy.
+
+Khóa output-channel policy.
+
+Khóa no-resize, no-crop, no-rotation, no-flip
+và no-transpose policy.
+
+Khóa JPG filename, COCO-JPG path và traceability policy.
+
+Định nghĩa pilot so sánh JPEG quality 95 và 100.
+
+Định nghĩa fidelity metrics và visual-audit requirements.
+
+Không chọn final JPEG quality trước pilot evidence.
+```
+
+Phase này không đọc DICOM pixel array, không tạo JPG và không chạy full conversion.
+
+---
+
+### Đã làm
+
+#### 1. Tạo script protocol Phase 2D.1A
+
+Đã tạo:
+
+```text
+scripts/02D1A_image_representation_protocol.py
+```
+
+Script dùng một protocol specification có kiểm soát để sinh đồng bộ YAML, Markdown và JSON evidence.
+
+Script không import hoặc sử dụng:
+
+```text
+pydicom
+PIL
+cv2
+pixel_array
+DICOM decoding
+image encoding
+```
+
+Do đó không có ảnh nào được đọc, giải mã hoặc chuyển đổi trong Phase 2D.1A.
+
+#### 2. Tạo protocol YAML
+
+Đã tạo:
+
+```text
+configs/protocol/phase2D1_jpg_representation.yaml
+```
+
+Protocol metadata:
+
+```text
+phase_id: 2D.1A
+protocol_version: 1.0.0
+protocol_status: decision_locked_pilot_pending
+final_jpeg_quality: null
+```
+
+JPEG quality candidates:
+
+```text
+95
+100
+```
+
+Final JPEG quality vẫn chưa được lựa chọn.
+
+#### 3. Tạo decision reports
+
+Đã tạo:
+
+```text
+reports/phase2D1_image_representation_decision.md
+reports/phase2D1_image_representation_decision.json
+```
+
+Các report khóa đầy đủ:
+
+```text
+Artifact roles
+DICOM decoding policy
+Modality transformation policy
+VOI/windowing policy
+Pixel-padding policy
+Presentation-polarity policy
+uint8 conversion policy
+Output-channel policy
+JPEG candidate policy
+Geometry-preservation policy
+Path policy
+Traceability policy
+Pilot-selection protocol
+Fidelity-validation protocol
+Forbidden actions
+Readiness flags
+Definition of Done
+```
+
+#### 4. Tạo guardrail tests
+
+Đã tạo:
+
+```text
+tests/test_phase2D1A_protocol_guardrails.py
+```
+
+Các test kiểm tra:
+
+```text
+Output files tồn tại và parse được.
+YAML strict-load thành công.
+JSON parse thành công.
+Locked counts khớp evidence Phase 2D.
+Protocol specification là single source of truth.
+Cross-output drift bằng 0.
+Final JPEG quality vẫn là null.
+JPEG quality candidates đúng [95, 100].
+Không khóa numeric fidelity thresholds.
+Không cho phép direct per-image min-max.
+Không cho phép automatic percentile clipping.
+Không có geometry transformation.
+BBox scaling chưa được đánh dấu là validated.
+Tất cả readiness flags vẫn false.
+Tất cả forbidden actions vẫn false.
+Không có banned imports hoặc pixel decoding.
+Atomic output preservation hoạt động khi failure.
+Atomic promotion hoạt động khi success.
+```
+
+---
+
+### Protocol đã khóa
+
+#### Artifact roles
+
+```text
+DICOM:
+Immutable raw medical source.
+
+JPG:
+Processed training image representation.
+
+coco_master.json:
+Official annotation master.
+
+coco_master_jpg.json:
+Path-only training derivative linked to JPG representation.
+```
+
+#### Authoritative pixel-transformation order
+
+```text
+DICOM decode
+→ pixel-padding mask
+→ modality transformation
+→ VOI LUT/windowing
+→ presentation-polarity normalization
+→ deterministic uint8 conversion
+→ one-channel JPG storage
+→ JPEG encoding
+```
+
+Thứ tự này không được tự ý thay đổi trong Phase 2D.1B.
+
+#### DICOM decoding policy
+
+```text
+force_read: false
+single_frame_only: true
+SamplesPerPixel: 1
+Allowed PhotometricInterpretation:
+- MONOCHROME1
+- MONOCHROME2
+
+Unsupported input:
+hard fail
+```
+
+#### Modality transformation policy
+
+```text
+Nếu có Modality LUT Sequence:
+    apply Modality LUT
+
+Ngược lại, nếu có đầy đủ RescaleSlope và RescaleIntercept:
+    apply rescale
+
+Ngược lại:
+    identity transformation
+```
+
+Guardrail:
+
+```text
+Không áp dụng Modality LUT và rescale tuần tự trên cùng ảnh.
+
+Nếu chỉ tồn tại RescaleSlope hoặc chỉ tồn tại RescaleIntercept:
+hard fail.
+
+Metadata modality xung đột hoặc mơ hồ:
+hard fail.
+```
+
+#### VOI LUT / Windowing policy
+
+```text
+Nếu có VOI LUT Sequence:
+    ưu tiên VOI LUT
+
+Ngược lại, nếu có WindowCenter và WindowWidth hợp lệ:
+    dùng windowing
+
+Ngược lại:
+    dùng theoretical modality-domain range fallback
+```
+
+Các hành động bị cấm:
+
+```text
+Observed per-image min-max normalization
+Automatic percentile clipping
+```
+
+Không được dùng trực tiếp:
+
+```python
+arr.min()
+arr.max()
+```
+
+để thiết lập range riêng cho từng ảnh.
+
+#### Presentation polarity policy
+
+```text
+Nếu PresentationLUTShape == INVERSE:
+    invert đúng một lần
+
+Ngược lại, nếu PresentationLUTShape không tồn tại
+và PhotometricInterpretation == MONOCHROME1:
+    invert đúng một lần
+
+Ngược lại:
+    không invert
+```
+
+Output target:
+
+```text
+MONOCHROME2-equivalent polarity
+low value = dark
+high value = bright
+```
+
+#### uint8 conversion policy
+
+```text
+clip bằng theoretical output bounds
+→ linear map sang [0,255]
+→ numpy.rint
+→ final clip [0,255]
+→ cast uint8
+```
+
+NaN hoặc Inf phải hard fail.
+
+#### Channel policy
+
+```text
+JPG storage:
+mode L
+one grayscale channel
+uint8
+
+MMDetection input:
+three identical channels created by grayscale replication
+during framework loading
+```
+
+Việc MMDetection thực sự tạo đúng ba channel được trì hoãn tới Phase 2D.1C.
+
+#### Geometry and bbox policy
+
+```text
+resize: false
+crop: false
+rotation: false
+flip: false
+transpose: false
+
+preserve width: true
+preserve height: true
+
+bbox_scaling_expected: false
+bbox_scaling_validated: false
+```
+
+Nếu dimensions hoặc orientation thay đổi:
+
+```text
+hard fail
+```
+
+Không được tự động scale bbox để che giấu geometry mismatch.
+
+#### Path policy
+
+```text
+JPG root:
+data/processed/images_jpg
+
+JPG relative path:
+train/<image_id>.jpg
+
+COCO-JPG file_name:
+train/<image_id>.jpg
+
+Absolute COCO-JPG path:
+forbidden
+```
+
+#### Traceability policy
+
+Mapping dự kiến:
+
+```text
+data/processed/image_mapping/dicom_to_jpg_mapping.csv
+```
+
+Các hash bắt buộc trong phase chuyển đổi sau:
+
+```text
+source_dicom_sha256
+pre_jpeg_uint8_sha256
+output_jpg_sha256
+protocol_version
+protocol_sha256
+```
+
+---
+
+### Pilot protocol đã khóa
+
+Pilot Phase 2D.1B phải dùng:
+
+```text
+Selection strategy: deterministic_coverage_first
+Selection unit: image_id
+Minimum images: 64
+Minimum No Finding images: 16
+Tie-break seed: 2026
+```
+
+Pilot phải bao phủ:
+
+```text
+Tất cả 14 abnormal classes
+No Finding images
+Minimum/maximum dimensions
+Minimum/maximum pixel counts
+Smallest/largest bbox
+PhotometricInterpretation patterns
+Transfer Syntax patterns
+BitsStored / PixelRepresentation patterns
+Rescale patterns
+Modality LUT presence/absence
+VOI LUT presence/absence
+WindowCenter/WindowWidth presence/absence
+Single/multi-valued windows
+PresentationLUTShape patterns
+PixelPaddingValue presence/absence
+```
+
+Nếu 64 ảnh không đủ bao phủ toàn bộ metadata strata đã quan sát, pilot phải mở rộng cho tới khi coverage đầy đủ.
+
+---
+
+### Fidelity protocol đã khóa
+
+JPEG fidelity phải được đánh giá bằng:
+
+```text
+pre-JPEG uint8 image
+versus
+decoded JPG image
+```
+
+Không được mô tả toàn bộ sai khác giữa raw DICOM và JPG là JPEG compression error.
+
+Whole-image metrics:
+
+```text
+MAE
+RMSE
+PSNR
+SSIM
+maximum absolute error
+p95 absolute error
+p99 absolute error
+file size
+compression ratio
+```
+
+BBox-ROI metrics:
+
+```text
+ROI MAE
+ROI PSNR
+ROI SSIM
+ROI maximum absolute error
+```
+
+Visual evidence:
+
+```text
+Full-image visual audit
+BBox-crop visual audit
+Difference heatmap
+```
+
+Phase 2D.1A không khóa ngưỡng định lượng cho PSNR, SSIM hoặc MAE.
+
+---
+
+### Evidence đã tạo và lệnh đã chạy
+
+Lệnh chạy protocol:
+
+```cmd
+python scripts\02D1A_image_representation_protocol.py
+```
+
+Console result:
+
+```text
+Phase: 2D.1A
+Status: OPEN_REVIEW_REQUIRED
+Protocol version: 1.0.0
+Locked images: 4894
+Locked annotations: 36096
+Locked categories: 14
+JPEG candidates: [95, 100]
+Final JPEG quality: PENDING PILOT
+Direct min-max allowed: False
+Resize/crop/rotation: False / False / False
+Full conversion run: False
+COCO-JPG created: False
+Dataset training-ready: False
+Training authorized: False
+Hard errors: 0
+Warnings: 0
+DoD pass candidate: True
+GPT review status: PENDING
+```
+
+Lệnh chạy tests:
+
+```cmd
+python -m unittest discover -s tests -p "test_phase2D1A_protocol_guardrails.py" -v
+```
+
+Kết quả:
+
+```text
+Ran 31 tests
+OK
+```
+
+JSON validation:
+
+```cmd
+python -m json.tool reports\phase2D1_image_representation_decision.json > NUL
+```
+
+Kết quả:
+
+```text
+JSON_PARSE_PASS
+```
+
+YAML validation:
+
+```cmd
+python -c "import yaml; p=yaml.safe_load(open(r'configs\protocol\phase2D1_jpg_representation.yaml', encoding='utf-8')); print('phase=',p['protocol_metadata']['phase_id']); print('candidates=',p['jpeg_encoding']['quality_candidates']); print('final_quality=',p['jpeg_encoding']['final_quality'])"
+```
+
+Kết quả:
+
+```text
+phase= 2D.1A
+candidates= [95, 100]
+final_quality= None
+```
+
+---
+
+### Review GPT
+
+Phase 2D.1A — Image Representation Protocol Decision: **PASS**
+
+DoD review:
+
+```text
+Script execution: PASS
+Locked image count = 4,894: PASS
+Locked annotation count = 36,096: PASS
+Locked category count = 14: PASS
+Required protocol items documented = 20/20: PASS
+JPEG candidates = [95, 100]: PASS
+Final JPEG quality remains null: PASS
+No numeric fidelity threshold locked: PASS
+Direct per-image min-max forbidden: PASS
+Automatic percentile clipping forbidden: PASS
+No geometry transforms: PASS
+BBox scaling not falsely validated: PASS
+Single-source protocol generation: PASS
+Cross-output drift count = 0: PASS
+Atomic output preservation: PASS
+Atomic output promotion: PASS
+Guardrail tests = 31/31: PASS
+JSON parse: PASS
+YAML strict-load: PASS
+Hard errors = 0: PASS
+Warnings = 0: PASS
+Forbidden actions avoided: PASS
+```
+
+---
+
+### Quyết định
+
+Phase 2D.1A được khóa với trạng thái:
+
+```text
+CLOSED / PASS
+```
+
+Quyết định nghiên cứu:
+
+```text
+Protocol version 1.0.0 được chấp nhận làm protocol chính thức
+cho Phase 2D.1B-Pilot.
+
+JPEG quality 95 và 100 là hai ứng viên pilot.
+
+Final JPEG quality chưa được lựa chọn.
+
+Không được chạy full conversion trước pilot evidence và GPT review.
+
+No-resize, no-crop, no-rotation, no-flip và no-transpose
+tiếp tục là hard geometry guardrails.
+
+BBox scaling không được kỳ vọng, nhưng bbox invariance
+phải được kiểm chứng bằng evidence thật trong pilot.
+
+DICOM vẫn là immutable raw source.
+
+JPG chưa được xem là training-ready representation.
+
+coco_master_jpg.json chưa được tạo.
+
+MMDetection loading chưa được validate.
+```
+
+---
+
+### Vấn đề / rủi ro còn lại
+
+```text
+Chưa đọc pixel array DICOM theo protocol 1.0.0.
+
+Chưa xác định metadata strata thực tế ở mức pixel-decoding pilot.
+
+Chưa tạo pilot JPG quality 95 hoặc 100.
+
+Chưa tính fidelity metrics.
+
+Chưa thực hiện visual audit.
+
+Chưa lựa chọn final JPEG quality.
+
+Chưa xác nhận width/height/orientation preservation bằng ảnh thật.
+
+Chưa xác nhận bbox invariance bằng pilot.
+
+Chưa tạo full JPG dataset.
+
+Chưa tạo coco_master_jpg.json.
+
+Chưa kiểm tra MMDetection giữ đủ 500 No Finding images.
+```
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 2D.1A đã tuân thủ:
+
+```text
+Không đọc DICOM pixel array.
+Không tạo JPG.
+Không chạy pilot conversion.
+Không chạy full conversion.
+Không tạo coco_master_jpg.json.
+Không tạo train/val/test split.
+Không tạo labeled/unlabeled split.
+Không train.
+Không inference.
+Không pseudo-label.
+Không tune threshold.
+Không tính AP/mAP.
+Không dùng test set.
+Không sửa canonical bbox.
+Không sửa coco_master.json.
+Không claim JPG representation ready.
+Không claim dataset training-ready.
+Không authorize training.
+```
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+```text
+Khóa vai trò DICOM và JPG.
+Khóa vai trò coco_master.json và coco_master_jpg.json.
+Khóa DICOM decoding và modality transformation policy.
+Khóa RescaleSlope / RescaleIntercept và Modality LUT policy.
+Khóa VOI LUT / windowing và intensity clipping policy.
+Khóa PhotometricInterpretation / MONOCHROME1 inversion policy.
+Khóa uint8 [0,255] và output-channel policy.
+Khóa no-resize/no-crop/no-rotation và bbox-scaling policy.
+Định nghĩa pilot JPEG quality 95 và 100.
+Khóa filename/path/traceability policy.
+Khóa pilot subset và fidelity metrics.
+Tạo protocol YAML.
+Tạo decision Markdown report.
+Tạo decision JSON report.
+Tạo guardrail tests.
+Forbidden actions avoided.
+GPT review PASS.
+```
+
+Chưa được tick:
+
+```text
+Phase 2D.1B-Pilot PASS.
+Final JPEG quality selected.
+Phase 2D.1B-Full PASS.
+Full JPG dataset created.
+coco_master_jpg.json created.
+JPG representation ready.
+MMDetection loading ready.
+Empty-image retention ready.
+Phase 2D.1 overall PASS.
+Dataset training-ready.
+Training authorized.
+```
+
+---
+
+### Trạng thái gate sau Phase 2D.1A
+
+```text
+Phase 2D.1A:
+CLOSED / PASS
+
+Phase 2D.1B:
+IN PROGRESS
+
+Phase 2D.1B-Pilot:
+OPEN / CURRENT
+
+Phase 2D.1B-Full:
+LOCKED until pilot evidence, final JPEG quality decision
+and GPT review PASS
+
+Phase 2D.1C:
+LOCKED until Phase 2D.1B-Full PASS
+
+Phase 2D.1D:
+LOCKED until Phase 2D.1C PASS
+```
+
+Readiness flags:
+
+```text
+jpg_training_representation_ready: false
+coco_jpg_training_annotation_ready: false
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
+```
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo được phép mở:
+
+```text
+Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
+Environment: Local
+```
+
+Mục tiêu tiếp theo:
+
+```text
+Chọn pilot theo deterministic coverage-first protocol.
+
+Đọc và giải mã pixel DICOM thật theo protocol version 1.0.0.
+
+Tạo paired pilot JPG quality 95 và 100.
+
+Kiểm tra geometry và bbox invariance.
+
+Tính whole-image và bbox-ROI fidelity metrics.
+
+Thực hiện visual audit và difference heatmaps.
+
+Lựa chọn một final JPEG quality.
+
+Yêu cầu GPT review trước khi mở full conversion.
+```
+
+Full conversion 4.894 ảnh vẫn bị khóa.

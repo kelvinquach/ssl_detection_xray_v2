@@ -1,0 +1,240 @@
+protocol_metadata:
+  phase_id: 2D.1A
+  protocol_name: image_representation_protocol_decision
+  protocol_version: 1.0.0
+  status: decision_locked_pilot_pending
+  seed: 2026
+  gpt_review_status: pending
+artifact_roles:
+  DICOM: immutable_raw_medical_source
+  JPG: processed_training_representation
+  coco_master.json: official_annotation_master
+  coco_master_jpg.json: path-only training derivative
+dicom_decoding_policy:
+  documented_only: true
+  executed_in_this_phase: false
+  applies_to_phase: 2D.1B
+  force_read: false
+  single_frame_only: true
+  samples_per_pixel_must_equal: 1
+  allowed_photometric_interpretation:
+  - MONOCHROME1
+  - MONOCHROME2
+  unsupported_inputs: hard_fail
+  required_future_recording_fields:
+  - TransferSyntaxUID
+  - decoder_backend
+  - Rows
+  - Columns
+  - BitsAllocated
+  - BitsStored
+  - HighBit
+  - PixelRepresentation
+  - SamplesPerPixel
+  - PhotometricInterpretation
+  - NumberOfFrames
+pixel_padding_policy:
+  build_padding_mask_from_stored_pixels: true
+  use_fields_when_present:
+  - PixelPaddingValue
+  - PixelPaddingRangeLimit
+  padding_must_not_influence_intensity_statistics: true
+  final_padding_value_after_monochrome2_normalization: 0
+modality_transformation_policy:
+  branch:
+    if_modality_lut_sequence_present: apply_modality_lut
+    elif_rescale_slope_and_intercept_present: apply_rescale
+    else: identity
+  do_not_apply_both_lut_and_rescale_sequentially: true
+  only_one_of_rescale_slope_intercept_present: hard_fail
+  conflicting_or_ambiguous_modality_metadata: hard_fail
+  occurs_before_voi_windowing: true
+voi_windowing_policy:
+  branch:
+    if_voi_lut_sequence_exists: prefer_voi_lut
+    elif_valid_window_center_and_width_exist: use_windowing
+    else: use_theoretical_modality_domain_range_fallback
+  selected_index: 0
+  record_all_available_values: true
+  respect_voi_lut_function: true
+  direct_observed_per_image_min_max: forbidden
+  automatic_percentile_clipping: forbidden
+  fallback_basis: theoretical_stored_or_modality_range
+  fallback_must_not_use_per_image_array_min_max: true
+presentation_polarity_policy:
+  branch:
+    if_presentation_lut_shape_inverse: invert_once
+    elif_shape_absent_and_photometric_monochrome1: invert_once
+    else: no_inversion
+  output_target: MONOCHROME2_equivalent_polarity
+  low_value: dark
+  high_value: bright
+uint8_conversion_policy:
+  steps:
+  - clip_using_theoretical_output_bounds
+  - linear_mapping_to_0_255
+  - round_using_numpy_rint
+  - final_clip_0_255
+  - cast_uint8
+  nan_or_inf: hard_fail
+output_channel_policy:
+  jpg_storage:
+    jpeg_mode: L
+    channels: 1
+    dtype: uint8
+  mmdetection_model_input:
+    channels: 3
+    replicate_grayscale_in_loader: true
+    actual_validation_deferred_to: 2D.1C
+jpeg_encoding:
+  encoder: Pillow
+  quality_candidates:
+  - 95
+  - 100
+  final_quality: null
+  final_quality_status: pending_phase2D1B_pilot
+  optimize: false
+  progressive: false
+  lossless_claim: forbidden
+  required_future_encoder_environment_recording:
+  - Python
+  - Pillow
+  - libjpeg
+  - pydicom
+  - numpy
+geometry_bbox_policy:
+  resize: false
+  crop: false
+  rotation: false
+  flip: false
+  transpose: false
+  preserve_width_and_height: true
+  bbox_scaling_expected: false
+  bbox_scaling_validated: false
+  on_dimension_or_orientation_change:
+  - hard_fail
+  - do_not_automatically_scale_bbox
+filename_path_policy:
+  jpg_root: data/processed/images_jpg
+  jpg_relative_file_name: train/<image_id>.jpg
+  coco_jpg_file_name: train/<image_id>.jpg
+  absolute_path_in_coco_jpg: forbidden
+traceability_policy:
+  future_mapping_target: data/processed/image_mapping/dicom_to_jpg_mapping.csv
+  required_future_fields:
+  - original_image_id
+  - canonical_image_id
+  - coco_image_id
+  - dicom_relative_path
+  - jpg_relative_path
+  - source_dicom_sha256
+  - pre_jpeg_uint8_sha256
+  - output_jpg_sha256
+  - protocol_version
+  - protocol_sha256
+  - transfer_syntax_uid
+  - decoder_backend
+  - rows
+  - columns
+  - jpeg_quality
+  - modality_branch
+  - voi_branch
+  - presentation_inversion_applied
+pilot_selection_policy:
+  minimum_images: 64
+  minimum_no_finding_images: 16
+  tie_break_seed: 2026
+  selection_unit: image_id
+  selection: deterministic_coverage_first
+  actual_image_ids_selected_in_this_phase: false
+  must_cover:
+  - all_14_abnormal_classes
+  - minimum_and_maximum_dimensions_and_pixel_count
+  - smallest_and_largest_bbox
+  - all_photometric_interpretation_values
+  - all_transfer_syntax_patterns
+  - all_bits_stored_and_pixel_representation_patterns
+  - rescale_slope_intercept_patterns
+  - modality_lut_presence_and_absence
+  - voi_lut_presence_and_absence
+  - window_center_width_presence_and_absence
+  - single_and_multi_valued_windows
+  - presentation_lut_shape_patterns
+  - pixel_padding_value_presence_and_absence
+  expansion_rule: if 64 images are insufficient, expand until all observed metadata
+    strata are represented
+fidelity_validation_policy:
+  jpeg_fidelity_reference: pre_jpeg_uint8_image
+  comparison_target: decoded_jpg_image
+  never_describe_raw_dicom_to_jpg_difference_as_jpeg_compression_error: true
+  required_whole_image_metrics:
+  - MAE
+  - RMSE
+  - PSNR
+  - SSIM
+  - maximum_absolute_error
+  - p95_absolute_error
+  - p99_absolute_error
+  required_bbox_roi_metrics:
+  - ROI_MAE
+  - ROI_PSNR
+  - ROI_SSIM
+  - ROI_maximum_absolute_error
+  also_required:
+  - file_size
+  - compression_ratio_relative_to_pre_jpeg_uint8_bytes
+  - full_image_visual_audit
+  - bbox_crop_visual_audit
+  - difference_heatmap
+  numeric_pass_thresholds_locked_in_this_phase: false
+final_quality_decision_rule:
+  pilot_candidates:
+  - 95
+  - 100
+  quality_95_selectable_only_after:
+  - structural_checks_pass
+  - whole_image_metrics_pass
+  - bbox_roi_metrics_pass
+  - visual_audit_pass
+  quality_100_selected_only_if: quality_95_shows_meaningful_lesion_region_degradation
+    and quality_100_resolves_it
+  if_both_candidates_fail:
+  - block_full_conversion
+  - reopen_image_format_decision
+  - do_not_silently_continue
+  final_quality_must_remain_null_in_this_phase: true
+thresholds_not_locked:
+  psnr_pass_threshold: null
+  ssim_pass_threshold: null
+  mae_pass_threshold: null
+  roi_psnr_pass_threshold: null
+  roi_ssim_pass_threshold: null
+  note: No numeric fidelity pass threshold is locked in Phase 2D.1A.
+readiness_flags:
+  jpg_training_representation_ready: false
+  coco_jpg_training_annotation_ready: false
+  mmdetection_dataset_loading_ready: false
+  empty_image_retention_ready: false
+  dataset_training_ready: false
+  training_authorized: false
+forbidden_actions:
+  full_conversion_run: false
+  full_jpg_dataset_created: false
+  coco_master_jpg_created: false
+  split_created: false
+  labeled_unlabeled_split_created: false
+  training_started: false
+  inference_run: false
+  pseudo_labels_generated: false
+  threshold_tuned: false
+  ap_map_computed: false
+  test_set_used: false
+  canonical_bbox_modified: false
+  coco_master_modified: false
+locked_input_counts:
+  images: 4894
+  abnormal_images: 4394
+  no_finding_images: 500
+  annotations: 36096
+  categories: 14
+  no_finding_annotations: 0
