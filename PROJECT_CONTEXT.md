@@ -248,7 +248,11 @@ Lưu ý thống nhất tên file:
 - **2B:** Canonical schema.
 - **2C:** Framework & format decision.
 - **2D:** COCO master conversion and validation.
-- **2D.1:** Empty image loading check.
+- **2D.1:** JPG Training Representation & MMDetection Empty-Image Loading Validation.
+  - **2D.1A:** Image Representation Protocol Decision.
+  - **2D.1B:** DICOM-to-JPG Conversion & Validation.
+  - **2D.1C:** MMDetection Dataset / Empty-Image Loading Validation.
+  - **2D.1D:** Evidence Consolidation, GPT Review & Closure.
 - **2E:** Fixed train/val/test split.
 - **2F:** Labeled/unlabeled split for SSL.
 
@@ -295,13 +299,14 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-Current phase: Phase 2D — COCO Master Conversion & Validation: PASS
-Previous phase: Phase 2C — Framework & Format Decision / COCO Conversion Planning
-Next phase: Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
-Git status: Phase 2D GPT review PASS; documentation/checklist update and commit/push are pass.
-### 7.1 Current gate
+Current phase: Phase 2D.1A — Image Representation Protocol Decision
+Overall phase: Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation: IN PROGRESS
+Previous phase: Phase 2D — COCO Master Conversion & Validation: CLOSED / PASS
+Next gated phase: Phase 2D.1B — DICOM-to-JPG Conversion & Validation
+Git status: Phase 2D committed and pushed to origin/main at commit 1a3f7a7.
+Dataset training-ready: false
+Training authorized: false
 
-```text
 ### 7.1 Current gate
 
 ```text
@@ -317,8 +322,22 @@ Phase 1D — Label Reliability & Kappa Feasibility: PASS
 Phase 2A — Data Standardization / Image-Boundary Validation: PASS
 Phase 2B — Canonical Detection Annotation Schema: PASS
 Phase 2C — Framework & Format Decision / COCO Conversion Planning: PASS
-Phase 2D — COCO Master Conversion & Validation: PASS
-Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation: OPEN / NEXT
+Phase 2D — COCO Master Conversion & Validation: CLOSED / PASS
+
+Phase 2D.1 — JPG Training Representation & MMDetection
+Empty-Image Loading Validation: IN PROGRESS
+
+Phase 2D.1A — Image Representation Protocol Decision:
+OPEN / CURRENT
+
+Phase 2D.1B — DICOM-to-JPG Conversion & Validation:
+LOCKED until Phase 2D.1A GPT review PASS
+
+Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation:
+LOCKED until Phase 2D.1B GPT review PASS
+
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure:
+LOCKED until Phase 2D.1C PASS
 
 Split train/val/test: LOCKED
 Labeled/unlabeled split: LOCKED
@@ -326,11 +345,17 @@ Training: LOCKED
 Inference: LOCKED
 Pseudo-labeling: LOCKED
 Threshold tuning: LOCKED
+AP/mAP computation: LOCKED
 Test-set usage: LOCKED
 
-Dataset training-ready: FALSE
-
+jpg_training_representation_ready: FALSE
+coco_jpg_training_annotation_ready: FALSE
+mmdetection_dataset_loading_ready: FALSE
+empty_image_retention_ready: FALSE
+dataset_training_ready: FALSE
+training_authorized: FALSE
 ```
+
 
 ### 7.2 Controlled working scope locked by Phase 1C
 
@@ -693,20 +718,33 @@ Issues / risks:
 ```text
 A valid COCO annotation file does not make the dataset training-ready.
 
-DICOM pixel decoding has not been validated in the MMDetection-compatible pipeline.
+The processed training image representation has not yet been created.
 
-The default MMDetection LoadImageFromFile must not be assumed to support .dicom.
+The DICOM-to-JPG intensity transformation protocol has not yet been locked.
 
-No Finding / empty-image loading has not been validated using the framework dataloader.
+RescaleSlope/RescaleIntercept, VOI LUT/windowing, MONOCHROME1 inversion,
+intensity clipping, uint8 conversion, JPEG quality and channel policy
+have not yet been validated for the training representation.
 
-filter_empty_gt=False or an equivalent configuration has not been validated.
+coco_master_jpg.json has not yet been created.
+
+JPG dimensions and bbox invariance have not yet been validated.
+
+MMDetection has not yet loaded the JPG + COCO-JPG dataset.
+
+No Finding / empty-GT retention has not yet been validated using MMDetection.
+
+filter_empty_gt=False or an equivalent configuration has not yet been
+proven effective.
 
 Train/val/test split has not been created.
 
 Labeled/unlabeled SSL subsets have not been created.
 
-Training, inference, pseudo-labeling, threshold tuning, and test-set usage remain locked.
+Training, inference, pseudo-labeling, threshold tuning, AP/mAP computation
+and test-set usage remain locked.
 ```
+
 
 Forbidden actions confirmed:
 
@@ -735,16 +773,204 @@ No dataset training-ready claim.
 Next phase:
 
 ```text
-Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
+Phase 2D.1A — Image Representation Protocol Decision
+```
+
+Overall phase:
+
+```text
+Phase 2D.1 — JPG Training Representation &
+MMDetection Empty-Image Loading Validation
 ```
 
 Opening condition:
 
 ```text
-Phase 2D documents and checklist updated.
-Phase 2D evidence staged.
-Phase 2D committed and pushed to origin/main.
-Working tree checked.
+Opening condition: SATISFIED
+
+Phase 2D documents updated: true
+Phase 2D evidence committed: true
+Phase 2D pushed to origin/main: true
+Phase 2D commit: 1a3f7a7
+Phase 2D.1A may begin: true
+```
+### 7.7 Phase 2D.1 current planning
+
+Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation
+
+Status: **IN PROGRESS**
+
+Current subphase:
+
+```text
+Phase 2D.1A — Image Representation Protocol Decision
+Environment: Local
+Status: OPEN / CURRENT
+```
+
+Subphase structure:
+
+```text
+Phase 2D.1A — Image Representation Protocol Decision
+Environment: Local
+Status: OPEN / CURRENT
+
+Phase 2D.1B — DICOM-to-JPG Conversion & Validation
+Environment: Local
+Status: LOCKED until Phase 2D.1A GPT review PASS
+
+Phase 2D.1B-Pilot — Representative DICOM-to-JPG pilot
+Status: LOCKED
+
+Phase 2D.1B-Full — Full controlled-scope conversion
+Status: LOCKED until pilot PASS
+
+Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
+Environment: Google Colab
+Status: LOCKED until Phase 2D.1B PASS
+
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+Environment: Local
+Status: LOCKED until Phase 2D.1C PASS
+```
+
+Representation roles:
+
+```text
+DICOM:
+Immutable raw medical source and source evidence.
+
+JPG:
+Processed training image representation generated by a fixed,
+versioned and reproducible conversion protocol.
+
+coco_master.json:
+Annotation master linked to the original DICOM representation.
+
+coco_master_jpg.json:
+Training derivative linked to JPG file_name values.
+
+MMDetection:
+Downstream framework for dataset loading, detector training,
+evaluation and later SSOD experiments.
+```
+
+Phase 2D.1A must lock:
+
+```text
+DICOM pixel decoding policy.
+RescaleSlope and RescaleIntercept policy.
+Modality LUT policy.
+VOI LUT or windowing policy.
+MONOCHROME1 inversion policy.
+Intensity clipping policy.
+uint8 [0,255] conversion policy.
+JPEG quality candidate protocol.
+Final JPEG quality selection rule.
+Output channel policy.
+No-resize policy.
+No-crop policy.
+No-rotation policy.
+BBox scaling requirement.
+JPG filename convention.
+COCO-JPG path convention.
+Traceability policy.
+Pilot selection policy.
+Fidelity validation protocol.
+```
+
+Current preliminary direction:
+
+```text
+Do not resize during DICOM-to-JPG conversion.
+Do not crop.
+Do not rotate.
+Preserve original width and height.
+Do not scale bbox when dimensions and orientation are proven unchanged.
+Evaluate JPEG quality 95 and 100 during the pilot.
+Lock one final JPEG quality value before full conversion.
+```
+
+Required phase outputs:
+
+```text
+Phase 2D.1A:
+configs/protocol/phase2D1_jpg_representation.yaml
+reports/phase2D1_image_representation_decision.md
+reports/phase2D1_image_representation_decision.json
+
+Phase 2D.1B:
+data/processed/images_jpg/train/<image_id>.jpg
+data/processed/coco/coco_master_jpg.json
+data/processed/image_mapping/dicom_to_jpg_mapping.csv
+reports/phase2D1_jpg_conversion_report.md
+reports/phase2D1_jpg_conversion_validation.json
+reports/phase2D1_jpg_image_metadata.csv
+reports/phase2D1_jpg_fidelity_audit.csv
+reports/phase2D1_jpg_bbox_validation.csv
+reports/phase2D1_jpg_conversion_errors.csv
+reports/phase2D1_no_finding_jpg_audit.csv
+
+Phase 2D.1C:
+configs/dataset/mmdet_coco_jpg_loading.py
+scripts/02D1C_mmdet_loading_validation.py
+reports/phase2D1_mmdet_loading_check.md
+reports/phase2D1_mmdet_loading_check.json
+reports/phase2D1_mmdet_environment_versions.txt
+reports/phase2D1_mmdet_pip_freeze.txt
+reports/phase2D1_empty_image_retention_audit.csv
+reports/phase2D1_sample_loading_audit.csv
+reports/phase2D1_dataloader_iteration_audit.csv
+```
+
+Current restrictions:
+
+```text
+Do not run full DICOM-to-JPG conversion before Phase 2D.1A PASS.
+
+Do not run Phase 2D.1B-Full before the pilot and final JPG quality
+decision pass review.
+
+Do not open MMDetection validation before JPG conversion and COCO-JPG
+validation pass.
+
+Do not create train/val/test split.
+
+Do not create labeled/unlabeled split.
+
+Do not train a detector.
+
+Do not run detector inference.
+
+Do not generate pseudo-labels.
+
+Do not tune confidence thresholds.
+
+Do not compute AP/mAP.
+
+Do not use the test set.
+
+Do not modify canonical bbox or COCO master annotations.
+
+Do not claim the dataset is training-ready.
+```
+
+Training-readiness rule:
+
+```text
+Passing Phase 2D.1 confirms JPG representation and MMDetection loading
+readiness only.
+
+It does not authorize training.
+
+dataset_training_ready remains false until the required split and
+downstream dataset protocol phases pass their own Definition of Done.
+```
+
+Next action:
+
+```text
+Design and review Phase 2D.1A — Image Representation Protocol Decision.
 ```
 
 
@@ -779,6 +1005,21 @@ Khi tôi đưa code/log/output, GPT phải kiểm tra:
 - Bbox bị lệch sau resize, flip, crop, scale.
 - Split leakage.
 - Unlabeled vô tình dùng ground truth.
+- DICOM-to-JPG conversion dùng min-max normalization không được khóa.
+- Bỏ qua RescaleSlope hoặc RescaleIntercept.
+- Bỏ qua modality LUT khi DICOM yêu cầu.
+- VOI LUT/windowing policy không được ghi nhận.
+- MONOCHROME1 không được đảo đúng.
+- Chuyển trực tiếp pixel_array 12/16-bit sang uint8 gây mất thông tin không kiểm soát.
+- JPEG quality thay đổi giữa các lần conversion.
+- Full conversion được chạy trước khi pilot PASS.
+- JPG bị resize, crop hoặc rotate nhưng bbox không được biến đổi tương ứng.
+- JPG width/height không khớp COCO metadata.
+- So sánh fidelity sai giữa raw DICOM và JPG mà không tách ảnh hưởng của windowing/uint8 quantization.
+- coco_master_jpg.json làm thay đổi bbox, area, category hoặc annotation ID.
+- COCO-JPG file_name không resolve đúng dưới MMDetection data_root.
+- JPG trên local và JPG upload lên Colab không cùng hash.
+- 500 ảnh No Finding bị MMDetection lọc do filter_empty_gt.
 
 ### 9.2 Training / SSL
 
@@ -1668,5 +1909,178 @@ Split, training, inference, and pseudo-labeling remain locked.
 Next phase:
 
 ```text
-Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
+Phase 2D.1A — Image Representation Protocol Decision
+```
+
+### Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation
+
+Status: **IN PROGRESS**
+
+Date opened: 2026-07-15
+
+Current subphase:
+
+```text
+Phase 2D.1A — Image Representation Protocol Decision
+Environment: Local
+Status: OPEN / CURRENT
+```
+
+Planned subphases:
+
+```text
+Phase 2D.1A — Image Representation Protocol Decision
+Phase 2D.1B — DICOM-to-JPG Conversion & Validation
+Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+```
+
+Representation decision:
+
+```text
+DICOM remains the immutable raw medical source.
+JPG is selected as the processed training image representation.
+coco_master.json remains the annotation master.
+coco_master_jpg.json will be created as a training derivative.
+MMDetection will use JPG + COCO-JPG for downstream loading and training.
+```
+
+Current protocol requirements:
+
+```text
+Explicit DICOM intensity transformation.
+RescaleSlope/RescaleIntercept handling.
+Modality LUT handling where applicable.
+VOI LUT/windowing handling.
+MONOCHROME1 inversion.
+Intensity clipping.
+uint8 conversion.
+JPEG quality pilot.
+No resize, crop or rotation.
+Original width and height preservation.
+BBox invariance validation.
+DICOM-to-JPG traceability.
+MMDetection empty-GT retention validation.
+```
+
+Current gate:
+
+```text
+Phase 2D.1A: OPEN / CURRENT
+Phase 2D.1B: LOCKED
+Phase 2D.1C: LOCKED
+Phase 2D.1D: LOCKED
+
+jpg_training_representation_ready: false
+coco_jpg_training_annotation_ready: false
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
+```
+
+Forbidden actions:
+
+```text
+No full DICOM-to-JPG conversion before Phase 2D.1A and pilot review PASS.
+No train/val/test split.
+No labeled/unlabeled split.
+No detector training.
+No inference.
+No pseudo-labeling.
+No threshold tuning.
+No AP/mAP computation.
+No test-set usage.
+```
+
+Next action:
+
+```text
+Create and review the Phase 2D.1A representation protocol.
+```
+### Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation
+
+Status: **IN PROGRESS**
+
+Date opened: 2026-07-15
+
+Current subphase:
+
+```text
+Phase 2D.1A — Image Representation Protocol Decision
+Environment: Local
+Status: OPEN / CURRENT
+```
+
+Planned subphases:
+
+```text
+Phase 2D.1A — Image Representation Protocol Decision
+Phase 2D.1B — DICOM-to-JPG Conversion & Validation
+Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+```
+
+Representation decision:
+
+```text
+DICOM remains the immutable raw medical source.
+JPG is selected as the processed training image representation.
+coco_master.json remains the annotation master.
+coco_master_jpg.json will be created as a training derivative.
+MMDetection will use JPG + COCO-JPG for downstream loading and training.
+```
+
+Current protocol requirements:
+
+```text
+Explicit DICOM intensity transformation.
+RescaleSlope/RescaleIntercept handling.
+Modality LUT handling where applicable.
+VOI LUT/windowing handling.
+MONOCHROME1 inversion.
+Intensity clipping.
+uint8 conversion.
+JPEG quality pilot.
+No resize, crop or rotation.
+Original width and height preservation.
+BBox invariance validation.
+DICOM-to-JPG traceability.
+MMDetection empty-GT retention validation.
+```
+
+Current gate:
+
+```text
+Phase 2D.1A: OPEN / CURRENT
+Phase 2D.1B: LOCKED
+Phase 2D.1C: LOCKED
+Phase 2D.1D: LOCKED
+
+jpg_training_representation_ready: false
+coco_jpg_training_annotation_ready: false
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
+```
+
+Forbidden actions:
+
+```text
+No full DICOM-to-JPG conversion before Phase 2D.1A and pilot review PASS.
+No train/val/test split.
+No labeled/unlabeled split.
+No detector training.
+No inference.
+No pseudo-labeling.
+No threshold tuning.
+No AP/mAP computation.
+No test-set usage.
+```
+
+Next action:
+
+```text
+Create and review the Phase 2D.1A representation protocol.
 ```

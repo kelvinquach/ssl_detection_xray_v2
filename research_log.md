@@ -3203,35 +3203,483 @@ không còn được dùng.
 
 ### Quyết định tiếp theo
 
+Phase 2D đã được commit và push thành công:
+
+```text
+Commit: 1a3f7a7
+Branch: main
+Remote: origin/main
+Status: CLOSED / PASS
+```
+
 Phase tiếp theo:
 
 ```text
-Phase 2D.1 — DICOM Loader & Empty-Image Loading Validation
+Current subphase:
+Phase 2D.1A — Image Representation Protocol Decision
+
+Overall phase:
+Phase 2D.1 — JPG Training Representation &
+MMDetection Empty-Image Loading Validation
 ```
 
-Phase 2D.1 chỉ được mở sau khi:
+Quyết định chuyển phase:
 
 ```text
-Phase 2D evidence được stage.
-PROJECT_CONTEXT.md được cập nhật.
-PHASE_HANDOFF.md được cập nhật.
-research_log.md được cập nhật.
-CHECKLIST_TRIEN_KHAI_FULL.xlsx được cập nhật.
-Commit và push GitHub thành công.
+DICOM không còn được dự kiến dùng trực tiếp làm training image representation.
+
+DICOM tiếp tục là immutable raw medical source và source evidence.
+
+JPG chất lượng cao được chọn làm processed training image representation
+cho MMDetection.
+
+coco_master.json tiếp tục là annotation master chính thức.
+
+coco_master_jpg.json sẽ được tạo ở Phase 2D.1B như một training derivative,
+chỉ thay đổi image file_name/path representation và không thay đổi
+annotation semantics.
 ```
 
-Nội dung Phase 2D.1 dự kiến:
+Trạng thái mở phase:
 
 ```text
-Custom DICOM loader.
-Pixel decoding validation.
-MMDetection-compatible image loading.
-No Finding / empty-image loading.
-filter_empty_gt=False hoặc cấu hình tương đương.
-Framework dataset smoke test.
-Không training.
-Không split.
+Phase 2D.1A: OPEN / CURRENT
+Phase 2D.1B: LOCKED until Phase 2D.1A GPT review PASS
+Phase 2D.1C: LOCKED until Phase 2D.1B GPT review PASS
+Phase 2D.1D: LOCKED until Phase 2D.1C PASS
+
+jpg_training_representation_ready: false
+coco_jpg_training_annotation_ready: false
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
+```
+
+Chưa được làm:
+
+```text
+Không chạy full DICOM-to-JPG conversion.
+Không tạo train/val/test split.
+Không tạo labeled/unlabeled split.
+Không train detector.
+Không inference.
 Không pseudo-label.
-Không threshold tuning.
-Không test-set usage.
+Không tune threshold.
+Không tính AP/mAP.
+Không dùng test set.
 ```
+
+---
+
+## 2026-07-15 — PHASE 2D.1 Planning: JPG Training Representation Redesign
+
+### Mục tiêu
+
+Thiết kế lại Phase 2D.1 sau khi quyết định sử dụng JPG chất lượng cao làm training image representation cho MMDetection.
+
+Tên phase được khóa lại thành:
+
+```text
+Phase 2D.1 — JPG Training Representation &
+MMDetection Empty-Image Loading Validation
+```
+
+Phase 2D.1 không chỉ kiểm tra empty-image loading mà phải chứng minh hai claim:
+
+```text
+1. JPG training representation được tạo đúng, có kiểm soát và có thể
+   truy vết từ DICOM gốc.
+
+2. MMDetection đọc được JPG + COCO-JPG và không làm mất 500 ảnh
+   No Finding có zero annotations.
+```
+
+---
+
+### Quyết định thiết kế phase
+
+Phase 2D.1 được chia thành bốn tiểu giai đoạn:
+
+```text
+Phase 2D.1A — Image Representation Protocol Decision
+Environment: Local
+
+Phase 2D.1B — DICOM-to-JPG Conversion & Validation
+Environment: Local
+
+Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
+Environment: Google Colab
+
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+Environment: Local
+```
+
+Phase 2D.1B có hai gate nội bộ:
+
+```text
+2D.1B-Pilot — Representative DICOM-to-JPG pilot
+
+2D.1B-Full — Full controlled-scope conversion,
+chỉ được chạy sau khi pilot và final JPEG quality decision PASS.
+```
+
+---
+
+### Representation policy
+
+Vai trò của các artifact được khóa như sau:
+
+```text
+DICOM:
+Immutable raw medical source và source evidence.
+
+JPG:
+Processed training image representation được tạo bằng một protocol
+cố định, có version và có thể tái lập.
+
+coco_master.json:
+Official annotation master gắn với representation DICOM gốc.
+
+coco_master_jpg.json:
+Training derivative gắn với các file JPG.
+
+MMDetection:
+Framework downstream dùng JPG + COCO-JPG để load dataset,
+train detector, evaluate và triển khai SSOD ở các phase sau.
+```
+
+DICOM gốc không bị thay thế, chỉnh sửa hoặc xóa.
+
+---
+
+### Phase 2D.1A — Protocol requirements
+
+Phase 2D.1A phải khóa toàn bộ DICOM-to-JPG transformation:
+
+```text
+DICOM pixel decoding policy.
+RescaleSlope / RescaleIntercept policy.
+Modality LUT policy.
+VOI LUT hoặc windowing policy.
+MONOCHROME1 inversion policy.
+Intensity clipping policy.
+uint8 [0,255] conversion policy.
+Output channel policy.
+JPEG quality candidates.
+Final JPEG quality selection rule.
+No-resize policy.
+No-crop policy.
+No-rotation policy.
+BBox scaling requirement.
+JPG filename convention.
+COCO-JPG path convention.
+Traceability policy.
+Pilot selection policy.
+Fidelity validation protocol.
+```
+
+Preliminary direction:
+
+```text
+Không resize trong bước conversion.
+Không crop.
+Không rotate.
+Giữ nguyên width và height gốc.
+Không scale bbox nếu dimensions và orientation được chứng minh không đổi.
+Đánh giá JPEG quality 95 và 100 trong pilot.
+Chỉ khóa một final JPEG quality sau khi pilot được review.
+```
+
+Không được mặc định chọn `quality=95` hoặc `quality=100` trước khi có pilot evidence.
+
+---
+
+### DICOM intensity transformation guardrail
+
+Việc chuyển DICOM sang JPG không được thực hiện đơn giản bằng:
+
+```text
+pixel_array
+→ min-max normalize không kiểm soát
+→ uint8
+→ JPG
+```
+
+Protocol phải xem xét và ghi nhận:
+
+```text
+RescaleSlope
+RescaleIntercept
+modality LUT
+VOI LUT
+WindowCenter
+WindowWidth
+PhotometricInterpretation
+MONOCHROME1 inversion
+intensity clipping
+uint8 quantization
+JPEG compression
+```
+
+Fidelity evaluation phải phân biệt:
+
+```text
+1. Sai khác do DICOM windowing / normalization / uint8 quantization.
+
+2. Sai khác riêng do JPEG encoding.
+```
+
+Đánh giá ảnh hưởng JPEG phải so sánh:
+
+```text
+pre-JPEG uint8 image
+vs
+decoded JPG image
+```
+
+không được diễn giải toàn bộ sai khác giữa raw DICOM 12/16-bit và JPG 8-bit là JPEG compression error.
+
+---
+
+### Phase 2D.1B planning
+
+Target processed images:
+
+```text
+data/processed/images_jpg/train/<image_id>.jpg
+```
+
+Target training COCO derivative:
+
+```text
+data/processed/coco/coco_master_jpg.json
+```
+
+Target traceability mapping:
+
+```text
+data/processed/image_mapping/dicom_to_jpg_mapping.csv
+```
+
+`coco_master_jpg.json` chỉ được thay đổi representation path:
+
+```text
+train/<image_id>.dicom
+→
+train/<image_id>.jpg
+```
+
+Các field sau phải được giữ nguyên so với `coco_master.json`:
+
+```text
+image id
+annotation id
+category id
+width
+height
+bbox
+area
+iscrowd
+categories
+canonical_ann_id
+source_row_id
+traceability fields
+```
+
+Full validation targets:
+
+```text
+JPG files: 4,894
+Missing JPG: 0
+Duplicate image IDs: 0
+Decode errors: 0
+Width/height mismatches: 0
+Orientation changes: 0
+
+COCO-JPG images: 4,894
+COCO-JPG annotations: 36,096
+COCO-JPG categories: 14
+Abnormal images: 4,394
+No Finding images: 500
+No Finding annotations: 0
+
+BBox mismatches: 0
+Area mismatches: 0
+Category mismatches: 0
+Traceability mismatches: 0
+Boundary violations: 0
+```
+
+4,894 JPG files không được commit vào ordinary Git. Chúng sẽ được quản lý bằng local storage, Google Drive hoặc storage mechanism riêng.
+
+---
+
+### Phase 2D.1C planning
+
+Phase 2D.1C chạy trên Google Colab sau khi Phase 2D.1B PASS.
+
+Inputs:
+
+```text
+JPG training representation
+coco_master_jpg.json
+MMDetection dataset config
+MMDetection validation script
+```
+
+Environment evidence phải ghi:
+
+```text
+Python version
+PyTorch version
+CUDA version
+MMEngine version
+MMCV version
+MMDetection version
+pycocotools version
+pip freeze
+```
+
+Validation targets:
+
+```text
+MMDetection import: PASS
+COCO-JPG parse: PASS
+Dataset build: PASS
+dataset.full_init(): PASS
+Dataset length: 4,894
+Abnormal images retained: 4,394
+No Finding images retained: 500
+Empty-GT samples: exactly 500
+Unexpected empty abnormal images: 0
+Annotated No Finding images: 0
+filter_empty_gt=False effective: PASS
+Abnormal sample loading: PASS
+No Finding sample loading: PASS
+Dataloader smoke test: PASS
+All image IDs seen: 4,894
+```
+
+No Finding sample expectation:
+
+```text
+gt_instances.bboxes shape = (0, 4)
+gt_instances.labels shape = (0,)
+sample remains present in the dataset
+```
+
+Failure rule:
+
+```text
+Nếu dataset length = 4,394 thì Phase 2D.1C FAIL,
+vì 500 No Finding images đã bị framework lọc mất.
+```
+
+---
+
+### Current phase gate
+
+```text
+Phase 2D: CLOSED / PASS
+
+Phase 2D.1: IN PROGRESS
+
+Phase 2D.1A:
+OPEN / CURRENT
+
+Phase 2D.1B:
+LOCKED until Phase 2D.1A GPT review PASS
+
+Phase 2D.1C:
+LOCKED until Phase 2D.1B GPT review PASS
+
+Phase 2D.1D:
+LOCKED until Phase 2D.1C PASS
+```
+
+Readiness flags:
+
+```text
+jpg_training_representation_ready: false
+coco_jpg_training_annotation_ready: false
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
+```
+
+---
+
+### Ràng buộc hiện tại
+
+```text
+Không full-convert 4,894 DICOM trước khi Phase 2D.1A PASS.
+
+Không chạy Phase 2D.1B-Full trước khi pilot và final JPEG quality
+decision PASS.
+
+Không mở Phase 2D.1C trước khi JPG và COCO-JPG validation PASS.
+
+Không tạo train/val/test split.
+
+Không tạo labeled/unlabeled split.
+
+Không train supervised detector.
+
+Không train SSL detector.
+
+Không inference.
+
+Không pseudo-label.
+
+Không tune threshold.
+
+Không tính AP/mAP.
+
+Không dùng test set.
+
+Không sửa canonical bbox.
+
+Không sửa annotation semantics trong coco_master.json.
+
+Không claim dataset training-ready.
+```
+
+---
+
+### Evidence hiện tại
+
+Phase 2D.1 mới ở mức planning/protocol redesign.
+
+Chưa có:
+
+```text
+DICOM-to-JPG conversion script.
+JPG pilot output.
+Full JPG dataset.
+coco_master_jpg.json.
+MMDetection dataset loading evidence.
+Empty-image retention evidence.
+Phase 2D.1 PASS evidence.
+```
+
+Do đó chưa được tick:
+
+```text
+Phase 2D.1A PASS
+Phase 2D.1B PASS
+Phase 2D.1C PASS
+Phase 2D.1D PASS
+Phase 2D.1 CLOSED / PASS
+```
+
+---
+
+### Quyết định tiếp theo
+
+```text
+Thiết kế và review Phase 2D.1A —
+Image Representation Protocol Decision.
+```
+
