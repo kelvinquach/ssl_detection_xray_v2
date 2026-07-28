@@ -1,0 +1,25 @@
+{
+  "python_version": "3.10.20 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:13:20) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "utc": "2026-07-28T12:27:23Z",
+  "jpeg2000_decoder_requested": "pillow",
+  "numpy_version": "1.24.3",
+  "pydicom_version": "3.0.2",
+  "PIL_version": "11.1.0",
+  "skimage_version": "0.23.2",
+  "yaml_version": "6.0.3",
+  "matplotlib_version": "3.10.9",
+  "pandas_version": "2.3.3",
+  "pylibjpeg_version": null,
+  "pylibjpeg_error": "ModuleNotFoundError(\"No module named 'pylibjpeg'\")",
+  "pillow_features_jpg": true,
+  "pydicom_pixel_handlers": [
+    "pydicom.pixel_data_handlers.numpy_handler",
+    "pydicom.pixel_data_handlers.gdcm_handler",
+    "pydicom.pixel_data_handlers.pillow_handler",
+    "pydicom.pixel_data_handlers.jpeg_ls_handler",
+    "pydicom.pixel_data_handlers.pylibjpeg_handler",
+    "pydicom.pixel_data_handlers.rle_handler"
+  ],
+  "jpeg2000_backend_available": true
+}

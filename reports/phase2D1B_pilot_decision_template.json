@@ -1,0 +1,18 @@
+{
+  "decision_status": "approved_after_me_and_researcher_pilot_review",
+  "final_jpeg_quality": 95,
+  "selected_candidate": 95,
+  "full_conversion_authorized": true,
+  "decision_rationale": "JPEG quality 95 was selected because it preserved high whole-image and bbox-ROI fidelity, passed geometry and bbox invariance validation, and reduced projected storage by approximately 49% relative to quality 100. Quality 100 provided higher numerical fidelity but nearly doubled storage without evidence of a necessary downstream benefit.",
+  "reviewed_evidence": [
+    "reports/phase2D1B_pilot_validation.json",
+    "reports/phase2D1B_pilot_fidelity_metrics.csv",
+    "reports/phase2D1B_pilot_bbox_roi_metrics.csv",
+    "reports/phase2D1B_pilot_quality_summary.csv",
+    "reports/phase2D1B_pilot_quality_pairwise.csv",
+    "reports/phase2D1B_pilot_geometry_validation.csv",
+    "reports/phase2D1B_pilot_visual_audit_manifest.csv",
+    "plots/phase2D1B_pilot/contact_sheets/"
+  ],
+  "reviewer_notes": "Pilot CLOSED / PASS. JPEG quality 95 is locked for Phase 2D.1B-Full. Full controlled-scope conversion is authorized. This decision does not claim downstream detector superiority, clinical equivalence, or dataset training readiness."
+}

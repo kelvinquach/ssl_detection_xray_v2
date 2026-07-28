@@ -4438,3 +4438,883 @@ Yêu cầu GPT review trước khi mở full conversion.
 ```
 
 Full conversion 4.894 ảnh vẫn bị khóa.
+
+---
+
+---
+
+## 2026-07-28 — PHASE 2D.1B-Pilot: Representative DICOM-to-JPG Pilot & Final JPEG Quality Decision
+
+### Mục tiêu
+
+Thực hiện representative DICOM-to-JPG pilot trên dữ liệu DICOM thật theo protocol version `1.0.0` đã khóa tại Phase 2D.1A.
+
+Mục tiêu chính:
+
+```text
+Đọc DICOM header cho toàn bộ 4,894 ảnh trong controlled scope.
+
+Chọn representative pilot subset theo deterministic
+coverage-first protocol.
+
+Chỉ decode pixel cho pilot subset.
+
+Tạo pre-JPEG uint8 reference PNG.
+
+Tạo paired JPEG quality 95 và quality 100.
+
+Đánh giá whole-image fidelity.
+
+Đánh giá bbox-ROI fidelity.
+
+Kiểm tra geometry và bbox invariance.
+
+Thực hiện visual audit.
+
+So sánh fidelity với storage/I/O cost.
+
+Khóa một final JPEG quality cho Phase 2D.1B-Full.
+```
+
+Phase này không thực hiện full conversion 4,894 ảnh và không tạo `coco_master_jpg.json`.
+
+---
+
+### Đã làm
+
+#### 1. Kiểm tra DICOM inventory
+
+Lệnh kiểm tra:
+
+```cmd
+dir /b D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train\*.dicom | find /c /v ""
+```
+
+Kết quả:
+
+```text
+4,894 DICOM files
+```
+
+DICOM root được cấu hình:
+
+```cmd
+set VINBIGDATA_DICOM_ROOT=D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset
+```
+
+DICOM thực tế nằm tại:
+
+```text
+D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train
+```
+
+`VINBIGDATA_DICOM_ROOT` trỏ đến thư mục cha của `train` vì canonical/COCO path có dạng:
+
+```text
+train/<image_id>.dicom
+```
+
+#### 2. Thử pilot với backend `pylibjpeg`
+
+Lệnh chạy:
+
+```cmd
+python scripts\02D1B_pilot_dicom_to_jpg.py --jpeg2000-decoder pylibjpeg > reports\phase2D1B_pilot_run_output.txt 2>&1
+```
+
+Kết quả:
+
+```text
+Protocol preflight: PASS
+Input cross-check: PASS
+DICOM paths resolved: 4,894/4,894
+Header inventory: 4,894/4,894
+Pilot selection: 64 images
+Coverage: 54/54 features
+Hard fail: jpeg2000_backend_unavailable:pylibjpeg
+EXIT_CODE=1
+```
+
+Đây là expected guardrail behavior.
+
+Pipeline dừng trước pixel decoding vì backend được yêu cầu không khả dụng. Không có silent fallback sang decoder khác.
+
+#### 3. Kiểm tra các JPEG2000 backend đang có
+
+Lệnh kiểm tra:
+
+```cmd
+python -c "from src.utils import dicom_jpg_protocol as P; print('pylibjpeg=', P.jpeg2000_backend_available('pylibjpeg')); print('gdcm=', P.jpeg2000_backend_available('gdcm')); print('pillow=', P.jpeg2000_backend_available('pillow'))"
+```
+
+Kết quả:
+
+```text
+pylibjpeg = false
+gdcm      = false
+pillow    = true
+```
+
+Do đó pilot được chạy lại bằng backend `pillow`, không cài thêm dependency và không sửa pipeline.
+
+#### 4. Chạy representative pilot bằng Pillow
+
+Lệnh chạy:
+
+```cmd
+python scripts\02D1B_pilot_dicom_to_jpg.py --jpeg2000-decoder pillow > reports\phase2D1B_pilot_run_output_pillow.txt 2>&1
+set PILOT_EXIT=%ERRORLEVEL%
+echo EXIT_CODE=%PILOT_EXIT% >> reports\phase2D1B_pilot_run_output_pillow.txt
+```
+
+Kết quả:
+
+```text
+INFO protocol preflight PASS:
+version=1.0.0
+fingerprint=1528da27758d35786847141c37d0ddb754dddb146aff116a8f3a9a7b07221229
+
+INFO input cross-check PASS:
+images=4,894
+annotations=36,096
+categories=14
+abnormal_images=4,394
+no_finding_images=500
+
+INFO DICOM root resolved via env:
+D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset
+
+INFO resolved 4,894/4,894 controlled DICOM paths
+
+INFO header inventory complete: 4,894/4,894
+
+INFO selected 64 pilot images;
+coverage OK: 54/54 features
+
+INFO Phase 2D.1B-Pilot structural run complete:
+OPEN_REVIEW_REQUIRED
+
+EXIT_CODE=0
+```
+
+#### 5. Pilot selection và metadata coverage
+
+Pilot được chọn theo:
+
+```text
+Selection strategy: deterministic_coverage_first
+Tie-break seed: 2026
+Selected images: 64
+Selected No Finding images: 16
+```
+
+Coverage result:
+
+```text
+Metadata/features expected: 54
+Metadata/features covered: 54
+Missing features: 0
+
+Abnormal classes expected: 14
+Abnormal classes covered: 14
+
+Extrema expected: 10
+Extrema covered: 10
+
+Fully covered: true
+```
+
+#### 6. Pixel decoding
+
+Kết quả pixel decoding:
+
+```text
+Pixel decode attempts: 64
+Pixel decode success: 64
+Pixel decode errors: 0
+Unique decoded images: 64
+```
+
+Chỉ 64 pilot images được decode pixel.
+
+4,894 DICOM headers được đọc để xây inventory và chọn representative subset, nhưng full controlled-scope pixel conversion chưa được thực hiện.
+
+#### 7. Geometry và bbox invariance
+
+Geometry validation gồm:
+
+```text
+64 images × 2 JPEG candidates = 128 validation records
+```
+
+Kết quả:
+
+```text
+Pre-JPEG shape unchanged: PASS
+Reference PNG shape unchanged: PASS
+Decoded JPG shape unchanged: PASS
+
+Reference PNG mode L: PASS
+JPEG mode L: PASS
+
+Reference PNG dtype uint8: PASS
+Decoded JPEG dtype uint8: PASS
+
+Reference PNG exact pixel match: PASS
+EXIF orientation absent or 1: PASS
+
+Pixel matrix order unchanged: PASS
+Rotation applied: false
+Flip applied: false
+Transpose applied: false
+EXIF orientation transform applied: false
+
+BBox scaling required: false
+```
+
+Không resize, crop, rotation, flip hoặc transpose được thực hiện.
+
+Không bbox nào bị scale, clamp hoặc sửa.
+
+---
+
+### So sánh fidelity và dung lượng
+
+Whole-image fidelity được tính giữa:
+
+```text
+pre-JPEG uint8 reference image
+versus
+decoded JPEG image
+```
+
+BBox-ROI fidelity được tính trên 402 canonical bbox thuộc pilot subset.
+
+| Tiêu chí | JPEG quality 95 | JPEG quality 100 | Nhận xét |
+|---|---:|---:|---|
+| Pilot images | 64 | 64 | Bằng nhau |
+| Whole-image MAE trung bình | 0.873271 | 0.085074 | q100 thấp hơn |
+| Whole-image RMSE trung bình | 1.235387 | 0.291270 | q100 thấp hơn |
+| Whole-image PSNR trung bình | 47.2414 dB | 58.8577 dB | q100 cao hơn |
+| Whole-image SSIM trung bình | 0.981217 | 0.998981 | q100 cao hơn |
+| Whole-image max absolute error lớn nhất | 12 | 2 | q100 thấp hơn |
+| BBox ROI được đánh giá | 402 | 402 | Bằng nhau |
+| BBox-ROI MAE trung bình | 0.848022 | 0.087567 | q100 thấp hơn |
+| BBox-ROI PSNR trung bình | 47.9413 dB | 58.7247 dB | q100 cao hơn |
+| BBox-ROI SSIM trung bình | 0.996632 | 0.999820 | q100 cao hơn |
+| ROI max absolute error lớn nhất | 10 | 2 | q100 thấp hơn |
+| Kích thước trung bình mỗi ảnh, decimal MB | 1.619 MB | 3.162 MB | q100 lớn hơn khoảng 1.95 lần |
+| Tổng dung lượng 64 ảnh pilot | 98.82 MiB | 192.97 MiB | q100 gần gấp đôi |
+| Compression ratio trung bình | 5.04:1 | 2.47:1 | q95 nén hiệu quả hơn |
+| Ước tính 4,894 ảnh | 7.38 GiB | 14.41 GiB | q100 tăng khoảng 7.03 GiB |
+
+Storage comparison:
+
+```text
+JPEG quality 95 giảm khoảng 48.79% dung lượng
+so với JPEG quality 100.
+
+JPEG quality 100 lớn hơn JPEG quality 95
+khoảng 1.95 lần.
+```
+
+Pairwise comparison:
+
+```text
+Whole-image:
+q100 có MAE, PSNR và SSIM tốt hơn q95 trên 64/64 ảnh.
+
+BBox-ROI:
+q100 có ROI MAE, ROI PSNR và ROI SSIM tốt hơn q95
+trên 402/402 bbox.
+```
+
+Kết luận định lượng:
+
+```text
+Quality 100 là ứng viên có numerical fidelity cao nhất.
+
+Quality 95 là ứng viên có trade-off tốt hơn giữa
+fidelity và storage/I/O cost.
+```
+
+---
+
+### Kiểm tra các bbox nhỏ
+
+Để kiểm tra rủi ro mất chi tiết ở các tổn thương nhỏ, 20 bbox có diện tích tương đối nhỏ nhất trong pilot được xem xét riêng ở quality 95.
+
+Kết quả:
+
+```text
+Mean ROI MAE: 0.4165
+Mean ROI PSNR: 52.29 dB
+Mean ROI SSIM: 0.995884
+Largest ROI maximum absolute error: 5
+```
+
+Không quan sát thấy suy giảm fidelity bất thường tập trung ở nhóm bbox nhỏ trong pilot.
+
+Kết quả này chỉ là representation fidelity evidence, không phải bằng chứng về detection performance.
+
+---
+
+### Visual audit
+
+Visual evidence bao gồm:
+
+```text
+Full-image contact sheet
+BBox-specific crops
+Difference heatmaps
+Small-lesion cases
+Rare-class cases
+Dimension extrema
+BBox extrema
+Worst q95 whole-image cases
+Worst q95 ROI cases
+No Finding metadata strata
+```
+
+Contact-sheet review không phát hiện lỗi nghiêm trọng rõ ràng như:
+
+```text
+Global polarity inversion
+Unexpected crop
+Rotation
+Flip
+Transpose
+Geometry deformation
+Anatomical truncation do conversion
+```
+
+Visual audit được dùng để kiểm tra representation pipeline và không được diễn giải là clinical validation.
+
+---
+
+### Lý do chọn JPEG quality 95
+
+Final JPEG quality được khóa là:
+
+```text
+95
+```
+
+Lý do:
+
+1. Quality 95 giữ mức whole-image fidelity cao:
+
+   ```text
+   Mean MAE < 1 gray level trên thang uint8 [0,255]
+   Mean PSNR = 47.24 dB
+   Mean SSIM = 0.981217
+   ```
+
+2. Quality 95 giữ mức bbox-ROI fidelity cao:
+
+   ```text
+   Mean ROI MAE = 0.848022
+   Mean ROI PSNR = 47.94 dB
+   Mean ROI SSIM = 0.996632
+   ```
+
+3. Nhóm 20 bbox nhỏ nhất vẫn có:
+
+   ```text
+   Mean ROI PSNR = 52.29 dB
+   Mean ROI SSIM = 0.995884
+   ```
+
+4. Geometry và bbox invariance đều PASS:
+
+   ```text
+   Width/height unchanged
+   Pixel matrix order unchanged
+   No rotation
+   No flip
+   No transpose
+   BBox scaling required = false
+   ```
+
+5. Quality 95 giảm khoảng 48.79% projected storage so với quality 100:
+
+   ```text
+   q95 projected full scope: 7.38 GiB
+   q100 projected full scope: 14.41 GiB
+   projected saving: khoảng 7.03 GiB
+   ```
+
+6. Quality 100 có numerical fidelity cao hơn nhưng gần gấp đôi dung lượng. Hiện chưa có evidence cho thấy phần fidelity tăng thêm này là cần thiết cho downstream detector.
+
+Quyết định được mô tả là:
+
+```text
+Fidelity–storage/I/O trade-off decision
+```
+
+Không được mô tả là:
+
+```text
+Quality 95 có model performance tốt hơn quality 100.
+Quality 95 tương đương lâm sàng với DICOM.
+Quality 95 không làm mất bất kỳ thông tin chẩn đoán nào.
+Quality 95 đã được clinical validation.
+```
+
+---
+
+### Evidence đã tạo
+
+Implementation và unit-test evidence:
+
+```text
+scripts/02D1B_pilot_dicom_to_jpg.py
+src/utils/dicom_jpg_protocol.py
+tests/test_phase2D1B_pilot_guardrails.py
+reports/phase2D1B_pilot_unit_tests_output_v6.txt
+```
+
+Pilot run logs:
+
+```text
+reports/phase2D1B_pilot_run_output.txt
+reports/phase2D1B_pilot_run_output_pillow.txt
+```
+
+Pilot validation evidence:
+
+```text
+reports/phase2D1B_pilot_environment.json
+reports/phase2D1B_pilot_header_inventory.csv
+reports/phase2D1B_pilot_metadata_strata.csv
+reports/phase2D1B_pilot_selection.csv
+reports/phase2D1B_pilot_selection_coverage.csv
+reports/phase2D1B_pilot_fidelity_metrics.csv
+reports/phase2D1B_pilot_bbox_roi_metrics.csv
+reports/phase2D1B_pilot_quality_summary.csv
+reports/phase2D1B_pilot_quality_pairwise.csv
+reports/phase2D1B_pilot_geometry_validation.csv
+reports/phase2D1B_pilot_visual_audit_manifest.csv
+reports/phase2D1B_pilot_validation.json
+reports/phase2D1B_pilot_validation.md
+reports/phase2D1B_pilot_decision_template.json
+```
+
+Pilot mapping:
+
+```text
+data/processed/image_mapping/
+phase2D1B_pilot_dicom_to_jpg_mapping.csv
+```
+
+Pilot image evidence:
+
+```text
+data/processed/images_jpg_pilot/reference_uint8/
+data/processed/images_jpg_pilot/q95/
+data/processed/images_jpg_pilot/q100/
+```
+
+Visual evidence:
+
+```text
+plots/phase2D1B_pilot/full_image/
+plots/phase2D1B_pilot/bbox_crops/
+plots/phase2D1B_pilot/difference_heatmaps/
+plots/phase2D1B_pilot/contact_sheets/
+```
+
+---
+
+### Review GPT và researcher
+
+Structural pipeline result:
+
+```text
+phase_status: OPEN_REVIEW_REQUIRED
+structural_dod_candidate: true
+gpt_review_status at generation time: pending
+final_jpeg_quality at generation time: null
+full_conversion_authorized at generation time: false
+```
+
+Sau khi review quantitative, geometry, bbox-ROI, storage và visual evidence:
+
+```text
+Pilot execution: COMPLETED
+Pixel decoding: PASS 64/64
+Coverage: PASS 54/54
+Abnormal class coverage: PASS 14/14
+No Finding pilot count: PASS 16
+Geometry preservation: PASS
+BBox invariance: PASS
+Quantitative fidelity: PASS
+Critical visual failure: false
+Selected candidate: JPEG quality 95
+```
+
+Decision artifact được cập nhật:
+
+```text
+decision_status:
+approved_after_gpt_and_researcher_pilot_review
+
+final_jpeg_quality:
+95
+
+selected_candidate:
+95
+
+full_conversion_authorized:
+true
+```
+
+---
+
+### Quyết định
+
+Phase 2D.1B-Pilot được khóa với trạng thái:
+
+```text
+CLOSED / PASS
+```
+
+Quyết định chính thức:
+
+```text
+Final JPEG quality: 95
+
+Phase 2D.1B-Full:
+OPEN / NEXT
+
+Full controlled-scope conversion:
+AUTHORIZED
+```
+
+Quality 95 được khóa cho toàn bộ Phase 2D.1B-Full.
+
+Không được thay đổi quality giữa các ảnh hoặc giữa các subset.
+
+---
+
+### Các chú ý và giới hạn diễn giải
+
+1. `phase2D1B_pilot_validation.json` là structural evidence được sinh trước review nên vẫn có thể ghi:
+
+   ```text
+   OPEN_REVIEW_REQUIRED
+   final_jpeg_quality: null
+   full_conversion_authorized: false
+   ```
+
+   Không sửa thủ công generated validation evidence để làm mất lịch sử.
+
+   Quyết định closure được ghi trong:
+
+   ```text
+   reports/phase2D1B_pilot_decision_template.json
+   ```
+
+2. Phase 2D.1A protocol evidence không nên bị sửa ngược sau pilot. Final quality decision được ghi ở Phase 2D.1B-Pilot.
+
+3. Quality 95 được chọn dựa trên:
+
+   ```text
+   Representation fidelity
+   Geometry preservation
+   BBox-ROI preservation
+   Small-lesion diagnostic checks
+   Storage/I/O trade-off
+   ```
+
+   Không dựa trên downstream mAP hoặc model ablation.
+
+4. Chưa được claim:
+
+   ```text
+   Downstream detector superiority
+   Clinical equivalence
+   Full DICOM standard conformance
+   Diagnostic safety
+   Dataset training readiness
+   ```
+
+5. `full_conversion_authorized = true` chỉ cho phép chạy DICOM-to-JPG conversion trên controlled scope.
+
+   Nó không cho phép:
+
+   ```text
+   Training
+   Inference
+   Pseudo-labeling
+   Threshold tuning
+   Test-set evaluation
+   ```
+
+6. Full conversion phải tiếp tục dùng:
+
+   ```text
+   Protocol version: 1.0.0
+   Final JPEG quality: 95
+   Decoder policy: explicit backend, no silent fallback
+   No resize
+   No crop
+   No rotation
+   No flip
+   No transpose
+   No bbox scaling
+   ```
+
+7. 4,894 JPG files không được commit vào ordinary Git.
+
+8. `coco_master_jpg.json` chưa được tạo ở pilot phase.
+
+9. MMDetection empty-image loading và việc giữ đủ 500 No Finding images chưa được validate.
+
+---
+
+### Vấn đề / rủi ro còn lại
+
+```text
+Full 4,894-image DICOM-to-JPG conversion chưa chạy.
+
+Full JPG inventory chưa được validate.
+
+Full-scope decode error count chưa biết.
+
+Full-scope width/height mismatch count chưa biết.
+
+Full-scope traceability mapping chưa được tạo.
+
+coco_master_jpg.json chưa được tạo.
+
+MMDetection dataset build chưa được kiểm tra.
+
+filter_empty_gt=False chưa được kiểm tra thật.
+
+500 No Finding images chưa được xác nhận giữ nguyên
+trong MMDetection dataset.
+
+Dataset chưa training-ready.
+
+Training chưa được authorize.
+```
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 2D.1B-Pilot đã tuân thủ:
+
+```text
+Không chạy full conversion trước pilot decision.
+
+Không tạo full JPG dataset.
+
+Không tạo coco_master_jpg.json.
+
+Không resize ảnh.
+
+Không crop ảnh.
+
+Không rotate ảnh.
+
+Không flip ảnh.
+
+Không transpose ảnh.
+
+Không scale bbox.
+
+Không clamp bbox.
+
+Không sửa canonical annotations.
+
+Không sửa coco_master.json.
+
+Không tạo train/val/test split.
+
+Không tạo labeled/unlabeled split.
+
+Không train.
+
+Không inference.
+
+Không pseudo-label.
+
+Không tune threshold.
+
+Không tính AP/mAP.
+
+Không dùng test set.
+
+Không claim dataset training-ready.
+
+Không authorize training.
+```
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+```text
+Phase 2D.1B-Pilot implementation complete.
+
+Guardrail tests PASS 139/139.
+
+DICOM inventory 4,894 verified.
+
+Header inventory 4,894/4,894.
+
+Representative pilot selected.
+
+Pilot coverage 54/54.
+
+All 14 abnormal classes covered.
+
+16 No Finding images selected.
+
+Pixel decode PASS 64/64.
+
+Pre-JPEG reference PNG created.
+
+JPEG quality 95 pilot created.
+
+JPEG quality 100 pilot created.
+
+Whole-image fidelity metrics computed.
+
+BBox-ROI fidelity metrics computed.
+
+Geometry validation PASS.
+
+BBox invariance PASS.
+
+Visual audit completed.
+
+Fidelity and storage comparison completed.
+
+Final JPEG quality 95 selected.
+
+Pilot decision artifact updated.
+
+Phase 2D.1B-Pilot GPT/researcher review PASS.
+
+Phase 2D.1B-Pilot CLOSED / PASS.
+
+Full conversion authorized.
+```
+
+Chưa được tick:
+
+```text
+Phase 2D.1B-Full conversion executed.
+
+4,894 JPG files created.
+
+Full decode validation PASS.
+
+Full geometry validation PASS.
+
+Full mapping created.
+
+coco_master_jpg.json created.
+
+JPG training representation ready.
+
+MMDetection dataset loading PASS.
+
+500 No Finding images retained by MMDetection.
+
+Empty-image retention ready.
+
+Dataset training-ready.
+
+Training authorized.
+```
+
+---
+
+### Trạng thái gate
+
+```text
+Phase 2D.1A:
+CLOSED / PASS
+
+Phase 2D.1B-Pilot:
+CLOSED / PASS
+
+Final JPEG quality:
+95 / LOCKED
+
+Phase 2D.1B-Full:
+OPEN / CURRENT
+
+Phase 2D.1C:
+LOCKED until Phase 2D.1B-Full PASS
+
+Phase 2D.1D:
+LOCKED until Phase 2D.1C PASS
+```
+
+Readiness flags:
+
+```text
+final_jpeg_quality: 95
+full_conversion_authorized: true
+
+jpg_training_representation_ready: false
+coco_jpg_training_annotation_ready: false
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
+```
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo:
+
+```text
+Phase 2D.1B-Full —
+Full Controlled-Scope DICOM-to-JPG Conversion & Validation
+
+Environment:
+Local
+```
+
+Mục tiêu tiếp theo:
+
+```text
+Convert đủ 4,894 DICOM thành JPG quality 95.
+
+Không tạo q100 trong full conversion.
+
+Validate 4,894 JPG files.
+
+Validate decode errors = 0.
+
+Validate width/height mismatches = 0.
+
+Validate geometry changes = 0.
+
+Tạo full DICOM-to-JPG traceability mapping.
+
+Tạo coco_master_jpg.json dưới dạng path-only derivative.
+
+Validate COCO-JPG:
+images = 4,894
+annotations = 36,096
+categories = 14
+No Finding images = 500
+No Finding annotations = 0
+
+Yêu cầu GPT review trước khi mở Phase 2D.1C.
+```
+
+Dataset vẫn chưa được phép dùng để train cho đến khi Phase 2D.1C MMDetection loading và empty-image retention PASS.
+
+---

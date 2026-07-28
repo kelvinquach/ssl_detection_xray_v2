@@ -1,0 +1,190 @@
+{
+  "phase_id": "2D.1B-Pilot",
+  "disclaimer": "Synthetic conformity to the locked project protocol only; NOT formal certification of complete DICOM Standard conformance.",
+  "n_cases": 21,
+  "all_pass": true,
+  "cases": [
+    {
+      "case": "unsigned_stored_range_bits12",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "(0,4095)"
+    },
+    {
+      "case": "signed_stored_range_bits12",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "(-2048,2047)"
+    },
+    {
+      "case": "identity_modality_branch",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "identity"
+    },
+    {
+      "case": "positive_rescale_bounds",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "(-1024.0,3071.0)"
+    },
+    {
+      "case": "negative_rescale_bounds_sorted",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "(0.0,100.0)"
+    },
+    {
+      "case": "modality_lut_output_bounds_from_data",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "(100.0,355.0)"
+    },
+    {
+      "case": "window_linear",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "edges 0/1, center 0.501253"
+    },
+    {
+      "case": "window_linear_exact_center_half",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "0.5"
+    },
+    {
+      "case": "window_sigmoid_center_half",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "0.5"
+    },
+    {
+      "case": "voi_lut_normalize_8bit",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "[0,1]"
+    },
+    {
+      "case": "presentation:MONOCHROME1+ABSENT+seqFalse",
+      "sop_class_uid": "SYNTHETIC",
+      "photometric_interpretation": "MONOCHROME1",
+      "presentation_lut_shape": "ABSENT",
+      "presentation_lut_sequence_present": false,
+      "expected_project_action": "invert_once",
+      "expected_inversion_count": 1,
+      "actual_inversion_count": 1,
+      "metadata_presentation_conflict": false,
+      "protocol_gap_detected": false,
+      "test_status": "PASS",
+      "pass": true
+    },
+    {
+      "case": "presentation:MONOCHROME2+ABSENT+seqFalse",
+      "sop_class_uid": "SYNTHETIC",
+      "photometric_interpretation": "MONOCHROME2",
+      "presentation_lut_shape": "ABSENT",
+      "presentation_lut_sequence_present": false,
+      "expected_project_action": "no_inversion",
+      "expected_inversion_count": 0,
+      "actual_inversion_count": 0,
+      "metadata_presentation_conflict": false,
+      "protocol_gap_detected": false,
+      "test_status": "PASS",
+      "pass": true
+    },
+    {
+      "case": "presentation:MONOCHROME1+IDENTITY+seqFalse",
+      "sop_class_uid": "SYNTHETIC",
+      "photometric_interpretation": "MONOCHROME1",
+      "presentation_lut_shape": "IDENTITY",
+      "presentation_lut_sequence_present": false,
+      "expected_project_action": "conflict",
+      "expected_inversion_count": null,
+      "actual_inversion_count": null,
+      "metadata_presentation_conflict": true,
+      "protocol_gap_detected": true,
+      "test_status": "BLOCKED_PROTOCOL_REVIEW",
+      "pass": true
+    },
+    {
+      "case": "presentation:MONOCHROME2+IDENTITY+seqFalse",
+      "sop_class_uid": "SYNTHETIC",
+      "photometric_interpretation": "MONOCHROME2",
+      "presentation_lut_shape": "IDENTITY",
+      "presentation_lut_sequence_present": false,
+      "expected_project_action": "no_inversion",
+      "expected_inversion_count": 0,
+      "actual_inversion_count": 0,
+      "metadata_presentation_conflict": false,
+      "protocol_gap_detected": false,
+      "test_status": "PASS",
+      "pass": true
+    },
+    {
+      "case": "presentation:MONOCHROME1+INVERSE+seqFalse",
+      "sop_class_uid": "SYNTHETIC",
+      "photometric_interpretation": "MONOCHROME1",
+      "presentation_lut_shape": "INVERSE",
+      "presentation_lut_sequence_present": false,
+      "expected_project_action": "invert_once",
+      "expected_inversion_count": 1,
+      "actual_inversion_count": 1,
+      "metadata_presentation_conflict": false,
+      "protocol_gap_detected": false,
+      "test_status": "PASS",
+      "pass": true
+    },
+    {
+      "case": "presentation:MONOCHROME2+INVERSE+seqFalse",
+      "sop_class_uid": "SYNTHETIC",
+      "photometric_interpretation": "MONOCHROME2",
+      "presentation_lut_shape": "INVERSE",
+      "presentation_lut_sequence_present": false,
+      "expected_project_action": "conflict",
+      "expected_inversion_count": null,
+      "actual_inversion_count": null,
+      "metadata_presentation_conflict": true,
+      "protocol_gap_detected": true,
+      "test_status": "BLOCKED_PROTOCOL_REVIEW",
+      "pass": true
+    },
+    {
+      "case": "presentation:MONOCHROME2+ABSENT+seqTrue",
+      "sop_class_uid": "SYNTHETIC",
+      "photometric_interpretation": "MONOCHROME2",
+      "presentation_lut_shape": "ABSENT",
+      "presentation_lut_sequence_present": true,
+      "expected_project_action": "gap",
+      "expected_inversion_count": null,
+      "actual_inversion_count": null,
+      "metadata_presentation_conflict": false,
+      "protocol_gap_detected": true,
+      "test_status": "BLOCKED_PROTOCOL_REVIEW",
+      "pass": true
+    },
+    {
+      "case": "pixel_padding_value_mask",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "==5"
+    },
+    {
+      "case": "pixel_padding_range_mask_inclusive",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "[2..8]"
+    },
+    {
+      "case": "multi_valued_window_index0",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "valid,index0=1000"
+    },
+    {
+      "case": "numpy_rint_uint8_half_even",
+      "pass": true,
+      "test_status": "PASS",
+      "expected": "[0,128,255]"
+    }
+  ]
+}

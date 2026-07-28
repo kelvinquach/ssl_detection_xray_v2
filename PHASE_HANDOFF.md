@@ -1,6 +1,6 @@
 # PHASE HANDOFF — `ssl_detection_xray_v2`
 
-Ngày cập nhật: 2026-07-15
+Ngày cập nhật: 2026-07-28
 
 Dự án: **Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi**
 
@@ -58,16 +58,23 @@ Không tick checklist nếu chưa có evidence.
 
 ## 3. Trạng thái hiện tại
 
+## 3. Trạng thái hiện tại
+
 ```text
 Current subphase:
-Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
+Phase 2D.1B-Full —
+Full Controlled-Scope DICOM-to-JPG Conversion & Validation
 
 Overall phase:
 Phase 2D.1 — JPG Training Representation &
 MMDetection Empty-Image Loading Validation: IN PROGRESS
 
 Previous subphase:
-Phase 2D.1A — Image Representation Protocol Decision: CLOSED / PASS
+Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot:
+CLOSED / PASS
+
+Final JPEG quality:
+95 / LOCKED
 
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
@@ -82,18 +89,49 @@ Phase 2D — COCO Master Conversion & Validation: CLOSED / PASS
 
 Phase 2D.1A: CLOSED / PASS
 Phase 2D.1B: IN PROGRESS
-Phase 2D.1B-Pilot: OPEN / CURRENT
-Phase 2D.1B-Full: LOCKED until pilot evidence,
-final JPEG quality decision and GPT review PASS
+Phase 2D.1B-Pilot: CLOSED / PASS
+Phase 2D.1B-Full: OPEN / CURRENT
 Phase 2D.1C: LOCKED until Phase 2D.1B-Full PASS
 Phase 2D.1D: LOCKED until Phase 2D.1C PASS
+
+Pilot implementation:
+V6_FROZEN
+
+Pilot guardrail tests:
+139/139 PASS
+
+Pilot image count:
+64
+
+Pilot No Finding image count:
+16
+
+Metadata/features coverage:
+54/54 PASS
+
+Abnormal class coverage:
+14/14 PASS
+
+Pixel decoding:
+64/64 PASS
+
+Geometry preservation:
+PASS
+
+BBox invariance:
+PASS
+
+Final JPEG quality:
+95
+
+Full conversion authorized:
+TRUE
 
 Git status:
 Phase 2D committed and pushed to origin/main.
 Phase 2D commit: 1a3f7a7.
-Phase 2D.1A evidence generated and GPT-reviewed locally.
-Phase 2D.1A commit and push: PENDING.
-Phase 2D.1B-Pilot may begin.
+Phase 2D.1A and Phase 2D.1B-Pilot evidence reviewed locally.
+Synchronized documentation update and commit/push: PENDING.
 
 jpg_training_representation_ready: FALSE
 coco_jpg_training_annotation_ready: FALSE
@@ -106,24 +144,28 @@ training_authorized: FALSE
 Được mở / hiện tại:
 
 ```text
-Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
-Environment: Local
+Phase 2D.1B-Full —
+Full Controlled-Scope DICOM-to-JPG Conversion & Validation
+
+Environment:
+Local
 ```
 
 Next gated phase:
 
 ```text
-Phase 2D.1B-Full — Full Controlled-Scope DICOM-to-JPG Conversion
-Environment: Local
+Phase 2D.1C —
+MMDetection Dataset / Empty-Image Loading Validation
+
+Environment:
+Google Colab
 ```
 
 Chưa được làm:
 
 ```text
-Full 4,894-image DICOM-to-JPG conversion
-Creation of the full JPG dataset
-Creation of coco_master_jpg.json
-Final JPEG quality selection without pilot evidence
+MMDetection dataset loading validation
+MMDetection empty-GT retention validation
 Train/val/test split
 Labeled/unlabeled split
 Supervised detector training
@@ -148,11 +190,13 @@ Environment: Local
 Status: IN PROGRESS
 
 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
-Status: OPEN / CURRENT
+Status: CLOSED / PASS
+
+Final JPEG quality:
+95 / LOCKED
 
 2D.1B-Full — Full 4,894-image conversion
-Status: LOCKED until pilot evidence,
-final JPEG quality selection and GPT review PASS
+Status: OPEN / CURRENT
 
 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
 Environment: Google Colab
@@ -188,53 +232,32 @@ evaluation and later SSOD experiments.
 Ghi chú trạng thái:
 
 ```text
-Phase 2A đã xác nhận 4,894 DICOM files tồn tại và đọc được metadata/header.
-Toàn bộ 36,096 abnormal bbox hợp lệ trong image boundary.
+Phase 2D.1A đã khóa protocol DICOM-to-JPG version 1.0.0.
 
-Phase 2B đã tạo portable canonical detection schema:
-- 4,894 canonical images;
-- 36,096 abnormal bbox rows;
-- 14 abnormal detection classes;
-- No Finding là negative image, không phải detection class.
+Phase 2D.1B-Pilot đã:
+- đọc header 4,894/4,894 DICOM;
+- chọn 64 representative pilot images;
+- bao gồm 16 No Finding images;
+- bao phủ 54/54 metadata/features;
+- bao phủ 14/14 abnormal classes;
+- decode pixel thành công 64/64;
+- tạo paired JPEG quality 95 và 100;
+- tính whole-image fidelity;
+- tính bbox-ROI fidelity trên 402 bbox;
+- validate geometry và bbox invariance;
+- thực hiện visual review;
+- khóa final JPEG quality = 95.
 
-Phase 2C đã chốt:
-- primary framework: MMDetection;
-- primary annotation format: COCO detection JSON;
-- category IDs: contiguous 1..14.
+Quality 100 có numerical fidelity cao hơn.
 
-Phase 2D đã tạo và validate COCO master:
-- images: 4,894;
-- annotations: 36,096;
-- categories: 14;
-- No Finding images: 500;
-- No Finding annotations: 0;
-- invalid annotations: 0;
-- JSON parse: PASS;
-- pycocotools load: PASS;
-- guardrail tests: 22/22 PASS;
-- hard errors: 0;
-- warnings: 0.
+Quality 95 được chọn vì vẫn giữ fidelity cao nhưng giảm projected
+storage khoảng 48.79% so với quality 100.
 
-Phase 2D.1A đã khóa protocol DICOM-to-JPG:
-- protocol version: 1.0.0;
-- required policy coverage: 20/20;
-- JPEG candidates: 95 and 100;
-- final JPEG quality: pending pilot;
-- no direct per-image min-max normalization;
-- no automatic percentile clipping;
-- no resize, crop, rotation, flip or transpose;
-- unit tests: 31/31 PASS;
-- JSON parse: PASS;
-- YAML strict-load: PASS;
-- cross-output drift: 0;
-- hard errors: 0;
-- warnings: 0;
-- GPT review: PASS.
-
-Phase 2D.1B-Pilot sẽ đọc pixel DICOM thật, tạo pilot JPG
-quality 95 và 100, kiểm tra fidelity và lựa chọn final JPEG quality.
+Phase 2D.1B-Pilot chỉ cho phép mở full conversion.
 
 Dataset vẫn chưa training-ready.
+
+Training vẫn chưa được authorize.
 ```
 
 ---
@@ -1199,150 +1222,199 @@ Date opened: 2026-07-15
 Current subphase:
 
 ```text
-Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
+Phase 2D.1B-Full —
+Full Controlled-Scope DICOM-to-JPG Conversion & Validation
+
 Environment: Local
 Status: OPEN / CURRENT
 ```
 
-Planned subphases:
+Subphase status:
 
 ```text
-Phase 2D.1A — Image Representation Protocol Decision
-Status: CLOSED / PASS
+Phase 2D.1A — Image Representation Protocol Decision:
+CLOSED / PASS
 
-Phase 2D.1B — DICOM-to-JPG Conversion & Validation
-Status: IN PROGRESS
+Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot:
+CLOSED / PASS
 
-Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
-Status: OPEN / CURRENT
+Phase 2D.1B-Full — Full Controlled-Scope Conversion:
+OPEN / CURRENT
 
-Phase 2D.1B-Full — Full Controlled-Scope Conversion
-Status: LOCKED
+Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation:
+LOCKED
 
-Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
-Status: LOCKED
-
-Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
-Status: LOCKED
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure:
+LOCKED
 ```
 
-Phase 2D.1A evidence:
-
-```text
-Script:
-scripts/02D1A_image_representation_protocol.py
-
-Protocol:
-configs/protocol/phase2D1_jpg_representation.yaml
-
-Decision reports:
-reports/phase2D1_image_representation_decision.md
-reports/phase2D1_image_representation_decision.json
-
-Tests:
-tests/test_phase2D1A_protocol_guardrails.py
-```
-
-Phase 2D.1A validation result:
+Phase 2D.1A result:
 
 ```text
 Protocol version: 1.0.0
-Locked images: 4,894
-Locked annotations: 36,096
-Locked categories: 14
-Required policy items documented: 20/20
 JPEG quality candidates: [95, 100]
-Final JPEG quality: null / pending pilot
-Direct per-image min-max allowed: false
-Automatic percentile clipping allowed: false
-Resize/crop/rotation: false / false / false
-Cross-output drift count: 0
-Unit tests: 31/31 PASS
-JSON parse: PASS
-YAML strict-load: PASS
-Hard errors: 0
-Warnings: 0
-Forbidden actions avoided: PASS
-GPT review: PASS
+Required policy coverage: 20/20
+Guardrail tests: 31/31 PASS
+Status: CLOSED / PASS
+```
+
+Phase 2D.1B-Pilot implementation:
+
+```text
+Implementation version: V6_FROZEN
+Guardrail tests: 139/139 PASS
+```
+
+Phase 2D.1B-Pilot result:
+
+```text
+DICOM paths resolved: 4,894/4,894
+DICOM headers read: 4,894/4,894
+
+Pilot images: 64
+No Finding pilot images: 16
+
+Metadata/features coverage: 54/54
+Abnormal class coverage: 14/14
+
+Pixel decode attempts: 64
+Pixel decode successes: 64
+Pixel decode errors: 0
+
+Geometry preservation: PASS
+BBox invariance: PASS
+Critical visual failure: false
+
+Final JPEG quality: 95
+Full conversion authorized: true
+
+Pilot status: CLOSED / PASS
+```
+
+#### So sánh fidelity và dung lượng
+
+| Tiêu chí | JPEG quality 95 | JPEG quality 100 | Kết luận |
+|---|---:|---:|---|
+| Pilot images | 64 | 64 | Bằng nhau |
+| Whole-image MAE trung bình | 0.873271 | 0.085074 | q100 tốt hơn |
+| Whole-image RMSE trung bình | 1.235387 | 0.291270 | q100 tốt hơn |
+| Whole-image PSNR trung bình | 47.2414 dB | 58.8577 dB | q100 tốt hơn |
+| Whole-image SSIM trung bình | 0.981217 | 0.998981 | q100 tốt hơn |
+| Whole-image maximum absolute error lớn nhất | 12 | 2 | q100 tốt hơn |
+| BBox-ROI được đánh giá | 402 | 402 | Bằng nhau |
+| BBox-ROI MAE trung bình | 0.848022 | 0.087567 | q100 tốt hơn |
+| BBox-ROI PSNR trung bình | 47.9413 dB | 58.7247 dB | q100 tốt hơn |
+| BBox-ROI SSIM trung bình | 0.996632 | 0.999820 | q100 tốt hơn |
+| ROI maximum absolute error lớn nhất | 10 | 2 | q100 tốt hơn |
+| Kích thước trung bình mỗi ảnh | 1.619 MB | 3.162 MB | q95 nhỏ hơn |
+| Tổng dung lượng 64 ảnh pilot | 98.82 MiB | 192.97 MiB | q95 nhỏ hơn |
+| Compression ratio trung bình | 5.04:1 | 2.47:1 | q95 hiệu quả hơn |
+| Projected storage cho 4,894 ảnh | 7.38 GiB | 14.41 GiB | q95 tiết kiệm khoảng 7.03 GiB |
+
+Storage result:
+
+```text
+Quality 95 reduces projected storage by approximately 48.79%
+relative to quality 100.
+
+Quality 100 is approximately 1.95 times larger
+than quality 95.
+```
+
+Small-bbox evidence at quality 95:
+
+```text
+20 smallest relative-area bbox cases
+
+Mean ROI MAE: 0.4165
+Mean ROI PSNR: 52.29 dB
+Mean ROI SSIM: 0.995884
+Largest ROI maximum absolute error: 5
 ```
 
 Research decisions:
 
 ```text
-DICOM remains the immutable raw medical source.
+Quality 100 is the numerical-fidelity winner.
 
-JPG remains the planned processed training representation.
+Quality 95 is selected as the fidelity–storage/I/O trade-off.
 
-coco_master.json remains the official annotation master.
+Final JPEG quality is locked to 95.
 
-coco_master_jpg.json will be a path-only training derivative and
-has not yet been created.
+Quality 95 must be used consistently for all 4,894 images
+during Phase 2D.1B-Full.
 
-The transformation order is locked:
-DICOM decode
-→ pixel-padding mask
-→ modality transform
-→ VOI LUT/windowing
-→ presentation polarity
-→ uint8 conversion
-→ JPEG encoding.
+No mixed JPEG quality is permitted across images or subsets.
 
-Modality LUT and rescale must not be applied sequentially.
+Phase 2D.1B-Pilot is CLOSED / PASS.
 
-VOI LUT is preferred over WindowCenter/WindowWidth.
-
-Observed per-image min-max normalization is forbidden.
-
-Automatic percentile clipping is forbidden.
-
-Output polarity must be MONOCHROME2-equivalent.
-
-JPG storage mode is one-channel grayscale L.
-
-MMDetection input will replicate grayscale to three channels.
-
-No resize, crop, rotation, flip or transpose is allowed.
-
-BBox scaling is not expected but remains empirically unvalidated
-until the pilot.
-
-JPEG quality 95 and 100 are the pilot candidates.
-
-Final JPEG quality remains unresolved until pilot evidence
-and GPT review.
+Phase 2D.1B-Full is authorized and becomes OPEN / CURRENT.
 ```
 
-Current gate:
+Decision rationale:
 
 ```text
-Phase 2D.1A: CLOSED / PASS
-Phase 2D.1B-Pilot: OPEN / CURRENT
-Phase 2D.1B-Full: LOCKED
-Phase 2D.1C: LOCKED
-Phase 2D.1D: LOCKED
+Quality 95 preserves high whole-image and bbox-ROI fidelity,
+passes geometry and bbox invariance validation and reduces
+projected storage by approximately 48.79% relative to quality 100.
 
-jpg_training_representation_ready: false
-coco_jpg_training_annotation_ready: false
-mmdetection_dataset_loading_ready: false
-empty_image_retention_ready: false
-dataset_training_ready: false
-training_authorized: false
+Quality 100 has higher numerical fidelity but is approximately
+1.95 times larger.
+
+The pilot provides no evidence that the additional numerical fidelity
+of quality 100 is required for downstream detector performance.
 ```
 
-Next action:
+Important claim guardrails:
 
 ```text
-Implement and run Phase 2D.1B-Pilot only.
+Do not claim quality 95 has better detector performance than quality 100.
 
-Do not run the full 4,894-image conversion until:
-- pilot conversion is complete;
-- quality 95 and 100 have paired fidelity evidence;
-- final JPEG quality is selected;
-- GPT review concludes the pilot PASS.
+Do not claim clinical equivalence between JPG and source DICOM.
+
+Do not claim preservation of every possible diagnostic feature.
+
+Do not claim full DICOM-standard conformance.
+
+Do not claim dataset training readiness.
+```
+
+Issues / risks:
+
+```text
+The full 4,894-image JPG dataset has not yet been created.
+
+Full-scope decode error count is unknown.
+
+Full-scope geometry and hash validation have not yet been completed.
+
+coco_master_jpg.json has not yet been created.
+
+MMDetection loading has not yet been validated.
+
+filter_empty_gt=False has not yet been validated.
+
+Retention of all 500 No Finding images inside MMDetection
+has not yet been confirmed.
+
+No downstream q95-versus-q100 detector ablation has been performed.
+
+Dataset training readiness remains false.
+
+Training authorization remains false.
+```
+
+Next phase:
+
+```text
+Phase 2D.1B-Full —
+Full Controlled-Scope DICOM-to-JPG Conversion & Validation
+
+Environment: Local
+Status: OPEN / CURRENT
 ```
 
 ---
-
 
 ## 8. Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation
 
@@ -1351,9 +1423,34 @@ Status: **IN PROGRESS**
 Current subphase:
 
 ```text
-Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
-Environment: Local
-Status: OPEN / CURRENT
+Phase 2D.1B-Full —
+Full Controlled-Scope DICOM-to-JPG Conversion & Validation
+
+Environment:
+Local
+
+Status:
+OPEN / CURRENT
+```
+
+Overall gate:
+
+```text
+Phase 2D.1A: CLOSED / PASS
+Phase 2D.1B-Pilot: CLOSED / PASS
+Phase 2D.1B-Full: OPEN / CURRENT
+Phase 2D.1C: LOCKED
+Phase 2D.1D: LOCKED
+
+final_jpeg_quality: 95
+full_conversion_authorized: true
+
+jpg_training_representation_ready: false
+coco_jpg_training_annotation_ready: false
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
 ```
 
 ### 8.1 Phase 2D.1A — Image Representation Protocol Decision
@@ -1366,186 +1463,67 @@ Environment:
 Local
 ```
 
-Scripts and tests:
-
-```text
-scripts/02D1A_image_representation_protocol.py
-tests/test_phase2D1A_protocol_guardrails.py
-```
-
-Outputs generated:
+Protocol:
 
 ```text
 configs/protocol/phase2D1_jpg_representation.yaml
-reports/phase2D1_image_representation_decision.md
-reports/phase2D1_image_representation_decision.json
 ```
 
-DoD result:
+Protocol version:
 
 ```text
-DICOM/JPG/COCO artifact roles: PASS
-DICOM pixel-decoding policy: PASS
-Modality LUT / rescale policy: PASS
-VOI LUT / windowing policy: PASS
-MONOCHROME1 / presentation polarity policy: PASS
-Intensity clipping policy: PASS
-uint8 conversion policy: PASS
-Output-channel policy: PASS
-JPEG pilot candidate protocol: PASS
-No-resize/no-crop/no-rotation policy: PASS
-BBox-scaling decision policy: PASS
-Filename/path policy: PASS
-Traceability policy: PASS
-Pilot-selection policy: PASS
-Fidelity-validation protocol: PASS
-Required policy coverage 20/20: PASS
-Cross-output consistency: PASS
-Atomic output promotion: PASS
-Guardrail tests 31/31: PASS
-Forbidden actions avoided: PASS
-GPT review: PASS
+1.0.0
 ```
 
-Key findings:
+Locked transformation order:
 
 ```text
-Protocol version: 1.0.0
-Protocol status at generation: decision_locked_pilot_pending
-Locked images: 4,894
-Locked annotations: 36,096
-Locked categories: 14
-
-JPEG quality candidates: [95, 100]
-Final JPEG quality: null
-Final JPEG quality status: pending_phase2D1B_pilot
-
-Direct per-image min-max normalization: forbidden
-Automatic percentile clipping: forbidden
-
-resize: false
-crop: false
-rotation: false
-flip: false
-transpose: false
-
-bbox_scaling_expected: false
-bbox_scaling_validated: false
-
-Full conversion run: false
-Full JPG dataset created: false
-coco_master_jpg.json created: false
-
-Hard errors: 0
-Warnings: 0
-Cross-output drift count: 0
-Unit tests: 31/31 PASS
-JSON parse: PASS
-YAML strict-load: PASS
-```
-
-Research decisions:
-
-```text
-DICOM remains the immutable raw medical source.
-
-JPG is the planned processed training representation generated by
-a fixed, versioned and reproducible protocol.
-
-coco_master.json remains the official annotation master.
-
-coco_master_jpg.json will be a path-only training derivative.
-
-The authoritative transformation sequence is:
-
 DICOM decode
 → pixel-padding mask
 → modality transformation
 → VOI LUT/windowing
 → presentation-polarity normalization
 → deterministic uint8 conversion
-→ JPEG encoding.
-
-Only one modality branch may be used:
-Modality LUT, rescale, or identity.
-
-VOI LUT is preferred over WindowCenter/WindowWidth.
-
-If neither VOI LUT nor valid window metadata is present,
-the theoretical modality-domain range is used.
-
-Observed per-image min-max normalization is forbidden.
-
-Automatic percentile clipping is forbidden.
-
-Output polarity is normalized to MONOCHROME2-equivalent.
-
-JPG is stored as uint8, one-channel grayscale mode L.
-
-MMDetection will replicate grayscale to three channels during loading;
-this remains unvalidated until Phase 2D.1C.
-
-No resize, crop, rotation, flip or transpose is permitted during
-DICOM-to-JPG conversion.
-
-BBox scaling is not expected, but width/height/orientation invariance
-must be proven by pilot and full-conversion evidence.
-
-JPEG quality 95 and 100 are the only pilot candidates.
-
-Final JPEG quality must not be selected before pilot evidence
-and GPT review.
+→ JPEG encoding
 ```
 
-Issues / risks:
+Locked guardrails:
 
 ```text
-No DICOM pixel array has yet been decoded under protocol version 1.0.0.
+No observed per-image min-max normalization.
 
-No pilot image IDs have yet been selected.
+No automatic percentile clipping.
 
-Actual DICOM metadata strata have not yet been audited through
-pixel-level pilot processing.
+No resize.
 
-No JPG fidelity metrics have yet been computed.
+No crop.
 
-No visual audit has yet been performed.
+No rotation.
 
-Final JPEG quality remains unresolved.
+No flip.
 
-BBox invariance is decided but not empirically validated.
+No transpose.
 
-No full JPG dataset exists.
-
-coco_master_jpg.json does not exist.
-
-MMDetection loading and empty-image retention remain unvalidated.
+No automatic bbox scaling.
 ```
 
-Forbidden actions confirmed:
+Pilot JPEG candidates:
 
 ```text
-No DICOM pixel decoding.
-No JPG creation.
-No full conversion.
-No coco_master_jpg.json.
-No train/val/test split.
-No labeled/unlabeled split.
-No training.
-No inference.
-No pseudo-label generation.
-No threshold tuning.
-No AP/mAP computation.
-No test-set usage.
-No canonical bbox modification.
-No coco_master.json modification.
-No dataset training-ready claim.
+95
+100
 ```
 
-Next phase:
+Phase 2D.1A result:
 
 ```text
-Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
+Required policy coverage: 20/20
+Cross-output drift: 0
+Guardrail tests: 31/31 PASS
+JSON parse: PASS
+YAML strict-load: PASS
+GPT review: PASS
+Status: CLOSED / PASS
 ```
 
 ---
@@ -1563,90 +1541,121 @@ Local
 Internal gates:
 
 ```text
-2D.1B-Pilot — Representative DICOM-to-JPG Pilot
-Status: OPEN / CURRENT
+2D.1B-Pilot:
+CLOSED / PASS
 
-2D.1B-Full — Full Controlled-Scope Conversion
-Status: LOCKED until pilot evidence,
-final JPEG quality decision and GPT review PASS
+2D.1B-Full:
+OPEN / CURRENT
 ```
 
 #### 8.2.1 Phase 2D.1B-Pilot
 
-Status: **OPEN / CURRENT**
+Status: **CLOSED / PASS**
 
-Objective:
-
-```text
-Apply protocol version 1.0.0 to a deterministic coverage-first
-representative pilot.
-
-Compare JPEG quality 95 and 100.
-
-Validate DICOM pixel decoding, transformation behavior,
-geometry preservation, traceability and JPEG fidelity.
-
-Select one final JPEG quality only after GPT review.
-```
-
-Pilot selection requirements:
+Implementation:
 
 ```text
-Minimum pilot images: 64
-Minimum No Finding images: 16
-Selection unit: image_id
-Tie-break seed: 2026
-Selection strategy: deterministic coverage-first
+scripts/02D1B_pilot_dicom_to_jpg.py
+src/utils/dicom_jpg_protocol.py
+tests/test_phase2D1B_pilot_guardrails.py
 ```
 
-Coverage requirements:
+Implementation result:
 
 ```text
-All 14 abnormal classes
-No Finding images
-Minimum and maximum image dimensions
-Minimum and maximum pixel counts
-Smallest and largest bbox
-All observed PhotometricInterpretation values
-All observed Transfer Syntax patterns
-All observed BitsStored / PixelRepresentation patterns
-RescaleSlope / RescaleIntercept patterns
-Modality LUT presence and absence
-VOI LUT presence and absence
-WindowCenter / WindowWidth presence and absence
-Single-valued and multi-valued window patterns
-PresentationLUTShape patterns
-PixelPaddingValue presence and absence
+Implementation version: V6_FROZEN
+Guardrail tests: 139/139 PASS
 ```
 
-Expansion rule:
+DICOM source:
 
 ```text
-If 64 images do not cover all observed metadata strata,
-expand the pilot until coverage is complete.
+D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train
 ```
 
-Required image-processing checks:
+Configured root:
 
 ```text
-DICOM pixel decode success
-Single-frame grayscale validation
-Rows/Columns validation
-BitsAllocated/BitsStored/HighBit validation
-PixelRepresentation validation
-Pixel padding mask behavior
-Modality transformation branch
-VOI/windowing branch
-Presentation inversion behavior
-uint8 output validity
-NaN/Inf absence
-JPG quality 95 encode/decode
-JPG quality 100 encode/decode
-Width preservation
-Height preservation
-Orientation preservation
-BBox validity without scaling
+D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset
 ```
+
+Decoder backend evidence:
+
+```text
+pylibjpeg: unavailable
+gdcm: unavailable
+pillow: available
+```
+
+The initial explicit `pylibjpeg` run was blocked:
+
+```text
+jpeg2000_backend_unavailable:pylibjpeg
+EXIT_CODE=1
+```
+
+This was expected guardrail behavior.
+
+No silent decoder fallback occurred.
+
+The successful pilot explicitly used:
+
+```text
+--jpeg2000-decoder pillow
+```
+
+Pilot result:
+
+```text
+Controlled DICOM paths resolved: 4,894/4,894
+DICOM header inventory: 4,894/4,894
+
+Pilot selected images: 64
+No Finding pilot images: 16
+
+Metadata/features expected: 54
+Metadata/features covered: 54
+Missing features: 0
+
+Abnormal classes expected: 14
+Abnormal classes covered: 14
+
+Pixel decode attempts: 64
+Pixel decode successes: 64
+Pixel decode errors: 0
+```
+
+Geometry validation:
+
+```text
+Geometry records:
+128 = 64 images × 2 JPEG candidates
+
+Pre-JPEG shape unchanged: PASS
+Reference PNG shape unchanged: PASS
+Decoded JPG shape unchanged: PASS
+
+Reference PNG mode L: PASS
+JPEG mode L: PASS
+
+Reference PNG dtype uint8: PASS
+JPEG dtype uint8: PASS
+
+Pixel matrix order unchanged: PASS
+
+Unexpected EXIF orientation: 0
+
+Resize applied: false
+Crop applied: false
+Rotation applied: false
+Flip applied: false
+Transpose applied: false
+
+BBox scaling required: false
+BBox modification performed: false
+```
+
+##### So sánh fidelity và dung lượng
 
 Fidelity reference:
 
@@ -1654,119 +1663,305 @@ Fidelity reference:
 pre-JPEG uint8 image
 ```
 
-Fidelity comparison:
+Compared representation:
 
 ```text
-decoded JPG image
+decoded JPEG image
 ```
 
-Required whole-image metrics:
+BBox-ROI count:
 
 ```text
-MAE
-RMSE
-PSNR
-SSIM
-maximum absolute error
-p95 absolute error
-p99 absolute error
-file size
-compression ratio
+402 pilot annotations
 ```
 
-Required bbox-ROI metrics:
+| Tiêu chí | JPEG quality 95 | JPEG quality 100 | Kết luận |
+|---|---:|---:|---|
+| Pilot images | 64 | 64 | Bằng nhau |
+| Whole-image MAE trung bình | 0.873271 | 0.085074 | q100 tốt hơn |
+| Whole-image RMSE trung bình | 1.235387 | 0.291270 | q100 tốt hơn |
+| Whole-image PSNR trung bình | 47.2414 dB | 58.8577 dB | q100 tốt hơn |
+| Whole-image SSIM trung bình | 0.981217 | 0.998981 | q100 tốt hơn |
+| Whole-image maximum absolute error lớn nhất | 12 | 2 | q100 tốt hơn |
+| BBox-ROI MAE trung bình | 0.848022 | 0.087567 | q100 tốt hơn |
+| BBox-ROI PSNR trung bình | 47.9413 dB | 58.7247 dB | q100 tốt hơn |
+| BBox-ROI SSIM trung bình | 0.996632 | 0.999820 | q100 tốt hơn |
+| ROI maximum absolute error lớn nhất | 10 | 2 | q100 tốt hơn |
+| Kích thước trung bình mỗi ảnh | 1.619 MB | 3.162 MB | q95 nhỏ hơn |
+| Tổng dung lượng 64 ảnh pilot | 98.82 MiB | 192.97 MiB | q95 nhỏ hơn |
+| Compression ratio trung bình | 5.04:1 | 2.47:1 | q95 hiệu quả hơn |
+| Projected storage cho 4,894 ảnh | 7.38 GiB | 14.41 GiB | q95 tiết kiệm khoảng 7.03 GiB |
+
+Pairwise evidence:
 
 ```text
-ROI MAE
-ROI PSNR
-ROI SSIM
-ROI maximum absolute error
+Quality 100 has better whole-image MAE, PSNR and SSIM
+for 64/64 pilot images.
+
+Quality 100 has better ROI MAE, ROI PSNR and ROI SSIM
+for 402/402 pilot bbox regions.
 ```
 
-Required visual evidence:
+Storage evidence:
 
 ```text
-Full-image visual audit
-BBox-crop visual audit
-Difference heatmaps
-Representative abnormal images
-Representative No Finding images
-Small-lesion cases
-Rare-class cases where available
+Quality 95 reduces projected storage by approximately 48.79%
+relative to quality 100.
+
+Quality 100 is approximately 1.95 times larger
+than quality 95.
 ```
 
-Final JPEG-quality selection rule:
+Small-bbox evidence at quality 95:
 
 ```text
-Do not auto-select solely from mean PSNR or mean SSIM.
+20 smallest relative-area bbox cases
 
-Select quality 95 only if:
-- all structural checks pass;
-- no critical visual failure exists;
-- lesion-region fidelity is acceptable;
-- quality 100 does not provide meaningful practical improvement.
-
-Select quality 100 if:
-- quality 95 produces clinically or spatially relevant artifacts;
-- quality 100 resolves those artifacts.
-
-If both quality candidates fail:
-- Phase 2D.1B-Pilot FAILS;
-- full conversion remains locked;
-- reopen the image-format or representation protocol decision.
+Mean ROI MAE: 0.4165
+Mean ROI PSNR: 52.29 dB
+Mean ROI SSIM: 0.995884
+Largest ROI maximum absolute error: 5
 ```
 
-Pilot restrictions:
+Visual review:
 
 ```text
-Do not run full conversion.
-Do not create the final full JPG dataset.
-Do not create final coco_master_jpg.json.
-Do not create split.
-Do not train.
-Do not run model inference.
-Do not generate pseudo-labels.
-Do not tune confidence thresholds.
-Do not compute AP/mAP.
-Do not use the test set.
-Do not modify canonical bbox.
-Do not modify coco_master.json.
+No global polarity inversion observed.
+
+No unexpected crop observed.
+
+No rotation observed.
+
+No flip observed.
+
+No transpose observed.
+
+No geometry deformation observed.
+
+No conversion-induced anatomical truncation observed.
+
+Critical visual failure: false
 ```
 
-Pilot PASS rule:
+Visual review is representation-pipeline evidence only.
+
+It is not clinical validation.
+
+##### Final JPEG quality decision
+
+Selected quality:
 
 ```text
-Pilot selection coverage: PASS
-DICOM decoding: PASS
-Transformation behavior: PASS
-JPG quality 95 evidence: COMPLETE
-JPG quality 100 evidence: COMPLETE
-Geometry preservation: PASS
-BBox invariance: PASS
-Traceability: PASS
-Fidelity metrics: COMPLETE
-Visual audit: COMPLETE
-Final JPEG quality selected: true
-GPT review: PASS
+95
 ```
+
+Decision status:
+
+```text
+approved_after_gpt_and_researcher_pilot_review
+```
+
+Full conversion authorization:
+
+```text
+true
+```
+
+Decision rationale:
+
+```text
+Quality 100 provides the highest numerical fidelity.
+
+Quality 95 still preserves high whole-image and bbox-ROI fidelity,
+passes geometry and bbox invariance validation and reduces projected
+storage by approximately 48.79% relative to quality 100.
+
+Quality 100 is approximately 1.95 times larger.
+
+No pilot evidence demonstrates that the additional numerical fidelity
+of quality 100 is required for downstream detector performance.
+
+Quality 95 is therefore selected as the controlled
+fidelity–storage/I/O trade-off.
+```
+
+Quality lock:
+
+```text
+All 4,894 images in Phase 2D.1B-Full must use JPEG quality 95.
+
+Mixed JPEG qualities are forbidden.
+```
+
+Claim guardrails:
+
+```text
+Do not claim quality 95 has better detector performance than quality 100.
+
+Do not claim clinical equivalence between JPG and source DICOM.
+
+Do not claim preservation of every possible diagnostic feature.
+
+Do not claim full DICOM-standard conformance.
+
+Do not claim dataset training readiness.
+```
+
+Historical evidence rule:
+
+```text
+reports/phase2D1B_pilot_validation.json
+was generated before final GPT/researcher review.
+
+It may therefore retain:
+phase_status = OPEN_REVIEW_REQUIRED
+final_jpeg_quality = null
+full_conversion_authorized = false
+
+Do not edit this generated structural evidence retroactively.
+```
+
+Final decision ownership:
+
+```text
+reports/phase2D1B_pilot_decision_template.json
+```
+
+Expected final decision fields:
+
+```text
+decision_status:
+approved_after_gpt_and_researcher_pilot_review
+
+final_jpeg_quality:
+95
+
+selected_candidate:
+95
+
+full_conversion_authorized:
+true
+```
+
+Pilot evidence:
+
+```text
+reports/phase2D1B_pilot_unit_tests_output_v6.txt
+reports/phase2D1B_pilot_run_output.txt
+reports/phase2D1B_pilot_run_output_pillow.txt
+reports/phase2D1B_pilot_environment.json
+reports/phase2D1B_pilot_header_inventory.csv
+reports/phase2D1B_pilot_metadata_strata.csv
+reports/phase2D1B_pilot_selection.csv
+reports/phase2D1B_pilot_selection_coverage.csv
+reports/phase2D1B_pilot_fidelity_metrics.csv
+reports/phase2D1B_pilot_bbox_roi_metrics.csv
+reports/phase2D1B_pilot_quality_summary.csv
+reports/phase2D1B_pilot_quality_pairwise.csv
+reports/phase2D1B_pilot_geometry_validation.csv
+reports/phase2D1B_pilot_visual_audit_manifest.csv
+reports/phase2D1B_pilot_validation.json
+reports/phase2D1B_pilot_validation.md
+reports/phase2D1B_pilot_decision_template.json
+```
+
+Pilot image evidence:
+
+```text
+data/processed/images_jpg_pilot/reference_uint8/
+data/processed/images_jpg_pilot/q95/
+data/processed/images_jpg_pilot/q100/
+```
+
+Visual evidence:
+
+```text
+plots/phase2D1B_pilot/full_image/
+plots/phase2D1B_pilot/bbox_crops/
+plots/phase2D1B_pilot/difference_heatmaps/
+plots/phase2D1B_pilot/contact_sheets/
+```
+
+Pilot closure:
+
+```text
+Phase 2D.1B-Pilot:
+CLOSED / PASS
+
+Final JPEG quality:
+95 / LOCKED
+
+Full conversion:
+AUTHORIZED
+```
+
+---
 
 #### 8.2.2 Phase 2D.1B-Full
 
-Status: **LOCKED**
+Status: **OPEN / CURRENT**
 
-Opening requirement:
+Environment:
 
 ```text
-Phase 2D.1B-Pilot PASS
-Final JPEG quality selected
-GPT review PASS
+Local
+```
+
+Opening requirements:
+
+```text
+Phase 2D.1B-Pilot PASS: satisfied
+
+Final JPEG quality selected: satisfied
+
+Final JPEG quality = 95: locked
+
+GPT/researcher review PASS: satisfied
+
+Full conversion authorized: true
+```
+
+Full conversion policy:
+
+```text
+Protocol version:
+1.0.0
+
+JPEG quality:
+95
+
+Decoder backend:
+must be explicitly selected
+
+Silent decoder fallback:
+forbidden
+
+Resize:
+false
+
+Crop:
+false
+
+Rotation:
+false
+
+Flip:
+false
+
+Transpose:
+false
+
+BBox scaling:
+false
 ```
 
 Full-conversion targets:
 
 ```text
 data/processed/images_jpg/train/<image_id>.jpg
+
 data/processed/coco/coco_master_jpg.json
+
 data/processed/image_mapping/dicom_to_jpg_mapping.csv
 ```
 
@@ -1783,6 +1978,7 @@ Orientation changes: 0
 COCO-JPG images: 4,894
 COCO-JPG annotations: 36,096
 COCO-JPG categories: 14
+
 Abnormal images: 4,394
 No Finding images: 500
 No Finding annotations: 0
@@ -1795,19 +1991,104 @@ Boundary violations: 0
 Absolute COCO-JPG paths: 0
 ```
 
+`coco_master_jpg.json` may change only:
+
+```text
+images[].file_name
+
+from:
+train/<image_id>.dicom
+
+to:
+train/<image_id>.jpg
+```
+
+The following must remain unchanged:
+
+```text
+image id
+annotation id
+category id
+width
+height
+bbox
+area
+iscrowd
+categories
+canonical_ann_id
+source_row_id
+traceability fields
+```
+
 Full-conversion restrictions:
 
 ```text
-Do not modify original DICOM files.
+Do not modify source DICOM files.
+
 Do not modify canonical annotations.
-Do not modify COCO bbox coordinates.
+
+Do not modify coco_master.json.
+
 Do not resize, crop, rotate, flip or transpose.
-Do not create split.
+
+Do not scale, clamp, delete or fuse bbox.
+
+Do not create train/val/test split.
+
+Do not create labeled/unlabeled split.
+
 Do not train.
-Do not run inference.
+
+Do not run detector inference.
+
 Do not generate pseudo-labels.
+
+Do not tune thresholds.
+
 Do not compute AP/mAP.
+
 Do not use the test set.
+```
+
+Git rule:
+
+```text
+Do not commit 4,894 JPG files to ordinary Git.
+
+Commit only scripts, protocols, reports, mappings,
+small audit artifacts and documentation that belong in source control.
+```
+
+Full PASS rule:
+
+```text
+Full DICOM inventory: PASS
+
+All 4,894 images converted using quality 95.
+
+Decode errors: 0
+
+Missing JPG: 0
+
+Duplicate image IDs: 0
+
+Width/height mismatches: 0
+
+Orientation changes: 0
+
+Full traceability mapping: PASS
+
+coco_master_jpg.json created: PASS
+
+COCO-JPG structural validation: PASS
+
+BBox/category/area/traceability mismatches: 0
+
+No Finding images retained: 500
+
+No Finding annotations: 0
+
+GPT review: PASS
 ```
 
 ---
@@ -1839,17 +2120,23 @@ MMEngine/MMCV/MMDetection versions recorded
 COCO-JPG parse: PASS
 Dataset build: PASS
 dataset.full_init(): PASS
+
 Dataset length: 4,894
 Abnormal images retained: 4,394
 No Finding images retained: 500
+
 Empty-GT samples: exactly 500
 Unexpected empty abnormal images: 0
 Annotated No Finding images: 0
+
 filter_empty_gt=False effective: PASS
+
 Abnormal sample loading: PASS
 No Finding loading with empty GT: PASS
+
 Dataloader smoke test with num_workers=0: PASS
 Dataloader smoke test with num_workers>0: PASS
+
 All image IDs seen: 4,894
 ```
 
@@ -1872,11 +2159,17 @@ Restrictions:
 
 ```text
 Do not train.
+
 Do not run model inference.
+
 Do not create split.
+
 Do not generate pseudo-labels.
+
 Do not tune thresholds.
+
 Do not compute AP/mAP.
+
 Do not use the test set.
 ```
 
@@ -1896,13 +2189,21 @@ Required actions:
 
 ```text
 Download Colab evidence to the local repo.
+
 Verify report files and hashes.
+
 Request GPT final review.
+
 Update PROJECT_CONTEXT.md after PASS.
+
 Update PHASE_HANDOFF.md after PASS.
+
 Update research_log.md after PASS.
+
 Update CHECKLIST_TRIEN_KHAI_FULL.xlsx after PASS.
+
 Stage reviewed evidence only.
+
 Commit and push Phase 2D.1.
 ```
 
@@ -1910,11 +2211,17 @@ Do not commit:
 
 ```text
 4,894 JPG files to ordinary Git.
+
 Temporary conversion files.
+
 Colab caches.
+
 MMDetection checkpoints.
+
 Training logs unrelated to loading validation.
 ```
+
+---
 
 ### 8.5 Training-readiness rule
 
@@ -1922,12 +2229,27 @@ Training logs unrelated to loading validation.
 Passing Phase 2D.1A confirms only that the image-representation
 protocol has been locked.
 
-Passing Phase 2D.1B confirms JPG representation and COCO-JPG readiness.
+Passing Phase 2D.1B-Pilot confirms only that:
+- representative DICOM decoding succeeded;
+- geometry and bbox invariance passed;
+- JPEG quality 95 was selected;
+- full conversion may proceed.
 
-Passing Phase 2D.1C confirms MMDetection dataset-loading readiness
-and retention of all 500 No Finding images.
+Passing Phase 2D.1B-Pilot does not confirm that the full JPG
+training representation exists.
 
-Passing Phase 2D.1 overall does not create a fixed train/val/test split.
+Passing Phase 2D.1B-Full confirms:
+- the complete JPG representation exists;
+- full mapping and geometry validation pass;
+- coco_master_jpg.json is structurally ready.
+
+Passing Phase 2D.1C confirms:
+- MMDetection dataset loading readiness;
+- retention of all 500 No Finding images;
+- empty-GT samples are represented correctly.
+
+Passing Phase 2D.1 overall does not create a fixed
+train/val/test split.
 
 Passing Phase 2D.1 overall does not authorize detector training.
 

@@ -1,0 +1,8 @@
+INFO protocol preflight PASS: version=1.0.0 fingerprint=1528da27758d35786847141c37d0ddb754dddb146aff116a8f3a9a7b07221229
+INFO input cross-check PASS: {'images': 4894, 'annotations': 36096, 'categories': 14, 'abnormal_images': 4394, 'no_finding_images': 500}
+INFO DICOM root resolved via env -> D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset
+INFO resolved 4894/4894 controlled DICOM paths
+INFO header inventory complete: 4894/4894
+INFO selected 64 pilot images; coverage OK (54/54 features)
+INFO Phase 2D.1B-Pilot structural run complete: OPEN_REVIEW_REQUIRED (pending GPT review). No PASS, no final quality selected.
+EXIT_CODE=0 
