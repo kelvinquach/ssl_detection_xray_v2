@@ -1,6 +1,7 @@
 # ssl_detection_xray_v2 — Python dependencies
-# Phase 0 pins are intentionally loose; exact versions captured in
-# reports/phase0_pip_freeze.txt after 00_check_environment.py runs.
+# Dependency ranges support environment setup; exact installed versions must be
+# captured in the corresponding reproducibility evidence (for example,
+# reports/phase0_pip_freeze.txt and phase-specific environment reports).
 #
 # Primary detection framework: MMDetection (OpenMMLab).
 # Detectron2 is OPTIONAL and not installed by default (Windows build issues).
@@ -11,14 +12,18 @@ pandas>=2.0
 scipy>=1.10
 
 # --- Deep learning ---
-# Install torch/torchvision matching your CUDA via the official index, e.g.:
+# Install torch/torchvision matching the target CUDA runtime via the official
+# PyTorch index. Do not assume that the example CUDA version fits every machine.
+# Example only:
 #   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 torch>=2.1
 torchvision>=0.16
 
 # --- MMDetection stack (primary framework) ---
+# Install and validate this stack in the target GPU environment (Phase 2D.1C).
 # mmcv is typically installed via mim against the matching torch/CUDA:
-#   pip install -U openmim && mim install mmengine "mmcv>=2.1" "mmdet>=3.3"
+#   pip install -U openmim
+#   mim install mmengine "mmcv>=2.1" "mmdet>=3.3"
 openmim>=0.3
 mmengine>=0.10
 mmcv>=2.1
@@ -28,6 +33,13 @@ mmdet>=3.3
 opencv-python>=4.8
 pydicom>=2.4
 Pillow>=10.0
+
+# Required JPEG 2000 decoder path for compressed DICOM pixel data.
+# Phase 2D.1B-Full used this path for 2,118 controlled-scope images.
+# Keep pylibjpeg-openjpeg below 2.3 while this environment keeps NumPy <2.0;
+# pylibjpeg-openjpeg 2.3+ requires NumPy 2.x on Python 3.9–3.12.
+pylibjpeg>=2.0
+pylibjpeg-openjpeg>=2.0,<2.3
 
 # --- Detection metrics / annotations ---
 pycocotools>=2.0.7

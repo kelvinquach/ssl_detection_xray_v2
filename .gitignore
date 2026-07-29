@@ -33,3 +33,15 @@ Thumbs.db
 # Keep directory placeholders even when ignoring contents.
 !**/.gitkeep
 .vs/
+
+# ===== Phase 2D.1B-Full converted JPG dataset (heavy; never commit 4894 JPG) =====
+data/processed/images_jpg/
+data/processed/images_jpg_staging/
+data/processed/images_jpg_backup/
+data/processed/images_jpg_failed/
+*.part
+# Note: data/processed/coco/coco_master_jpg.json is path-only metadata and stays tracked.
+# Phase 2D.1B pilot image derivatives and temporary handoff packages
+data/processed/images_jpg_pilot/
+_handoff_phase2D1B_full/
+phase2D1B_full_handoff.zip

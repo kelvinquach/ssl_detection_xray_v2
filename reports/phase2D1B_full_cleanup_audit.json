@@ -1,0 +1,20 @@
+{
+  "phase_id": "2D.1B-Full",
+  "phase_status": "OPEN",
+  "final_jpeg_quality": 95,
+  "full_execution_finished": true,
+  "full_validation_candidate_pass": true,
+  "full_conversion_completed": false,
+  "dataset_training_ready": false,
+  "training_authorized": false,
+  "downstream_detector_superiority_claimed": false,
+  "utc": "2026-07-29T10:45:57Z",
+  "stage": "post_promotion_cleanup",
+  "promoted": {
+    "final_train": "data\\processed\\images_jpg\\train",
+    "coco_jpg": "data\\processed\\coco\\coco_master_jpg.json",
+    "backup_cleanup_warnings": []
+  },
+  "backup_cleanup_warnings": [],
+  "backup_cleanup_clean": true
+}

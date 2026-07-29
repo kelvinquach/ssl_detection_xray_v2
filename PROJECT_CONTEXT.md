@@ -251,6 +251,8 @@ Lưu ý thống nhất tên file:
 - **2D.1:** JPG Training Representation & MMDetection Empty-Image Loading Validation.
   - **2D.1A:** Image Representation Protocol Decision.
   - **2D.1B:** DICOM-to-JPG Conversion & Validation.
+    - **2D.1B-Pilot:** Representative DICOM-to-JPG Pilot.
+    - **2D.1B-Full:** Full Controlled-Scope DICOM-to-JPG Conversion & Validation.
   - **2D.1C:** MMDetection Dataset / Empty-Image Loading Validation.
   - **2D.1D:** Evidence Consolidation, GPT Review & Closure.
 - **2E:** Fixed train/val/test split.
@@ -299,15 +301,18 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-Current phase: Phase 2D.1B-Full — Full Controlled-Scope DICOM-to-JPG Conversion & Validation  
-Overall phase: Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation: **IN PROGRESS**  
-Previous subphase: Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot: **CLOSED / PASS**  
-Final JPEG quality: **95 / LOCKED**  
-Next gated phase: Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation  
-Git status: Phase 2D.1B-Pilot evidence reviewed locally; synchronized documentation update and commit/push pending.  
-JPG training representation ready: false  
-Dataset training-ready: false  
-Training authorized: false
+Current subphase: Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
+Current subphase status: **NOT STARTED / NEXT**
+Overall phase: Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation: **IN PROGRESS**
+Previous subphase: Phase 2D.1B-Full — Full Controlled-Scope DICOM-to-JPG Conversion & Validation: **CLOSED / PASS**
+Final JPEG quality: **95 / LOCKED**
+Git status: Phase 2D.1B-Full evidence completed and reviewed locally; synchronized documentation update and commit/push pending.
+JPG training representation ready: **true**
+COCO-JPG training annotation ready: **true**
+MMDetection dataset loading ready: **false**
+Empty-image retention ready: **false**
+Dataset training-ready: **false**
+Training authorized: **false**
 
 ### 7.1 Current gate
 
@@ -333,7 +338,7 @@ Phase 2D.1A — Image Representation Protocol Decision:
 CLOSED / PASS
 
 Phase 2D.1B — DICOM-to-JPG Conversion & Validation:
-IN PROGRESS
+CLOSED / PASS
 
 Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot:
 CLOSED / PASS
@@ -347,20 +352,38 @@ Representative pilot No Finding images:
 Metadata/features coverage:
 54/54 PASS
 
-Pixel decode:
+Abnormal class coverage:
+14/14 PASS
+
+Pilot pixel decoding:
 64/64 PASS
 
 Final JPEG quality:
 95 / LOCKED
 
-Full conversion authorized:
-TRUE
-
 Phase 2D.1B-Full — Full Controlled-Scope Conversion:
-OPEN / CURRENT
+CLOSED / PASS
+
+Full-scope images processed:
+4,894
+
+Full-scope conversion errors:
+0
+
+Full validation:
+PASS
+
+Output promotion:
+PASS
+
+Backup cleanup:
+PASS
+
+Final output integrity:
+PASS
 
 Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation:
-LOCKED until Phase 2D.1B-Full GPT review PASS
+NOT STARTED / NEXT
 
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure:
 LOCKED until Phase 2D.1C PASS
@@ -375,10 +398,14 @@ AP/mAP computation: LOCKED
 Test-set usage: LOCKED
 
 final_jpeg_quality: 95
-full_conversion_authorized: TRUE
+full_conversion_completed: TRUE
+full_validation_passed: TRUE
+promotion_passed: TRUE
+cleanup_passed: TRUE
+final_output_integrity_passed: TRUE
 
-jpg_training_representation_ready: FALSE
-coco_jpg_training_annotation_ready: FALSE
+jpg_training_representation_ready: TRUE
+coco_jpg_training_annotation_ready: TRUE
 mmdetection_dataset_loading_ready: FALSE
 empty_image_retention_ready: FALSE
 dataset_training_ready: FALSE
@@ -842,13 +869,32 @@ Resolved in Phase 2D.1A:
 - JPEG quality candidates 95 and 100;
 - pilot selection and fidelity-validation protocol.
 
-Still unresolved:
+Resolved in Phase 2D.1B-Pilot:
+- representative DICOM metadata strata;
 - actual DICOM pixel decoding evidence;
-- actual JPG fidelity results;
-- final JPEG quality;
-- full JPG conversion;
-- COCO-JPG creation;
-- MMDetection empty-image loading validation.
+- whole-image and bbox-ROI JPG fidelity evidence;
+- geometry and bbox invariance evidence;
+- visual representation review;
+- final JPEG quality = 95;
+- authorization for full controlled-scope conversion.
+
+Resolved in Phase 2D.1B-Full:
+- full conversion of 4,894 controlled-scope images;
+- uniform JPEG quality 95 across all outputs;
+- full-scope decoder and conversion audit;
+- full geometry and bbox boundary validation;
+- full No Finding validation;
+- creation and validation of coco_master_jpg.json;
+- output promotion and backup cleanup;
+- final output integrity validation.
+
+Still unresolved:
+- MMDetection loading of JPG + COCO-JPG;
+- retention of all 500 No Finding / empty-GT images;
+- filter_empty_gt=False or equivalent configuration validation;
+- dataset training readiness;
+- training authorization.
+```
 
 ### 7.7 Phase 2D.1 current status
 
@@ -859,11 +905,11 @@ Status: **IN PROGRESS**
 Current subphase:
 
 ```text
-Phase 2D.1B-Full —
-Full Controlled-Scope DICOM-to-JPG Conversion & Validation
+Phase 2D.1C —
+MMDetection Dataset / Empty-Image Loading Validation
 
-Environment: Local
-Status: OPEN / CURRENT
+Environment: Google Colab
+Status: NOT STARTED / NEXT
 ```
 
 Subphase structure:
@@ -876,10 +922,10 @@ Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
 Status: CLOSED / PASS
 
 Phase 2D.1B-Full — Full Controlled-Scope Conversion
-Status: OPEN / CURRENT
+Status: CLOSED / PASS
 
 Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
-Status: LOCKED until Phase 2D.1B-Full GPT review PASS
+Status: NOT STARTED / NEXT
 
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
 Status: LOCKED until Phase 2D.1C PASS
@@ -1234,16 +1280,162 @@ plots/phase2D1B_pilot/difference_heatmaps/
 plots/phase2D1B_pilot/contact_sheets/
 ```
 
-#### Current restrictions
+#### Phase 2D.1B-Full evidence
+
+Status: **CLOSED / PASS**
+
+Environment:
 
 ```text
-Full conversion must use JPEG quality 95 consistently.
+Local
+```
 
-Do not create mixed JPEG qualities across images or subsets.
+Fixed representation policy:
 
-Do not resize, crop, rotate, flip, or transpose images.
+```text
+Pipeline:
+DICOM metadata-aware, standard-aligned reference representation pipeline
 
-Do not scale, clamp, delete, or edit bbox annotations.
+Protocol version:
+1.0.0
+
+JPEG quality:
+95
+
+Resize:
+false
+
+Crop:
+false
+
+Rotation:
+false
+
+Flip:
+false
+
+Transpose:
+false
+
+BBox scaling:
+false
+```
+
+Full conversion result:
+
+```text
+Full-scope images processed: 4,894
+Output JPG files: 4,894
+Conversion errors: 0
+
+Native decoder images: 2,776
+pylibjpeg JPEG 2000 decoder images: 2,118
+
+VOI/windowing branch images: 4,536
+Theoretical fallback branch images: 358
+Presentation-polarity inversions: 1,562
+Pixel-padding processing required: 0
+
+COCO-JPG images: 4,894
+COCO-JPG annotations: 36,096
+COCO-JPG categories: 14
+
+Abnormal images with bbox: 4,394
+No Finding images: 500
+No Finding annotations: 0
+```
+
+Validation result:
+
+```text
+Full DICOM inventory: PASS
+All 4,894 images converted using JPEG quality 95: PASS
+Decode errors: 0
+Missing JPG files: 0
+Duplicate image IDs: 0
+Width/height mismatches: 0
+Orientation changes: 0
+Geometry validation: PASS
+BBox boundary validation: PASS
+Category mapping validation: PASS
+No Finding validation: PASS
+COCO-JPG structural validation: PASS
+Promotion: PASS
+Cleanup: PASS
+Final output integrity: PASS
+Missing JPG files referenced by COCO: 0
+```
+
+Final artifacts:
+
+```text
+data/processed/images_jpg/train/<image_id>.jpg
+data/processed/coco/coco_master_jpg.json
+reports/phase2D1B_full_mapping.csv
+reports/phase2D1B_full_mapping.jsonl
+```
+
+Artifact roles:
+
+```text
+DICOM:
+Immutable raw medical source.
+
+JPG quality 95:
+Processed training representation generated by the fixed,
+versioned and reproducible DICOM metadata-aware,
+standard-aligned reference representation pipeline.
+
+coco_master.json:
+Official annotation master.
+
+coco_master_jpg.json:
+Path-only JPG training derivative.
+It does not replace coco_master.json.
+```
+
+Primary implementation and evidence:
+
+```text
+scripts/02D1B_full_dicom_to_jpg.py
+tests/test_phase2D1B_full_guardrails.py
+reports/phase2D1B_full_preflight.json
+reports/phase2D1B_full_preflight.md
+reports/phase2D1B_full_validation.json
+reports/phase2D1B_full_validation.md
+reports/phase2D1B_full_promotion.json
+reports/phase2D1B_full_cleanup_audit.json
+reports/phase2D1B_full_metadata_audit.csv
+reports/phase2D1B_full_bbox_audit.csv
+reports/phase2D1B_full_no_finding_audit.csv
+reports/phase2D1B_full_errors.csv
+reports/phase2D1B_full_mapping.csv
+reports/phase2D1B_full_mapping.jsonl
+data/processed/coco/coco_master_jpg.json
+```
+
+#### Current readiness and restrictions
+
+```text
+final_jpeg_quality: 95
+full_conversion_completed: true
+full_validation_passed: true
+promotion_passed: true
+cleanup_passed: true
+final_output_integrity_passed: true
+
+jpg_training_representation_ready: true
+coco_jpg_training_annotation_ready: true
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
+```
+
+```text
+Do not modify source DICOM files.
+
+Do not modify canonical annotations.
 
 Do not modify coco_master.json.
 
@@ -1263,44 +1455,58 @@ Do not compute AP/mAP.
 
 Do not use the test set.
 
-Do not claim dataset training readiness.
+Do not commit 4,894 JPG files to ordinary Git.
 ```
 
-Training-readiness rule:
+Important claim guardrails:
 
 ```text
-Phase 2D.1B-Pilot PASS only authorizes full DICOM-to-JPG conversion.
+Do not claim quality 95 has better detector performance than quality 100.
 
-It does not authorize model training.
+Do not claim clinical equivalence between JPG and source DICOM.
 
-The full JPG dataset does not yet exist.
+Do not claim preservation of every possible diagnostic feature.
 
-coco_master_jpg.json does not yet exist.
+Do not describe the representation pipeline as a new method
+or a new algorithm.
 
+Do not claim MMDetection loading readiness.
+
+Do not claim empty-image retention readiness.
+
+Do not claim dataset training readiness.
+
+Do not claim training authorization.
+```
+
+Remaining issues / risks:
+
+```text
 MMDetection loading has not yet been validated.
 
-The retention of all 500 No Finding images has not yet been proven
-inside MMDetection.
+filter_empty_gt=False has not yet been validated.
 
-dataset_training_ready remains false.
+Retention of all 500 No Finding images inside the MMDetection
+data pipeline has not yet been confirmed.
 
-training_authorized remains false.
+No downstream q95-versus-q100 detector ablation has been performed.
+
+A controlled downstream image-representation ablation is not
+a mandatory requirement and has not been confirmed as approved.
+
+Dataset training readiness remains false.
+
+Training authorization remains false.
 ```
 
-Next action:
+Next phase:
 
 ```text
-Run Phase 2D.1B-Full only.
+Phase 2D.1C —
+MMDetection Dataset / Empty-Image Loading Validation
 
-Convert all 4,894 controlled-scope DICOM images
-using protocol version 1.0.0 and JPEG quality 95.
-
-Create and validate full mapping evidence.
-
-Create coco_master_jpg.json as a path-only derivative.
-
-Do not open Phase 2D.1C until full conversion and validation
-receive GPT review PASS.
+Environment: Google Colab
+Status: NOT STARTED / NEXT
 ```
 
 
@@ -2250,30 +2456,43 @@ Date opened: 2026-07-15
 Current subphase:
 
 ```text
-Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
-Environment: Local
-Status: OPEN / CURRENT
+Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
+Environment: Google Colab
+Status: NOT STARTED / NEXT
 ```
 
 Subphase gate:
 
 ```text
 Phase 2D.1A: CLOSED / PASS
-Phase 2D.1B-Pilot: OPEN / CURRENT
-Phase 2D.1B-Full: LOCKED
-Phase 2D.1C: LOCKED
-Phase 2D.1D: LOCKED
+Phase 2D.1B-Pilot: CLOSED / PASS
+Phase 2D.1B-Full: CLOSED / PASS
+Phase 2D.1C: NOT STARTED / NEXT
+Phase 2D.1D: LOCKED until Phase 2D.1C PASS
 ```
 
 Readiness flags:
 
 ```text
-jpg_training_representation_ready: false
-coco_jpg_training_annotation_ready: false
+jpg_training_representation_ready: true
+coco_jpg_training_annotation_ready: true
 mmdetection_dataset_loading_ready: false
 empty_image_retention_ready: false
 dataset_training_ready: false
 training_authorized: false
+```
+
+Interpretation:
+
+```text
+Phase 2D.1B-Full completed the full controlled-scope JPG
+representation and COCO-JPG derivative.
+
+Phase 2D.1 remains IN PROGRESS because MMDetection loading and
+empty-GT image retention have not yet been validated.
+
+Full conversion completion does not make the dataset training-ready
+and does not authorize training.
 ```
 
 ---
@@ -2597,3 +2816,184 @@ Full Controlled-Scope DICOM-to-JPG Conversion & Validation
 Environment: Local
 Status: OPEN / CURRENT
 ```
+
+Resolution update:
+
+```text
+Phase 2D.1B-Full was subsequently completed and closed with PASS.
+
+The full 4,894-image JPG dataset and coco_master_jpg.json now exist
+and have passed full validation.
+
+The historical pilot risks and next-phase status above are retained
+as phase-time records; they are not the current project state.
+```
+
+---
+
+### Phase 2D.1B-Full — Full Controlled-Scope DICOM-to-JPG Conversion & Validation
+
+Status: **CLOSED / PASS**
+
+Date: 2026-07-29
+
+Environment:
+
+```text
+Local
+```
+
+Scripts run:
+
+```cmd
+python scripts\02D1B_full_dicom_to_jpg.py --execute-full
+```
+
+Primary implementation and evidence:
+
+```text
+scripts/02D1B_full_dicom_to_jpg.py
+tests/test_phase2D1B_full_guardrails.py
+reports/phase2D1B_full_preflight.json
+reports/phase2D1B_full_preflight.md
+reports/phase2D1B_full_validation.json
+reports/phase2D1B_full_validation.md
+reports/phase2D1B_full_promotion.json
+reports/phase2D1B_full_cleanup_audit.json
+reports/phase2D1B_full_metadata_audit.csv
+reports/phase2D1B_full_bbox_audit.csv
+reports/phase2D1B_full_no_finding_audit.csv
+reports/phase2D1B_full_errors.csv
+reports/phase2D1B_full_mapping.csv
+reports/phase2D1B_full_mapping.jsonl
+data/processed/coco/coco_master_jpg.json
+```
+
+DoD result:
+
+```text
+Full controlled-scope conversion: PASS
+Images processed: 4,894/4,894
+Output JPG files: 4,894
+Conversion errors: 0
+Uniform JPEG quality 95: PASS
+Geometry validation: PASS
+BBox boundary validation: PASS
+Category mapping validation: PASS
+No Finding validation: PASS
+COCO-JPG validation: PASS
+Output promotion: PASS
+Backup cleanup: PASS
+Final output integrity: PASS
+Missing JPG files referenced by COCO: 0
+GPT/researcher review: PASS
+```
+
+Key findings:
+
+```text
+Full-scope images processed: 4,894
+Native decoder images: 2,776
+pylibjpeg JPEG 2000 decoder images: 2,118
+
+VOI/windowing branch images: 4,536
+Theoretical fallback branch images: 358
+Presentation-polarity inversions: 1,562
+Pixel-padding processing required: 0
+
+COCO-JPG images: 4,894
+COCO-JPG annotations: 36,096
+COCO-JPG categories: 14
+
+Abnormal images with bbox: 4,394
+No Finding images: 500
+No Finding annotations: 0
+```
+
+Research decisions:
+
+```text
+DICOM remains the immutable raw medical source.
+
+JPG quality 95 is the processed training representation.
+
+All 4,894 images use the same JPEG quality.
+
+The representation was generated using the
+DICOM metadata-aware, standard-aligned reference representation pipeline.
+
+The representation pipeline is not claimed as a new method
+or a new algorithm.
+
+coco_master.json remains the official annotation master.
+
+coco_master_jpg.json is the validated path-only JPG training derivative.
+
+Phase 2D.1B-Full is CLOSED / PASS.
+```
+
+Readiness result:
+
+```text
+jpg_training_representation_ready: true
+coco_jpg_training_annotation_ready: true
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
+```
+
+Issues / risks:
+
+```text
+MMDetection has not yet loaded the JPG + COCO-JPG dataset.
+
+filter_empty_gt=False or an equivalent configuration has not yet
+been validated.
+
+Retention of all 500 No Finding images inside the MMDetection
+data pipeline has not yet been confirmed.
+
+No downstream q95-versus-q100 detector ablation has been performed.
+
+A controlled downstream image-representation ablation is not
+a mandatory requirement and has not been confirmed as approved.
+
+Train/validation/test splits have not been created.
+
+Labeled/unlabeled SSL subsets have not been created.
+
+Dataset training readiness remains false.
+
+Training authorization remains false.
+```
+
+Forbidden actions confirmed:
+
+```text
+No source DICOM modification.
+No canonical annotation modification.
+No coco_master.json modification.
+No train/val/test split.
+No labeled/unlabeled split.
+No detector training.
+No detector inference.
+No pseudo-label generation.
+No threshold tuning.
+No AP/mAP computation.
+No test-set usage.
+No dataset training-ready claim.
+No training authorization claim.
+```
+
+Next phase:
+
+```text
+Phase 2D.1C —
+MMDetection Dataset / Empty-Image Loading Validation
+
+Environment: Google Colab
+Status: NOT STARTED / NEXT
+```
+
+---

@@ -1,0 +1,49 @@
+{
+  "phase_id": "2D.1B-Full",
+  "phase_status": "OPEN",
+  "final_jpeg_quality": 95,
+  "full_execution_finished": false,
+  "full_validation_candidate_pass": false,
+  "full_conversion_completed": false,
+  "dataset_training_ready": false,
+  "training_authorized": false,
+  "downstream_detector_superiority_claimed": false,
+  "utc": "2026-07-29T09:04:24Z",
+  "stage": "preflight",
+  "preflight_pass": true,
+  "counts": {
+    "images": 4894,
+    "annotations": 36096,
+    "categories": 14,
+    "abnormal_images": 4394,
+    "no_finding_images": 500
+  },
+  "dicom_root_source": "env",
+  "environment": {
+    "python_version": "3.10.20 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:13:20) [MSC v.1942 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "utc": "2026-07-29T09:04:24Z",
+    "jpeg2000_decoder_requested": "pylibjpeg",
+    "pydicom_version": "3.0.2",
+    "numpy_version": "2.2.6",
+    "PIL_version": "11.1.0",
+    "skimage_version": "0.25.2",
+    "yaml_version": "6.0.3",
+    "pillow_jpeg": true,
+    "jpeg2000_backend_available": true,
+    "scope_needs_jpeg2000": true,
+    "scope_transfer_syntaxes": [
+      "1.2.840.10008.1.2",
+      "1.2.840.10008.1.2.1",
+      "1.2.840.10008.1.2.4.90"
+    ],
+    "same_filesystem": true,
+    "estimated_per_image_bytes": 1618996,
+    "estimated_total_needed_bytes": 28524119126,
+    "disk_free_bytes": 154825175040
+  },
+  "output_safety": {
+    "overwrite": false,
+    "final_populated": false
+  }
+}

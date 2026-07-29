@@ -5318,3 +5318,942 @@ Yêu cầu GPT review trước khi mở Phase 2D.1C.
 Dataset vẫn chưa được phép dùng để train cho đến khi Phase 2D.1C MMDetection loading và empty-image retention PASS.
 
 ---
+
+### Resolution update after Phase 2D.1B-Full
+
+```text
+Phase 2D.1B-Full was subsequently executed, reviewed and closed
+with PASS on 2026-07-29.
+
+The full 4,894-image JPG representation now exists.
+
+coco_master_jpg.json now exists and has passed full structural,
+geometry, bbox, category and No Finding validation.
+
+The statements above describing the full conversion, full JPG inventory
+and coco_master_jpg.json as incomplete are retained as historical
+Phase 2D.1B-Pilot records. They are not the current project state.
+
+MMDetection dataset loading and retention of all 500 No Finding
+empty-GT images remain unvalidated.
+
+Dataset training readiness remains false.
+
+Training authorization remains false.
+```
+
+---
+
+## 2026-07-29 — PHASE 2D.1B-Full: Full Controlled-Scope DICOM-to-JPG Conversion & Validation
+
+### Mục tiêu
+
+Thực hiện full controlled-scope DICOM-to-JPG conversion sau khi Phase 2D.1B-Pilot đã:
+
+```text
+CLOSED / PASS
+```
+
+và JPEG quality cuối đã được khóa:
+
+```text
+Final JPEG quality: 95
+```
+
+Mục tiêu chính:
+
+```text
+Convert đủ 4,894 DICOM thuộc controlled scope thành JPG quality 95.
+
+Áp dụng thống nhất protocol version 1.0.0 cho toàn bộ ảnh.
+
+Không resize, crop, rotate, flip hoặc transpose ảnh.
+
+Không thay đổi geometry hoặc scale bounding box.
+
+Tạo full DICOM-to-JPG traceability mapping.
+
+Tạo coco_master_jpg.json dưới dạng path-only JPG training derivative.
+
+Validate đầy đủ image inventory, geometry, bbox boundaries,
+category mapping và No Finding policy.
+
+Promote validated outputs vào vị trí chính thức.
+
+Kiểm tra cleanup và final output integrity.
+
+Không thực hiện MMDetection loading, training, inference
+hoặc downstream detector evaluation trong phase này.
+```
+
+Phase này sử dụng:
+
+```text
+DICOM metadata-aware, standard-aligned reference representation pipeline
+```
+
+Đây là reference representation pipeline, không được mô tả là phương pháp mới, thuật toán mới hoặc đóng góp thuật toán.
+
+---
+
+### Đã làm
+
+#### 1. Chạy preflight trước full conversion
+
+Đã kiểm tra:
+
+```text
+Controlled-scope DICOM inventory.
+
+Canonical image and bbox inputs.
+
+Official coco_master.json.
+
+Protocol version và final JPEG quality.
+
+Output paths và promotion conditions.
+
+Required decoder availability.
+
+No Finding image inventory.
+
+Guardrail conditions trước khi execute full conversion.
+```
+
+Preflight result:
+
+```text
+PASS
+```
+
+#### 2. Chạy full controlled-scope conversion
+
+Đã chạy implementation:
+
+```text
+scripts/02D1B_full_dicom_to_jpg.py
+```
+
+với chế độ execute full conversion:
+
+```cmd
+python scripts\02D1B_full_dicom_to_jpg.py --execute-full
+```
+
+Fixed conversion policy:
+
+```text
+Protocol version:
+1.0.0
+
+JPEG quality:
+95
+
+Resize:
+false
+
+Crop:
+false
+
+Rotation:
+false
+
+Flip:
+false
+
+Transpose:
+false
+
+BBox scaling:
+false
+```
+
+Full conversion result:
+
+```text
+Controlled-scope images processed: 4,894
+Output JPG files: 4,894
+Conversion errors: 0
+```
+
+Không tạo quality 100 trong full conversion.
+
+Toàn bộ 4,894 ảnh sử dụng cùng JPEG quality 95.
+
+#### 3. Kiểm tra pixel decoder
+
+Decoder audit:
+
+```text
+Native decoder images: 2,776
+pylibjpeg JPEG 2000 decoder images: 2,118
+Total decoded images: 4,894
+Decode errors: 0
+```
+
+Không sử dụng silent decoder fallback.
+
+Decoder được ghi nhận trong metadata audit và traceability evidence.
+
+#### 4. Áp dụng intensity-transformation protocol
+
+Transformation audit:
+
+```text
+VOI/windowing branch images: 4,536
+Theoretical fallback branch images: 358
+Presentation-polarity inversions: 1,562
+Pixel-padding processing required: 0
+```
+
+Pipeline tiếp tục tuân thủ transformation order đã khóa tại Phase 2D.1A.
+
+Không sửa ngược protocol evidence của Phase 2D.1A.
+
+#### 5. Validate geometry
+
+Đã kiểm tra:
+
+```text
+Output width.
+
+Output height.
+
+Orientation preservation.
+
+Resize status.
+
+Crop status.
+
+Rotation status.
+
+Flip status.
+
+Transpose status.
+
+Geometry consistency giữa DICOM source, JPG output
+và canonical image metadata.
+```
+
+Kết quả:
+
+```text
+Missing JPG files: 0
+Duplicate image IDs: 0
+Width/height mismatches: 0
+Orientation changes: 0
+Geometry validation: PASS
+```
+
+#### 6. Validate bounding boxes
+
+Đã đối chiếu toàn bộ canonical bounding boxes với kích thước JPG tương ứng.
+
+Kết quả:
+
+```text
+Canonical annotations: 36,096
+BBox scaling performed: false
+BBox boundary validation: PASS
+Invalid bbox after conversion: 0
+Out-of-bound bbox after conversion: 0
+```
+
+Bounding box coordinates không bị thay đổi do pipeline không resize, crop, rotate, flip hoặc transpose ảnh.
+
+#### 7. Tạo full traceability mapping
+
+Đã tạo:
+
+```text
+reports/phase2D1B_full_mapping.csv
+reports/phase2D1B_full_mapping.jsonl
+```
+
+Mapping bảo toàn quan hệ:
+
+```text
+image_id
+DICOM source path
+JPG output path
+decoder branch
+intensity-transformation branch
+presentation-polarity handling
+source width/height
+output width/height
+JPEG quality
+conversion status
+```
+
+Kết quả:
+
+```text
+Mapped images: 4,894
+Missing mappings: 0
+Duplicate image IDs: 0
+Conversion errors: 0
+```
+
+#### 8. Tạo COCO-JPG training derivative
+
+Đã tạo:
+
+```text
+data/processed/coco/coco_master_jpg.json
+```
+
+Vai trò:
+
+```text
+coco_master.json:
+Official annotation master.
+
+coco_master_jpg.json:
+Path-only JPG training derivative.
+
+coco_master_jpg.json không thay thế coco_master.json.
+```
+
+Chỉ trường image representation path được chuyển sang JPG.
+
+Không thay đổi:
+
+```text
+image IDs
+annotation IDs
+category IDs
+bounding box coordinates
+annotation areas
+iscrowd values
+category semantics
+No Finding policy
+```
+
+#### 9. Validate COCO-JPG structure
+
+Validation result:
+
+```text
+COCO-JPG images: 4,894
+COCO-JPG annotations: 36,096
+COCO-JPG categories: 14
+
+Missing JPG files referenced by COCO: 0
+Duplicate image IDs: 0
+Invalid image references: 0
+Invalid category references: 0
+
+Category mapping validation: PASS
+COCO-JPG structural validation: PASS
+```
+
+#### 10. Validate No Finding policy
+
+Kết quả:
+
+```text
+Abnormal images with bbox: 4,394
+No Finding images: 500
+No Finding annotations: 0
+No Finding category: absent
+Background category: absent
+```
+
+No Finding policy validation:
+
+```text
+PASS
+```
+
+Phase này chỉ xác nhận 500 No Finding images tồn tại đúng trong COCO-JPG với zero annotations.
+
+Phase này chưa xác nhận MMDetection thực sự giữ lại đủ 500 ảnh đó trong dataset pipeline.
+
+#### 11. Promote validated outputs
+
+Sau khi full validation PASS, các validated outputs được promote vào vị trí chính thức:
+
+```text
+data/processed/images_jpg/train/<image_id>.jpg
+data/processed/coco/coco_master_jpg.json
+```
+
+Promotion result:
+
+```text
+PASS
+```
+
+#### 12. Cleanup và final output integrity
+
+Đã kiểm tra:
+
+```text
+Backup cleanup.
+
+Temporary output cleanup.
+
+Final JPG inventory.
+
+Final COCO-JPG references.
+
+Final mapping integrity.
+
+Missing output detection.
+
+Unexpected output detection.
+```
+
+Kết quả:
+
+```text
+Backup cleanup: PASS
+Final output integrity: PASS
+Final JPG files: 4,894
+Missing JPG files referenced by COCO: 0
+```
+
+#### 13. Chạy guardrail tests
+
+Đã sử dụng:
+
+```text
+tests/test_phase2D1B_full_guardrails.py
+```
+
+Guardrail tests kiểm tra:
+
+```text
+Protocol version lock.
+
+Final JPEG quality lock.
+
+No mixed JPEG quality.
+
+No geometry-changing transformation.
+
+No bbox scaling.
+
+Canonical annotation preservation.
+
+coco_master.json immutability.
+
+COCO-JPG path-only derivation.
+
+No Finding preservation.
+
+Preflight and promotion conditions.
+
+Forbidden-action enforcement.
+```
+
+Kết quả:
+
+```text
+PASS
+```
+
+---
+
+### Evidence đã tạo
+
+Primary implementation:
+
+```text
+scripts/02D1B_full_dicom_to_jpg.py
+tests/test_phase2D1B_full_guardrails.py
+```
+
+Preflight evidence:
+
+```text
+reports/phase2D1B_full_preflight.json
+reports/phase2D1B_full_preflight.md
+```
+
+Full validation evidence:
+
+```text
+reports/phase2D1B_full_validation.json
+reports/phase2D1B_full_validation.md
+```
+
+Promotion và cleanup evidence:
+
+```text
+reports/phase2D1B_full_promotion.json
+reports/phase2D1B_full_cleanup_audit.json
+```
+
+Audit evidence:
+
+```text
+reports/phase2D1B_full_metadata_audit.csv
+reports/phase2D1B_full_bbox_audit.csv
+reports/phase2D1B_full_no_finding_audit.csv
+reports/phase2D1B_full_errors.csv
+```
+
+Traceability mapping:
+
+```text
+reports/phase2D1B_full_mapping.csv
+reports/phase2D1B_full_mapping.jsonl
+```
+
+Final COCO-JPG derivative:
+
+```text
+data/processed/coco/coco_master_jpg.json
+```
+
+Final processed representation:
+
+```text
+data/processed/images_jpg/train/<image_id>.jpg
+```
+
+Lưu ý:
+
+```text
+4,894 JPG files trong data/processed/images_jpg/train/
+không được commit vào ordinary Git.
+```
+
+---
+
+### Kết quả validation
+
+```text
+Full DICOM inventory: PASS
+
+Images processed: 4,894/4,894
+Output JPG files: 4,894
+Uniform JPEG quality 95: PASS
+
+Decode errors: 0
+Missing JPG files: 0
+Duplicate image IDs: 0
+
+Width/height mismatches: 0
+Orientation changes: 0
+Geometry validation: PASS
+
+BBox boundary validation: PASS
+Category mapping validation: PASS
+No Finding validation: PASS
+
+COCO-JPG images: 4,894
+COCO-JPG annotations: 36,096
+COCO-JPG categories: 14
+COCO-JPG structural validation: PASS
+
+Output promotion: PASS
+Backup cleanup: PASS
+Final output integrity: PASS
+
+Missing JPG files referenced by COCO: 0
+```
+
+---
+
+### Review GPT và researcher
+
+Review scope:
+
+```text
+Full conversion completeness.
+
+Uniform JPEG quality.
+
+Decoder audit.
+
+Intensity-transformation audit.
+
+Geometry preservation.
+
+BBox boundary preservation.
+
+Category mapping preservation.
+
+No Finding policy.
+
+COCO-JPG structural validity.
+
+Traceability mapping.
+
+Output promotion.
+
+Cleanup and final output integrity.
+
+Claim guardrails.
+
+Next-phase gate.
+```
+
+Review result:
+
+```text
+Phase 2D.1B-Full implementation: PASS
+Full controlled-scope conversion: PASS
+Full validation: PASS
+Promotion: PASS
+Cleanup: PASS
+Final output integrity: PASS
+GPT/researcher review: PASS
+```
+
+Không phát hiện bằng chứng cho phép kết luận:
+
+```text
+MMDetection dataset loading ready.
+
+Empty-GT image retention ready.
+
+Dataset training-ready.
+
+Training authorized.
+```
+
+---
+
+### Quyết định
+
+Phase 2D.1B-Full được khóa với trạng thái:
+
+```text
+CLOSED / PASS
+```
+
+Quyết định chính thức:
+
+```text
+Final JPEG quality:
+95 / LOCKED
+
+Full conversion completed:
+true
+
+Full validation passed:
+true
+
+Output promotion passed:
+true
+
+Backup cleanup passed:
+true
+
+Final output integrity passed:
+true
+
+JPG training representation ready:
+true
+
+COCO-JPG training annotation ready:
+true
+```
+
+Artifact roles được khóa:
+
+```text
+DICOM:
+Immutable raw medical source.
+
+JPG quality 95:
+Processed training representation generated by the fixed,
+versioned and reproducible DICOM metadata-aware,
+standard-aligned reference representation pipeline.
+
+coco_master.json:
+Official annotation master.
+
+coco_master_jpg.json:
+Validated path-only JPG training derivative.
+It does not replace coco_master.json.
+```
+
+Phase tiếp theo được phép mở:
+
+```text
+Phase 2D.1C —
+MMDetection Dataset / Empty-Image Loading Validation
+```
+
+Tuy nhiên, Phase 2D.1C hiện mới có trạng thái:
+
+```text
+NOT STARTED / NEXT
+```
+
+---
+
+### Các chú ý và giới hạn diễn giải
+
+1. Phase 2D.1B-Full PASS xác nhận full JPG representation và `coco_master_jpg.json` đã được tạo, vượt qua validation về inventory, geometry, bbox boundaries, category mapping, No Finding policy, promotion và final integrity.
+
+2. Phase 2D.1B-Full PASS không xác nhận:
+
+   ```text
+   MMDetection loading readiness.
+
+   Retention of empty-GT images trong MMDetection.
+
+   Dataset training readiness.
+
+   Training authorization.
+   ```
+
+3. Không được diễn giải quality 95 là có hiệu năng detector tốt hơn quality 100. Chưa có downstream q95-versus-q100 detector ablation.
+
+4. Quality 100 là numerical-fidelity winner trong pilot. Quality 95 được chọn như một fidelity–storage/I/O trade-off.
+
+5. Không được khẳng định JPG tương đương lâm sàng với DICOM hoặc bảo toàn mọi đặc trưng có thể phục vụ chẩn đoán.
+
+6. Không được mô tả representation pipeline là phương pháp mới, thuật toán mới hoặc đóng góp thuật toán.
+
+7. Controlled downstream image-representation ablation không phải yêu cầu bắt buộc ở trạng thái hiện tại và chưa được xác nhận là đã được giảng viên hướng dẫn phê duyệt.
+
+8. Không dùng `full_conversion_authorized: true` để mô tả trạng thái hiện hành sau khi conversion hoàn tất. Trạng thái hiện hành là `full_conversion_completed: true`.
+
+---
+
+### Vấn đề / rủi ro còn lại
+
+```text
+MMDetection chưa load JPG + COCO-JPG dataset.
+
+filter_empty_gt=False hoặc cấu hình tương đương
+chưa được kiểm tra trong MMDetection.
+
+Retention của toàn bộ 500 No Finding images
+trong MMDetection dataset pipeline chưa được xác nhận.
+
+Three-channel replication trong actual MMDetection pipeline
+chưa được xác nhận.
+
+Dataset length trong MMDetection chưa được kiểm tra.
+
+Annotation loading và empty-GT behavior
+chưa được kiểm tra bằng framework dataloader.
+
+Không có downstream q95-versus-q100 detector ablation.
+
+Controlled downstream image-representation ablation
+chưa được xác nhận là bắt buộc hoặc đã được phê duyệt.
+
+Train/validation/test split chưa được tạo.
+
+Labeled/unlabeled SSL subsets chưa được tạo.
+
+Dataset training readiness vẫn false.
+
+Training authorization vẫn false.
+```
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 2D.1B-Full đã tuân thủ:
+
+```text
+Không sửa source DICOM files.
+
+Không sửa canonical image table.
+
+Không sửa canonical bbox table.
+
+Không sửa canonical class mapping.
+
+Không sửa coco_master.json.
+
+Không resize, crop, rotate, flip hoặc transpose ảnh.
+
+Không scale hoặc clamp bbox.
+
+Không tạo train/val/test split.
+
+Không tạo labeled/unlabeled split.
+
+Không train detector.
+
+Không chạy detector inference.
+
+Không tạo pseudo-label.
+
+Không tune confidence threshold.
+
+Không tính AP/mAP.
+
+Không dùng test set.
+
+Không claim MMDetection loading readiness.
+
+Không claim empty-image retention readiness.
+
+Không claim dataset training-ready.
+
+Không authorize training.
+
+Không commit 4,894 JPG files vào ordinary Git.
+```
+
+Các ràng buộc trên tiếp tục có hiệu lực sau khi Phase 2D.1B-Full đóng.
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+```text
+Phase 2D.1B-Pilot CLOSED / PASS.
+Final JPEG quality 95 LOCKED.
+Phase 2D.1B-Full implementation complete.
+Full preflight PASS.
+Full controlled-scope conversion executed.
+4,894/4,894 DICOM images processed.
+4,894 JPG files created.
+Uniform JPEG quality 95 validated.
+Full pixel decoding PASS.
+Decode errors = 0.
+Full metadata audit created.
+Full geometry validation PASS.
+Width/height mismatches = 0.
+Orientation changes = 0.
+Full bbox boundary validation PASS.
+Full No Finding validation PASS.
+Full traceability mapping created.
+coco_master_jpg.json created.
+COCO-JPG images = 4,894.
+COCO-JPG annotations = 36,096.
+COCO-JPG categories = 14.
+No Finding images = 500.
+No Finding annotations = 0.
+COCO-JPG structural validation PASS.
+Output promotion PASS.
+Backup cleanup PASS.
+Final output integrity PASS.
+Missing JPG files referenced by COCO = 0.
+Phase 2D.1B-Full GPT/researcher review PASS.
+Phase 2D.1B-Full CLOSED / PASS.
+JPG training representation ready.
+COCO-JPG training annotation ready.
+```
+
+Chưa được tick:
+
+```text
+Phase 2D.1C started.
+MMDetection JPG loading PASS.
+MMDetection COCO-JPG loading PASS.
+filter_empty_gt=False validated.
+Dataset length = 4,894 in MMDetection.
+All 500 No Finding images retained by MMDetection.
+Empty-image retention ready.
+Phase 2D.1C CLOSED / PASS.
+Phase 2D.1D opened.
+Phase 2D.1 overall CLOSED / PASS.
+Train/validation/test split created.
+Labeled/unlabeled split created.
+Dataset training-ready.
+Training authorized.
+```
+
+---
+
+### Trạng thái gate
+
+```text
+Phase 2D.1:
+IN PROGRESS
+
+Phase 2D.1A:
+CLOSED / PASS
+
+Phase 2D.1B-Pilot:
+CLOSED / PASS
+
+Phase 2D.1B-Full:
+CLOSED / PASS
+
+Final JPEG quality:
+95 / LOCKED
+
+Phase 2D.1C:
+NOT STARTED / NEXT
+
+Phase 2D.1D:
+LOCKED until Phase 2D.1C PASS
+```
+
+Readiness flags:
+
+```text
+final_jpeg_quality: 95
+
+full_conversion_completed: true
+full_validation_passed: true
+promotion_passed: true
+cleanup_passed: true
+final_output_integrity_passed: true
+
+jpg_training_representation_ready: true
+coco_jpg_training_annotation_ready: true
+
+mmdetection_dataset_loading_ready: false
+empty_image_retention_ready: false
+dataset_training_ready: false
+training_authorized: false
+```
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo:
+
+```text
+Phase 2D.1C —
+MMDetection Dataset / Empty-Image Loading Validation
+
+Environment:
+Google Colab
+
+Status:
+NOT STARTED / NEXT
+```
+
+Mục tiêu tiếp theo:
+
+```text
+Cài đặt và ghi nhận MMDetection environment trên Google Colab.
+
+Load JPG representation bằng MMDetection image pipeline.
+
+Load coco_master_jpg.json bằng MMDetection dataset implementation.
+
+Xác nhận dataset length = 4,894 trước split.
+
+Áp dụng và validate filter_empty_gt=False
+hoặc cấu hình tương đương.
+
+Xác nhận đủ 4,394 abnormal images được giữ.
+
+Xác nhận đủ 500 No Finding images với zero annotations được giữ.
+
+Kiểm tra empty-GT sample behavior.
+
+Kiểm tra image tensor shape và channel behavior.
+
+Kiểm tra annotation loading trên abnormal samples.
+
+Không train detector trong Phase 2D.1C.
+
+Yêu cầu evidence review trước khi claim dataset training readiness
+hoặc mở Phase 2D.1D.
+```
+
+Dataset vẫn chưa được phép dùng để train tại thời điểm đóng Phase 2D.1B-Full.
+
+---

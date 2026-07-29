@@ -1,0 +1,21 @@
+{
+  "phase_id": "2D.1B-Full",
+  "phase_status": "OPEN",
+  "final_jpeg_quality": 95,
+  "full_execution_finished": true,
+  "full_validation_candidate_pass": true,
+  "full_conversion_completed": false,
+  "dataset_training_ready": false,
+  "training_authorized": false,
+  "downstream_detector_superiority_claimed": false,
+  "utc": "2026-07-29T10:43:09Z",
+  "stage": "full_execution_candidate",
+  "validated_images": 4894,
+  "protocol_sha256": "1528da27758d35786847141c37d0ddb754dddb146aff116a8f3a9a7b07221229",
+  "coco_master_sha256": "36f09d1b1477ea4a63153a04d775c938752e224c26079a0d44881c14b9bb4d75",
+  "decision_sha256": "abd80508b7623caba8724e027582e69de9b524e6472f0b6051108bd5905f43f5",
+  "input_hash_verification": {
+    "verified_files": 7,
+    "verified_dicom": 4894
+  }
+}
