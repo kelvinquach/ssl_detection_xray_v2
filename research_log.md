@@ -6257,3 +6257,560 @@ hoặc mở Phase 2D.1D.
 Dataset vẫn chưa được phép dùng để train tại thời điểm đóng Phase 2D.1B-Full.
 
 ---
+
+## 2026-07-30 — PHASE 2D.1C: MMDetection Dataset / Empty-Image Loading Validation
+
+### Mục tiêu
+
+Xác nhận bằng actual MMDetection/MMEngine pipeline rằng JPG representation và
+`coco_master_jpg.json` của controlled scope có thể được load đúng trước khi tạo
+split hoặc training.
+
+Các gate bắt buộc:
+
+```text
+Load đủ 4,894 ảnh khi filter_empty_gt=False.
+
+Giữ đủ 4,394 abnormal images.
+
+Giữ đủ 500 No Finding images có zero ground-truth boxes.
+
+Khi filter_empty_gt=True, chỉ loại đúng 500 zero-GT images.
+
+Decode đúng JPG thành tensor ba kênh trong actual pipeline.
+
+Load đúng bbox và class label của abnormal images.
+
+Standard dataloader và forced empty-GT dataloader đều hoạt động.
+
+Full pipeline audit phải bao phủ 4,894/4,894 ảnh.
+
+Không train detector trong phase này.
+```
+
+Phase 2D.1C chỉ kiểm định dataset loading và empty-image behavior. Phase này
+không tạo train/validation/test split, không tạo labeled/unlabeled SSL subsets,
+không train detector và không đánh giá AP/mAP.
+
+---
+
+### Đã làm
+
+#### 1. Tạo cấu hình validation MMDetection
+
+Đã tạo:
+
+* `configs/validation/phase2D1C_mmdet_dataset_loading.py`
+
+Cấu hình validation khóa các thành phần cần thiết để kiểm tra:
+
+* JPG training representation;
+* COCO-JPG annotation;
+* MMDetection dataset construction;
+* `filter_empty_gt=False`;
+* đối chứng với `filter_empty_gt=True`;
+* image loading và annotation loading;
+* dataloader behavior đối với standard samples và empty-GT samples.
+
+#### 2. Tạo validator Phase 2D.1C
+
+Đã tạo:
+
+* `scripts/02D1C_validate_mmdet_dataset_loading.py`
+
+Validator thực hiện:
+
+* dựng MMDetection dataset từ `coco_master_jpg.json`;
+* kiểm tra dataset length và image ID order;
+* đối chiếu abnormal/zero-GT membership;
+* kiểm tra hành vi của `filter_empty_gt=False`;
+* kiểm tra hành vi đối chứng của `filter_empty_gt=True`;
+* decode ảnh qua actual pipeline;
+* kiểm tra image tensor shape/channel;
+* kiểm tra bbox và label sau pipeline;
+* chạy standard dataloader batch;
+* ép lấy empty-GT dataloader batch;
+* xuất image-level audit, error table và báo cáo tổng hợp.
+
+#### 3. Tạo test suite guardrail
+
+Đã tạo:
+
+* `tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py`
+
+Test suite bao phủ:
+
+* cấu hình và input guardrails;
+* COCO/JPG membership;
+* abnormal và zero-GT counting;
+* dataset loading assertions;
+* bbox/label validation;
+* dataloader validation;
+* report-state semantics;
+* regression guard cho MMEngine `serialize_data=True`.
+
+#### 4. Sửa lỗi audit dưới MMEngine `serialize_data=True`
+
+Trong lần kiểm định đầu, MMEngine có thể serialize dataset và làm
+`dataset.data_list` trở thành danh sách rỗng dù `len(dataset) > 0`. Nếu validator
+đọc trực tiếp `data_list`, audit có thể duyệt 0 ảnh nhưng không phản ánh dataset
+thật.
+
+Validator đã được sửa để lấy record theo public indexed API:
+
+```text
+dataset.get_data_info(index)
+```
+
+thay vì giả định `dataset.data_list` luôn chứa toàn bộ records.
+
+Đã bổ sung regression test chứng minh:
+
+```text
+len(dataset) > 0
+dataset.data_list == []
+dataset.get_data_info(index) trả record hợp lệ
+dataset_image_ids_in_order(dataset) vẫn lấy đủ ID theo đúng thứ tự
+```
+
+Regression test mới đã PASS và khóa lỗi này cho các lần chạy sau.
+
+#### 5. Chạy full pipeline audit
+
+Đã chạy validator với full-audit mode trên toàn bộ controlled scope:
+
+```text
+4,394 abnormal images
+500 No Finding / zero-GT images
+4,894 images total
+```
+
+Không dùng subset audit để đưa ra kết luận cuối.
+
+#### 6. Bảo toàn evidence
+
+Đã kiểm tra lại SHA-256 của bốn report sau khi bổ sung regression test. Các hash
+không thay đổi, xác nhận evidence full audit không bị sửa bởi bước cập nhật test.
+
+File backup tạm dùng trong quá trình sửa lỗi đã được xóa và không đưa vào Git.
+
+---
+
+### Evidence đã tạo
+
+Các file implementation và test:
+
+* `configs/validation/phase2D1C_mmdet_dataset_loading.py`
+* `scripts/02D1C_validate_mmdet_dataset_loading.py`
+* `tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py`
+
+Các report:
+
+* `reports/phase2D1C_mmdet_dataset_errors.csv`
+* `reports/phase2D1C_mmdet_dataset_image_audit.csv`
+* `reports/phase2D1C_mmdet_dataset_loading_report.json`
+* `reports/phase2D1C_mmdet_dataset_loading_report.md`
+
+SHA-256:
+
+```text
+0780595f5ff69c36329f05d69f7bb353fd095f32a0df3f76b16f039143a5f2cf  reports/phase2D1C_mmdet_dataset_errors.csv
+00df8ed311e6de0ba863fa8e5a90551d34ef080b12cdd0063b6397fdfd76e474  reports/phase2D1C_mmdet_dataset_image_audit.csv
+dabb3dbf27373c5271cdb3137406b583a9d3b7ee607ca2faabe18033ab772ca8  reports/phase2D1C_mmdet_dataset_loading_report.json
+fb0170cadee8b7b66d81be4681af0b8955ba3c4e6b584fb5faf35d8e054b9ce9  reports/phase2D1C_mmdet_dataset_loading_report.md
+```
+
+Regression recheck:
+
+```text
+35 passed in 7.58s
+PHASE 2D.1C REGRESSION RECHECK: PASS
+```
+
+Evidence preservation check:
+
+```text
+PHASE 2D.1C EVIDENCE PRESERVATION CHECK: PASS
+```
+
+---
+
+### Kết quả validation
+
+Full pipeline audit:
+
+```text
+full_pipeline_audit: true
+
+images_audited: 4,894/4,894
+abnormal_audited: 4,394/4,394
+empty_audited: 500/500
+
+bbox_label_num_audited: 4,894
+bbox_label_all_audited_valid: true
+
+errors: 0
+```
+
+MMDetection dataset behavior:
+
+```text
+filter_empty_gt=False:
+retained 4,894/4,894 images
+retained 4,394/4,394 abnormal images
+retained 500/500 zero-GT images
+
+filter_empty_gt=True:
+excluded exactly 500 zero-GT images
+retained the 4,394 abnormal images
+```
+
+Pipeline/dataloader behavior:
+
+```text
+JPG decoding through actual MMDetection pipeline: PASS
+Three-channel image behavior: PASS
+Abnormal bbox/label loading: PASS
+Empty-GT sample handling: PASS
+Standard dataloader batch: PASS
+Forced empty-GT dataloader batch: PASS
+```
+
+Readiness flags:
+
+```text
+dataset_training_ready: true
+training_authorized: false
+```
+
+Hai flag trên không đồng nghĩa. Kết quả đầu tiên xác nhận dataset đã vượt qua
+technical loading gate của Phase 2D.1C. Kết quả thứ hai tiếp tục khóa training
+cho đến khi các phase/gate tiếp theo hoàn tất.
+
+---
+
+### Review GPT và researcher
+
+Kết quả review:
+
+```text
+Phase 2D.1C implementation: PASS
+
+MMDetection JPG loading: PASS
+
+MMDetection COCO-JPG loading: PASS
+
+filter_empty_gt=False retention: PASS
+
+500/500 No Finding image retention: PASS
+
+filter_empty_gt=True control: PASS
+
+Full 4,894-image pipeline audit: PASS
+
+BBox/label validation: PASS
+
+Standard and empty-GT dataloader validation: PASS
+
+Errors: 0
+
+Regression tests: 35 passed
+
+Evidence preservation: PASS
+
+Dataset training readiness: TRUE
+
+Training authorization: FALSE
+
+Phase 2D.1C: CLOSED / PASS
+```
+
+Lỗi `serialize_data=True` được xem là lỗi implementation có ý nghĩa vì bộ 34
+test trước đó không phát hiện trường hợp dataset có length hợp lệ nhưng
+`data_list` bị clear. Việc bổ sung test thứ 35 là guardrail bắt buộc để ngăn
+audit 0 ảnh tái diễn.
+
+---
+
+### Quyết định
+
+1. Đóng Phase 2D.1C với trạng thái:
+
+   ```text
+   CLOSED / PASS
+   ```
+
+2. Chấp nhận JPG quality 95 representation và `coco_master_jpg.json` là
+   technically loadable trong MMDetection cho toàn bộ controlled scope.
+
+3. Khóa cấu hình giữ ảnh âm:
+
+   ```text
+   filter_empty_gt=False
+   ```
+
+   hoặc cấu hình framework tương đương trong các dataset/dataloader dùng cho
+   nghiên cứu.
+
+4. Xác nhận 500 No Finding images là valid zero-GT detection samples và phải
+   được giữ trong các bước tạo split và SSL protocol theo thiết kế nghiên cứu.
+
+5. Nâng trạng thái:
+
+   ```text
+   mmdetection_dataset_loading_ready: true
+   empty_image_retention_ready: true
+   dataset_training_ready: true
+   ```
+
+6. Tiếp tục giữ:
+
+   ```text
+   training_authorized: false
+   ```
+
+7. Không dùng kết quả Phase 2D.1C để tuyên bố model performance, detector
+   accuracy hoặc clinical equivalence.
+
+8. Không cần chạy lại full audit chỉ vì bổ sung regression test, vì script và
+   dữ liệu không thay đổi sau full audit PASS và bốn report hash đã được xác
+   nhận không đổi.
+
+---
+
+### Các chú ý và giới hạn diễn giải
+
+1. `dataset_training_ready: true` chỉ có nghĩa dataset đã vượt qua technical
+   loading/retention gate trong phạm vi Phase 2D.1C.
+
+2. `training_authorized: false` có nghĩa chưa được bắt đầu training tại thời
+   điểm đóng phase này.
+
+3. Full pipeline audit không chứng minh mô hình sẽ hội tụ, đạt AP/mAP mong muốn
+   hoặc cải thiện nhờ SSL.
+
+4. Kết quả không chứng minh JPEG quality 95 tốt hơn quality 100 về downstream
+   detector performance.
+
+5. Kết quả không chứng minh JPG tương đương lâm sàng với source DICOM.
+
+6. Phase 2D.1C không kiểm tra train/validation/test leakage vì split chưa được
+   tạo.
+
+7. Phase 2D.1C không kiểm tra nested labeled fractions `1% ⊂ 5% ⊂ 10% ⊂ 20%`
+   vì labeled/unlabeled subsets chưa được tạo.
+
+8. Controlled downstream q95-versus-q100 detector ablation vẫn không phải yêu
+   cầu bắt buộc và chưa được xem là đã được giảng viên hướng dẫn phê duyệt.
+
+---
+
+### Vấn đề / rủi ro còn lại
+
+```text
+Train/validation/test split chưa được tạo và khóa.
+
+Split stratification/multilabel distribution chưa được validation.
+
+Patient/image leakage guard chưa được xác nhận ở split phase.
+
+Nested labeled fractions 1% ⊂ 5% ⊂ 10% ⊂ 20% chưa được tạo.
+
+Labeled/unlabeled membership chưa được khóa.
+
+Seed và RNG evidence cho split chưa được tạo.
+
+Training configuration chưa được tạo và kiểm định.
+
+Không có downstream q95-versus-q100 detector ablation.
+
+Detector performance chưa được đánh giá.
+
+Training authorization vẫn false.
+```
+
+---
+
+### Ràng buộc tuân thủ
+
+Trong Phase 2D.1C đã tuân thủ:
+
+```text
+Không sửa source DICOM files.
+
+Không sửa 4,894 JPG representation files.
+
+Không sửa canonical image table.
+
+Không sửa canonical bbox table.
+
+Không sửa canonical class mapping.
+
+Không sửa coco_master.json.
+
+Không thay đổi locked JPEG quality 95.
+
+Không resize, crop, rotate, flip hoặc transpose ảnh.
+
+Không scale hoặc clamp bbox.
+
+Không tạo train/validation/test split.
+
+Không tạo labeled/unlabeled split.
+
+Không train detector.
+
+Không chạy performance inference.
+
+Không tạo pseudo-label.
+
+Không tune confidence threshold.
+
+Không tính AP/mAP.
+
+Không dùng test set.
+
+Không authorize training.
+
+Không commit 4,894 JPG files vào ordinary Git.
+```
+
+---
+
+### Trạng thái checklist
+
+Được tick:
+
+```text
+Phase 2D.1C started.
+MMDetection JPG loading PASS.
+MMDetection COCO-JPG loading PASS.
+filter_empty_gt=False validated.
+Dataset length = 4,894 in MMDetection.
+All 4,394 abnormal images retained.
+All 500 No Finding images retained by MMDetection.
+filter_empty_gt=True excludes exactly 500 zero-GT images.
+Three-channel pipeline behavior PASS.
+Abnormal bbox/label loading PASS.
+Empty-GT sample behavior PASS.
+Standard dataloader batch PASS.
+Forced empty-GT dataloader batch PASS.
+Full pipeline audit = 4,894/4,894.
+Full bbox/label audit PASS.
+Errors = 0.
+Regression tests = 35 passed.
+serialize_data=True regression guard added.
+Evidence preservation hash check PASS.
+MMDetection dataset loading ready.
+Empty-image retention ready.
+Dataset training-ready.
+Phase 2D.1C GPT/researcher review PASS.
+Phase 2D.1C CLOSED / PASS.
+```
+
+Chưa được tick:
+
+```text
+Phase 2D.1D opened.
+Phase 2D.1 overall CLOSED / PASS.
+Train/validation/test split created.
+Train/validation/test split locked.
+Split leakage validation PASS.
+Labeled/unlabeled split created.
+Nested labeled fractions created.
+Training authorized.
+Detector training started.
+```
+
+---
+
+### Trạng thái gate
+
+```text
+Phase 2D.1:
+IN PROGRESS
+
+Phase 2D.1A:
+CLOSED / PASS
+
+Phase 2D.1B-Pilot:
+CLOSED / PASS
+
+Phase 2D.1B-Full:
+CLOSED / PASS
+
+Final JPEG quality:
+95 / LOCKED
+
+Phase 2D.1C:
+CLOSED / PASS
+
+Phase 2D.1D:
+NEXT / NOT STARTED
+```
+
+Readiness flags:
+
+```text
+final_jpeg_quality: 95
+
+full_conversion_completed: true
+full_validation_passed: true
+promotion_passed: true
+cleanup_passed: true
+final_output_integrity_passed: true
+
+jpg_training_representation_ready: true
+coco_jpg_training_annotation_ready: true
+
+mmdetection_dataset_loading_ready: true
+empty_image_retention_ready: true
+dataset_training_ready: true
+training_authorized: false
+```
+
+---
+
+### Quyết định tiếp theo
+
+Phase tiếp theo:
+
+```text
+Phase 2D.1D —
+Split Locking / Training-Protocol Readiness
+
+Status:
+NOT STARTED / NEXT
+```
+
+Mục tiêu tiếp theo:
+
+```text
+Xác định và khóa train/validation/test split.
+
+Validate image membership, disjointness và leakage guard.
+
+Kiểm tra class distribution và zero-GT distribution giữa các split.
+
+Tạo nested labeled fractions:
+1% ⊂ 5% ⊂ 10% ⊂ 20%.
+
+Khóa labeled/unlabeled membership và seed/RNG evidence.
+
+Giữ No Finding images theo protocol đã phê duyệt.
+
+Không dùng test set để tune threshold, chọn checkpoint,
+chọn model hoặc quyết định augmentation.
+
+Chỉ xem xét training authorization sau khi Phase 2D.1D
+và các gate bắt buộc liên quan PASS.
+```
+
+Tại thời điểm đóng Phase 2D.1C:
+
+```text
+Dataset technical training readiness: TRUE
+Training authorization: FALSE
+```
+
+---

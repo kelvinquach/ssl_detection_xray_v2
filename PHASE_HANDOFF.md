@@ -1,6 +1,6 @@
 # PHASE HANDOFF — `ssl_detection_xray_v2`
 
-Ngày cập nhật: 2026-07-29
+Ngày cập nhật: 2026-07-30
 
 Dự án: **Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi**
 
@@ -10,10 +10,10 @@ Bài toán: **Semi-supervised object detection trên VinBigData Chest X-ray**
 
 ## 1. Vai trò làm việc
 
-- Người nghiên cứu: quyết định hướng nghiên cứu, protocol, phạm vi thí nghiệm.
-- GPT: thiết kế quy trình, phản biện logic, review evidence, quyết định pass/fail DoD.
-- Claude: viết code trong repo theo prompt được giao.
-- Python: chạy script, kiểm tra dữ liệu, train/evaluate và tạo evidence.
+* Người nghiên cứu: người quyết định hướng nghiên cứu, protocol, phạm vi thí nghiệm.
+* GPT: thiết kế quy trình, phản biện logic, review evidence, quyết định pass/fail DoD.
+* Claude: viết code trong repo theo prompt được giao.
+* Python: chạy script, kiểm tra dữ liệu, train/evaluate, tạo evidence.
 
 Quy trình bắt buộc:
 
@@ -27,60 +27,25 @@ Không tick checklist nếu chưa có evidence.
 
 ## 2. Nguyên tắc nghiên cứu đã khóa
 
-- Không nhảy phase.
-- Không train khi data/split/COCO/No Finding/seed/checkpoint criterion chưa pass DoD.
-- Không dùng test set để tune threshold.
-- Không dùng test set để chọn checkpoint.
-- Không dùng test set để chọn model/backbone.
-- Không dùng test set để quyết định augmentation.
-- `No Finding` là ảnh âm tính không có bbox, không phải detection class.
-- Metric chính: `mAP@0.5:0.95`.
-- Metric phụ: `AP50`, `AP75`, class-wise AP, recall/sensitivity, FP/image, FP per negative image.
-- Supervised và SSL phải dùng cùng labeled split, cùng `split_seed`, cùng fixed test set.
-- Stability phải dùng nhiều `training_seed`.
-- Local environment hiện tại không training-ready.
-- DICOM là nguồn ảnh y khoa gốc, bất biến và không bị thay thế.
-- JPG quality 95 là processed training image representation đã được khóa và tạo cho toàn bộ controlled scope.
-- Biểu diễn JPG được xây dựng bằng **DICOM metadata-aware, standard-aligned reference representation pipeline**.
-- Đây là pipeline biểu diễn tham chiếu, không được mô tả là phương pháp mới hoặc thuật toán mới.
-- Việc chuyển DICOM sang JPG phải dùng protocol cố định, có version và có validation.
-- Không được chuyển trực tiếp `pixel_array` sang `uint8` nếu chưa khóa:
-  - `RescaleSlope` / `RescaleIntercept`;
-  - modality LUT;
-  - VOI LUT hoặc windowing;
-  - `MONOCHROME1` inversion;
-  - intensity clipping;
-  - JPEG quality;
-  - channel policy.
-- Không resize, crop hoặc rotate trong bước DICOM-to-JPG nếu chưa có protocol biến đổi bbox tương ứng.
-- `coco_master.json` tiếp tục là annotation master.
-- `coco_master_jpg.json` là path-only training derivative đã được tạo và validate; không thay thế `coco_master.json`.
-- Hoàn tất full conversion không đồng nghĩa dataset đã training-ready hoặc training đã được phép.
+* Không nhảy phase.
+* Không train khi data/split/COCO/No Finding/seed/checkpoint criterion chưa pass DoD.
+* Không dùng test set để tune threshold.
+* Không dùng test set để chọn checkpoint.
+* Không dùng test set để chọn model/backbone.
+* Không dùng test set để quyết định augmentation.
+* `No Finding` là ảnh âm tính không có bbox, không phải detection class.
+* Metric chính: `mAP@0.5:0.95`.
+* Supervised và SSL phải dùng cùng labeled split, cùng split_seed, cùng fixed test set.
+* Stability phải dùng nhiều `training_seed`.
+* Local environment hiện tại không training-ready.
 
 ---
 
 ## 3. Trạng thái hiện tại
 
 ```text
-Current subphase:
-Phase 2D.1C —
-MMDetection Dataset / Empty-Image Loading Validation
-
-Current subphase status:
-NOT STARTED / NEXT
-
-Overall phase:
-Phase 2D.1 — JPG Training Representation &
-MMDetection Empty-Image Loading Validation: IN PROGRESS
-
-Previous subphase:
-Phase 2D.1B-Full —
-Full Controlled-Scope DICOM-to-JPG Conversion & Validation:
-CLOSED / PASS
-
-Final JPEG quality:
-95 / LOCKED
-
+Current checkpoint: Phase 2D.1C — MMDetection Dataset Loading & Full Pipeline Audit: PASS
+Previous checkpoint: Phase 2D.1B — Full DICOM-to-JPG Conversion
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
 Phase 1A — Dataset Overview: PASS
@@ -90,297 +55,133 @@ Phase 1D — Label Reliability & Kappa Feasibility: PASS
 Phase 2A — Data Standardization / Image-Boundary Validation: PASS
 Phase 2B — Canonical Detection Annotation Schema: PASS
 Phase 2C — Framework & Format Decision / COCO Conversion Planning: PASS
-Phase 2D — COCO Master Conversion & Validation: CLOSED / PASS
-
-Phase 2D.1A: CLOSED / PASS
-Phase 2D.1B: CLOSED / PASS
-Phase 2D.1B-Pilot: CLOSED / PASS
-Phase 2D.1B-Full: CLOSED / PASS
-Phase 2D.1C: NOT STARTED / NEXT
-Phase 2D.1D: LOCKED until Phase 2D.1C PASS
-
-Pilot implementation:
-V6_FROZEN
-
-Pilot guardrail tests:
-139/139 PASS
-
-Pilot image count:
-64
-
-Pilot No Finding image count:
-16
-
-Metadata/features coverage:
-54/54 PASS
-
-Abnormal class coverage:
-14/14 PASS
-
-Pixel decoding:
-64/64 PASS
-
-Geometry preservation:
-PASS
-
-BBox invariance:
-PASS
-
-Final JPEG quality:
-95 / LOCKED
-
-Full-scope images processed:
-4,894
-
-Full-scope conversion errors:
-0
-
-Full validation:
-PASS
-
-Output promotion:
-PASS
-
-Backup cleanup:
-PASS
-
-Final output integrity:
-PASS
-
-Git status:
-Phase 2D committed and pushed to origin/main.
-Phase 2D commit: 1a3f7a7.
-Phase 2D.1B-Full evidence completed and reviewed locally.
-Synchronized documentation update and commit/push: PENDING.
-
-jpg_training_representation_ready: TRUE
-coco_jpg_training_annotation_ready: TRUE
-mmdetection_dataset_loading_ready: FALSE
-empty_image_retention_ready: FALSE
-dataset_training_ready: FALSE
-training_authorized: FALSE
+Phase 2D.1A — Image Representation Protocol Decision: PASS
+Phase 2D.1B — Full DICOM-to-JPG Conversion: PASS
+Phase 2D.1C — MMDetection Dataset Loading & Full Pipeline Audit: PASS
+Dataset training-ready: TRUE
+Training authorized: FALSE
+Git status: 7 Phase 2D.1C evidence/implementation files staged; documentation update, final diff review, commit and push pending
 ```
 
-Đã hoàn tất:
+Được mở / tiếp theo:
 
 ```text
-Phase 2D.1B-Full —
-Full Controlled-Scope DICOM-to-JPG Conversion & Validation
-
-Environment:
-Local
-
-Status:
-CLOSED / PASS
-```
-
-Next gated phase:
-
-```text
-Phase 2D.1C —
-MMDetection Dataset / Empty-Image Loading Validation
-
-Environment:
-Google Colab
-
-Status:
-NOT STARTED / NEXT
+Complete project-documentation update for Phase 2D.1C.
+Review the combined staged diff.
+Commit and push the Phase 2D.1C implementation, tests, reports and documentation.
+Lock the reproducible Colab notebook to the resulting commit hash.
 ```
 
 Chưa được làm:
 
 ```text
-MMDetection dataset loading validation
-MMDetection empty-GT retention validation
-Train/val/test split
-Labeled/unlabeled split
-Supervised detector training
-SSL detector training
-Detector inference
-Pseudo-label generation
-Threshold tuning
-AP/mAP computation
-Test-set usage
-Checkpoint/model/backbone selection
+Train supervised detector
+Train SSL detector
+Generate pseudo-label
+Tune threshold
+Use test set
+Any training command before training_authorized is explicitly changed to true
 ```
 
-Phase 2D.1 structure:
+Ghi chú:
 
 ```text
-2D.1A — Image Representation Protocol Decision
-Environment: Local
-Status: CLOSED / PASS
-
-2D.1B — DICOM-to-JPG Conversion & Validation
-Environment: Local
-Status: IN PROGRESS
-
-2D.1B-Pilot — Representative DICOM-to-JPG Pilot
-Status: CLOSED / PASS
-
-Final JPEG quality:
-95 / LOCKED
-
-2D.1B-Full — Full Controlled-Scope DICOM-to-JPG Conversion
-Environment: Local
-Status: CLOSED / PASS
-
-2D.1C — MMDetection Dataset / Empty-Image Loading Validation
-Environment: Google Colab
-Status: NOT STARTED / NEXT
-
-2D.1D — Evidence Consolidation, GPT Review & Closure
-Environment: Local
-Status: LOCKED until 2D.1C PASS
+Phase 2A đã xác nhận 4,894 DICOM files tồn tại và đọc được metadata/header.
+Image dimensions available cho toàn bộ 4,894 images.
+Toàn bộ 36,096 abnormal bbox hợp lệ trong image boundary.
+Phase 2B đã tạo portable canonical detection schema.
+Canonical image table có 4,894 images.
+Canonical bbox table có 36,096 abnormal bbox rows.
+Canonical class mapping có đúng 14 abnormal detection classes.
+No Finding vẫn là negative image không có bbox, không phải detection class.
+No Finding không nằm trong canonical bbox table hoặc detection class mapping.
+Path policy đã portable: downstream dùng VINBIGDATA_DICOM_ROOT + relative_dicom_path.
+Không được tạo split, COCO master, train, pseudo-label hoặc tune threshold khi chưa mở đúng phase.
+Phase 2D.1C đã xác nhận MMDetection có thể nạp và duyệt toàn bộ 4,894 ảnh.
+Full pipeline audit đã duyệt 4,394 ảnh abnormal và 500 ảnh zero-GT, không có lỗi.
+Regression test cho hành vi MMEngine `serialize_data=True` đã được bổ sung và toàn bộ 35 tests đã PASS.
+`dataset_training_ready=True` chỉ là kết luận kỹ thuật về dataset; không đồng nghĩa với quyền bắt đầu training.
+`training_authorized=False` vẫn là gate có hiệu lực.
 ```
-
-Representation roles:
-
-```text
-DICOM:
-Immutable raw medical source and source evidence.
-
-JPG quality 95:
-Processed training image representation generated by the fixed,
-versioned and reproducible DICOM metadata-aware,
-standard-aligned reference representation pipeline.
-
-coco_master.json:
-Official annotation master.
-
-coco_master_jpg.json:
-Path-only JPG training derivative.
-It does not replace the official annotation master.
-
-MMDetection:
-Downstream framework for JPG dataset loading, detector training,
-evaluation and later SSOD experiments.
-```
-
-Ghi chú trạng thái:
-
-```text
-Phase 2D.1A đã khóa protocol DICOM-to-JPG version 1.0.0.
-
-Phase 2D.1B-Pilot đã:
-- đọc header 4,894/4,894 DICOM;
-- chọn 64 representative pilot images;
-- bao gồm 16 No Finding images;
-- bao phủ 54/54 metadata/features;
-- bao phủ 14/14 abnormal classes;
-- decode pixel thành công 64/64;
-- tạo paired JPEG quality 95 và 100;
-- tính whole-image fidelity;
-- tính bbox-ROI fidelity trên 402 bbox;
-- validate geometry và bbox invariance;
-- thực hiện visual review;
-- khóa final JPEG quality = 95.
-
-Quality 100 có numerical fidelity cao hơn.
-
-Quality 95 được chọn vì vẫn giữ fidelity cao nhưng giảm projected
-storage khoảng 48.79% so với quality 100.
-
-Phase 2D.1B-Full đã:
-- xử lý đủ 4,894/4,894 ảnh;
-- tạo đủ 4,894 JPG quality 95;
-- ghi nhận 0 conversion error;
-- validate geometry, bbox boundary và category mapping;
-- giữ đủ 4,394 abnormal images;
-- giữ đủ 500 No Finding images với 0 annotation;
-- tạo và validate coco_master_jpg.json;
-- promotion output thành công;
-- cleanup backup thành công;
-- xác nhận final output integrity PASS.
-
-Phase 2D.1B-Full chỉ xác nhận JPG representation và
-COCO-JPG derivative đã sẵn sàng về cấu trúc.
-
-MMDetection loading và khả năng giữ empty-GT images
-vẫn chưa được validate.
-
-Dataset vẫn chưa training-ready.
-
-Training vẫn chưa được authorize.
-```
-
 ---
-
 
 ## 4. Phase 0 — Kết quả bàn giao
 
-### 4.1 Phase 0A — Repo structure
+### 4.1. Phase 0A — Repo structure
 
 Trạng thái: **PASS**
 
 Đã có các thư mục chính:
 
-```text
-configs/protocol/
-data/raw/
-data/interim/
-data/processed/
-data/manifests/
-src/utils/
-scripts/
-experiments/
-reports/
-plots/
-models/
-logs/
-tests/
-draft/
-```
+* `configs/protocol/`
+* `data/raw/`
+* `data/interim/`
+* `data/processed/`
+* `data/manifests/`
+* `src/utils/`
+* `scripts/`
+* `experiments/`
+* `reports/`
+* `plots/`
+* `models/`
+* `logs/`
+* `tests/`
+* `draft/`
 
 Đã có tài liệu:
 
-```text
-README.md
-CLAUDE.md
-STRUCTURE.md
-RESEARCH_CHECKLIST.md
-repository_structure.md
-research_log.md
-PHASE_HANDOFF.md
-```
+* `README.md`
+* `CLAUDE.md`
+* `STRUCTURE.md`
+* `RESEARCH_CHECKLIST.md`
+* `repository_structure.md`
+* `research_log.md`
+* `PHASE_HANDOFF.md`
 
 Đã có protocol:
 
-```text
-configs/protocol/checkpoint_policy.yaml
-```
+* `configs/protocol/checkpoint_policy.yaml`
 
-### 4.2 Phase 0B — Core environment
+---
+
+### 4.2. Phase 0B — Core environment
 
 Trạng thái: **PASS core / DEFER training framework**
 
 Evidence đã có:
 
-```text
-reports/phase0_environment_check.json
-reports/phase0_pip_freeze.txt
-reports/reproducibility_settings.md
-data/manifests/seed_state_manifest.json
-```
+* `reports/phase0_environment_check.json`
+* `reports/phase0_pip_freeze.txt`
+* `reports/reproducibility_settings.md`
+* `data/manifests/seed_state_manifest.json`
 
 Kết quả chính:
 
-```text
-Python: 3.10.20
-Conda env: sslxray
-PyTorch: 2.3.1
-torchvision: 0.18.1
-numpy: 1.24.3
-pandas: 2.3.3
-OpenCV/cv2: 4.11.0
-pydicom: 3.0.2
-pycocotools: 2.0.11
-pip check: No broken requirements found
-pytest tests/test_phase0.py -q: 5 passed
-CUDA available: false
-mmengine/mmcv/mmdet: not installed
-framework_import_ok: false
-```
+* Python: `3.10.20`
+* Conda env: `sslxray`
+* Platform: `Windows-10-10.0.26200-SP0`
+* PyTorch: `2.3.1`
+* torchvision: `0.18.1`
+* numpy: `1.24.3`
+* pandas: `2.3.3`
+* OpenCV/cv2: `4.11.0`
+* pydicom: `3.0.2`
+* pycocotools: `2.0.11`
+* `pip check`: `No broken requirements found.`
+* `pytest tests/test_phase0.py -q`: `5 passed`
+
+CUDA:
+
+* `torch.cuda.is_available()`: `False`
+* `torch.version.cuda`: `null`
+* GPU device count: `0`
+
+Detection framework:
+
+* `mmengine`: not installed
+* `mmcv`: not installed
+* `mmdet`: not installed
+* `framework_import_ok`: `false`
 
 Quyết định:
 
@@ -401,25 +202,21 @@ seed = 2026
 
 Đã ghi nhận trong:
 
-```text
-data/manifests/seed_state_manifest.json
-reports/phase0_environment_check.json
-reports/reproducibility_settings.md
-```
+* `data/manifests/seed_state_manifest.json`
+* `reports/phase0_environment_check.json`
+* `reports/reproducibility_settings.md`
 
 Deterministic flags:
 
-```text
-PYTHONHASHSEED = 2026
-Python random seed: enabled
-NumPy seed: enabled
-PyTorch CPU seed: enabled
-PyTorch CUDA seed: not applied because CUDA unavailable
-torch.use_deterministic_algorithms = true
-torch.backends.cudnn.deterministic = true
-torch.backends.cudnn.benchmark = false
-CUBLAS_WORKSPACE_CONFIG = :4096:8
-```
+* `PYTHONHASHSEED = 2026`
+* Python random seed: enabled
+* NumPy seed: enabled
+* PyTorch CPU seed: enabled
+* PyTorch CUDA seed: not applied because CUDA unavailable
+* `torch.use_deterministic_algorithms = true`
+* `torch.backends.cudnn.deterministic = true`
+* `torch.backends.cudnn.benchmark = false`
+* `CUBLAS_WORKSPACE_CONFIG = :4096:8`
 
 ---
 
@@ -433,79 +230,569 @@ configs/protocol/checkpoint_policy.yaml
 
 Protocol:
 
-```text
-Primary metric: mAP@0.5:0.95
-Checkpoint selection split: val
-Test usage: final_evaluation_only
-```
+* Primary metric: `mAP@0.5:0.95`
+* Checkpoint selection split: `val`
+* Test usage: `final_evaluation_only`
 
 Cấm:
 
+* Dùng test set để tune threshold.
+* Dùng test set để chọn checkpoint.
+* Dùng test set để chọn model/backbone.
+* Dùng test set để quyết định augmentation.
+
+---
+
+## 7. Checklist tick được sau Phase 0
+
+Được tick:
+
+* Phase 0A repo structure
+* Phase 0B core environment
+* pip dependency check
+* PyTorch/torchvision import
+* numpy/pandas/cv2/pydicom/pycocotools import
+* seed manifest
+* deterministic flags
+* environment report
+* reproducibility report
+* pip freeze
+* checkpoint policy
+* Phase 0 pytest pass
+
+Chưa được tick:
+
+* MMDetection import OK
+* `mmengine` import OK
+* `mmcv` import OK
+* `mmdet` import OK
+* CUDA/GPU ready
+* Local training-ready environment
+* Full detection framework setup
+
+---
+
+## 8. Phase 1A — Dataset Overview
+
+Ngày cập nhật: 2026-06-18
+Status: PASS
+
+Mục tiêu Phase 1A:
+
+Đọc metadata/annotation CSV của VinBigData để tạo báo cáo tổng quan dataset.
+
+Phase 1A chỉ được phép:
+
+* đọc annotation CSV
+* thống kê số dòng annotation
+* thống kê số unique image_id
+* thống kê class distribution
+* kiểm tra sơ bộ bbox validity
+* kiểm tra No Finding policy
+* tạo evidence report
+
+Phase 1A không được phép:
+
+* tạo split
+* convert COCO
+* copy ảnh
+* đọc DICOM/PNG
+* train
+* tạo pseudo-label
+* tune threshold
+* dùng test set
+
+---
+
+## 9. Câu hỏi Phase 1A phải trả lời
+
+* Dataset có bao nhiêu annotation rows?
+* Dataset có bao nhiêu unique `image_id`?
+* Có bao nhiêu class?
+* Có bao nhiêu abnormal class nếu loại `No Finding`?
+* `No Finding` xuất hiện dưới dạng nào?
+* `No Finding` có bbox không?
+* `No Finding` có được xử lý như ảnh âm tính không?
+* Có bao nhiêu No Finding images?
+* Có bao nhiêu abnormal images?
+* Có image nào vừa `No Finding` vừa abnormal label không?
+* Có bbox thiếu coordinate không?
+* Có bbox lỗi không?
+
+  * `x_min >= x_max`
+  * `y_min >= y_max`
+  * `width <= 0`
+  * `height <= 0`
+* Phân bố bbox theo class như thế nào?
+* Có class imbalance nghiêm trọng không?
+
+---
+
+## 10. Script cần tạo trong Phase 1A
+
+Claude cần tạo:
+
 ```text
-Dùng test set để tune threshold.
-Dùng test set để chọn checkpoint.
-Dùng test set để chọn model/backbone.
-Dùng test set để quyết định augmentation.
+scripts/01A_dataset_overview.py
+```
+
+Script phải nhận tham số:
+
+```text
+--train-csv
+--output-json
+--class-csv
+--image-summary-csv
+--bbox-quality-csv
+--report-md
+```
+
+Output mặc định:
+
+```text
+reports/phase1A_dataset_overview.json
+reports/phase1A_class_distribution.csv
+reports/phase1A_image_level_summary.csv
+reports/phase1A_bbox_quality_summary.csv
+reports/phase1A_dataset_overview.md
 ```
 
 ---
 
-## 7. Phase progress summary
+## 11. DoD Phase 1A
 
-### Phase 1A — Dataset Overview
+Phase 1A chỉ pass nếu có đủ:
 
-Status: **PASS**
+* Script chạy được bằng Python.
+* Có JSON report.
+* Có Markdown report.
+* Có class distribution CSV.
+* Có image-level summary CSV.
+* Có bbox quality summary CSV.
+* Có thống kê total rows.
+* Có thống kê unique images.
+* Có thống kê No Finding images.
+* Có thống kê abnormal images.
+* Có danh sách abnormal classes excluding No Finding.
+* Có kiểm tra bbox invalid/missing.
+* Có cảnh báo nếu No Finding có bbox.
+* Có cảnh báo nếu abnormal class thiếu bbox.
+* Không tạo split.
+* Không tạo COCO.
+* Không train.
+* Không dùng test set.
+* GPT review pass.
 
-Date: 2026-06-19
+Nếu No Finding có bbox thật, hoặc abnormal labels thiếu bbox hàng loạt, Phase 1A không pass cho đến khi làm rõ rule.
 
-Scripts run:
+---
+
+## 12. Prompt giao Claude cho Phase 1A
+
+```text
+Bạn đang ở repo D:\ssl_detection_xray_v2.
+
+Phase hiện tại: Phase 1A — Dataset Overview.
+
+Bối cảnh nghiên cứu:
+- Đề tài: “Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi”.
+- Dataset: VinBigData Chest X-ray.
+- Bài toán: semi-supervised object detection.
+- No Finding là ảnh âm tính không có bbox, không phải detection class.
+- Metric chính sau này là mAP@0.5:0.95.
+- Không được split, không convert COCO, không train trong Phase 1A.
+
+Hãy tạo script:
+
+scripts/01A_dataset_overview.py
+
+Yêu cầu script:
+1. Nhận tham số:
+   --train-csv
+   --output-json default reports/phase1A_dataset_overview.json
+   --class-csv default reports/phase1A_class_distribution.csv
+   --image-summary-csv default reports/phase1A_image_level_summary.csv
+   --bbox-quality-csv default reports/phase1A_bbox_quality_summary.csv
+   --report-md default reports/phase1A_dataset_overview.md
+
+2. Đọc annotation CSV VinBigData.
+   Script phải tự detect các cột phổ biến:
+   - image_id
+   - class_name
+   - class_id
+   - x_min, y_min, x_max, y_max
+   Nếu thiếu cột bắt buộc thì báo lỗi rõ ràng.
+
+3. Tính thống kê:
+   - total_rows
+   - unique_images
+   - class_name list
+   - class_id list nếu có
+   - số row theo class_name
+   - số image theo class_name
+   - số bbox theo abnormal class
+   - số No Finding rows
+   - số No Finding images
+   - số abnormal images
+   - số image có cả No Finding và abnormal label nếu có
+   - số bbox missing coordinate
+   - số bbox có x_min >= x_max
+   - số bbox có y_min >= y_max
+   - số bbox width <= 0 hoặc height <= 0
+   - min/mean/max width, height, area nếu có bbox hợp lệ
+
+4. No Finding policy:
+   - Treat No Finding / no finding / No finding as negative image label.
+   - Không đưa No Finding vào detection class.
+   - Nếu No Finding có bbox coordinates không null, ghi cảnh báo.
+   - Nếu abnormal class thiếu bbox, ghi cảnh báo.
+
+5. Output:
+   - phase1A_dataset_overview.json
+   - phase1A_class_distribution.csv
+   - phase1A_image_level_summary.csv
+   - phase1A_bbox_quality_summary.csv
+   - phase1A_dataset_overview.md
+
+6. Script phải in console summary:
+   - total rows
+   - unique images
+   - abnormal images
+   - No Finding images
+   - number of abnormal classes excluding No Finding
+   - bbox invalid count
+   - warnings
+
+7. Tuyệt đối không:
+   - tạo split
+   - tạo COCO json
+   - copy ảnh
+   - đọc DICOM/PNG
+   - train
+   - tune threshold
+   - dùng test set
+
+8. Viết code rõ ràng, có hàm main(), type hints cơ bản, error message dễ hiểu.
+
+Sau khi tạo script, in ra lệnh chạy mẫu với đường dẫn:
+python scripts/01A_dataset_overview.py --train-csv data/raw/vinbigdata/annotations/train.csv
+```
+
+---
+
+## 13. Lệnh chạy Phase 1A
+
+Nếu annotation nằm ở:
+
+```text
+data\raw\vinbigdata\annotations\train.csv
+```
+
+chạy:
 
 ```cmd
-python scripts\01A_dataset_overview.py --train-csv data\raw\vinbigdata\annotations\train.csv
+python scripts/01A_dataset_overview.py --train-csv data\raw\vinbigdata\annotations\train.csv
 ```
 
-Key findings:
+Nếu annotation nằm chỗ khác, dùng đúng path thực tế.
 
-```text
-Total images: 15,000
-Annotation rows: 67,914
-Abnormal images: 4,394
-No Finding images: 10,606
-Abnormal bbox rows: 36,096
-Abnormal detection classes excluding No Finding: 14
-Invalid bbox count: 0
-No Finding rows with bbox: 0
-Mixed No Finding + abnormal images: 0
+---
+
+## 14. Output cần gửi GPT review sau Phase 1A
+
+Gửi các output sau:
+
+```cmd
+type reports\phase1A_dataset_overview.md
 ```
 
-Research decision:
-
-```text
-Full 15,000-image CSV is source metadata only.
-Downstream controlled working scope will be locked later to 4,894 images:
-4,394 abnormal images + 500 No Finding images.
+```cmd
+type reports\phase1A_dataset_overview.json
 ```
 
-Forbidden actions avoided:
+```cmd
+type reports\phase1A_class_distribution.csv
+```
 
-```text
-No split.
-No COCO conversion.
-No image read/copy.
-No training.
-No pseudo-labeling.
-No threshold tuning.
-No test-set usage.
+```cmd
+type reports\phase1A_bbox_quality_summary.csv
+```
+
+```cmd
+type reports\phase1A_image_level_summary.csv
+```
+
+Nếu CSV quá dài, gửi 20 dòng đầu bằng PowerShell:
+
+```cmd
+powershell -Command "Get-Content reports\phase1A_class_distribution.csv -TotalCount 20"
+```
+
+```cmd
+powershell -Command "Get-Content reports\phase1A_bbox_quality_summary.csv -TotalCount 20"
+```
+
+```cmd
+powershell -Command "Get-Content reports\phase1A_image_level_summary.csv -TotalCount 20"
 ```
 
 ---
 
-### Phase 1B — Annotation Quality
+## 15. Gate sau Phase 1D
 
-Status: **PASS**
+```text
+Phase 0 core: PASS
+Phase 0 training framework: DEFERRED
+Phase 1A — Dataset Overview: PASS
+Phase 1B — Annotation Quality: PASS
+Phase 1C — Dataset Scope Decision: PASS
+Phase 1D — Label Reliability & Kappa Feasibility: PASS
+
+Controlled working scope: LOCKED
+Controlled scope size: 4,894 images
+Abnormal images retained: 4,394 / 4,394
+No Finding images selected: 500 / 10,606
+Selection unit: image_id
+No Finding row-level sampling used: false
+
+Label reliability:
+rad_id available: true
+rad_id missing count: 0
+radiologists_total: 17
+radiologists_per_image_distribution: {'3': 4894}
+uniform_rater_count_per_image: true
+same_rater_identity_panel_across_images: false
+binary_matrix_feasible: true
+cohen_kappa_feasible: false
+fleiss_kappa_feasible: true
+overall_fleiss_kappa_mean: 0.4879
+
+Split train/val/test: LOCKED
+COCO conversion: LOCKED
+Training: LOCKED
+Pseudo-labeling: LOCKED
+Threshold tuning: LOCKED
+Test-set usage: LOCKED
+
+Next phase:
+Phase 2A — Data Standardization / Image-Boundary Validation
+```
+
+---
+
+### Phase 1B — Annotation Quality (kiểm tra chất lượng Annotation).
+
+Status: PASS
 
 Date: 2026-06-19
 
+# Prompt giao Claude cho Phase 1B
+Bạn đang ở repo:
+
+D:\ssl_detection_xray_v2
+
+Phase hiện tại: Phase 1B — Annotation Quality.
+
+Bối cảnh nghiên cứu:
+
+* Đề tài: “Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi”.
+* Dataset: VinBigData Chest X-ray.
+* Bài toán: semi-supervised object detection.
+* Phase 0 core: PASS.
+* Phase 1A — Dataset Overview: PASS.
+* Phase 1A đã chạy trên full VinBigData train.csv source metadata:
+
+  * 15,000 images.
+  * 67,914 annotation rows.
+  * 4,394 abnormal images.
+  * 10,606 No Finding images.
+  * 36,096 abnormal bbox rows.
+  * 14 abnormal detection classes.
+  * Invalid bbox count: 0.
+  * No Finding rows with bbox: 0.
+  * Images with both No Finding and abnormal labels: 0.
+* Downstream controlled working scope đã khóa sau này là 4,894 images = 4,394 abnormal + 500 No Finding.
+* Tuy nhiên Phase 1B vẫn chỉ chạy trên full source metadata train.csv, không tạo subset 4,894.
+
+Nguyên tắc bắt buộc:
+
+* Chỉ làm Phase 1B — Annotation Quality.
+* Không split train/val/test.
+* Không tạo subset 4,894.
+* Không convert COCO.
+* Không train.
+* Không pseudo-label.
+* Không tune threshold.
+* Không dùng test set.
+* Không đọc pixel ảnh.
+* Không đọc DICOM/PNG.
+* Chỉ đọc annotation-level metadata từ CSV.
+* No Finding là ảnh âm tính không có bbox, không phải detection class.
+* Không tự động xóa/sửa annotation, chỉ report lỗi/candidate.
+
+Hãy tạo script:
+
+scripts/01B_annotation_quality.py
+
+Yêu cầu script:
+
+1. Nhận tham số:
+   --train-csv
+   --output-json default reports/phase1B_annotation_quality.json
+   --report-md default reports/phase1B_annotation_quality.md
+   --annotation-sanity-md default reports/annotation_sanity_report.md
+   --invalid-bbox-csv default reports/invalid_bbox_rows.csv
+   --duplicate-csv default reports/duplicate_bbox_candidates.csv
+   --class-mapping-csv default reports/phase1B_class_mapping.csv
+   --bbox-quality-by-class-csv default reports/phase1B_bbox_quality_by_class.csv
+   --image-label-consistency-csv default reports/phase1B_image_label_consistency.csv
+   --near-duplicate-iou default 0.95
+
+2. Đọc annotation CSV VinBigData.
+   Script phải tự detect hoặc kiểm tra các cột:
+
+   * image_id
+   * class_name
+   * class_id
+   * x_min
+   * y_min
+   * x_max
+   * y_max
+   * rad_id nếu có
+
+3. Kiểm tra bbox coordinate sanity:
+
+   * missing coordinate trên abnormal rows
+   * non-numeric coordinate
+   * x_min < 0
+   * y_min < 0
+   * x_max < 0
+   * y_max < 0
+   * x_min >= x_max
+   * y_min >= y_max
+   * width <= 0
+   * height <= 0
+   * area <= 0
+
+4. Kiểm tra bbox vượt biên ảnh:
+
+   * Nếu CSV có cột image_width/image_height hoặc width/height đại diện kích thước ảnh, kiểm tra:
+
+     * x_max > image_width
+     * y_max > image_height
+     * x_min > image_width
+     * y_min > image_height
+   * Nếu CSV không có image dimensions, không đọc ảnh.
+   * Khi không có dimensions, report rõ:
+     boundary_check_status = not_evaluable_without_image_dimensions
+   * Không đọc DICOM/PNG để lấy shape trong Phase 1B.
+
+5. Kiểm tra No Finding policy:
+
+   * Treat No Finding / no finding / No finding as negative image label.
+   * No Finding không phải detection class.
+   * No Finding rows phải không có bbox coordinates.
+   * Nếu No Finding có bbox, liệt kê vào invalid_bbox_rows.csv.
+   * Kiểm tra image_id nào vừa có No Finding vừa có abnormal class.
+
+6. Kiểm tra abnormal annotation consistency:
+
+   * Abnormal class phải có bbox đầy đủ.
+   * Nếu abnormal row thiếu bbox, liệt kê.
+   * Tạo summary số lỗi theo class_name và class_id.
+
+7. Kiểm tra duplicate / near-duplicate bbox:
+
+   * Exact duplicate: cùng image_id, cùng class_id hoặc class_name, cùng x_min/y_min/x_max/y_max.
+   * Near duplicate: cùng image_id, cùng class, IoU >= --near-duplicate-iou.
+   * Nếu có rad_id, giữ rad_id trong output.
+   * Không xóa duplicate.
+   * Chỉ ghi duplicate_bbox_candidates.csv.
+   * Trong report phải nói rõ duplicate candidates có thể là multi-radiologist annotations, chưa được xem là lỗi chắc chắn.
+
+8. Kiểm tra class mapping:
+
+   * Mỗi class_id map tới đúng một class_name.
+   * Mỗi class_name map tới đúng một class_id.
+   * No Finding không được đưa vào abnormal detection class.
+   * Xuất phase1B_class_mapping.csv.
+
+9. Output JSON phải có tối thiểu:
+
+   * phase
+   * train_csv
+   * total_rows
+   * unique_images
+   * abnormal_rows
+   * no_finding_rows
+   * abnormal_images
+   * no_finding_images
+   * abnormal_detection_classes_excluding_no_finding
+   * invalid_bbox_total
+   * invalid_bbox_by_reason
+   * no_finding_with_bbox_count
+   * abnormal_missing_bbox_count
+   * mixed_no_finding_abnormal_image_count
+   * negative_coordinate_count
+   * zero_or_negative_area_count
+   * exact_duplicate_candidate_count
+   * near_duplicate_candidate_count
+   * class_mapping_issue_count
+   * boundary_check_status
+   * warnings
+   * forbidden_actions_confirmed
+
+10. Markdown report phải có:
+
+* Executive summary.
+* Scope: full source metadata train.csv only, not downstream 4,894 subset.
+* Checks performed.
+* Key findings.
+* Invalid bbox summary.
+* Duplicate / near-duplicate summary.
+* Class mapping summary.
+* No Finding policy summary.
+* Boundary check status.
+* Research risk interpretation.
+* Recommended next action: send outputs to GPT review before ticking checklist.
+
+11. Console summary phải in:
+
+* total rows
+* unique images
+* invalid bbox total
+* no_finding_with_bbox_count
+* abnormal_missing_bbox_count
+* exact duplicate candidates
+* near duplicate candidates
+* class mapping issues
+* boundary_check_status
+* warnings
+
+12. Tuyệt đối không:
+
+* tạo split
+* tạo COCO json
+* tạo subset 4,894
+* copy ảnh
+* đọc DICOM/PNG
+* train
+* pseudo-label
+* tune threshold
+* dùng test set
+* tự động xóa/sửa annotation
+
+13. Code cần có:
+
+* main()
+* argparse
+* type hints cơ bản
+* error message rõ ràng
+* tạo thư mục reports nếu chưa có
+* xử lý CSV lớn ổn định bằng pandas
+* không phụ thuộc GPU/MMDetection
+
+Sau khi tạo script, in ra lệnh chạy mẫu:
 Scripts run:
 
 ```cmd
@@ -514,7 +801,6 @@ python scripts\01B_annotation_quality.py --train-csv data\raw\vinbigdata\annotat
 
 Outputs generated:
 
-```text
 reports/phase1B_annotation_quality.json
 reports/phase1B_annotation_quality.md
 reports/annotation_sanity_report.md
@@ -523,11 +809,9 @@ reports/duplicate_bbox_candidates.csv
 reports/phase1B_class_mapping.csv
 reports/phase1B_bbox_quality_by_class.csv
 reports/phase1B_image_label_consistency.csv
-```
 
 DoD result:
 
-```text
 Annotation-level bbox sanity: PASS
 No Finding policy: PASS
 Abnormal bbox completeness: PASS
@@ -535,11 +819,9 @@ Class mapping consistency: PASS
 Duplicate/near-duplicate candidates reported: PASS
 Boundary check: DEFERRED to image-level validation because train.csv has no image dimensions
 Forbidden actions avoided: PASS
-```
 
 Key findings:
 
-```text
 Total rows: 67,914
 Unique images: 15,000
 Abnormal rows: 36,096
@@ -555,25 +837,48 @@ Class mapping issues: 0
 Exact duplicate candidates: 0
 Near-duplicate candidates IoU >= 0.95: 147
 Boundary check status: not_evaluable_without_image_dimensions
-```
 
 Research decisions:
 
-```text
 Do not delete or modify near-duplicate bbox candidates in Phase 1B.
 Treat near-duplicate boxes as multi-radiologist annotation candidates requiring later fusion/handling decision.
 Defer image-boundary validation to Phase 2A because Phase 1B is CSV-only.
-```
+
+Issues / risks:
+
+Boundary validity cannot be concluded from CSV alone.
+No Finding rows are repeated reader-level rows; future processing must operate at image level for negative images.
+
+Next phase at that time:
+
+Phase 1C — Dataset Scope Decision, now completed PASS.
+
 
 ---
 
-### Phase 1C — Dataset Scope Decision
+## 16. Phase 1C — Dataset Scope Decision
 
 Status: **PASS**
 
 Date: 2026-07-01
 
-Scripts run:
+### Mục tiêu
+
+Chính thức hóa downstream controlled working scope ở mức image-level:
+
+```text
+4,894 images
+= 4,394 abnormal images
++ 500 No Finding images
+```
+
+Phase 1C chỉ làm metadata/image-level scope decision.
+
+Không tạo split, không convert COCO, không train, không pseudo-label, không tune threshold, không dùng test set, không đọc DICOM header, không đọc pixel và không đọc image dimensions.
+
+---
+
+### Scripts run
 
 ```cmd
 python scripts\01C_dataset_scope_decision.py ^
@@ -583,7 +888,9 @@ python scripts\01C_dataset_scope_decision.py ^
   --chunk-summary D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset_chunks\dicom_chunk_summary.csv
 ```
 
-Outputs generated:
+---
+
+### Outputs generated
 
 ```text
 reports/scope_decision.md
@@ -597,7 +904,9 @@ data/manifests/phase1C_combined_package_manifest.csv
 data/interim/vinbigdata_phase1C_scope_annotations.csv
 ```
 
-DoD result:
+---
+
+### DoD result
 
 ```text
 Dataset scope decision: PASS
@@ -611,35 +920,57 @@ Class distribution report: PASS
 Forbidden actions avoided: PASS
 ```
 
-Key findings:
+---
+
+### Key findings
 
 ```text
+Source total rows: 67,914
+Source unique images: 15,000
+Source abnormal images: 4,394
+Source No Finding images: 10,606
+
+Manifest rows: 4,894
+Manifest unique image_id: 4,894
+DICOM files listed: 4,894
+DICOM unique image_id: 4,894
+
 Selected total images: 4,894
 Selected abnormal images: 4,394
 Selected No Finding images: 500
 Selected mixed No Finding + abnormal images: 0
 Lost abnormal image count: 0
 Abnormal retention rate: 1.0
+
 Selected subset rows: 37,596
 Selected abnormal rows: 36,096
 Selected No Finding rows: 1,500
+
 Abnormal detection classes excluding No Finding: 14
 No Finding is detection class: false
 No Finding row-level sampling used: false
+Image type / train.csv label mismatch count: 0
+Unknown manifest image_id count: 0
+Chunk summary match: true
 ```
 
-Research decisions:
+---
+
+### Research decisions
 
 ```text
 Controlled working scope is officially locked to 4,894 image-level samples:
 4,394 abnormal images + 500 No Finding images.
 
 The 500 No Finding samples are selected and verified at image_id level, not row level.
-The metadata-only subset annotation CSV is created for selected image_id values only.
+The controlled scope is based on the already-downloaded DICOM package manifests and validated against train.csv and DICOM filename inventory.
 No Finding remains a negative image label, not a detection class.
+The metadata-only subset annotation CSV is created for selected image_id values only.
 ```
 
-Issues / risks:
+---
+
+### Issues / risks
 
 ```text
 The controlled scope uses 500 out of 10,606 No Finding images, not the full No Finding pool.
@@ -651,19 +982,61 @@ Fusion/handling of multi-radiologist boxes is deferred to a later phase.
 
 ---
 
-### Phase 1D — Label Reliability & Kappa Feasibility
+### Forbidden actions confirmed
+
+```text
+No train/val/test split created.
+No COCO conversion created.
+No training started.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No image copied.
+No DICOM header read.
+No pixel read.
+No image dimension read.
+No original annotation deleted or edited.
+No near-duplicate bbox candidate deleted.
+```
+
+---
+
+:::writing{variant="document" id="12370"}
+### Next phase at that time
+
+```text
+Phase 1D — Kappa feasibility / limitation-aware analysis
+Update:
+Phase 1D has now been completed with PASS_agreement_computed_and_documented.
+The current next phase is Phase 2A — Data Standardization / Image-Boundary Validation.
+```
+:::
+
+---
+
+## 17. Phase 1D — Label Reliability & Kappa Feasibility
 
 Status: **PASS**
 
 Date: 2026-07-01
 
-Scripts run:
+### Mục tiêu
+
+Kiểm tra tính khả thi của inter-radiologist agreement / Kappa analysis từ metadata trong controlled working scope đã khóa ở Phase 1C.
+
+Phase 1D chỉ dùng metadata annotation. Không tạo split, không convert COCO, không train, không pseudo-label, không tune threshold, không dùng test set, không đọc pixel ảnh, không đọc DICOM/header/image dimensions và không sửa annotation gốc.
+
+---
+
+### Scripts run
 
 ```cmd
-python scripts\01D_kappa_feasibility.py
+python scripts/01D_kappa_feasibility.py
 ```
 
-Outputs generated:
+---
+
+### Outputs generated
 
 ```text
 reports/phase1D_kappa_feasibility.md
@@ -673,7 +1046,9 @@ reports/phase1D_radiologist_per_image.csv
 reports/phase1D_rare_class_kappa_instability.csv
 ```
 
-DoD result:
+---
+
+### DoD result
 
 ```text
 rad_id availability: PASS
@@ -687,7 +1062,9 @@ label-level agreement vs bbox-level consistency: PASS
 forbidden actions avoided: PASS
 ```
 
-Key findings:
+---
+
+### Key findings
 
 ```text
 rad_id_available: true
@@ -702,30 +1079,86 @@ binary_matrix_feasible: true
 cohen_kappa_feasible: false
 fleiss_kappa_feasible: true
 overall_fleiss_kappa_mean: 0.4879
-rare_class_instability_summary: 5/14 classes carry kappa_instability_risk
+classwise_feasibility_summary: 14 abnormal classes assessed; 14 with feasible Fleiss' Kappa; mean kappa=0.4879
+rare_class_instability_summary: 5/14 classes carry kappa_instability_risk (severe=2, moderate=3, low=9); risk is prevalence/rarity-driven, not measured instability
 label_level_agreement_status: evaluable_fleiss_computed
 bbox_level_consistency_status: evaluated_descriptive_only
 ```
 
-Research decisions:
+---
+
+### Research decisions
 
 ```text
 Fleiss' Kappa is computed at image-level class agreement.
 Cohen's Kappa is not used as the main agreement statistic because each image has 3 radiologist ratings.
 Kappa/agreement is used only as data-quality evidence and limitation evidence.
-Kappa is not a model metric and is not used for split/model/threshold/training/pseudo-labeling.
+Kappa is not a model metric.
+Kappa is not used for split/model/threshold selection.
+Kappa is not used for training or pseudo-labeling.
+Kappa is not used to delete, fuse, or edit annotations.
 BBox-level consistency is kept separate from label-level agreement and remains descriptive only.
 ```
 
 ---
 
-### Phase 2A — Data Standardization / Image-Boundary Validation
+### Issues / risks
+
+```text
+Negative class decisions are inferred from read-coverage according to VinBigData labelling convention.
+Kappa can be affected by prevalence imbalance.
+5/14 abnormal classes carry kappa_instability_risk.
+BBox-level consistency is not a bbox fusion policy.
+Near-duplicate bbox handling is still deferred to a later annotation standardization decision.
+```
+
+---
+
+### Forbidden actions confirmed
+
+```text
+No train/val/test split created.
+No COCO conversion created.
+No training started.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No pixel read.
+No DICOM/header read.
+No image dimensions read.
+No boundary validation performed.
+No annotation deleted or edited.
+No near-duplicate bbox deleted or fused.
+No Kappa used as model metric.
+No Kappa used for split/model/threshold.
+```
+
+---
+
+### Next phase
+
+```text
+Phase 2A — Data Standardization / Image-Boundary Validation
+```
+
+:::writing{variant="document" id="93016"}
+---
+
+## 18. Phase 2A — Data Standardization / Image-Boundary Validation
 
 Status: **PASS**
 
 Date: 2026-07-08
 
-Scripts run:
+### Mục tiêu
+
+Kiểm tra DICOM availability, image dimensions và bbox boundary validity trong controlled working scope 4,894 images.
+
+Phase 2A chỉ đọc DICOM metadata/header để lấy dimensions và validate bbox. Không tạo split, không convert COCO, không train, không pseudo-label, không tune threshold, không dùng test set, không sửa annotation và không tạo processed training images.
+
+---
+
+### Scripts run
 
 ```cmd
 python scripts\02A_dicom_bbox_boundary_validation.py ^
@@ -734,7 +1167,7 @@ python scripts\02A_dicom_bbox_boundary_validation.py ^
   --dicom-root D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train
 ```
 
-Outputs generated:
+### Outputs generated
 
 ```text
 reports/phase2A_dicom_bbox_validation.md
@@ -745,8 +1178,9 @@ reports/phase2A_bbox_boundary_validation.csv
 reports/phase2A_invalid_bbox_candidates.csv
 reports/phase2A_dicom_read_errors.csv
 ```
+---
 
-DoD result:
+  ### DoD result
 
 ```text
 DICOM availability: PASS
@@ -756,48 +1190,123 @@ BBox boundary validation: PASS
 No Finding policy: PASS
 Forbidden actions avoided: PASS
 ```
+---
 
-Key findings:
+  ### Key findings
 
 ```text
-DICOM files indexed under root: 4,894
-DICOM available/missing: 4,894 / 0
-DICOM read success/error: 4,894 / 0
-Image dimensions available/missing: 4,894 / 0
-Abnormal bbox rows checked: 36,096
-BBox boundary valid/invalid: 36,096 / 0
-No Finding rows with bbox: 0
-Abnormal rows missing bbox: 0
+dicom_files_indexed_under_root: 4894
+total_annotation_rows: 37596
+unique_annotation_images: 4894
+manifest_rows: 4894
+manifest_unique_images: 4894
+selected_scope_expected_images: 4894
+availability_checked_image_count: 4894
+abnormal_images: 4394
+no_finding_images: 500
+abnormal_rows: 36096
+no_finding_rows: 1500
+dicom_available_count: 4894
+dicom_missing_count: 0
+dicom_read_success_count: 4894
+dicom_read_error_count: 0
+image_dimension_available_count: 4894
+image_dimension_missing_count: 0
+abnormal_bbox_rows_checked: 36096
+bbox_boundary_valid_count: 36096
+bbox_boundary_invalid_count: 0
+no_finding_with_bbox_count: 0
+abnormal_missing_bbox_count: 0
+annotation_not_in_manifest_count: 0
+manifest_not_in_annotation_count: 0
+duplicate_manifest_image_id_count: 0
+warnings: []
 dod_pass_candidate: true
 ```
+---
 
-Research decisions:
+  ### Image dimension summary
 
 ```text
-All 4,894 controlled-scope DICOM files are available and readable at metadata/header level.
-All 36,096 abnormal bbox rows are valid within original image boundaries under xyxy convention.
+width_min: 1320
+width_max: 3320
+width_mean: 2491.66
+height_min: 1416
+height_max: 3408
+height_mean: 2835.09
+distinct_wh_pairs: 2186
+```
+---
+
+  ### Research decisions
+
+```text
+All 4,894 controlled-scope DICOM files are available on local disk.
+All 4,894 DICOM files are readable at metadata/header level.
+Image dimensions are available for all controlled-scope images.
+All 36,096 abnormal bbox rows are valid within original image boundaries.
+BBox convention is treated as xyxy on original image coordinates.
 No Finding remains a negative image label without bbox and is not a detection class.
 No bbox was edited, clamped, deleted or fused.
 No image was copied, converted, normalized or saved as processed training data.
 ```
+---
 
-Issues / risks:
+  ### Issues / risks
 
 ```text
 Pixel array decoding was not checked in the main run because pixel_array_checked=false.
+This is acceptable for Phase 2A because the phase objective is metadata/header dimension and bbox boundary validation.
+Canonical schema is not created yet.
+COCO conversion is not created yet.
+Train/val/test split is not created yet.
 Framework dataloader / empty image loading is not checked yet.
-Dataset is not training-ready until schema/COCO/split/loading phases pass DoD.
+Training is still locked.
+Pseudo-labeling is still locked.
+Threshold tuning is still locked.
 ```
-
 ---
 
-### Phase 2B — Canonical Detection Annotation Schema
+  ### Forbidden actions confirmed
+
+```text
+No train/val/test split created.
+No COCO conversion created.
+No training started.
+No pseudo-label generated.
+No threshold tuned.
+No test set used.
+No annotation deleted or edited.
+No bbox clamped or modified.
+No near-duplicate bbox deleted or fused.
+No processed training images created.
+No image files copied.
+No image files converted.
+No PNG/JPG created.
+```
+---
+
+  ### Next phase
+
+```text
+Phase 2B — Canonical Schema
+```
+---
+:::
+
+## Phase 2B — Canonical Detection Annotation Schema
 
 Status: **PASS**
 
 Date: 2026-07-08
 
-Scripts run:
+### Mục tiêu
+
+Tạo canonical detection annotation schema cho controlled working scope 4,894 images.
+
+Phase 2B chỉ tạo schema canonical trung gian. Không convert COCO, không tạo split, không train, không pseudo-label, không tune threshold, không dùng test set, không sửa annotation gốc, không clamp bbox, không xóa bbox và không fuse near-duplicate bbox.
+
+### Scripts run
 
 ```cmd
 python scripts\02B_build_canonical_schema.py ^
@@ -812,7 +1321,7 @@ python scripts\02B_build_canonical_schema.py ^
   --schema-errors-csv reports\phase2B_schema_consistency_errors.csv
 ```
 
-Outputs generated:
+ ### Outputs generated
 
 ```text
 data/processed/canonical/canonical_image_table.csv
@@ -823,8 +1332,9 @@ reports/phase2B_canonical_schema_validation.json
 reports/phase2B_no_finding_policy_audit.csv
 reports/phase2B_schema_consistency_errors.csv
 ```
+---
 
-DoD result:
+ ### DoD result
 
 ```text
 Canonical image table: PASS
@@ -835,8 +1345,9 @@ Schema consistency validation: PASS
 Portable path policy: PASS
 Forbidden actions avoided: PASS
 ```
+---
 
-Key findings:
+ ### Key findings
 
 ```text
 canonical_image_rows: 4894
@@ -854,12 +1365,16 @@ bbox_invalid_count: 0
 class_mapping_issue_count: 0
 schema_error_count: 0
 portable_path_policy_pass: true
+relative_dicom_path_missing_count: 0
 relative_dicom_path_absolute_count: 0
+local_dicom_path_absolute_count: 4894
 path_root_variable: VINBIGDATA_DICOM_ROOT
+warnings: []
 dod_pass_candidate: true
 ```
+---
 
-Research decisions:
+ ### Research decisions
 
 ```text
 Canonical schema is accepted as the intermediate detection annotation schema.
@@ -875,1527 +1390,240 @@ Portable path policy is adopted: downstream should resolve image files using VIN
 Phase 2B is not a COCO dataset and not a train/val/test split.
 Dataset is still not training-ready until COCO/split/loading phases pass DoD.
 ```
+---
 
-Issues / risks:
+ ### Issues / risks
 
 ```text
 local_dicom_path stores absolute local evidence paths but must not be used as canonical downstream identifiers.
 Remote/GPU environments must set VINBIGDATA_DICOM_ROOT or an equivalent data-root config.
+source_row_id traces to the Phase 1C controlled-scope annotation file, not necessarily the original full VinBigData train.csv row index.
 Framework dataloader validation has not been performed.
 Empty image loading check has not been performed.
 COCO conversion has not been performed.
 Train/val/test split has not been created.
 Near-duplicate bbox handling is still deferred.
 ```
-
 ---
 
-### Phase 2C — Framework & Format Decision / COCO Conversion Planning
-
-Status: **PASS**
-
-Date: 2026-07-14
-
-Scripts run:
-
-```cmd
-python scripts\02C_framework_format_decision.py
-```
-
-Outputs generated:
+ ### Forbidden actions confirmed
 
 ```text
-reports/phase2C_framework_format_decision.md
-reports/phase2C_framework_format_decision.json
-configs/framework/main_framework.yaml
-configs/dataset/coco_paths.yaml
-configs/protocol/coco_conversion_policy.yaml
-```
-
-DoD result:
-
-```text
-Framework decision: PASS
-Framework rationale: PASS
-Format comparison: PASS
-COCO planning: PASS
-No Finding / empty image policy: PASS
-BBox conversion policy: PASS
-Category id policy: PASS
-Path portability policy: PASS
-DICOM loader risk: PASS
-Metric readiness policy: PASS
-Forbidden actions avoided: PASS
-No COCO master created: PASS
-Dataset training-ready claim avoided: PASS
-```
-
-Key findings:
-
-```text
-primary_framework: MMDetection
-fallback_framework: Detectron2_optional
-primary_annotation_format: COCO_detection_JSON
-source_schema: canonical_detection_schema
-canonical_image_rows: 4894
-canonical_image_unique_images: 4894
-canonical_bbox_rows: 36096
-canonical_class_count: 14
-abnormal_images: 4394
-no_finding_images: 500
-actual_coco_conversion_done: false
-dataset_training_ready: false
-dod_pass_candidate: true
-```
-
-#### Format comparison decision
-
-```text
-COCO detection JSON: CHOSEN
-YOLO txt: REJECTED
-Pascal VOC XML: REJECTED
-JSONL/custom: REJECTED
-```
-
-COCO được chọn vì phù hợp nhất với MMDetection/SSOD, hỗ trợ ảnh No Finding không annotation, tương thích COCO mAP@0.5:0.95 / pycocotools, hỗ trợ category metadata và traceability.
-
-#### Framework selection rationale
-
-```text
-MMDetection: CHOSEN
-Detectron2: FALLBACK_ONLY
-YOLO-based framework: REJECTED
-Custom PyTorch / torchvision: REJECTED
-```
-
-MMDetection được chọn làm framework chính không chỉ vì phổ biến, mà vì khớp trực tiếp nhất với pipeline luận văn:
-
-```text
-COCO-based object detection
-COCO mAP@0.5:0.95 evaluation
-teacher-student semi-supervised object detection
-labeled/unlabeled data handling
-config-driven reproducibility
-pseudo-label workflow compatibility
-class-wise AP / AP50 / AP75 readiness
-lower custom training/evaluation code burden
-```
-
-Detectron2 được giữ làm fallback vì là framework detection mạnh và có COCO/custom dataset support, nhưng teacher-student SSOD pipeline trong project này sẽ cần nhiều custom implementation hơn.
-
-YOLO-based framework bị loại khỏi vai trò framework chính vì annotation/evaluation pipeline thiên về YOLO-native, lệch khỏi COCO master + MMDetection SSOD protocol, và negative-image handling dựa trên empty label file có rủi ro với 500 ảnh No Finding.
-
-Custom PyTorch/torchvision bị loại vì đòi hỏi tự viết dataset, dataloader, evaluator, trainer, pseudo-label loop, EMA teacher, COCO metric integration, logging và config protocol; rủi ro engineering và reproducibility sẽ lấn át đóng góp nghiên cứu.
-
-#### Research decisions
-
-```text
-Primary framework is MMDetection.
-Detectron2 is fallback optional only after GPT re-review.
-Primary annotation format is COCO_detection_JSON.
-Canonical schema Phase 2B remains the source of truth.
-Actual COCO conversion belongs to Phase 2D.
-COCO images should include all 4,894 controlled-scope images.
-COCO annotations should include only 36,096 abnormal bboxes.
-COCO categories should include only 14 abnormal detection classes.
-No Finding remains a negative image with zero annotations and is not a detection class.
-No background class is created.
-BBox conversion for Phase 2D is xyxy_original_image → coco_xywh_absolute.
-COCO category_id should be contiguous integer 1..14.
-Path resolution should use VINBIGDATA_DICOM_ROOT + relative_dicom_path.
-```
-
-#### Metric readiness policy
-
-```text
-Phase 2C does not compute AP metrics.
-Primary metric remains mAP@0.5:0.95.
-Secondary diagnostics planned: AP50, AP75, class-wise AP, recall/sensitivity, FP/image, FP per negative image.
-Metrics are computable only after COCO conversion, fixed split creation, model training and prediction generation.
-Test-set metric is forbidden for checkpoint selection, threshold tuning, model selection and augmentation decisions.
-```
-
-#### Issues / risks
-
-```text
-MMDetection stack is not importable locally; this is expected because local training framework is deferred.
-Remote/GPU environment is still required for detector training.
-DICOM loader is not validated.
-Empty image loading is not validated.
-If filter_empty_gt is configured incorrectly, 500 No Finding images may be silently dropped.
-COCO annotation format alone does not make the dataset training-ready.
-```
-
-Forbidden actions confirmed:
-
-```text
-No COCO master JSON created.
 No train/val/test split created.
-No labeled/unlabeled split created.
+No COCO conversion created.
 No training started.
-No inference run.
 No pseudo-label generated.
 No threshold tuned.
 No test set used.
 No pixel_array read.
-No image copied or converted.
-No bbox modified, clamped, deleted or fused.
-No source annotation modified.
-No Phase 2B canonical schema modified.
-No AP metrics computed.
+No image copied.
+No image converted.
+No processed training images created.
+No annotation deleted or edited.
+No bbox clamped or modified.
+No near-duplicate bbox deleted or fused.
+No Finding was not added as a detection class.
 ```
-
-Next phase:
-
-```text
-Phase 2D — COCO Master Conversion & Validation
-```
-
-Phase 2D chỉ được mở sau khi Phase 2C evidence đã commit và push GitHub.
-
 ---
 
-### Phase 2D — COCO Master Conversion & Validation
+ ### Next phase
+
+```text
+Phase 2C — Framework & Format Decision / COCO Conversion Planning
+```
+---
+
+## 19. Phase 2D.1C — MMDetection Dataset Loading & Full Pipeline Audit
 
 Status: **PASS**
 
-Date: 2026-07-14
+Date: 2026-07-30
 
-Scripts run:
+### Mục tiêu
 
-```cmd
-python scripts\02D_build_coco_master.py
-python -m unittest discover -s tests -p "test_phase2D_guardrails.py" -v
-python -m json.tool data\processed\coco\coco_master.json > NUL
-python -c "from pycocotools.coco import COCO; c=COCO(r'data\processed\coco\coco_master.json'); print(len(c.imgs), len(c.anns), len(c.cats))"
-```
+Xác minh COCO master JPG của controlled working scope có thể được MMDetection nạp đúng, giữ đúng chính sách ảnh zero-GT và đi qua pipeline/dataloader mà không làm sai image identity, bbox hoặc class label.
 
-Outputs generated:
+Phase 2D.1C là validation gate ở mức dataset loading và full data pipeline. Kết quả PASS chỉ xác nhận dataset đã sẵn sàng kỹ thuật cho bước training. Phase này không cấp quyền chạy training, không tạo pseudo-label, không tune threshold và không sử dụng test set.
+
+### Input và cấu hình
 
 ```text
-data/processed/coco/coco_master.json
-configs/protocol/phase2D_coco_master_validation.yaml
-reports/phase2D_coco_master_validation.json
-reports/phase2D_coco_master_validation.md
-reports/phase2D_coco_image_annotation_counts.csv
-reports/phase2D_coco_category_summary.csv
-reports/phase2D_coco_invalid_annotations.csv
-reports/phase2D_coco_no_finding_audit.csv
-tests/test_phase2D_guardrails.py
-```
-
-DoD result:
-
-```text
-COCO master conversion: PASS
-COCO image coverage: PASS
-COCO annotation preservation: PASS
-COCO category policy: PASS
-BBox xyxy-to-xywh conversion: PASS
-BBox boundary validation: PASS
-Area validation: PASS
-No Finding policy: PASS
-Reference integrity: PASS
-Traceability preservation: PASS
-One-to-one bbox preservation: PASS
-Strict JSON validation: PASS
-pycocotools loading: PASS
-Strict YAML protocol validation: PASS
-Protocol drift protection: PASS
-Atomic output promotion: PASS
-Guardrail unit tests: PASS
-Forbidden actions avoided: PASS
-GPT review: PASS
-```
-
-Key findings:
-
-```text
-COCO images: 4,894
-COCO annotations: 36,096
-COCO categories: 14
+Controlled working scope: 4,894 images
 Abnormal images: 4,394
-No Finding images: 500
-No Finding annotations: 0
-
-Invalid annotations: 0
-Boundary violations: 0
-Area mismatches: 0
-Broken image references: 0
-Broken category references: 0
-Absolute paths: 0
-
-Image IDs unique and contiguous: true
-Annotation IDs unique and contiguous: true
-Category IDs contiguous 1..14: true
-Category ID 0 present: false
-
-No Finding in categories: false
-Background in categories: false
-
-Coordinate mismatches: 0
-Image mapping mismatches: 0
-Category mapping mismatches: 0
-Missing canonical annotations: 0
-Duplicated canonical annotations: 0
-Extra COCO annotations: 0
-One-to-one preservation: true
-
-JSON parse: PASS
-pycocotools load: PASS
-Protocol strict load: PASS
-Protocol drift count: 0
-Pre-promotion checks: PASS
-Atomic promotion: PASS
-Guardrail unit tests: 22/22 PASS
-Hard errors: 0
-Warnings: 0
-dod_pass_candidate: true
-dataset_training_ready: false
+Zero-GT / No Finding images: 500
+Detection classes: 14 abnormal classes
+Annotation format: COCO Detection JSON
+Image representation: high-quality JPG generated by the locked
+DICOM metadata-aware, standard-aligned reference representation pipeline
+MMDetection empty-GT retention policy: filter_empty_gt=False
+Validation config: configs/validation/phase2D1C_mmdet_dataset_loading.py
 ```
 
-Research decisions:
+### Scripts và tests
 
 ```text
-The Phase 2B canonical detection schema is accepted as the source of truth for COCO conversion.
-
-data/processed/coco/coco_master.json is accepted as the official controlled-scope COCO master.
-
-All 4,894 controlled-scope images are retained in COCO images.
-
-All 36,096 abnormal canonical bbox rows are retained one-to-one in COCO annotations.
-
-COCO categories contain exactly 14 abnormal detection classes.
-
-No Finding remains an image-level negative:
-- retained in COCO images;
-- zero annotations;
-- excluded from COCO categories.
-
-No background category is created.
-
-BBox format is converted from xyxy_original_image to coco_xywh_absolute:
-[x, y, width, height].
-
-Area is calculated as width * height.
-iscrowd is fixed to 0.
-
-No bbox was clamped, deleted, fused, rounded, or processed using NMS.
-
-COCO file_name uses relative_dicom_path and does not contain absolute local paths.
-
-The Phase 2D YAML protocol is strict-loaded and cross-checked against Phase 2B validation and the canonical tables.
-
-The final COCO output is atomically promoted only after all required hard validations pass.
+scripts/02D1C_validate_mmdet_dataset_loading.py
+tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py
 ```
 
-Issues / risks:
+Validator lấy record theo public indexed API `dataset.get_data_info(index)`. Không dựa vào `dataset.data_list`, vì MMEngine có thể serialize dữ liệu và xóa danh sách này khi `serialize_data=True`.
 
-```text
-A valid COCO annotation file does not make the dataset training-ready.
+### Lệnh validation chính
 
-DICOM pixel decoding has not been validated in a framework-compatible loading pipeline.
+```bash
+MPLBACKEND=Agg "$PYTHON" -m py_compile \
+  scripts/02D1C_validate_mmdet_dataset_loading.py \
+  tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py
 
-MMDetection default LoadImageFromFile must not be assumed to support .dicom files.
+MPLBACKEND=Agg "$PYTHON" -m pytest \
+  tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py \
+  -q -rs
 
-No Finding / empty-image loading has not been validated using the framework dataset pipeline.
-
-filter_empty_gt=False or an equivalent mechanism has not been validated.
-
-Train/val/test split has not been created.
-
-Labeled/unlabeled SSL subsets have not been created.
-
-Training, inference, pseudo-labeling, threshold tuning, AP/mAP computation, and test-set usage remain locked.
+MPLBACKEND=Agg "$PYTHON" \
+  scripts/02D1C_validate_mmdet_dataset_loading.py \
+  --config configs/validation/phase2D1C_mmdet_dataset_loading.py \
+  --full-pipeline-audit
 ```
 
-Forbidden actions confirmed:
+### Outputs generated
 
 ```text
-No DICOM file read.
-No DICOM file existence check.
-No DICOM header read.
-No pixel_array read.
-No pydicom, cv2, or PIL image loading.
-No image copying or conversion.
-No train/val/test split created.
-No labeled/unlabeled split created.
-No MMDetection or Detectron2 dataset loaded.
-No filter_empty_gt validation performed.
-No training started.
-No inference run.
-No pseudo-label generated.
-No threshold tuned.
-No test set used.
-No AP/mAP computed.
-No canonical schema modified.
-No source annotation modified.
-No bbox clamped, deleted, fused, rounded, or processed using NMS.
-No dataset training-ready claim made.
+reports/phase2D1C_mmdet_dataset_errors.csv
+reports/phase2D1C_mmdet_dataset_image_audit.csv
+reports/phase2D1C_mmdet_dataset_loading_report.json
+reports/phase2D1C_mmdet_dataset_loading_report.md
 ```
 
-Next phase:
+### DoD result
 
 ```text
-Phase 2D.1A — Image Representation Protocol Decision
+MMDetection dataset construction: PASS
+COCO image/category mapping: PASS
+filter_empty_gt=False retention: PASS
+filter_empty_gt=True exclusion behavior: PASS
+Standard dataloader batch: PASS
+Forced empty-GT dataloader batch: PASS
+Full pipeline audit: PASS
+BBox/label validation: PASS
+Serialized-data regression guard: PASS
+Errors: 0
+Dataset training-ready: TRUE
+Training authorized: FALSE
 ```
 
-Overall phase:
+### Key findings
 
 ```text
-Phase 2D.1 — JPG Training Representation &
-MMDetection Empty-Image Loading Validation
-```
-
-Opening condition:
-
-```text
-Phase 2D committed and pushed: true
-Phase 2D commit: 1a3f7a7
-Phase 2D.1A may begin: true
-```
-
----
-
-### Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation
-
-Status: **IN PROGRESS**
-
-Date opened: 2026-07-15
-
-Current subphase:
-
-```text
-Phase 2D.1C —
-MMDetection Dataset / Empty-Image Loading Validation
-
-Environment: Google Colab
-Status: NOT STARTED / NEXT
-```
-
-Subphase status:
-
-```text
-Phase 2D.1A — Image Representation Protocol Decision:
-CLOSED / PASS
-
-Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot:
-CLOSED / PASS
-
-Phase 2D.1B-Full — Full Controlled-Scope Conversion:
-CLOSED / PASS
-
-Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation:
-NOT STARTED / NEXT
-
-Phase 2D.1D — Evidence Consolidation, GPT Review & Closure:
-LOCKED until Phase 2D.1C PASS
-```
-
-Phase 2D.1A result:
-
-```text
-Protocol version: 1.0.0
-JPEG quality candidates: [95, 100]
-Required policy coverage: 20/20
-Guardrail tests: 31/31 PASS
-Status: CLOSED / PASS
-```
-
-Phase 2D.1B-Pilot implementation:
-
-```text
-Implementation version: V6_FROZEN
-Guardrail tests: 139/139 PASS
-```
-
-Phase 2D.1B-Pilot result:
-
-```text
-DICOM paths resolved: 4,894/4,894
-DICOM headers read: 4,894/4,894
-
-Pilot images: 64
-No Finding pilot images: 16
-
-Metadata/features coverage: 54/54
-Abnormal class coverage: 14/14
-
-Pixel decode attempts: 64
-Pixel decode successes: 64
-Pixel decode errors: 0
-
-Geometry preservation: PASS
-BBox invariance: PASS
-Critical visual failure: false
-
-Final JPEG quality: 95
-Full conversion authorized: true
-
-Pilot status: CLOSED / PASS
-```
-
-#### So sánh fidelity và dung lượng
-
-| Tiêu chí | JPEG quality 95 | JPEG quality 100 | Kết luận |
-|---|---:|---:|---|
-| Pilot images | 64 | 64 | Bằng nhau |
-| Whole-image MAE trung bình | 0.873271 | 0.085074 | q100 tốt hơn |
-| Whole-image RMSE trung bình | 1.235387 | 0.291270 | q100 tốt hơn |
-| Whole-image PSNR trung bình | 47.2414 dB | 58.8577 dB | q100 tốt hơn |
-| Whole-image SSIM trung bình | 0.981217 | 0.998981 | q100 tốt hơn |
-| Whole-image maximum absolute error lớn nhất | 12 | 2 | q100 tốt hơn |
-| BBox-ROI được đánh giá | 402 | 402 | Bằng nhau |
-| BBox-ROI MAE trung bình | 0.848022 | 0.087567 | q100 tốt hơn |
-| BBox-ROI PSNR trung bình | 47.9413 dB | 58.7247 dB | q100 tốt hơn |
-| BBox-ROI SSIM trung bình | 0.996632 | 0.999820 | q100 tốt hơn |
-| ROI maximum absolute error lớn nhất | 10 | 2 | q100 tốt hơn |
-| Kích thước trung bình mỗi ảnh | 1.619 MB | 3.162 MB | q95 nhỏ hơn |
-| Tổng dung lượng 64 ảnh pilot | 98.82 MiB | 192.97 MiB | q95 nhỏ hơn |
-| Compression ratio trung bình | 5.04:1 | 2.47:1 | q95 hiệu quả hơn |
-| Projected storage cho 4,894 ảnh | 7.38 GiB | 14.41 GiB | q95 tiết kiệm khoảng 7.03 GiB |
-
-Storage result:
-
-```text
-Quality 95 reduces projected storage by approximately 48.79%
-relative to quality 100.
-
-Quality 100 is approximately 1.95 times larger
-than quality 95.
-```
-
-Small-bbox evidence at quality 95:
-
-```text
-20 smallest relative-area bbox cases
-
-Mean ROI MAE: 0.4165
-Mean ROI PSNR: 52.29 dB
-Mean ROI SSIM: 0.995884
-Largest ROI maximum absolute error: 5
-```
-
-Research decisions:
-
-```text
-Quality 100 is the numerical-fidelity winner.
-
-Quality 95 is selected as the fidelity–storage/I/O trade-off.
-
-Final JPEG quality is locked to 95.
-
-Quality 95 was used consistently for all 4,894 images.
-
-No mixed JPEG quality is permitted across images or subsets.
-
-Phase 2D.1B-Pilot is CLOSED / PASS.
-
-Phase 2D.1B-Full is CLOSED / PASS.
-```
-
-Phase 2D.1B-Full result:
-
-```text
-Full-scope images processed: 4,894
-Output JPG files: 4,894
-Conversion errors: 0
-
-Native decoder images: 2,776
-pylibjpeg JPEG 2000 decoder images: 2,118
-
-VOI/windowing branch images: 4,536
-Theoretical fallback branch images: 358
-Presentation-polarity inversions: 1,562
-Pixel-padding processing required: 0
-
-COCO images: 4,894
-COCO annotations: 36,096
-COCO categories: 14
-
-Abnormal images with bbox: 4,394
-No Finding images: 500
-No Finding annotations: 0
-
-Geometry validation: PASS
-BBox boundary validation: PASS
-Category mapping validation: PASS
-No Finding validation: PASS
-Promotion: PASS
-Cleanup: PASS
-Final output integrity: PASS
-Missing JPG referenced by COCO: 0
-```
-
-Decision rationale:
-
-```text
-Quality 95 preserves high whole-image and bbox-ROI fidelity,
-passes geometry and bbox invariance validation and reduces
-projected storage by approximately 48.79% relative to quality 100.
-
-Quality 100 has higher numerical fidelity but is approximately
-1.95 times larger.
-
-The pilot provides no evidence that the additional numerical fidelity
-of quality 100 is required for downstream detector performance.
-```
-
-Important claim guardrails:
-
-```text
-Do not claim quality 95 has better detector performance than quality 100.
-
-Do not claim clinical equivalence between JPG and source DICOM.
-
-Do not claim preservation of every possible diagnostic feature.
-
-Do not describe the representation pipeline as a new method
-or a new algorithm.
-
-Do not claim MMDetection loading readiness.
-
-Do not claim dataset training readiness.
-
-Do not claim training authorization.
-```
-
-Issues / risks:
-
-```text
-MMDetection loading has not yet been validated.
-
-filter_empty_gt=False has not yet been validated.
-
-Retention of all 500 No Finding images inside MMDetection
-has not yet been confirmed.
-
-No downstream q95-versus-q100 detector ablation has been performed.
-
-A controlled downstream image-representation ablation is not
-a mandatory requirement and has not been confirmed as approved.
-
-Dataset training readiness remains false.
-
-Training authorization remains false.
-```
-
-Next phase:
-
-```text
-Phase 2D.1C —
-MMDetection Dataset / Empty-Image Loading Validation
-
-Environment: Google Colab
-Status: NOT STARTED / NEXT
-```
-
----
-
-## 8. Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation
-
-Status: **IN PROGRESS**
-
-Current subphase:
-
-```text
-Phase 2D.1C —
-MMDetection Dataset / Empty-Image Loading Validation
-
-Environment:
-Google Colab
-
-Status:
-NOT STARTED / NEXT
-```
-
-Overall gate:
-
-```text
-Phase 2D.1A: CLOSED / PASS
-Phase 2D.1B-Pilot: CLOSED / PASS
-Phase 2D.1B-Full: CLOSED / PASS
-Phase 2D.1C: NOT STARTED / NEXT
-Phase 2D.1D: LOCKED until Phase 2D.1C PASS
-
-final_jpeg_quality: 95
-full_conversion_completed: true
-full_validation_passed: true
-promotion_passed: true
-cleanup_passed: true
-final_output_integrity_passed: true
-
-jpg_training_representation_ready: true
-coco_jpg_training_annotation_ready: true
-mmdetection_dataset_loading_ready: false
-empty_image_retention_ready: false
-dataset_training_ready: false
+full_pipeline_audit: true
+abnormal_audited: 4394/4394
+empty_audited: 500/500
+num_audited: 4894/4894
+all_audited_valid: true
+filter_empty_gt=false: retained 4894/4894 images
+filter_empty_gt=true: excluded exactly 500 zero-GT images
+regression_tests: 35 passed
+errors: 0
+dataset_training_ready: true
 training_authorized: false
 ```
 
-### 8.1 Phase 2D.1A — Image Representation Protocol Decision
+### Regression guard cho `serialize_data=True`
 
-Status: **CLOSED / PASS**
-
-Environment:
+Regression test mô phỏng đúng hành vi cần khóa:
 
 ```text
-Local
+len(dataset) > 0
+dataset.data_list == []
+dataset.get_data_info(index) trả record hợp lệ
+dataset_image_ids_in_order(dataset) vẫn trả đủ ID theo đúng thứ tự
 ```
 
-Protocol:
+Kết quả:
 
 ```text
-configs/protocol/phase2D1_jpg_representation.yaml
+35 passed in 7.58s
+PHASE 2D.1C REGRESSION RECHECK: PASS
 ```
 
-Protocol version:
+### Evidence integrity
 
 ```text
-1.0.0
+0780595f5ff69c36329f05d69f7bb353fd095f32a0df3f76b16f039143a5f2cf  reports/phase2D1C_mmdet_dataset_errors.csv
+00df8ed311e6de0ba863fa8e5a90551d34ef080b12cdd0063b6397fdfd76e474  reports/phase2D1C_mmdet_dataset_image_audit.csv
+dabb3dbf27373c5271cdb3137406b583a9d3b7ee607ca2faabe18033ab772ca8  reports/phase2D1C_mmdet_dataset_loading_report.json
+fb0170cadee8b7b66d81be4681af0b8955ba3c4e6b584fb5faf35d8e054b9ce9  reports/phase2D1C_mmdet_dataset_loading_report.md
 ```
 
-Locked transformation order:
+Hash được kiểm tra lại sau khi bổ sung regression test và không thay đổi.
+
+### Files thuộc Phase 2D.1C
 
 ```text
-DICOM decode
-→ pixel-padding mask
-→ modality transformation
-→ VOI LUT/windowing
-→ presentation-polarity normalization
-→ deterministic uint8 conversion
-→ JPEG encoding
+configs/validation/phase2D1C_mmdet_dataset_loading.py
+reports/phase2D1C_mmdet_dataset_errors.csv
+reports/phase2D1C_mmdet_dataset_image_audit.csv
+reports/phase2D1C_mmdet_dataset_loading_report.json
+reports/phase2D1C_mmdet_dataset_loading_report.md
+scripts/02D1C_validate_mmdet_dataset_loading.py
+tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py
 ```
 
-Locked guardrails:
+File backup tạm `scripts/02D1C_validate_mmdet_dataset_loading.py.bak_before_serialized_data_fix` đã được loại bỏ và không thuộc evidence/commit.
+
+### Research decisions
 
 ```text
-No observed per-image min-max normalization.
-
-No automatic percentile clipping.
-
-No resize.
-
-No crop.
-
-No rotation.
-
-No flip.
-
-No transpose.
-
-No automatic bbox scaling.
+COCO master JPG đã vượt qua MMDetection dataset-loading gate trên toàn bộ controlled scope.
+No Finding tiếp tục là ảnh âm tính zero-GT, không phải detection class.
+filter_empty_gt=False là policy cần dùng khi phải giữ 500 ảnh âm tính trong dataset.
+filter_empty_gt=True chỉ được kiểm tra như một guardrail và loại đúng 500 ảnh zero-GT.
+Public API get_data_info(index) là cơ chế truy cập record dùng cho validation khi MMEngine serialize dataset.
+Dataset được đánh dấu training-ready ở cấp kỹ thuật.
+Training vẫn chưa được cho phép.
 ```
 
-Pilot JPEG candidates:
+### Issues / risks
 
 ```text
-95
-100
+dataset_training_ready=True không đồng nghĩa với toàn bộ experimental protocol đã training-ready.
+training_authorized=False vẫn khóa mọi lệnh training.
+Full pipeline audit xác minh data loading và annotation integrity; nó không thay thế split leakage audit, seed locking, training-config review hoặc experiment authorization.
+Notebook chỉ tái lập sạch sau khi commit chứa script đã sửa và regression test thứ 35 được push, rồi cell clone/checkout được khóa vào commit hash đó.
+Không được giữ các cell vá source, xóa backup hoặc git add như một phần của notebook validation cuối.
 ```
 
-Phase 2D.1A result:
+### Forbidden actions confirmed
 
 ```text
-Required policy coverage: 20/20
-Cross-output drift: 0
-Guardrail tests: 31/31 PASS
-JSON parse: PASS
-YAML strict-load: PASS
-GPT review: PASS
-Status: CLOSED / PASS
+No supervised training started.
+No SSL training started.
+No pseudo-label generated.
+No confidence threshold tuned.
+No checkpoint selected.
+No test set used.
+No annotation deleted, clamped, fused, or edited.
+No No Finding image converted into a detection class.
+No near-duplicate bbox automatically removed.
 ```
 
----
-
-### 8.2 Phase 2D.1B — DICOM-to-JPG Conversion & Validation
-
-Status: **CLOSED / PASS**
-
-Environment:
+### Trạng thái gate chính thức
 
 ```text
-Local
+dataset_training_ready: True
+training_authorized: False
 ```
 
-Internal gates:
+Không được diễn giải hai cờ này thành “đã được phép training”.
+
+### Bước tiếp theo
 
 ```text
-2D.1B-Pilot:
-CLOSED / PASS
-
-2D.1B-Full:
-CLOSED / PASS
-```
-
-#### 8.2.1 Phase 2D.1B-Pilot
-
-Status: **CLOSED / PASS**
-
-Implementation:
-
-```text
-scripts/02D1B_pilot_dicom_to_jpg.py
-src/utils/dicom_jpg_protocol.py
-tests/test_phase2D1B_pilot_guardrails.py
-```
-
-Implementation result:
-
-```text
-Implementation version: V6_FROZEN
-Guardrail tests: 139/139 PASS
-```
-
-DICOM source:
-
-```text
-D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset\train
-```
-
-Configured root:
-
-```text
-D:\ssl_detection_xray\data\raw\vinbigdata\dicom_subset
-```
-
-Decoder backend evidence:
-
-```text
-pylibjpeg: unavailable
-gdcm: unavailable
-pillow: available
-```
-
-The initial explicit `pylibjpeg` run was blocked:
-
-```text
-jpeg2000_backend_unavailable:pylibjpeg
-EXIT_CODE=1
-```
-
-This was expected guardrail behavior.
-
-No silent decoder fallback occurred.
-
-The successful pilot explicitly used:
-
-```text
---jpeg2000-decoder pillow
-```
-
-Pilot result:
-
-```text
-Controlled DICOM paths resolved: 4,894/4,894
-DICOM header inventory: 4,894/4,894
-
-Pilot selected images: 64
-No Finding pilot images: 16
-
-Metadata/features expected: 54
-Metadata/features covered: 54
-Missing features: 0
-
-Abnormal classes expected: 14
-Abnormal classes covered: 14
-
-Pixel decode attempts: 64
-Pixel decode successes: 64
-Pixel decode errors: 0
-```
-
-Geometry validation:
-
-```text
-Geometry records:
-128 = 64 images × 2 JPEG candidates
-
-Pre-JPEG shape unchanged: PASS
-Reference PNG shape unchanged: PASS
-Decoded JPG shape unchanged: PASS
-
-Reference PNG mode L: PASS
-JPEG mode L: PASS
-
-Reference PNG dtype uint8: PASS
-JPEG dtype uint8: PASS
-
-Pixel matrix order unchanged: PASS
-
-Unexpected EXIF orientation: 0
-
-Resize applied: false
-Crop applied: false
-Rotation applied: false
-Flip applied: false
-Transpose applied: false
-
-BBox scaling required: false
-BBox modification performed: false
-```
-
-##### So sánh fidelity và dung lượng
-
-Fidelity reference:
-
-```text
-pre-JPEG uint8 image
-```
-
-Compared representation:
-
-```text
-decoded JPEG image
-```
-
-BBox-ROI count:
-
-```text
-402 pilot annotations
-```
-
-| Tiêu chí | JPEG quality 95 | JPEG quality 100 | Kết luận |
-|---|---:|---:|---|
-| Pilot images | 64 | 64 | Bằng nhau |
-| Whole-image MAE trung bình | 0.873271 | 0.085074 | q100 tốt hơn |
-| Whole-image RMSE trung bình | 1.235387 | 0.291270 | q100 tốt hơn |
-| Whole-image PSNR trung bình | 47.2414 dB | 58.8577 dB | q100 tốt hơn |
-| Whole-image SSIM trung bình | 0.981217 | 0.998981 | q100 tốt hơn |
-| Whole-image maximum absolute error lớn nhất | 12 | 2 | q100 tốt hơn |
-| BBox-ROI MAE trung bình | 0.848022 | 0.087567 | q100 tốt hơn |
-| BBox-ROI PSNR trung bình | 47.9413 dB | 58.7247 dB | q100 tốt hơn |
-| BBox-ROI SSIM trung bình | 0.996632 | 0.999820 | q100 tốt hơn |
-| ROI maximum absolute error lớn nhất | 10 | 2 | q100 tốt hơn |
-| Kích thước trung bình mỗi ảnh | 1.619 MB | 3.162 MB | q95 nhỏ hơn |
-| Tổng dung lượng 64 ảnh pilot | 98.82 MiB | 192.97 MiB | q95 nhỏ hơn |
-| Compression ratio trung bình | 5.04:1 | 2.47:1 | q95 hiệu quả hơn |
-| Projected storage cho 4,894 ảnh | 7.38 GiB | 14.41 GiB | q95 tiết kiệm khoảng 7.03 GiB |
-
-Pairwise evidence:
-
-```text
-Quality 100 has better whole-image MAE, PSNR and SSIM
-for 64/64 pilot images.
-
-Quality 100 has better ROI MAE, ROI PSNR and ROI SSIM
-for 402/402 pilot bbox regions.
-```
-
-Storage evidence:
-
-```text
-Quality 95 reduces projected storage by approximately 48.79%
-relative to quality 100.
-
-Quality 100 is approximately 1.95 times larger
-than quality 95.
-```
-
-Small-bbox evidence at quality 95:
-
-```text
-20 smallest relative-area bbox cases
-
-Mean ROI MAE: 0.4165
-Mean ROI PSNR: 52.29 dB
-Mean ROI SSIM: 0.995884
-Largest ROI maximum absolute error: 5
-```
-
-Visual review:
-
-```text
-No global polarity inversion observed.
-
-No unexpected crop observed.
-
-No rotation observed.
-
-No flip observed.
-
-No transpose observed.
-
-No geometry deformation observed.
-
-No conversion-induced anatomical truncation observed.
-
-Critical visual failure: false
-```
-
-Visual review is representation-pipeline evidence only.
-
-It is not clinical validation.
-
-##### Final JPEG quality decision
-
-Selected quality:
-
-```text
-95
-```
-
-Decision status:
-
-```text
-approved_after_gpt_and_researcher_pilot_review
-```
-
-Full conversion authorization:
-
-```text
-true
-```
-
-Decision rationale:
-
-```text
-Quality 100 provides the highest numerical fidelity.
-
-Quality 95 still preserves high whole-image and bbox-ROI fidelity,
-passes geometry and bbox invariance validation and reduces projected
-storage by approximately 48.79% relative to quality 100.
-
-Quality 100 is approximately 1.95 times larger.
-
-No pilot evidence demonstrates that the additional numerical fidelity
-of quality 100 is required for downstream detector performance.
-
-Quality 95 is therefore selected as the controlled
-fidelity–storage/I/O trade-off.
-```
-
-Quality lock:
-
-```text
-All 4,894 images in Phase 2D.1B-Full must use JPEG quality 95.
-
-Mixed JPEG qualities are forbidden.
-```
-
-Claim guardrails:
-
-```text
-Do not claim quality 95 has better detector performance than quality 100.
-
-Do not claim clinical equivalence between JPG and source DICOM.
-
-Do not claim preservation of every possible diagnostic feature.
-
-Do not claim full DICOM-standard conformance.
-
-Do not claim dataset training readiness.
-```
-
-Historical evidence rule:
-
-```text
-reports/phase2D1B_pilot_validation.json
-was generated before final GPT/researcher review.
-
-It may therefore retain:
-phase_status = OPEN_REVIEW_REQUIRED
-final_jpeg_quality = null
-full_conversion_authorized = false
-
-Do not edit this generated structural evidence retroactively.
-```
-
-Final decision ownership:
-
-```text
-reports/phase2D1B_pilot_decision_template.json
-```
-
-Expected final decision fields:
-
-```text
-decision_status:
-approved_after_gpt_and_researcher_pilot_review
-
-final_jpeg_quality:
-95
-
-selected_candidate:
-95
-
-full_conversion_authorized:
-true
-```
-
-Pilot evidence:
-
-```text
-reports/phase2D1B_pilot_unit_tests_output_v6.txt
-reports/phase2D1B_pilot_run_output.txt
-reports/phase2D1B_pilot_run_output_pillow.txt
-reports/phase2D1B_pilot_environment.json
-reports/phase2D1B_pilot_header_inventory.csv
-reports/phase2D1B_pilot_metadata_strata.csv
-reports/phase2D1B_pilot_selection.csv
-reports/phase2D1B_pilot_selection_coverage.csv
-reports/phase2D1B_pilot_fidelity_metrics.csv
-reports/phase2D1B_pilot_bbox_roi_metrics.csv
-reports/phase2D1B_pilot_quality_summary.csv
-reports/phase2D1B_pilot_quality_pairwise.csv
-reports/phase2D1B_pilot_geometry_validation.csv
-reports/phase2D1B_pilot_visual_audit_manifest.csv
-reports/phase2D1B_pilot_validation.json
-reports/phase2D1B_pilot_validation.md
-reports/phase2D1B_pilot_decision_template.json
-```
-
-Pilot image evidence:
-
-```text
-data/processed/images_jpg_pilot/reference_uint8/
-data/processed/images_jpg_pilot/q95/
-data/processed/images_jpg_pilot/q100/
-```
-
-Visual evidence:
-
-```text
-plots/phase2D1B_pilot/full_image/
-plots/phase2D1B_pilot/bbox_crops/
-plots/phase2D1B_pilot/difference_heatmaps/
-plots/phase2D1B_pilot/contact_sheets/
-```
-
-Pilot closure:
-
-```text
-Phase 2D.1B-Pilot:
-CLOSED / PASS
-
-Final JPEG quality:
-95 / LOCKED
-
-Full conversion:
-AUTHORIZED
-```
-
----
-
-#### 8.2.2 Phase 2D.1B-Full
-
-Status: **CLOSED / PASS**
-
-Environment:
-
-```text
-Local
-```
-
-Completion status:
-
-```text
-Phase 2D.1B-Pilot PASS: satisfied
-
-Final JPEG quality selected: satisfied
-
-Final JPEG quality = 95: locked
-
-Full conversion completed: true
-Full validation passed: true
-Output promotion passed: true
-Backup cleanup passed: true
-Final output integrity passed: true
-```
-
-Full conversion policy:
-
-```text
-Protocol version:
-1.0.0
-
-JPEG quality:
-95
-
-Decoder backend:
-must be explicitly selected
-
-Silent decoder fallback:
-forbidden
-
-Resize:
-false
-
-Crop:
-false
-
-Rotation:
-false
-
-Flip:
-false
-
-Transpose:
-false
-
-BBox scaling:
-false
-```
-
-Final outputs:
-
-```text
-data/processed/images_jpg/train/<image_id>.jpg
-
-data/processed/coco/coco_master_jpg.json
-
-reports/phase2D1B_full_mapping.csv
-reports/phase2D1B_full_mapping.jsonl
-```
-
-Final counts and validation:
-
-```text
-JPG files: 4,894
-Missing JPG: 0
-Duplicate image IDs: 0
-Decode errors: 0
-JPG dimension mismatches: 0
-Orientation changes: 0
-
-COCO-JPG images: 4,894
-COCO-JPG annotations: 36,096
-COCO-JPG categories: 14
-
-Abnormal images: 4,394
-No Finding images: 500
-No Finding annotations: 0
-
-BBox mismatches versus coco_master: 0
-Area mismatches: 0
-Category mismatches: 0
-Traceability mismatches: 0
-Boundary violations: 0
-Absolute COCO-JPG paths: 0
-
-Native decoder images: 2,776
-pylibjpeg JPEG 2000 decoder images: 2,118
-
-VOI/windowing branch images: 4,536
-Theoretical fallback branch images: 358
-Presentation-polarity inversions: 1,562
-Pixel-padding processing required: 0
-
-Geometry validation: PASS
-BBox boundary validation: PASS
-Category mapping validation: PASS
-No Finding validation: PASS
-Promotion: PASS
-Cleanup: PASS
-Final output integrity: PASS
-Missing JPG files referenced by COCO: 0
-```
-
-`coco_master_jpg.json` may change only:
-
-```text
-images[].file_name
-
-from:
-train/<image_id>.dicom
-
-to:
-train/<image_id>.jpg
-```
-
-The following must remain unchanged:
-
-```text
-image id
-annotation id
-category id
-width
-height
-bbox
-area
-iscrowd
-categories
-canonical_ann_id
-source_row_id
-traceability fields
-```
-
-Full-conversion restrictions:
-
-```text
-Do not modify source DICOM files.
-
-Do not modify canonical annotations.
-
-Do not modify coco_master.json.
-
-Do not resize, crop, rotate, flip or transpose.
-
-Do not scale, clamp, delete or fuse bbox.
-
-Do not create train/val/test split.
-
-Do not create labeled/unlabeled split.
-
-Do not train.
-
-Do not run detector inference.
-
-Do not generate pseudo-labels.
-
-Do not tune thresholds.
-
-Do not compute AP/mAP.
-
-Do not use the test set.
-```
-
-Git rule:
-
-```text
-Do not commit 4,894 JPG files to ordinary Git.
-
-Do not commit pilot image derivatives, temporary handoff packages,
-unrelated thesis files or intermediate unit-test logs.
-
-Commit only reviewed scripts, protocols, reports, mappings,
-small audit artifacts and synchronized documentation.
-```
-
-Primary implementation and evidence:
-
-```text
-scripts/02D1B_full_dicom_to_jpg.py
-tests/test_phase2D1B_full_guardrails.py
-reports/phase2D1B_full_preflight.json
-reports/phase2D1B_full_preflight.md
-reports/phase2D1B_full_validation.json
-reports/phase2D1B_full_validation.md
-reports/phase2D1B_full_promotion.json
-reports/phase2D1B_full_cleanup_audit.json
-reports/phase2D1B_full_metadata_audit.csv
-reports/phase2D1B_full_bbox_audit.csv
-reports/phase2D1B_full_no_finding_audit.csv
-reports/phase2D1B_full_errors.csv
-reports/phase2D1B_full_mapping.csv
-reports/phase2D1B_full_mapping.jsonl
-data/processed/coco/coco_master_jpg.json
-```
-
-Full PASS evidence:
-
-```text
-Full DICOM inventory: PASS
-
-All 4,894 images converted using quality 95.
-
-Decode errors: 0
-
-Missing JPG: 0
-
-Duplicate image IDs: 0
-
-Width/height mismatches: 0
-
-Orientation changes: 0
-
-Full traceability mapping: PASS
-
-coco_master_jpg.json created: PASS
-
-COCO-JPG structural validation: PASS
-
-BBox/category/area/traceability mismatches: 0
-
-No Finding images retained: 500
-
-No Finding annotations: 0
-
-GPT review: PASS
-```
-
-Closure interpretation:
-
-```text
-Phase 2D.1B-Full PASS confirms that the full JPG representation
-and coco_master_jpg.json exist and passed the required structural,
-geometry, bbox, category and No Finding validation.
-
-It does not confirm MMDetection dataset loading readiness.
-
-It does not confirm retention of empty-GT images in MMDetection.
-
-It does not make the dataset training-ready.
-
-It does not authorize training.
-```
-
----
-
-### 8.3 Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
-
-Status: **NOT STARTED / NEXT**
-
-Environment:
-
-```text
-Google Colab
-```
-
-Inputs:
-
-```text
-Full JPG training representation
-coco_master_jpg.json
-MMDetection dataset config
-Validation scripts
-```
-
-Required checks:
-
-```text
-MMDetection import: PASS
-MMEngine/MMCV/MMDetection versions recorded
-COCO-JPG parse: PASS
-Dataset build: PASS
-dataset.full_init(): PASS
-
-Dataset length: 4,894
-Abnormal images retained: 4,394
-No Finding images retained: 500
-
-Empty-GT samples: exactly 500
-Unexpected empty abnormal images: 0
-Annotated No Finding images: 0
-
-filter_empty_gt=False effective: PASS
-
-Abnormal sample loading: PASS
-No Finding loading with empty GT: PASS
-
-Dataloader smoke test with num_workers=0: PASS
-Dataloader smoke test with num_workers>0: PASS
-
-All image IDs seen: 4,894
-```
-
-No Finding sample expectations:
-
-```text
-gt_instances.bboxes shape = (0, 4)
-gt_instances.labels shape = (0,)
-sample remains present in the dataset
-```
-
-Failure rule:
-
-```text
-If dataset length = 4,394, Phase 2D.1C FAILS because
-500 No Finding images were filtered out.
-```
-
-Restrictions:
-
-```text
-Do not train.
-
-Do not run model inference.
-
-Do not create split.
-
-Do not generate pseudo-labels.
-
-Do not tune thresholds.
-
-Do not compute AP/mAP.
-
-Do not use the test set.
-```
-
----
-
-### 8.4 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
-
-Status: **LOCKED until Phase 2D.1C PASS**
-
-Environment:
-
-```text
-Local
-```
-
-Required actions:
-
-```text
-Download Colab evidence to the local repo.
-
-Verify report files and hashes.
-
-Request GPT final review.
-
-Update PROJECT_CONTEXT.md after PASS.
-
-Update PHASE_HANDOFF.md after PASS.
-
-Update research_log.md after PASS.
-
-Update CHECKLIST_TRIEN_KHAI_FULL.xlsx after PASS.
-
-Stage reviewed evidence only.
-
-Commit and push Phase 2D.1.
-```
-
-Do not commit:
-
-```text
-4,894 JPG files to ordinary Git.
-
-Temporary conversion files.
-
-Colab caches.
-
-MMDetection checkpoints.
-
-Training logs unrelated to loading validation.
-```
-
----
-
-### 8.5 Training-readiness rule
-
-```text
-Passing Phase 2D.1A confirms only that the image-representation
-protocol has been locked.
-
-Passing Phase 2D.1B-Pilot confirms only that:
-- representative DICOM decoding succeeded;
-- geometry and bbox invariance passed;
-- JPEG quality 95 was selected;
-- full conversion may proceed.
-
-Passing Phase 2D.1B-Pilot does not confirm that the full JPG
-training representation exists.
-
-Passing Phase 2D.1B-Full confirms:
-- the complete JPG representation exists;
-- full mapping and geometry validation pass;
-- coco_master_jpg.json is structurally ready.
-
-Passing Phase 2D.1C confirms:
-- MMDetection dataset loading readiness;
-- retention of all 500 No Finding images;
-- empty-GT samples are represented correctly.
-
-Passing Phase 2D.1 overall does not create a fixed
-train/val/test split.
-
-Passing Phase 2D.1 overall does not authorize detector training.
-
-dataset_training_ready remains false.
-
-training_authorized remains false until later split and downstream
-protocol phases pass their own Definition of Done.
+1. Cập nhật PROJECT_CONTEXT.md, README.md, research_log.md và CHECKLIST_TRIEN_KHAI_FULL.xlsx.
+2. Stage các tài liệu đã cập nhật cùng 7 file Phase 2D.1C hiện có.
+3. Review toàn bộ staged diff và kiểm tra tính nhất quán của các trạng thái/gate.
+4. Commit và push Phase 2D.1C.
+5. Khóa notebook tái lập vào commit hash vừa push và giữ workflow Restart runtime → Run all.
+6. Chỉ mở training khi một quyết định/gate riêng đặt training_authorized=True.
 ```
 
 ---

@@ -6,8 +6,9 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 **Trọng tâm:** Semi-supervised object detection trên **VinBigData Chest X-ray**.  
 **Framework chính:** [MMDetection](https://github.com/open-mmlab/mmdetection) (OpenMMLab). Detectron2 là *optional fallback*.
 
-> **Trạng thái hiện tại: Phase 2D.1B-Full — CLOSED / PASS**
+> **Trạng thái hiện tại: Phase 2D.1C — CLOSED / PASS**
 >
+> - Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation: **CLOSED / PASS**
 > - Phase 2D.1B-Full — Full Controlled-Scope DICOM-to-JPG Conversion & Validation: **CLOSED / PASS**
 > - Full controlled-scope conversion: **COMPLETED**
 > - Final output integrity check: **PASS**
@@ -23,9 +24,9 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 > - Phase 1B — Annotation Quality: **PASS**
 > - Phase 1A — Dataset Overview: **PASS**
 > - Phase 0 — Setup Environment: **CORE PASS**
-> - Next phase: **Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation**
+> - Current phase: **Phase 2D.1D — Evidence Consolidation, GPT Review & Closure**
 >
-> Phase 2D.1B hoàn tất không đồng nghĩa dataset đã training-ready hoặc training đã được phép.
+> Phase 2D.1C xác nhận dataset đã **training-ready về mặt kỹ thuật**, nhưng training vẫn **chưa được phép**.
 
 ## Trạng thái Phase 2D.1
 
@@ -40,13 +41,13 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 | Output promotion | PASS |
 | Backup cleanup | PASS |
 | Final output integrity | PASS |
-| Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation | NOT STARTED / NEXT |
-| Phase 2D.1D — Evidence Consolidation, GPT Review & Closure | LOCKED |
+| Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation | CLOSED / PASS |
+| Phase 2D.1D — Evidence Consolidation, GPT Review & Closure | OPEN / CURRENT |
 | JPG training representation ready | TRUE |
 | COCO-JPG training annotation ready | TRUE |
-| MMDetection dataset loading ready | FALSE |
-| Empty-image retention ready | FALSE |
-| Dataset training-ready | FALSE |
+| MMDetection dataset loading ready | TRUE |
+| Empty-image retention ready | TRUE |
+| Dataset training-ready | TRUE |
 | Training authorized | FALSE |
 
 ### Kết quả representative pilot
@@ -105,6 +106,33 @@ Final output integrity: PASS
 Missing JPG referenced by COCO: 0
 ```
 
+### Kết quả MMDetection dataset / empty-image loading validation
+
+```text
+Phase 2D.1C full pipeline audit: PASS
+Images audited: 4,894/4,894
+Abnormal images audited: 4,394/4,394
+Zero-GT images audited: 500/500
+
+BBox/label validation: PASS
+Errors: 0
+Regression/unit tests: 35 passed
+
+filter_empty_gt=False: retained 4,894/4,894 images
+filter_empty_gt=True: excluded exactly 500 zero-GT images
+Standard empty-GT dataloader batches: PASS
+Forced empty-GT dataloader batches: PASS
+
+Dataset training-ready: TRUE
+Training authorized: FALSE
+```
+
+Kết quả này chứng minh COCO-JPG derivative có thể được MMDetection nạp đúng, toàn bộ
+500 ảnh No Finding được giữ lại khi dùng cấu hình chính thức
+`filter_empty_gt=False`, và empty-GT samples đi qua dataloader mà không gây lỗi.
+Kết quả không cấp quyền bắt đầu training và không thay thế các gate còn lại của
+Phase 2D.1D.
+
 ### Quyết định JPEG quality
 
 JPEG quality 100 có numerical fidelity cao hơn quality 95 trên whole-image và bbox-ROI metrics.
@@ -130,7 +158,7 @@ JPEG quality 95 có detector performance tốt hơn quality 100.
 JPG tương đương lâm sàng với DICOM gốc.
 Mọi đặc trưng chẩn đoán đều được bảo toàn tuyệt đối.
 Pipeline đạt full DICOM-standard conformance.
-Dataset đã training-ready.
+Training đã được phép.
 ```
 
 ## Chú ý quan trọng
@@ -151,12 +179,14 @@ Dataset đã training-ready.
 - 36,096 bbox đều có width, height và area dương, nằm trong biên ảnh.
 - 500 ảnh No Finding đều có `annotation_count=0`.
 - Không có ảnh No Finding nào giao với tập ảnh có bbox.
-- MMDetection loading và chính sách giữ empty-GT image chưa được validate.
-- Việc giữ đủ 500 ảnh No Finding qua MMDetection data pipeline chưa được chứng minh.
+- MMDetection loading và chính sách giữ empty-GT image đã được validate bằng full pipeline audit.
+- `filter_empty_gt=False` là cấu hình bắt buộc để giữ đủ 500 ảnh No Finding.
+- `filter_empty_gt=True` loại đúng 500 ảnh zero-GT và không được dùng cho protocol chính thức.
 - `jpg_training_representation_ready=true` chỉ xác nhận output biểu diễn JPG.
 - `coco_jpg_training_annotation_ready=true` chỉ xác nhận COCO JPG derivative đã được tạo và validate.
-- Hai trạng thái trên không đồng nghĩa `dataset_training_ready=true`.
-- Full conversion completion không đồng nghĩa với training authorization.
+- `dataset_training_ready=true` còn bao gồm bằng chứng MMDetection loading và empty-image retention từ Phase 2D.1C.
+- `dataset_training_ready=true` không đồng nghĩa `training_authorized=true`.
+- Training tiếp tục bị khóa cho đến khi hoàn tất gate được quy định ở Phase 2D.1D.
 - Không chạy lại `--execute-full` nếu không có lý do kỹ thuật được ghi nhận và phê duyệt.
 - Không commit 4,894 JPG files vào ordinary Git.
 - Không tạo train/validation/test split, labeled/unlabeled split hoặc bắt đầu training trước đúng phase.
@@ -309,6 +339,47 @@ reports/phase2D1B_full_metadata_audit.csv
 reports/phase2D1B_full_bbox_audit.csv
 reports/phase2D1B_full_no_finding_audit.csv
 reports/phase2D1B_full_errors.csv
+```
+
+## MMDetection dataset-loading validation
+
+Validation config:
+
+```text
+configs/validation/phase2D1C_mmdet_dataset_loading.py
+```
+
+Implementation và regression tests:
+
+```text
+scripts/02D1C_validate_mmdet_dataset_loading.py
+tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py
+```
+
+Evidence:
+
+```text
+reports/phase2D1C_mmdet_dataset_errors.csv
+reports/phase2D1C_mmdet_dataset_image_audit.csv
+reports/phase2D1C_mmdet_dataset_loading_report.json
+reports/phase2D1C_mmdet_dataset_loading_report.md
+```
+
+SHA-256 của evidence đã khóa:
+
+```text
+0780595f5ff69c36329f05d69f7bb353fd095f32a0df3f76b16f039143a5f2cf  reports/phase2D1C_mmdet_dataset_errors.csv
+00df8ed311e6de0ba863fa8e5a90551d34ef080b12cdd0063b6397fdfd76e474  reports/phase2D1C_mmdet_dataset_image_audit.csv
+dabb3dbf27373c5271cdb3137406b583a9d3b7ee607ca2faabe18033ab772ca8  reports/phase2D1C_mmdet_dataset_loading_report.json
+fb0170cadee8b7b66d81be4681af0b8955ba3c4e6b584fb5faf35d8e054b9ce9  reports/phase2D1C_mmdet_dataset_loading_report.md
+```
+
+Locked loading policy:
+
+```text
+filter_empty_gt: false
+dataset_training_ready: true
+training_authorized: false
 ```
 
 ## Giao thức đánh giá

@@ -1,0 +1,498 @@
+{
+  "bbox_label_validation_summary": {
+    "all_audited_valid": true,
+    "num_audited": 4894,
+    "tolerance_px": 1.0
+  },
+  "checks": [
+    {
+      "critical": true,
+      "detail": "torch/mmcv/mmengine/mmdet",
+      "name": "import_frameworks",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "observed": "3.3.0",
+        "required": "3.3.0"
+      },
+      "name": "version_mmdet",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "observed": "2.1.0",
+        "required": "2.1.0"
+      },
+      "name": "version_mmcv",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "observed": "0.10.7",
+        "required": "0.10.7"
+      },
+      "name": "version_mmengine",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": "/content/ssl_detection_xray_v2/data/processed/coco/coco_master_jpg.json",
+      "name": "ann_file_exists",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": "/content/ssl_detection_xray_v2/data/processed/images_jpg",
+      "name": "data_root_exists",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "expected": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+        "note": "recorded evidence, overridable via CLI",
+        "observed": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0"
+      },
+      "name": "coco_sha256_matches_recorded",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": null,
+      "name": "coco_json_parse",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": null,
+      "name": "coco_structure_analyzed",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "expected": 4894,
+        "observed": 4894
+      },
+      "name": "count_images",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "expected": 36096,
+        "observed": 36096
+      },
+      "name": "count_annotations",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "expected": 14,
+        "observed": 14
+      },
+      "name": "count_categories",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "expected": 500,
+        "observed": 500
+      },
+      "name": "count_zero_gt_images",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": [],
+      "name": "no_duplicate_image_ids",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": [],
+      "name": "no_duplicate_annotation_ids",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": [],
+      "name": "no_duplicate_category_ids",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": 0,
+      "name": "no_invalid_image_refs",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": 0,
+      "name": "no_invalid_category_refs",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "missing": 0
+      },
+      "name": "all_referenced_jpg_exist",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "images": 4894,
+        "unique": 4894
+      },
+      "name": "unique_resolved_jpg_paths",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "length": 4894
+      },
+      "name": "cocodataset_build_retention",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "expected": 4894,
+        "length": 4894
+      },
+      "name": "retention_length_matches",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "present": 500,
+        "zero_gt": 500
+      },
+      "name": "retention_contains_all_zero_gt",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "length": 4394
+      },
+      "name": "cocodataset_build_filtered",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "num_removed": 500,
+        "num_zero_gt": 500
+      },
+      "name": "filtered_removed_equals_zero_gt",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "audited": 4394
+      },
+      "name": "abnormal_pipeline_sample",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "audited": 500
+      },
+      "name": "empty_pipeline_sample",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "observed": [
+          0,
+          4
+        ]
+      },
+      "name": "empty_bbox_shape",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "observed": [
+          0
+        ]
+      },
+      "name": "empty_label_shape",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "all_valid": true
+      },
+      "name": "bbox_label_valid",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "batch_size": 1
+      },
+      "name": "normal_dataloader_batch",
+      "passed": true
+    },
+    {
+      "critical": true,
+      "detail": {
+        "empty_located": true
+      },
+      "name": "forced_empty_dataloader_batch",
+      "passed": true
+    }
+  ],
+  "coco_sha256": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+  "coco_sha256_expected": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+  "controlled_filtering_comparison": {
+    "filter_cfg": {
+      "filter_empty_gt": true
+    },
+    "filtered_length": 4394,
+    "note": "Comparison is by image-ID identity, not length only. Removed set must equal the zero-GT set.",
+    "num_removed": 500,
+    "removed_equals_zero_gt": true
+  },
+  "dataloader_validation_summary": {
+    "batch_size": 1,
+    "collate": "pseudo_collate",
+    "collate_rationale": "pseudo_collate keeps per-sample tensors as a list so un-resized images of different sizes batch safely.",
+    "empty_sample_located": true,
+    "forced_empty_batch_pass": true,
+    "forced_indices": [
+      5,
+      0
+    ],
+    "normal_batch_pass": true,
+    "normal_indices": [
+      0
+    ],
+    "num_workers": 0
+  },
+  "dataset_loading_validated": true,
+  "dataset_training_ready": true,
+  "empty_gt_image_id_comparison": {
+    "num_zero_gt": 500,
+    "removed_equals_zero_gt": true
+  },
+  "empty_image_retention_validated": true,
+  "environment_versions": {
+    "cuda_available": true,
+    "cuda_runtime": "11.8",
+    "mmcv": "2.1.0",
+    "mmdet": "3.3.0",
+    "mmengine": "0.10.7",
+    "python": "3.10.16",
+    "python_executable": "/content/miniconda/envs/mmdet330/bin/python",
+    "torch": "2.1.0+cu118",
+    "torchvision": "0.16.0+cu118"
+  },
+  "errors": [],
+  "expected_counts": {
+    "annotations": 36096,
+    "categories": 14,
+    "empty_images": 500,
+    "images": 4894
+  },
+  "generated_at_utc": "2026-07-30T11:57:48Z",
+  "input_integrity_results": {
+    "num_missing_jpg": 0,
+    "resolve_info": {
+      "has_duplicate_resolved_paths": false,
+      "num_missing": 0,
+      "num_referenced": 4894,
+      "num_unique_resolved": 4894
+    }
+  },
+  "input_paths": {
+    "ann_file": "/content/ssl_detection_xray_v2/data/processed/coco/coco_master_jpg.json",
+    "data_root": "/content/ssl_detection_xray_v2/data/processed/images_jpg",
+    "errors_csv": "/content/ssl_detection_xray_v2/reports/phase2D1C_mmdet_dataset_errors.csv",
+    "image_audit_csv": "/content/ssl_detection_xray_v2/reports/phase2D1C_mmdet_dataset_image_audit.csv",
+    "repo_root": "/content/ssl_detection_xray_v2",
+    "report_json": "/content/ssl_detection_xray_v2/reports/phase2D1C_mmdet_dataset_loading_report.json",
+    "report_md": "/content/ssl_detection_xray_v2/reports/phase2D1C_mmdet_dataset_loading_report.md"
+  },
+  "mmdet_dataset_configuration": {
+    "cat_id_to_label": {
+      "1": 0,
+      "2": 1,
+      "3": 2,
+      "4": 3,
+      "5": 4,
+      "6": 5,
+      "7": 6,
+      "8": 7,
+      "9": 8,
+      "10": 9,
+      "11": 10,
+      "12": 11,
+      "13": 12,
+      "14": 13
+    },
+    "filter_cfg_controlled": {
+      "filter_empty_gt": true
+    },
+    "filter_cfg_retention": {
+      "filter_empty_gt": false
+    },
+    "metainfo_classes": [
+      "Aortic enlargement",
+      "Atelectasis",
+      "Calcification",
+      "Cardiomegaly",
+      "Consolidation",
+      "ILD",
+      "Infiltration",
+      "Lung Opacity",
+      "Nodule/Mass",
+      "Other lesion",
+      "Pleural effusion",
+      "Pleural thickening",
+      "Pneumothorax",
+      "Pulmonary fibrosis"
+    ],
+    "num_classes": 14,
+    "pipeline": [
+      "LoadImageFromFile",
+      "LoadAnnotations",
+      "PackDetInputs"
+    ],
+    "test_mode": false,
+    "type": "CocoDataset"
+  },
+  "observed_raw_counts": {
+    "category_ids_sorted": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "duplicate_annotation_ids": [],
+    "duplicate_category_ids": [],
+    "duplicate_image_ids": [],
+    "invalid_annotation_category_refs": 0,
+    "invalid_annotation_image_refs": 0,
+    "num_annotations": 36096,
+    "num_categories": 14,
+    "num_images": 4894,
+    "num_nonempty_images": 4394,
+    "num_zero_gt_images": 500
+  },
+  "overall_status": "PASS",
+  "phase": "2D.1C",
+  "phase_name": "MMDetection Dataset-Loading & Empty-Image Retention Validation",
+  "pipeline_validation_summary": {
+    "abnormal_audited": 4394,
+    "abnormal_pass": true,
+    "empty_audited": 500,
+    "empty_bbox_shape": [
+      0,
+      4
+    ],
+    "empty_label_shape": [
+      0
+    ],
+    "empty_pass": true,
+    "full_pipeline_audit": true
+  },
+  "retention_dataset_results": {
+    "filter_cfg": {
+      "filter_empty_gt": false
+    },
+    "num_zero_gt_present": 500,
+    "raw_coco_image_count": 4894,
+    "retention_length": 4894
+  },
+  "sample_evidence": [
+    {
+      "dataset_index": 0,
+      "empty_shapes": null,
+      "expect_empty": false,
+      "image_id": 1,
+      "pipeline_load_result": "PASS",
+      "post_pipeline_box_count": 5,
+      "post_pipeline_label_count": 5
+    },
+    {
+      "dataset_index": 1,
+      "empty_shapes": null,
+      "expect_empty": false,
+      "image_id": 2,
+      "pipeline_load_result": "PASS",
+      "post_pipeline_box_count": 11,
+      "post_pipeline_label_count": 11
+    },
+    {
+      "dataset_index": 5,
+      "empty_shapes": {
+        "bboxes_shape": [
+          0,
+          4
+        ],
+        "bboxes_shape_ok": true,
+        "labels_shape": [
+          0
+        ],
+        "labels_shape_ok": true,
+        "semantic_ok": true
+      },
+      "expect_empty": true,
+      "image_id": 6,
+      "pipeline_load_result": "PASS",
+      "post_pipeline_box_count": 0,
+      "post_pipeline_label_count": 0
+    },
+    {
+      "dataset_index": 7,
+      "empty_shapes": {
+        "bboxes_shape": [
+          0,
+          4
+        ],
+        "bboxes_shape_ok": true,
+        "labels_shape": [
+          0
+        ],
+        "labels_shape_ok": true,
+        "semantic_ok": true
+      },
+      "expect_empty": true,
+      "image_id": 8,
+      "pipeline_load_result": "PASS",
+      "post_pipeline_box_count": 0,
+      "post_pipeline_label_count": 0
+    }
+  ],
+  "seed": 42,
+  "training_authorized": false,
+  "warnings": []
+}

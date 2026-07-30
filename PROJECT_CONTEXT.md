@@ -301,17 +301,17 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-Current subphase: Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
-Current subphase status: **NOT STARTED / NEXT**
+Current subphase: Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+Current subphase status: **OPEN / CURRENT**
 Overall phase: Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation: **IN PROGRESS**
-Previous subphase: Phase 2D.1B-Full — Full Controlled-Scope DICOM-to-JPG Conversion & Validation: **CLOSED / PASS**
+Previous subphase: Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation: **CLOSED / PASS**
 Final JPEG quality: **95 / LOCKED**
-Git status: Phase 2D.1B-Full evidence completed and reviewed locally; synchronized documentation update and commit/push pending.
+Git status: 7 Phase 2D.1C implementation/evidence files staged; synchronized documentation update, final staged-diff review, commit and push pending.
 JPG training representation ready: **true**
 COCO-JPG training annotation ready: **true**
-MMDetection dataset loading ready: **false**
-Empty-image retention ready: **false**
-Dataset training-ready: **false**
+MMDetection dataset loading ready: **true**
+Empty-image retention ready: **true**
+Dataset training-ready: **true**
 Training authorized: **false**
 
 ### 7.1 Current gate
@@ -383,10 +383,10 @@ Final output integrity:
 PASS
 
 Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation:
-NOT STARTED / NEXT
+CLOSED / PASS
 
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure:
-LOCKED until Phase 2D.1C PASS
+OPEN / CURRENT
 
 Split train/val/test: LOCKED
 Labeled/unlabeled split: LOCKED
@@ -406,9 +406,9 @@ final_output_integrity_passed: TRUE
 
 jpg_training_representation_ready: TRUE
 coco_jpg_training_annotation_ready: TRUE
-mmdetection_dataset_loading_ready: FALSE
-empty_image_retention_ready: FALSE
-dataset_training_ready: FALSE
+mmdetection_dataset_loading_ready: TRUE
+empty_image_retention_ready: TRUE
+dataset_training_ready: TRUE
 training_authorized: FALSE
 ```
 
@@ -888,12 +888,19 @@ Resolved in Phase 2D.1B-Full:
 - output promotion and backup cleanup;
 - final output integrity validation.
 
-Still unresolved:
+Resolved in Phase 2D.1C:
 - MMDetection loading of JPG + COCO-JPG;
-- retention of all 500 No Finding / empty-GT images;
-- filter_empty_gt=False or equivalent configuration validation;
-- dataset training readiness;
-- training authorization.
+- full pipeline audit of all 4,894 images;
+- retention of all 500 No Finding / empty-GT images with `filter_empty_gt=False`;
+- exclusion of exactly 500 zero-GT images with `filter_empty_gt=True`;
+- standard and forced empty-GT dataloader batch validation;
+- dataset technical training readiness.
+
+Still unresolved:
+- Phase 2D.1D evidence consolidation and documentation closure;
+- train/validation/test split;
+- labeled/unlabeled SSL split;
+- project-level training authorization.
 ```
 
 ### 7.7 Phase 2D.1 current status
@@ -905,11 +912,10 @@ Status: **IN PROGRESS**
 Current subphase:
 
 ```text
-Phase 2D.1C —
-MMDetection Dataset / Empty-Image Loading Validation
+Phase 2D.1D —
+Evidence Consolidation, GPT Review & Closure
 
-Environment: Google Colab
-Status: NOT STARTED / NEXT
+Status: OPEN / CURRENT
 ```
 
 Subphase structure:
@@ -925,10 +931,10 @@ Phase 2D.1B-Full — Full Controlled-Scope Conversion
 Status: CLOSED / PASS
 
 Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
-Status: NOT STARTED / NEXT
+Status: CLOSED / PASS
 
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
-Status: LOCKED until Phase 2D.1C PASS
+Status: OPEN / CURRENT
 ```
 
 #### Phase 2D.1A locked evidence
@@ -1426,9 +1432,9 @@ final_output_integrity_passed: true
 
 jpg_training_representation_ready: true
 coco_jpg_training_annotation_ready: true
-mmdetection_dataset_loading_ready: false
-empty_image_retention_ready: false
-dataset_training_ready: false
+mmdetection_dataset_loading_ready: true
+empty_image_retention_ready: true
+dataset_training_ready: true
 training_authorized: false
 ```
 
@@ -1470,31 +1476,40 @@ Do not claim preservation of every possible diagnostic feature.
 Do not describe the representation pipeline as a new method
 or a new algorithm.
 
-Do not claim MMDetection loading readiness.
-
-Do not claim empty-image retention readiness.
-
-Do not claim dataset training readiness.
-
 Do not claim training authorization.
+```
+
+Resolved by Phase 2D.1C:
+
+```text
+MMDetection loading: PASS.
+
+filter_empty_gt=False retention of all 4,894 images: PASS.
+
+Retention of all 500 No Finding / empty-GT images: PASS.
+
+filter_empty_gt=True exclusion of exactly 500 zero-GT images: PASS.
+
+Standard and forced empty-GT dataloader batches: PASS.
+
+Full pipeline audit: 4,894/4,894 images, errors = 0.
+
+Dataset technical training readiness: true.
 ```
 
 Remaining issues / risks:
 
 ```text
-MMDetection loading has not yet been validated.
-
-filter_empty_gt=False has not yet been validated.
-
-Retention of all 500 No Finding images inside the MMDetection
-data pipeline has not yet been confirmed.
+Phase 2D.1D evidence consolidation and documentation closure remain open.
 
 No downstream q95-versus-q100 detector ablation has been performed.
 
 A controlled downstream image-representation ablation is not
 a mandatory requirement and has not been confirmed as approved.
 
-Dataset training readiness remains false.
+Train/validation/test splits have not been created.
+
+Labeled/unlabeled SSL subsets have not been created.
 
 Training authorization remains false.
 ```
@@ -1502,11 +1517,118 @@ Training authorization remains false.
 Next phase:
 
 ```text
-Phase 2D.1C —
-MMDetection Dataset / Empty-Image Loading Validation
+Phase 2D.1D —
+Evidence Consolidation, GPT Review & Closure
 
+Status: OPEN / CURRENT
+```
+
+### 7.8 Phase 2D.1C locked evidence
+
+Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation: **CLOSED / PASS**
+
+```text
+Date: 2026-07-30
 Environment: Google Colab
-Status: NOT STARTED / NEXT
+Framework: MMDetection 3.3.0
+Audit scope: full controlled scope
+```
+
+Primary implementation and evidence:
+
+```text
+configs/validation/phase2D1C_mmdet_dataset_loading.py
+scripts/02D1C_validate_mmdet_dataset_loading.py
+tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py
+reports/phase2D1C_mmdet_dataset_errors.csv
+reports/phase2D1C_mmdet_dataset_image_audit.csv
+reports/phase2D1C_mmdet_dataset_loading_report.json
+reports/phase2D1C_mmdet_dataset_loading_report.md
+```
+
+DoD result:
+
+```text
+JPG + COCO-JPG MMDetection construction: PASS
+Full pipeline audit: PASS
+Images audited: 4,894/4,894
+Abnormal images audited: 4,394/4,394
+Zero-GT images audited: 500/500
+BBox/label validation: PASS
+filter_empty_gt=False retention: 4,894/4,894 PASS
+filter_empty_gt=True exclusion: exactly 500 zero-GT images PASS
+Standard dataloader batch: PASS
+Forced empty-GT dataloader batch: PASS
+Errors: 0
+Regression/unit tests: 35 passed
+```
+
+Regression protection:
+
+```text
+MMEngine serialize_data=True may clear dataset.data_list while
+len(dataset) and dataset.get_data_info(index) remain valid.
+
+dataset_image_ids_in_order(dataset) therefore uses the public indexed
+dataset API and is protected by a regression test that verifies:
+- len(dataset) > 0;
+- dataset.data_list == [];
+- get_data_info(index) returns valid records;
+- all image IDs remain available in the original order.
+```
+
+Locked evidence hashes:
+
+```text
+0780595f5ff69c36329f05d69f7bb353fd095f32a0df3f76b16f039143a5f2cf  reports/phase2D1C_mmdet_dataset_errors.csv
+00df8ed311e6de0ba863fa8e5a90551d34ef080b12cdd0063b6397fdfd76e474  reports/phase2D1C_mmdet_dataset_image_audit.csv
+dabb3dbf27373c5271cdb3137406b583a9d3b7ee607ca2faabe18033ab772ca8  reports/phase2D1C_mmdet_dataset_loading_report.json
+fb0170cadee8b7b66d81be4681af0b8955ba3c4e6b584fb5faf35d8e054b9ce9  reports/phase2D1C_mmdet_dataset_loading_report.md
+```
+
+Readiness decision:
+
+```text
+jpg_training_representation_ready: true
+coco_jpg_training_annotation_ready: true
+mmdetection_dataset_loading_ready: true
+empty_image_retention_ready: true
+dataset_training_ready: true
+training_authorized: false
+```
+
+Interpretation:
+
+```text
+The controlled-scope JPG + COCO-JPG dataset is technically ready for
+MMDetection dataset loading and downstream training preparation.
+
+This does not authorize detector training. Training remains locked
+until Phase 2D.1D documentation closure and the required split gates
+are completed and reviewed.
+```
+
+Forbidden actions confirmed:
+
+```text
+No train/validation/test split created.
+No labeled/unlabeled split created.
+No detector training started.
+No detector inference run.
+No pseudo-label generated.
+No threshold tuned.
+No AP/mAP computed.
+No test set used.
+No source DICOM modified.
+No canonical annotation modified.
+No coco_master.json modified.
+```
+
+Next phase:
+
+```text
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+Status: OPEN / CURRENT
 ```
 
 
@@ -1976,7 +2098,7 @@ Label reliability / Kappa feasibility: PASS
 rad_id availability: PASS
 radiologists per image: PASS
 binary matrix feasibility: PASS
-Cohen’s Kappa feasibility: PASS
+Cohen’s Kappa non-feasibility documented: PASS
 Fleiss’ Kappa feasibility: PASS
 class-wise image-level agreement: PASS
 rare-class kappa instability risk: PASS
@@ -2456,9 +2578,8 @@ Date opened: 2026-07-15
 Current subphase:
 
 ```text
-Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
-Environment: Google Colab
-Status: NOT STARTED / NEXT
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+Status: OPEN / CURRENT
 ```
 
 Subphase gate:
@@ -2467,8 +2588,8 @@ Subphase gate:
 Phase 2D.1A: CLOSED / PASS
 Phase 2D.1B-Pilot: CLOSED / PASS
 Phase 2D.1B-Full: CLOSED / PASS
-Phase 2D.1C: NOT STARTED / NEXT
-Phase 2D.1D: LOCKED until Phase 2D.1C PASS
+Phase 2D.1C: CLOSED / PASS
+Phase 2D.1D: OPEN / CURRENT
 ```
 
 Readiness flags:
@@ -2476,9 +2597,9 @@ Readiness flags:
 ```text
 jpg_training_representation_ready: true
 coco_jpg_training_annotation_ready: true
-mmdetection_dataset_loading_ready: false
-empty_image_retention_ready: false
-dataset_training_ready: false
+mmdetection_dataset_loading_ready: true
+empty_image_retention_ready: true
+dataset_training_ready: true
 training_authorized: false
 ```
 
@@ -2488,11 +2609,14 @@ Interpretation:
 Phase 2D.1B-Full completed the full controlled-scope JPG
 representation and COCO-JPG derivative.
 
-Phase 2D.1 remains IN PROGRESS because MMDetection loading and
-empty-GT image retention have not yet been validated.
+Phase 2D.1C validated MMDetection loading and empty-GT image
+retention across the full 4,894-image controlled scope.
 
-Full conversion completion does not make the dataset training-ready
-and does not authorize training.
+The dataset is technically training-ready, but Phase 2D.1 remains
+IN PROGRESS until Phase 2D.1D consolidates the evidence and closes
+the phase.
+
+Technical dataset readiness does not authorize training.
 ```
 
 ---
@@ -2994,6 +3118,163 @@ MMDetection Dataset / Empty-Image Loading Validation
 
 Environment: Google Colab
 Status: NOT STARTED / NEXT
+```
+
+Resolution update:
+
+```text
+Phase 2D.1C was subsequently completed and closed with PASS.
+
+MMDetection loading, full 4,894-image pipeline auditing and retention
+of all 500 No Finding / zero-GT images with filter_empty_gt=False
+have now been validated.
+
+The dataset is technically training-ready, while training authorization
+remains false.
+
+The historical readiness flags and next-phase status above are retained
+as Phase 2D.1B-Full time records; they are not the current project state.
+```
+
+---
+
+### Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
+
+Status: **CLOSED / PASS**
+
+Date: 2026-07-30
+
+Environment:
+
+```text
+Google Colab
+MMDetection 3.3.0
+```
+
+Primary implementation and evidence:
+
+```text
+configs/validation/phase2D1C_mmdet_dataset_loading.py
+scripts/02D1C_validate_mmdet_dataset_loading.py
+tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py
+reports/phase2D1C_mmdet_dataset_errors.csv
+reports/phase2D1C_mmdet_dataset_image_audit.csv
+reports/phase2D1C_mmdet_dataset_loading_report.json
+reports/phase2D1C_mmdet_dataset_loading_report.md
+```
+
+DoD result:
+
+```text
+MMDetection dataset construction: PASS
+Full pipeline audit: PASS
+Full controlled-scope coverage: 4,894/4,894 PASS
+Abnormal-image coverage: 4,394/4,394 PASS
+Zero-GT / No Finding coverage: 500/500 PASS
+BBox and label validation: PASS
+filter_empty_gt=False retention: 4,894/4,894 PASS
+filter_empty_gt=True exclusion: exactly 500 zero-GT images PASS
+Standard dataloader batch: PASS
+Forced empty-GT dataloader batch: PASS
+Errors: 0
+Regression/unit tests: 35 passed
+Evidence preservation hash check: PASS
+```
+
+Key findings:
+
+```text
+full_pipeline_audit = true
+abnormal_audited = 4394
+empty_audited = 500
+num_audited = 4894
+all_audited_valid = true
+errors = 0
+dataset_training_ready = true
+training_authorized = false
+```
+
+Regression decision:
+
+```text
+The validator must not rely on dataset.data_list being populated,
+because MMEngine serialize_data=True may serialize the records and
+clear that ordinary list.
+
+Dataset image IDs are obtained through len(dataset) and
+dataset.get_data_info(index), and a dedicated regression test
+protects this behavior.
+```
+
+Research decisions:
+
+```text
+The JPG quality-95 representation and coco_master_jpg.json are
+accepted as technically loadable by MMDetection.
+
+filter_empty_gt=False is required for the project training dataset
+so that all 500 No Finding / zero-GT images are retained.
+
+filter_empty_gt=True is validated only as a guardrail behavior:
+it excludes exactly the 500 zero-GT images and therefore must not
+be used for the locked training protocol.
+
+The full 4,894-image controlled-scope dataset is technically
+training-ready.
+
+Technical dataset readiness is not equivalent to authorization to
+start training.
+```
+
+Readiness flags:
+
+```text
+jpg_training_representation_ready: true
+coco_jpg_training_annotation_ready: true
+mmdetection_dataset_loading_ready: true
+empty_image_retention_ready: true
+dataset_training_ready: true
+training_authorized: false
+```
+
+Issues / risks:
+
+```text
+Phase 2D.1D evidence consolidation and project-document closure
+remain open.
+
+Train/validation/test splits have not been created.
+
+Nested labeled splits and unlabeled SSL pools have not been created.
+
+No downstream q95-versus-q100 detector ablation has been performed;
+such an ablation is not mandatory and has not been confirmed as
+approved.
+
+Training authorization remains false.
+```
+
+Forbidden actions confirmed:
+
+```text
+No train/validation/test split created.
+No labeled/unlabeled split created.
+No training started.
+No inference run.
+No pseudo-label generated.
+No threshold tuned.
+No AP/mAP computed.
+No test set used.
+No source DICOM modified.
+No canonical annotation modified.
+No coco_master.json modified.
+```
+
+Next phase:
+
+```text
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+Status: OPEN / CURRENT
 ```
 
 ---
