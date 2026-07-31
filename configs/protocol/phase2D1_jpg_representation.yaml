@@ -2,9 +2,10 @@ protocol_metadata:
   phase_id: 2D.1A
   protocol_name: image_representation_protocol_decision
   protocol_version: 1.0.0
-  status: decision_locked_full_conversion_validated
+  status: decision_locked_phase2D1_closed_pass
   seed: 2026
   gpt_review_status: approved
+  phase2D1_overall_status: CLOSED_PASS
 
 artifact_roles:
   DICOM: immutable_raw_medical_source
@@ -93,7 +94,7 @@ output_channel_policy:
   mmdetection_model_input:
     channels: 3
     replicate_grayscale_in_loader: true
-    actual_validation_deferred_to: 2D.1C
+    actual_validation_completed_in: 2D.1C
 
 jpeg_encoding:
   encoder: Pillow
@@ -239,12 +240,42 @@ phase2D1B_completion:
   cleanup_passed: true
   final_output_integrity_passed: true
 
+phase2D1C_completion:
+  phase_status: CLOSED_PASS
+  dataset_loading_validation_passed: true
+  full_scope_images_validated: 4894
+  abnormal_images_retained: 4394
+  no_finding_images_retained: 500
+  bounding_boxes_validated: 36096
+  abnormal_classes_validated: 14
+  errors: 0
+  guardrail_tests_passed: 35
+  filter_empty_gt_false_validated: true
+  three_channel_pipeline_validated: true
+  dataloader_num_workers_validated:
+    - 0
+  multi_worker_dataloader_validated: false
+
+phase2D1D_review:
+  phase_status: CLOSED_PASS
+  purpose: evidence_consolidation_gpt_review_and_closure
+  date_opened: 2026-07-31
+  date_closed: 2026-07-31
+  technical_evidence_inventory_completed: true
+  documentation_consistency_review_completed: true
+  phase2D1_closure_decision_completed: true
+  closure_decision: PASS
+  training_authorization_decision_completed: true
+  training_authorization_decision: REMAINS_FALSE
+  next_phase: 2E
+  next_phase_status: NOT_STARTED_NEXT
+
 readiness_flags:
   jpg_training_representation_ready: true
   coco_jpg_training_annotation_ready: true
-  mmdetection_dataset_loading_ready: false
-  empty_image_retention_ready: false
-  dataset_training_ready: false
+  mmdetection_dataset_loading_ready: true
+  empty_image_retention_ready: true
+  dataset_training_ready: true
   training_authorized: false
 
 forbidden_actions:

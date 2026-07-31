@@ -6,8 +6,10 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 **Trọng tâm:** Semi-supervised object detection trên **VinBigData Chest X-ray**.  
 **Framework chính:** [MMDetection](https://github.com/open-mmlab/mmdetection) (OpenMMLab). Detectron2 là *optional fallback*.
 
-> **Trạng thái hiện tại: Phase 2D.1C — CLOSED / PASS**
+> **Trạng thái hiện tại: Phase 2D.1 — Image Representation & Dataset-Loading Readiness: CLOSED / PASS**
 >
+> - Phase 2D.1 overall: **CLOSED / PASS**
+> - Phase 2D.1D — Evidence Consolidation, GPT Review & Closure: **CLOSED / PASS**
 > - Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation: **CLOSED / PASS**
 > - Phase 2D.1B-Full — Full Controlled-Scope DICOM-to-JPG Conversion & Validation: **CLOSED / PASS**
 > - Full controlled-scope conversion: **COMPLETED**
@@ -24,9 +26,9 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 > - Phase 1B — Annotation Quality: **PASS**
 > - Phase 1A — Dataset Overview: **PASS**
 > - Phase 0 — Setup Environment: **CORE PASS**
-> - Current phase: **Phase 2D.1D — Evidence Consolidation, GPT Review & Closure**
+> - Next phase: Phase 2E — Fixed Train/Validation/Test Split: **NOT STARTED / NEXT**
 >
-> Phase 2D.1C xác nhận dataset đã **training-ready về mặt kỹ thuật**, nhưng training vẫn **chưa được phép**.
+> Phase 2D.1 đã xác nhận dataset **training-ready về mặt kỹ thuật**, nhưng training vẫn **chưa được phép**.
 
 ## Trạng thái Phase 2D.1
 
@@ -42,13 +44,62 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 | Backup cleanup | PASS |
 | Final output integrity | PASS |
 | Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation | CLOSED / PASS |
-| Phase 2D.1D — Evidence Consolidation, GPT Review & Closure | OPEN / CURRENT |
+| Phase 2D.1D — Evidence Consolidation, GPT Review & Closure | CLOSED / PASS |
+| Phase 2D.1 overall | CLOSED / PASS |
 | JPG training representation ready | TRUE |
 | COCO-JPG training annotation ready | TRUE |
 | MMDetection dataset loading ready | TRUE |
 | Empty-image retention ready | TRUE |
 | Dataset training-ready | TRUE |
 | Training authorized | FALSE |
+
+## Giải thích ngắn gọn các phase
+
+| Phase | Mục đích | Tại sao phải có | Ảnh hưởng đến phase nào |
+|---|---|---|---|
+| Phase 0 — Setup Environment | Chuẩn hóa repo, môi trường và quy tắc tái lập. | Tránh sai khác môi trường và thiếu dấu vết thực thi. | Tất cả phase sau. |
+| Phase 1A — Dataset Overview | Thống kê quy mô, lớp, bbox và No Finding của dữ liệu gốc. | Cần biết dữ liệu thực tế trước khi xác định phạm vi nghiên cứu. | Phase 1B, 1C và các phase dữ liệu. |
+| Phase 1B — Annotation Quality | Kiểm tra nhãn, bbox và các trường hợp bất thường trong annotation. | Nhãn lỗi sẽ làm sai schema, split, training và đánh giá. | Phase 1C, 1D, 2B và downstream experiments. |
+| Phase 1C — Dataset Scope Decision | Khóa controlled scope 4,894 ảnh. | Bảo đảm mọi phase dùng cùng một tập ảnh có thể truy vết. | Phase 1D và toàn bộ Phase 2–7. |
+| Phase 1D — Label Reliability & Kappa Feasibility | Đánh giá mức độ đồng thuận nhãn và giới hạn reliability. | Cần diễn giải đúng độ tin cậy của ground truth, không xem nhãn là tuyệt đối. | Phase 3, 4, 5, 6 và phần thảo luận Phase 7. |
+| Phase 2A — Data Standardization / Image-Boundary Validation | Xác nhận DICOM khả dụng, kích thước ảnh và bbox nằm trong biên. | Ngăn lỗi geometry trước khi chuẩn hóa annotation và tạo representation. | Phase 2B, 2D và 2D.1. |
+| Phase 2B — Canonical Detection Annotation Schema | Tạo bảng ảnh, bbox và class mapping chuẩn duy nhất. | Cần một nguồn annotation nhất quán cho COCO và mọi thí nghiệm. | Phase 2C, 2D, 2E và toàn bộ training/evaluation. |
+| Phase 2C — Framework & Format Decision | Khóa MMDetection và COCO Detection JSON cùng kế hoạch chuyển đổi. | Framework và format quyết định cấu trúc dữ liệu, loader và config downstream. | Phase 2D, 2D.1C, 4 và 5. |
+| Phase 2D — COCO Master Conversion & Validation | Tạo và kiểm định `coco_master.json`. | Chuyển canonical schema thành annotation chuẩn mà framework có thể sử dụng. | Phase 2D.1, 2E, 3, 4 và 5. |
+| Phase 2D.1A — Image Representation Protocol Decision | Khóa quy tắc DICOM-to-JPG dựa trên metadata và bảo toàn geometry. | Ngăn preprocessing tùy ý làm thay đổi intensity, kích thước hoặc bbox. | Phase 2D.1B-Pilot và 2D.1B-Full. |
+| Phase 2D.1B-Pilot — Representative Pilot | So sánh Q95/Q100 trên mẫu đại diện và khóa JPEG quality 95. | Cần bằng chứng fidelity trước khi chuyển đổi toàn bộ dữ liệu. | Phase 2D.1B-Full. |
+| Phase 2D.1B-Full — Full Conversion & Validation | Chuyển đủ 4,894 DICOM sang JPG Q95 và tạo COCO-JPG derivative. | Cung cấp representation thống nhất, đã kiểm định geometry và traceability. | Phase 2D.1C, 2D.1D và các phase dùng ảnh JPG. |
+| Phase 2D.1C — MMDetection Dataset Loading Validation | Kiểm tra MMDetection nạp đúng ảnh, bbox, label và 500 empty-GT images. | File hợp lệ chưa đủ; cần chứng minh pipeline dataset/dataloader hoạt động trong controlled scope. | Phase 2D.1D, 2E và technical training readiness. |
+| Phase 2D.1D — Evidence Consolidation, GPT Review & Closure | Đối chiếu bằng chứng, sửa tài liệu và quyết định đóng Phase 2D.1. | Ngăn trạng thái mâu thuẫn hoặc kết luận vượt quá bằng chứng trước khi chuyển phase. | Phase 2E, 2F, 2F.1 và quy trình xem xét training authorization. |
+| Phase 2E — Fixed Train/Validation/Test Split | Tạo split cố định, disjoint và kiểm tra leakage. | Nếu split không khóa, so sánh mô hình không công bằng và test có thể bị rò rỉ. | Phase 2F, 3, 4, 5 và 6. |
+| Phase 2F — Labeled/Unlabeled Split for SSL | Khóa tập labeled/unlabeled và các labeled fractions lồng nhau. | SSL cần biết chính xác mẫu nào có nhãn được phép dùng ở từng mức. | Phase 3, 4, 5 và 6. |
+| Phase 2F.1 — Seed Protocol | Tách và khóa split seed với training seed. | Tránh thay đổi membership khi chỉ muốn đo biến thiên huấn luyện. | Phase 3, 4, 5 và 6. |
+| Phase 3 — Pre-training Dataset Diagnostics | Kiểm tra phân bố lớp, bbox, split và subset trước training. | Phát hiện lệch dữ liệu hoặc lỗi membership trước khi tiêu tốn tài nguyên huấn luyện. | Phase 4, 5 và 6. |
+| Phase 4 — Supervised Baseline | Xây dựng mốc supervised có kiểm soát. | Cần baseline để xác định SSL có cải thiện thực sự hay không. | Phase 5, 6 và 7. |
+| Phase 5 — SSL Detection | Huấn luyện và đánh giá teacher–student pseudo-labeling. | Đây là thí nghiệm chính trả lời câu hỏi nghiên cứu bán giám sát. | Phase 6 và 7. |
+| Phase 6 — Threshold Sweep & Error Analysis | Phân tích threshold, lỗi FP/FN và độ nhạy kết quả theo đúng split. | Metric tổng hợp không giải thích mô hình sai ở đâu hoặc nhạy với quyết định nào. | Phase 7. |
+| Phase 7 — Thesis/Paper Synthesis | Tổng hợp phương pháp, kết quả, giới hạn và kết luận. | Chuyển evidence đã khóa thành báo cáo nghiên cứu có thể kiểm tra. | Luận văn, bài báo và báo cáo bảo vệ. |
+
+> Quan hệ giữa các phase thể hiện dependency chính, không có nghĩa một phase
+> đã tự động được phép chạy ngay khi phase trước PASS. Training chỉ được bắt đầu
+> sau khi các gate bắt buộc và `training_authorized=true` được phê duyệt rõ ràng.
+
+### Commit và notebook tái lập Phase 2D.1C
+
+```text
+0bf30cb phase2D1C: validate MMDetection dataset loading
+5ce88f6 docs: add Phase 2D1C prompt and environment snapshot
+267d4bc docs: add locked Phase 2D1C reproducibility notebook
+```
+
+Notebook chính thức:
+
+```text
+notebooks/Phase_2D_1C_locked_0bf30cb.ipynb
+```
+
+Notebook khóa source tại commit `0bf30cb`, không giữ output cũ và không chứa
+cell sửa code, `git add`, `git commit` hoặc `git push`.
 
 ### Kết quả representative pilot
 
@@ -117,6 +168,7 @@ Zero-GT images audited: 500/500
 BBox/label validation: PASS
 Errors: 0
 Regression/unit tests: 35 passed
+Dataloader workers validated: num_workers=0
 
 filter_empty_gt=False: retained 4,894/4,894 images
 filter_empty_gt=True: excluded exactly 500 zero-GT images
@@ -131,7 +183,54 @@ Kết quả này chứng minh COCO-JPG derivative có thể được MMDetection
 500 ảnh No Finding được giữ lại khi dùng cấu hình chính thức
 `filter_empty_gt=False`, và empty-GT samples đi qua dataloader mà không gây lỗi.
 Kết quả không cấp quyền bắt đầu training và không thay thế các gate còn lại của
-Phase 2D.1D.
+experimental protocol.
+
+Phase 2D.1C không kiểm định multi-worker loading. Không được diễn giải kết quả
+`num_workers=0` thành bằng chứng cho cấu hình nhiều worker.
+
+### Trạng thái Phase 2D.1D
+
+Phase 2D.1D chỉ thực hiện evidence consolidation, consistency review,
+documentation correction và closure decision. Phase này không tạo split và
+không chạy training.
+
+```text
+Technical evidence inventory: COMPLETED
+Documentation consistency review: COMPLETED
+Final closure decision: PASS
+Phase 2D.1D: CLOSED / PASS
+Phase 2D.1 overall: CLOSED / PASS
+dataset_training_ready: true
+training_authorized: false
+```
+
+Evidence review đã xác nhận:
+
+```text
+Full conversion and audits: PASS
+COCO-JPG path-only derivative: PASS
+MMDetection full-scope loading: PASS
+Empty-GT retention: PASS
+Full bbox/label pipeline audit: 4,894/4,894 PASS
+```
+
+So sánh trực tiếp hai COCO JSON cho thấy image IDs và dimensions giống nhau,
+annotations và categories giống hoàn toàn; chỉ `images[].file_name` chuyển từ
+DICOM path sang `train/<image_id>.jpg`.
+
+Q100 có numerical fidelity cao hơn Q95 trên toàn bộ 64 whole-image comparisons
+và 402 bbox-ROI comparisons. Q95 được khóa như một
+fidelity–storage/I/O trade-off, không phải bằng chứng detector superiority.
+
+Phân chia phase tiếp theo:
+
+```text
+Phase 2E: Fixed Train/Validation/Test Split
+Phase 2F: Labeled/Unlabeled Split for SSL
+Phase 2F.1: Seed Protocol — split_seed versus training_seed
+```
+
+Việc đóng Phase 2D.1D không tự động cấp quyền training.
 
 ### Quyết định JPEG quality
 
@@ -186,7 +285,9 @@ Training đã được phép.
 - `coco_jpg_training_annotation_ready=true` chỉ xác nhận COCO JPG derivative đã được tạo và validate.
 - `dataset_training_ready=true` còn bao gồm bằng chứng MMDetection loading và empty-image retention từ Phase 2D.1C.
 - `dataset_training_ready=true` không đồng nghĩa `training_authorized=true`.
-- Training tiếp tục bị khóa cho đến khi hoàn tất gate được quy định ở Phase 2D.1D.
+- Training tiếp tục bị khóa sau khi Phase 2D.1D đóng và chỉ được xem xét sau khi các
+  gate split, leakage, labeled/unlabeled membership, seed protocol và training
+  configuration ở các phase tiếp theo đã được review.
 - Không chạy lại `--execute-full` nếu không có lý do kỹ thuật được ghi nhận và phê duyệt.
 - Không commit 4,894 JPG files vào ordinary Git.
 - Không tạo train/validation/test split, labeled/unlabeled split hoặc bắt đầu training trước đúng phase.

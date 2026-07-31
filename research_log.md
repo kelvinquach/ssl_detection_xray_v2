@@ -6812,5 +6812,273 @@ Tại thời điểm đóng Phase 2D.1C:
 Dataset technical training readiness: TRUE
 Training authorization: FALSE
 ```
+---
+
+## 2026-07-31 — PHASE 2D.1D: Scope Correction and Evidence-Review Opening
+
+### Lý do đính chính
+
+Ở cuối bản ghi Phase 2D.1C ngày 2026-07-30, Phase 2D.1D đã được mô tả
+nhầm là:
+
+```text
+Split Locking / Training-Protocol Readiness
+```
+
+Mô tả trên không còn là định nghĩa hiện hành của Phase 2D.1D. Các công việc
+split locking thuộc Phase 2E và các phase chuẩn bị experimental protocol tiếp
+theo, không thuộc Phase 2D.1D.
+
+Đính chính này chỉ sửa phase scope và project-state documentation. Không thay
+đổi dữ liệu, protocol biểu diễn ảnh, JPEG quality, COCO annotation, kết quả
+validation hoặc các evidence đã khóa.
 
 ---
+
+### Định nghĩa chính thức của Phase 2D.1D
+
+```text
+Phase 2D.1D —
+Evidence Consolidation, GPT Review & Closure
+```
+
+Mục tiêu:
+
+1. Tổng hợp evidence xuyên suốt Phase 2D.1A, 2D.1B-Pilot, 2D.1B-Full và
+   2D.1C.
+2. Đối chiếu protocol YAML, decision reports, conversion reports, audit CSV,
+   COCO master, COCO-JPG derivative, scripts, tests, notebook tái lập và các
+   tài liệu quản trị dự án.
+3. Phát hiện số liệu hoặc trạng thái mâu thuẫn, đường dẫn lỗi thời, kết luận
+   vượt quá bằng chứng và nhầm lẫn giữa training readiness với training
+   authorization.
+4. Sửa các bất nhất tài liệu đã được review.
+5. Chỉ đóng Phase 2D.1 sau khi evidence inventory và consistency review hoàn
+   tất.
+
+Phase 2D.1D không tạo train/validation/test split, không tạo labeled/unlabeled
+subsets và không chạy detector training.
+
+---
+
+### Trạng thái chính thức sau đính chính
+
+```text
+Phase 2D.1A: CLOSED / PASS
+Phase 2D.1B-Pilot: CLOSED / PASS
+Phase 2D.1B-Full: CLOSED / PASS
+Phase 2D.1C: CLOSED / PASS
+Phase 2D.1D: OPEN / CURRENT
+
+Final JPEG quality: 95 / LOCKED
+
+jpg_training_representation_ready: true
+coco_jpg_training_annotation_ready: true
+mmdetection_dataset_loading_ready: true
+empty_image_retention_ready: true
+dataset_training_ready: true
+training_authorized: false
+```
+
+`dataset_training_ready=true` chỉ xác nhận controlled-scope JPG + COCO-JPG
+dataset đã vượt qua technical conversion, integrity, MMDetection loading và
+empty-image retention gates.
+
+Giá trị này không chứng minh detector sẽ train thành công, không chứng minh
+model performance và không cấp quyền bắt đầu training.
+
+---
+
+### Phân chia phase đúng
+
+```text
+Phase 2D.1D:
+Evidence Consolidation, GPT Review & Closure
+
+Phase 2E:
+Fixed Train/Validation/Test Split
+
+Phase 2F:
+Labeled/Unlabeled Split for SSL
+
+Phase 2F.1:
+Seed Protocol — split_seed versus training_seed
+```
+
+Do đó, các công việc sau không phải Definition of Done của Phase 2D.1D:
+
+```text
+Tạo train/validation/test split
+Validate split leakage
+Tạo nested labeled fractions
+Khóa labeled/unlabeled membership
+Tạo split-seed/RNG evidence
+Authorize detector training
+```
+
+Các công việc này vẫn chưa bắt đầu và phải được thực hiện trong đúng phase sau.
+
+---
+
+### Training authorization
+
+Tại Phase 2D.1D:
+
+```text
+training_authorized: false
+```
+
+Việc đóng Phase 2D.1D không tự động chuyển cờ này thành `true`.
+
+Training chỉ được xem xét sau khi các gate liên quan đến split, leakage,
+labeled/unlabeled membership, seed protocol và training configuration đã được
+thực hiện, review và PASS trong các phase tiếp theo.
+
+---
+
+### Research-scope guardrails
+
+Kết quả Phase 2D.1 không được dùng để tuyên bố:
+
+```text
+Training chắc chắn thành công
+Detector đạt hiệu quả tốt
+JPEG quality 95 tốt hơn quality 100 về detector performance
+JPG tương đương lâm sàng với source DICOM
+Mọi đặc trưng chẩn đoán đều được bảo toàn tuyệt đối
+Representation là optimal preprocessing
+Pipeline là một phương pháp hoặc thuật toán mới
+```
+
+Controlled downstream Q95-versus-Q100 detector ablation không phải yêu cầu bắt
+buộc ở thời điểm hiện tại.
+
+---
+
+### Trạng thái sau correction
+
+```text
+Phase 2D.1 technical evidence inventory: COMPLETED
+Phase 2D.1 documentation consistency review: IN PROGRESS
+Phase 2D.1D final closure decision: PENDING
+Training authorized: FALSE
+```
+
+Không chạy lại Phase 2D.1A, Phase 2D.1B-Pilot, Phase 2D.1B-Full hoặc Phase
+2D.1C nếu không xuất hiện lỗi kỹ thuật hoặc bằng chứng mâu thuẫn mới.
+
+---
+
+## 2026-07-31 — PHASE 2D.1D: Evidence Consolidation, GPT Review & Closure
+
+### Closure decision
+
+```text
+Phase 2D.1D: CLOSED / PASS
+Phase 2D.1 overall: CLOSED / PASS
+
+Technical evidence inventory: COMPLETED
+Documentation consistency review: COMPLETED
+Final closure decision: PASS
+
+dataset_training_ready: true
+training_authorized: false
+```
+
+Phase 2D.1D được đóng sau khi đối chiếu trực tiếp evidence của Phase 2D.1A,
+2D.1B-Pilot, 2D.1B-Full và 2D.1C với protocol, scripts, tests, reports,
+COCO master, COCO-JPG derivative, notebook tái lập và các tài liệu quản trị
+dự án.
+
+### Closure basis
+
+```text
+Controlled-scope images: 4,894
+Abnormal images: 4,394
+No Finding / zero-GT images: 500
+Abnormal bbox annotations: 36,096
+Abnormal detection classes: 14
+
+Final JPEG quality: 95 / LOCKED
+Full conversion and validation: PASS
+Geometry and bbox invariance: PASS
+Full-conversion errors: 0
+COCO-JPG path-only derivative: PASS
+
+MMDetection full-scope loading: PASS
+Full pipeline audit: 4,894/4,894 PASS
+filter_empty_gt=False retention: 4,894/4,894
+filter_empty_gt=True control: excluded exactly 500 zero-GT images
+Phase 2D.1C errors: 0
+Guardrail tests: 35 passed
+```
+
+Phase 2D.1C dataloader evidence chỉ áp dụng cho `num_workers=0`. Multi-worker
+loading không được kiểm định và không được tuyên bố PASS.
+
+### Documentation consistency resolution
+
+Các bất nhất đã được xử lý:
+
+```text
+Phase 2D.1D scope corrected to Evidence Consolidation, GPT Review & Closure.
+Split locking assigned to Phase 2E, not Phase 2D.1D.
+Labeled/unlabeled split assigned to Phase 2F.
+Seed protocol assigned to Phase 2F.1.
+The unsupported num_workers>0 PASS claim was removed.
+Phase 2D.1B-Full completed checklist flags were synchronized.
+Phase 2D.1C lifecycle/readiness fields were synchronized in the protocol YAML.
+Phase 2D.1D and Phase 2D.1 closure states were synchronized across project documents.
+```
+
+Consistency result:
+
+```text
+research_log.md: UPDATED; consistency check PASS
+PHASE_HANDOFF.md: UPDATED; consistency check PASS
+PROJECT_CONTEXT.md: UPDATED; consistency check PASS
+README.md: UPDATED; consistency check PASS
+CHECKLIST_TRIEN_KHAI_FULL.xlsx: UPDATED; consistency check PASS
+configs/protocol/phase2D1_jpg_representation.yaml: UPDATED; consistency check PASS
+```
+
+Các trạng thái `OPEN`, `PENDING_GPT` hoặc completion flag cũ bên trong
+generated evidence lịch sử tiếp tục được giữ nguyên. Chúng phản ánh thời điểm
+artifact được sinh và phải được đọc cùng decision/closure records; không sửa
+ngược generated evidence.
+
+### Claim boundary
+
+Closure này chỉ cho phép kết luận:
+
+```text
+Phase 2D.1 dataset representation and loading validation: PASS
+Controlled-scope dataset technical training readiness: TRUE
+```
+
+Closure này không chứng minh:
+
+```text
+Detector training chắc chắn thành công
+Detector có hiệu quả tốt
+JPEG quality 95 tốt hơn quality 100 về detector performance
+Representation là optimal preprocessing
+Pipeline là phương pháp hoặc thuật toán mới
+Training đã được cấp quyền
+```
+
+### Handoff
+
+```text
+Next phase: Phase 2E — Fixed Train/Validation/Test Split
+Status: NOT STARTED / NEXT
+
+Train/validation/test split created: false
+Labeled/unlabeled split created: false
+Training started: false
+training_authorized: false
+```
+
+Phase 2D.1D closure package phải được lưu trong một commit riêng, không amend
+các commit Phase 2D.1C đã khóa. Hash của closure commit được tra từ Git history
+và không được ghi ngược vào chính closure package này.

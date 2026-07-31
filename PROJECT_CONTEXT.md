@@ -301,12 +301,13 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-Current subphase: Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
-Current subphase status: **OPEN / CURRENT**
-Overall phase: Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation: **IN PROGRESS**
-Previous subphase: Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation: **CLOSED / PASS**
+Current completed phase: Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation: **CLOSED / PASS**
+Final subphase: Phase 2D.1D — Evidence Consolidation, GPT Review & Closure: **CLOSED / PASS**
+Next phase: Phase 2E — Fixed Train/Validation/Test Split: **NOT STARTED / NEXT**
 Final JPEG quality: **95 / LOCKED**
-Git status: 7 Phase 2D.1C implementation/evidence files staged; synchronized documentation update, final staged-diff review, commit and push pending.
+Phase 2D.1C implementation/evidence commit: `0bf30cb` — pushed to `origin/main`.
+Phase 2D.1C prompt/environment commit: `5ce88f6` — pushed to `origin/main`.
+Locked reproducibility notebook commit: `267d4bc` — pushed to `origin/main`.
 JPG training representation ready: **true**
 COCO-JPG training annotation ready: **true**
 MMDetection dataset loading ready: **true**
@@ -332,7 +333,7 @@ Phase 2C — Framework & Format Decision / COCO Conversion Planning: PASS
 Phase 2D — COCO Master Conversion & Validation: CLOSED / PASS
 
 Phase 2D.1 — JPG Training Representation & MMDetection
-Empty-Image Loading Validation: IN PROGRESS
+Empty-Image Loading Validation: CLOSED / PASS
 
 Phase 2D.1A — Image Representation Protocol Decision:
 CLOSED / PASS
@@ -386,7 +387,7 @@ Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation:
 CLOSED / PASS
 
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure:
-OPEN / CURRENT
+CLOSED / PASS
 
 Split train/val/test: LOCKED
 Labeled/unlabeled split: LOCKED
@@ -896,8 +897,11 @@ Resolved in Phase 2D.1C:
 - standard and forced empty-GT dataloader batch validation;
 - dataset technical training readiness.
 
+Resolved in Phase 2D.1D:
+- evidence consolidation and documentation consistency review;
+- final Phase 2D.1 closure decision.
+
 Still unresolved:
-- Phase 2D.1D evidence consolidation and documentation closure;
 - train/validation/test split;
 - labeled/unlabeled SSL split;
 - project-level training authorization.
@@ -907,15 +911,15 @@ Still unresolved:
 
 Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation
 
-Status: **IN PROGRESS**
+Status: **CLOSED / PASS**
 
-Current subphase:
+Final subphase:
 
 ```text
 Phase 2D.1D —
 Evidence Consolidation, GPT Review & Closure
 
-Status: OPEN / CURRENT
+Status: CLOSED / PASS
 ```
 
 Subphase structure:
@@ -934,7 +938,7 @@ Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
 Status: CLOSED / PASS
 
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
-Status: OPEN / CURRENT
+Status: CLOSED / PASS
 ```
 
 #### Phase 2D.1A locked evidence
@@ -1500,7 +1504,7 @@ Dataset technical training readiness: true.
 Remaining issues / risks:
 
 ```text
-Phase 2D.1D evidence consolidation and documentation closure remain open.
+Phase 2D.1D evidence consolidation and documentation closure: CLOSED / PASS.
 
 No downstream q95-versus-q100 detector ablation has been performed.
 
@@ -1517,10 +1521,8 @@ Training authorization remains false.
 Next phase:
 
 ```text
-Phase 2D.1D —
-Evidence Consolidation, GPT Review & Closure
-
-Status: OPEN / CURRENT
+Phase 2E — Fixed Train/Validation/Test Split
+Status: NOT STARTED / NEXT
 ```
 
 ### 7.8 Phase 2D.1C locked evidence
@@ -1563,6 +1565,9 @@ Errors: 0
 Regression/unit tests: 35 passed
 ```
 
+Dataloader validation in Phase 2D.1C used `num_workers=0`. Multi-worker
+loading was not validated in this phase and must not be reported as PASS.
+
 Regression protection:
 
 ```text
@@ -1603,9 +1608,9 @@ Interpretation:
 The controlled-scope JPG + COCO-JPG dataset is technically ready for
 MMDetection dataset loading and downstream training preparation.
 
-This does not authorize detector training. Training remains locked
-until Phase 2D.1D documentation closure and the required split gates
-are completed and reviewed.
+This does not authorize detector training. Phase 2D.1D is closed, but training
+remains locked until the required split, leakage, labeled/unlabeled membership,
+seed-protocol and training-configuration gates are completed and reviewed.
 ```
 
 Forbidden actions confirmed:
@@ -1627,9 +1632,108 @@ No coco_master.json modified.
 Next phase:
 
 ```text
-Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
-Status: OPEN / CURRENT
+Phase 2E — Fixed Train/Validation/Test Split
+Status: NOT STARTED / NEXT
 ```
+
+### 7.9 Phase 2D.1D evidence consolidation and consistency review
+
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure:
+**CLOSED / PASS**
+
+```text
+Date opened: 2026-07-31
+Date closed: 2026-07-31
+Technical evidence inventory: COMPLETED
+Documentation consistency review: COMPLETED
+Final closure decision: PASS
+Phase 2D.1 overall: CLOSED / PASS
+Training authorized: FALSE
+```
+
+Phase 2D.1D consolidates evidence from Phase 2D.1A, 2D.1B-Pilot,
+2D.1B-Full and 2D.1C. It does not create train/validation/test splits,
+labeled/unlabeled subsets or training runs.
+
+Correct downstream phase ownership:
+
+```text
+Phase 2D.1D: Evidence Consolidation, GPT Review & Closure
+Phase 2E: Fixed Train/Validation/Test Split
+Phase 2F: Labeled/Unlabeled Split for SSL
+Phase 2F.1: Seed Protocol — split_seed versus training_seed
+```
+
+Evidence reviewed directly includes the protocol and decision reports, Pilot
+fidelity/ROI/geometry evidence, Full conversion audits, both COCO master JSON
+files, the MMDetection validator/config/tests/reports and the locked
+reproducibility notebook.
+
+Evidence-review result:
+
+```text
+Controlled-scope images: 4,894
+Abnormal images: 4,394
+No Finding / zero-GT images: 500
+Abnormal bbox annotations: 36,096
+Abnormal detection classes: 14
+
+Final JPEG quality: 95 / LOCKED
+Full conversion and audit: PASS
+Full-conversion errors: 0
+Geometry and bbox invariance: PASS
+COCO-JPG path-only derivative: PASS
+
+MMDetection full-scope loading: PASS
+filter_empty_gt=False retention: 4,894/4,894
+filter_empty_gt=True control: removed exactly 500 zero-GT images
+Full bbox/label pipeline audit: 4,894/4,894 PASS
+Phase 2D.1C errors: 0
+Guardrail test functions: 35
+
+dataset_training_ready: true
+training_authorized: false
+```
+
+Direct comparison between `coco_master.json` and `coco_master_jpg.json`
+confirmed identical image IDs and dimensions, exactly identical annotations
+and categories, and a change only to each image `file_name`.
+
+Q100 has higher numerical fidelity than Q95 for all 64 whole-image comparisons
+and all 402 bbox-ROI comparisons. Q95 is the locked
+fidelity–storage/I/O trade-off; detector superiority is not claimed.
+
+Generated Pilot/Full validation and audit artifacts retain their historical
+pre-review/candidate state. Later decision and closure records must be used
+together with those generated artifacts; generated historical evidence must
+not be edited retroactively.
+
+The protocol SHA-256 recorded by Pilot and Full evidence refers consistently
+to the protocol state used during execution. The current YAML has a different
+fingerprint because lifecycle/completion fields were updated later; the locked
+transformation policy is unchanged. This does not require rerunning conversion.
+
+Documentation correction tracking:
+
+```text
+research_log.md: UPDATED; consistency check PASS
+PHASE_HANDOFF.md: UPDATED; consistency check PASS
+PROJECT_CONTEXT.md: UPDATED; consistency check PASS
+README.md: UPDATED; consistency check PASS
+CHECKLIST_TRIEN_KHAI_FULL.xlsx: UPDATED; consistency check PASS
+configs/protocol/phase2D1_jpg_representation.yaml: UPDATED; consistency check PASS
+```
+
+Training authorization remains:
+
+```text
+dataset_training_ready: true
+training_authorized: false
+```
+
+Closing Phase 2D.1D does not automatically authorize training. Split,
+leakage, labeled/unlabeled membership, seed protocol and training-configuration
+gates remain assigned to subsequent phases and must be reviewed separately.
 
 
 ## 8. Nguyên tắc review bắt buộc
@@ -2571,15 +2675,16 @@ Phase 2D.1A — Image Representation Protocol Decision
 
 ### Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation
 
-Status: **IN PROGRESS**
+Status: **CLOSED / PASS**
 
 Date opened: 2026-07-15
+Date closed: 2026-07-31
 
-Current subphase:
+Final subphase:
 
 ```text
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
-Status: OPEN / CURRENT
+Status: CLOSED / PASS
 ```
 
 Subphase gate:
@@ -2589,7 +2694,7 @@ Phase 2D.1A: CLOSED / PASS
 Phase 2D.1B-Pilot: CLOSED / PASS
 Phase 2D.1B-Full: CLOSED / PASS
 Phase 2D.1C: CLOSED / PASS
-Phase 2D.1D: OPEN / CURRENT
+Phase 2D.1D: CLOSED / PASS
 ```
 
 Readiness flags:
@@ -2612,9 +2717,9 @@ representation and COCO-JPG derivative.
 Phase 2D.1C validated MMDetection loading and empty-GT image
 retention across the full 4,894-image controlled scope.
 
-The dataset is technically training-ready, but Phase 2D.1 remains
-IN PROGRESS until Phase 2D.1D consolidates the evidence and closes
-the phase.
+The dataset is technically training-ready, and Phase 2D.1 is
+CLOSED / PASS after Phase 2D.1D consolidated the evidence and completed
+the documentation consistency review.
 
 Technical dataset readiness does not authorize training.
 ```
@@ -3240,8 +3345,8 @@ training_authorized: false
 Issues / risks:
 
 ```text
-Phase 2D.1D evidence consolidation and project-document closure
-remain open.
+Phase 2D.1D evidence consolidation and project-document closure:
+CLOSED / PASS.
 
 Train/validation/test splits have not been created.
 
@@ -3273,8 +3378,8 @@ No coco_master.json modified.
 Next phase:
 
 ```text
-Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
-Status: OPEN / CURRENT
+Phase 2E — Fixed Train/Validation/Test Split
+Status: NOT STARTED / NEXT
 ```
 
 ---

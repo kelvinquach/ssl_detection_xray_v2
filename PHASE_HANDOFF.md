@@ -1,6 +1,6 @@
 # PHASE HANDOFF — `ssl_detection_xray_v2`
 
-Ngày cập nhật: 2026-07-30
+Ngày cập nhật: 2026-07-31
 
 Dự án: **Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi**
 
@@ -44,8 +44,8 @@ Không tick checklist nếu chưa có evidence.
 ## 3. Trạng thái hiện tại
 
 ```text
-Current checkpoint: Phase 2D.1C — MMDetection Dataset Loading & Full Pipeline Audit: PASS
-Previous checkpoint: Phase 2D.1B — Full DICOM-to-JPG Conversion
+Current checkpoint: Phase 2D.1 — Image Representation & Dataset-Loading Readiness: CLOSED / PASS
+Next checkpoint: Phase 2E — Fixed Train/Validation/Test Split: NOT STARTED / NEXT
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
 Phase 1A — Dataset Overview: PASS
@@ -55,21 +55,33 @@ Phase 1D — Label Reliability & Kappa Feasibility: PASS
 Phase 2A — Data Standardization / Image-Boundary Validation: PASS
 Phase 2B — Canonical Detection Annotation Schema: PASS
 Phase 2C — Framework & Format Decision / COCO Conversion Planning: PASS
-Phase 2D.1A — Image Representation Protocol Decision: PASS
-Phase 2D.1B — Full DICOM-to-JPG Conversion: PASS
-Phase 2D.1C — MMDetection Dataset Loading & Full Pipeline Audit: PASS
+Phase 2D.1A — Image Representation Protocol Decision: CLOSED / PASS
+Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot: CLOSED / PASS
+Phase 2D.1B-Full — Full DICOM-to-JPG Conversion: CLOSED / PASS
+Phase 2D.1C — MMDetection Dataset Loading & Full Pipeline Audit: CLOSED / PASS
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure: CLOSED / PASS
+Phase 2D.1 overall: CLOSED / PASS
 Dataset training-ready: TRUE
 Training authorized: FALSE
-Git status: 7 Phase 2D.1C evidence/implementation files staged; documentation update, final diff review, commit and push pending
+Phase 2D.1C implementation/evidence commit: 0bf30cb (pushed to origin/main)
+Phase 2D.1C prompt/environment commit: 5ce88f6 (pushed to origin/main)
+Locked reproducibility notebook commit: 267d4bc (pushed to origin/main)
 ```
 
-Được mở / tiếp theo:
+Chính sách Git cho Phase 2D.1D closure package:
 
 ```text
-Complete project-documentation update for Phase 2D.1C.
-Review the combined staged diff.
-Commit and push the Phase 2D.1C implementation, tests, reports and documentation.
-Lock the reproducible Colab notebook to the resulting commit hash.
+Use one dedicated Phase 2D.1D closure commit.
+Do not amend the locked Phase 2D.1C commits.
+Read the resulting closure commit hash from Git history; do not write it back
+into this same closure package.
+```
+
+Phase tiếp theo:
+
+```text
+Phase 2E — Fixed Train/Validation/Test Split
+Status: NOT STARTED / NEXT
 ```
 
 Chưa được làm:
@@ -100,6 +112,7 @@ Không được tạo split, COCO master, train, pseudo-label hoặc tune thresh
 Phase 2D.1C đã xác nhận MMDetection có thể nạp và duyệt toàn bộ 4,894 ảnh.
 Full pipeline audit đã duyệt 4,394 ảnh abnormal và 500 ảnh zero-GT, không có lỗi.
 Regression test cho hành vi MMEngine `serialize_data=True` đã được bổ sung và toàn bộ 35 tests đã PASS.
+Phase 2D.1C dataloader validation đã chạy với `num_workers=0`; multi-worker loading không được kiểm định trong phase này.
 `dataset_training_ready=True` chỉ là kết luận kỹ thuật về dataset; không đồng nghĩa với quyền bắt đầu training.
 `training_authorized=False` vẫn là gate có hiệu lực.
 ```
@@ -1615,15 +1628,216 @@ training_authorized: False
 
 Không được diễn giải hai cờ này thành “đã được phép training”.
 
-### Bước tiếp theo
+### Resolution update sau Phase 2D.1C
+
+Các bước commit và khóa notebook nêu trong kế hoạch tại thời điểm review
+Phase 2D.1C đã hoàn tất:
 
 ```text
-1. Cập nhật PROJECT_CONTEXT.md, README.md, research_log.md và CHECKLIST_TRIEN_KHAI_FULL.xlsx.
-2. Stage các tài liệu đã cập nhật cùng 7 file Phase 2D.1C hiện có.
-3. Review toàn bộ staged diff và kiểm tra tính nhất quán của các trạng thái/gate.
-4. Commit và push Phase 2D.1C.
-5. Khóa notebook tái lập vào commit hash vừa push và giữ workflow Restart runtime → Run all.
-6. Chỉ mở training khi một quyết định/gate riêng đặt training_authorized=True.
+0bf30cb phase2D1C: validate MMDetection dataset loading
+5ce88f6 docs: add Phase 2D1C prompt and environment snapshot
+267d4bc docs: add locked Phase 2D1C reproducibility notebook
 ```
+
+Notebook chính thức:
+
+```text
+notebooks/Phase_2D_1C_locked_0bf30cb.ipynb
+```
+
+Notebook khóa source tại commit `0bf30cb`, không giữ output cũ và không chứa
+cell sửa code, `git add`, `git commit` hoặc `git push`.
+
+Phase 2D.1D đã hoàn tất:
+
+```text
+Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+Status: CLOSED / PASS
+```
+
+Phase tiếp theo:
+
+```text
+Phase 2E — Fixed Train/Validation/Test Split
+Status: NOT STARTED / NEXT
+```
+
+---
+
+## 20. Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
+
+Status: **CLOSED / PASS**
+
+Date opened: 2026-07-31
+Date closed: 2026-07-31
+
+### Mục tiêu và phạm vi
+
+Phase 2D.1D tổng hợp và đối chiếu evidence của:
+
+```text
+Phase 2D.1A — Image Representation Protocol Decision
+Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot
+Phase 2D.1B-Full — Full Controlled-Scope Conversion & Validation
+Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation
+```
+
+Phase này chỉ thực hiện evidence consolidation, consistency review,
+documentation correction và closure decision. Phase này không:
+
+```text
+Tạo train/validation/test split
+Tạo labeled/unlabeled split
+Chạy supervised hoặc SSL training
+Sinh pseudo-label
+Tune threshold
+Tính AP/mAP
+Sử dụng test set
+```
+
+Split locking thuộc Phase 2E. Labeled/unlabeled split thuộc Phase 2F. Seed
+protocol thuộc Phase 2F.1.
+
+### Evidence inventory đã review
+
+Đã đọc và đối chiếu trực tiếp:
+
+```text
+configs/protocol/phase2D1_jpg_representation.yaml
+reports/phase2D1_image_representation_decision.json
+reports/phase2D1_image_representation_decision.md
+reports/phase2D1B_pilot_decision_template.json
+reports/phase2D1B_pilot_validation.json
+reports/phase2D1B_pilot_fidelity_metrics.csv
+reports/phase2D1B_pilot_bbox_roi_metrics.csv
+reports/phase2D1B_pilot_quality_summary.csv
+reports/phase2D1B_pilot_quality_pairwise.csv
+reports/phase2D1B_pilot_geometry_validation.csv
+reports/phase2D1B_pilot_visual_audit_manifest.csv
+reports/phase2D1B_full_preflight.json
+reports/phase2D1B_full_validation.json
+reports/phase2D1B_full_validation.md
+reports/phase2D1B_full_promotion.json
+reports/phase2D1B_full_cleanup_audit.json
+reports/phase2D1B_full_metadata_audit.csv
+reports/phase2D1B_full_bbox_audit.csv
+reports/phase2D1B_full_no_finding_audit.csv
+reports/phase2D1B_full_errors.csv
+data/processed/coco/coco_master.json
+data/processed/coco/coco_master_jpg.json
+configs/validation/phase2D1C_mmdet_dataset_loading.py
+scripts/02D1C_validate_mmdet_dataset_loading.py
+tests/test_phase2D1C_mmdet_dataset_loading_guardrails.py
+reports/phase2D1C_mmdet_dataset_errors.csv
+reports/phase2D1C_mmdet_dataset_image_audit.csv
+reports/phase2D1C_mmdet_dataset_loading_report.json
+reports/phase2D1C_mmdet_dataset_loading_report.md
+notebooks/Phase_2D_1C_locked_0bf30cb.ipynb
+```
+
+### Kết quả evidence review
+
+```text
+Controlled-scope images: 4,894
+Abnormal images: 4,394
+No Finding / zero-GT images: 500
+Abnormal bbox annotations: 36,096
+Abnormal detection classes: 14
+
+Final JPEG quality: 95 / LOCKED
+Full JPG conversion: PASS
+Geometry and bbox invariance: PASS
+Full-conversion errors: 0
+COCO-JPG path-only derivative: PASS
+
+MMDetection full-scope loading: PASS
+filter_empty_gt=False retention: 4,894/4,894
+filter_empty_gt=True control: removed exactly 500 zero-GT images
+Full bbox/label pipeline audit: 4,894/4,894 PASS
+Phase 2D.1C errors: 0
+Guardrail test functions: 35
+
+dataset_training_ready: true
+training_authorized: false
+```
+
+So sánh trực tiếp `coco_master.json` và `coco_master_jpg.json` xác nhận:
+
+```text
+Image ID sets: identical
+Image dimensions: identical
+Annotations: exactly identical
+Categories: exactly identical
+Only image.file_name changed from DICOM path to train/<image_id>.jpg
+```
+
+Q100 có numerical fidelity cao hơn Q95 trên toàn bộ 64 whole-image comparisons
+và 402 bbox-ROI comparisons. Q95 được chọn như một
+fidelity–storage/I/O trade-off; không được diễn giải là có detector performance
+tốt hơn Q100.
+
+### Evidence-state interpretation
+
+Các generated artifact sau là immutable pre-review/candidate records:
+
+```text
+reports/phase2D1B_pilot_validation.json
+reports/phase2D1B_pilot_visual_audit_manifest.csv
+reports/phase2D1B_full_validation.json
+reports/phase2D1B_full_validation.md
+reports/phase2D1B_full_promotion.json
+reports/phase2D1B_full_cleanup_audit.json
+```
+
+Việc các file này giữ trạng thái `OPEN`, `PENDING_GPT` hoặc
+`full_conversion_completed=false` phản ánh thời điểm chúng được sinh. Closure
+subsequent được ghi trong decision record, research log và protocol lifecycle
+state; không sửa ngược generated evidence lịch sử.
+
+Protocol SHA-256 `1528da27758d35786847141c37d0ddb754dddb146aff116a8f3a9a7b07221229`
+được Pilot và Full evidence tham chiếu nhất quán. Current YAML có fingerprint
+khác vì các lifecycle/completion fields được cập nhật sau execution; locked
+transformation policy không thay đổi. Khác biệt này không ảnh hưởng tính hợp
+lệ kỹ thuật và không yêu cầu chạy lại conversion.
+
+### Documentation correction tracking
+
+```text
+research_log.md: UPDATED; consistency check PASS
+PHASE_HANDOFF.md: UPDATED; consistency check PASS
+PROJECT_CONTEXT.md: UPDATED; consistency check PASS
+README.md: UPDATED; consistency check PASS
+CHECKLIST_TRIEN_KHAI_FULL.xlsx: UPDATED; consistency check PASS
+configs/protocol/phase2D1_jpg_representation.yaml: UPDATED; consistency check PASS
+```
+
+Phase 2D.1C chỉ kiểm định dataloader với `num_workers=0`. Multi-worker loading
+không được kiểm định và không được tuyên bố PASS.
+
+### Training authorization
+
+```text
+dataset_training_ready: true
+training_authorized: false
+```
+
+Đóng Phase 2D.1D không tự động chuyển `training_authorized` thành `true`.
+Training chỉ được xem xét sau khi split, leakage, labeled/unlabeled membership,
+seed protocol và training configuration đã được thực hiện, review và PASS
+trong các phase tiếp theo.
+
+### Trạng thái hiện tại
+
+```text
+Phase 2D.1 technical evidence inventory: COMPLETED
+Phase 2D.1 documentation consistency review: COMPLETED
+Phase 2D.1D final closure decision: PASS
+Phase 2D.1D: CLOSED / PASS
+Phase 2D.1 overall: CLOSED / PASS
+Training authorized: FALSE
+```
+
+Không chạy lại Phase 2D.1A, 2D.1B-Pilot, 2D.1B-Full hoặc 2D.1C nếu không xuất
+hiện lỗi kỹ thuật hoặc bằng chứng mâu thuẫn mới.
 
 ---
