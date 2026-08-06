@@ -3383,3 +3383,21 @@ Status: NOT STARTED / NEXT
 ```
 
 ---
+
+## Ghi chú bổ sung — Annotation validity, duplicate detection và post-conversion QA
+
+> **Loại cập nhật:** supporting evidence / methodological clarification only.  
+> Ghi chú này **không mở lại phase, không thay đổi bất kỳ trạng thái/gate/authorization/quyết định đã khóa nào** trong tài liệu.
+
+- Tính hợp lệ của bounding box đã được kiểm tra trên toàn bộ dữ liệu annotation liên quan, bao gồm sanity/validity của tọa độ, giới hạn ảnh và tính nhất quán với kích thước ảnh. Không phát hiện bounding box không hợp lệ, do đó không phát sinh trường hợp cần loại bỏ vì invalid geometry.
+- Phase 1B đã thực hiện phát hiện annotation trùng lặp trong cùng `(image_id, class)`: **exact duplicate = 0**; đồng thời phát hiện **147 near-duplicate bbox records** với ngưỡng `IoU >= 0.95`. Đây là các *candidate records*, không phải 147 cặp bbox. Các near-duplicate candidate được giữ lại có chủ đích vì dữ liệu có nhiều radiologist và mức chồng lấp cao không mặc nhiên đồng nghĩa với lỗi annotation; không thực hiện xóa/fuse máy móc.
+- Sau chuyển đổi, kiểm tra tự động trên toàn bộ phạm vi thực nghiệm **4,894 ảnh và 36,096 bounding boxes** xác nhận tính nhất quán về kích thước, geometry và hệ tọa độ; không có bằng chứng về thay đổi geometry/bbox do pipeline đã khóa.
+- Kiểm tra trực quan sau chuyển đổi trên **16 representative/stress samples**, bao phủ **14/14 lớp bất thường** và có **4 ảnh zero-GT / No Finding**, không phát hiện sai lệch không gian rõ rệt giữa ảnh JPEG và annotation COCO trên các mẫu được kiểm tra.
+- Sai khác do mã hóa **JPEG Q95** đã được đánh giá định lượng trong pilot bằng cách so sánh biểu diễn **lossless pre-JPEG reference** với JPEG sau giải mã; whole-image fidelity được đánh giá trên **64 ảnh pilot**, và bbox-ROI fidelity trên **402 pilot annotations**.
+- Phạm vi diễn giải được khóa ở mức evidence thực sự hỗ trợ: các kiểm tra trên xác nhận/định lượng **bbox validity, duplicate/near-duplicate screening, geometry/coordinate consistency và JPEG fidelity trong phạm vi đã đánh giá**. Không được diễn giải thành tuyên bố rằng JPEG Q95 là lossless, DICOM và JPEG tương đương tuyệt đối ở mức pixel, toàn bộ thông tin lâm sàng của DICOM gốc được bảo toàn, hoặc preprocessing đã chọn là tối ưu.
+
+Tóm tắt diễn giải dùng cho Methodology:
+
+> “Tính hợp lệ của bounding box được kiểm tra trên toàn bộ tập dữ liệu, bao gồm giới hạn tọa độ và tính nhất quán với kích thước ảnh. Không phát hiện bounding box không hợp lệ nên không phát sinh trường hợp cần loại bỏ. Sau chuyển đổi, kiểm tra tự động trên 4.894 ảnh và 36.096 bounding box xác nhận tính nhất quán về kích thước, geometry và hệ tọa độ; đồng thời kiểm tra trực quan trên 16 mẫu representative/stress không phát hiện sai lệch không gian rõ rệt. Sai khác do mã hóa JPEG Q95 được đánh giá định lượng so với biểu diễn lossless trước JPEG trong pilot.”
+
+---

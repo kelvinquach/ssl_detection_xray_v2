@@ -1841,3 +1841,82 @@ Không chạy lại Phase 2D.1A, 2D.1B-Pilot, 2D.1B-Full hoặc 2D.1C nếu khô
 hiện lỗi kỹ thuật hoặc bằng chứng mâu thuẫn mới.
 
 ---
+
+## Ghi chú bổ sung sau closure — Annotation QA & post-conversion supporting QA (2026-08-06)
+
+> **NOTE ONLY — không thay đổi bất kỳ trạng thái phase/gate hiện có nào.**
+> Ghi chú này chỉ tổng hợp và làm rõ evidence đã có/bổ sung sau closure; không
+> mở lại Phase 1B, Phase 2D.1 hay Phase 2D.1D, không thay đổi quyết định
+> `CLOSED / PASS`, `NOT STARTED / NEXT`, `dataset_training_ready` hoặc
+> `training_authorized`.
+
+### Bounding-box validity và duplicate/near-duplicate annotation
+
+Evidence Phase 1B xác nhận annotation-quality analysis đã bao gồm kiểm tra
+bounding box và phát hiện duplicate/near-duplicate annotation. Phân tích được
+thực hiện trên 67,914 annotation rows của 15,000 ảnh nguồn; trong đó có 36,096
+abnormal bbox rows thuộc phạm vi annotation bất thường.
+
+```text
+Invalid abnormal bbox: 0
+Exact duplicate candidates: 0
+Near-duplicate threshold: IoU >= 0.95
+Near-duplicate candidates: 147 bbox records
+Near-duplicate groups: 71 (image, class) groups
+```
+
+Exact duplicate được xét trong cùng `(image_id, class)` với cùng tọa độ
+`(x_min, y_min, x_max, y_max)`. Near-duplicate được xét pairwise trong cùng
+`(image_id, class)` theo ngưỡng IoU >= 0.95. Con số 147 là số **bbox records
+được flag là candidate**, không phải 147 cặp bbox.
+
+Không phát hiện bounding box bất thường không hợp lệ nên không phát sinh trường
+hợp cần loại bỏ vì lý do invalid geometry. Các near-duplicate candidates được
+giữ lại có chủ đích thay vì xóa/fuse tự động, vì đây là dữ liệu
+multi-radiologist và sự trùng/chồng lấp cao không tự động chứng minh annotation
+là lỗi nhập liệu.
+
+Evidence liên quan:
+
+```text
+scripts/01B_annotation_quality.py
+reports/phase1B_annotation_quality.md
+reports/duplicate_bbox_candidates.csv
+```
+
+### Post-conversion COCO/JPEG supporting QA
+
+Sau chuyển đổi, exhaustive automated QA trên phạm vi thực nghiệm xác nhận tính
+nhất quán kỹ thuật của 4,894/4,894 ảnh và 36,096/36,096 bounding boxes, bao gồm
+kích thước ảnh, geometry, hệ tọa độ/reference và các ràng buộc bbox có thể kiểm
+tra bằng code. Không phát hiện missing/ambiguous/unreadable JPEG hoặc lỗi
+reference/category trong phạm vi audit.
+
+Representative/stress visual QA được thực hiện trên 16 ảnh sau chuyển đổi,
+bao phủ 14/14 lớp bất thường và gồm 4 zero-GT/No Finding samples. Kiểm tra
+overlay không phát hiện sai lệch không gian rõ rệt giữa JPEG và annotation COCO
+trên tập mẫu được chọn.
+
+### JPEG Q95 fidelity và giới hạn diễn giải
+
+Sai khác do mã hóa JPEG Q95 đã được đánh giá định lượng trong pilot bằng cách
+so sánh decoded JPEG với lossless pre-JPEG reference trên 64 whole-image
+comparisons và 402 bbox-ROI comparisons. Các metric fidelity của pilot gồm
+MAE/RMSE/PSNR/SSIM; Q100 có numerical fidelity cao hơn Q95, còn Q95 được khóa
+theo quyết định fidelity-storage/I/O trade-off đã ghi nhận trước đó.
+
+Diễn giải khoa học được giới hạn như sau: tính hợp lệ của bounding box được
+kiểm tra trên toàn bộ dữ liệu liên quan và không phát hiện bbox invalid cần loại
+bỏ; sau chuyển đổi, kiểm tra tự động trên 4,894 ảnh và 36,096 bounding boxes xác
+nhận tính nhất quán về kích thước, geometry và hệ tọa độ, còn representative
+visual QA trên 16 mẫu không phát hiện sai lệch không gian rõ rệt. Sai khác do
+mã hóa JPEG Q95 được định lượng so với lossless pre-JPEG reference trong pilot.
+
+Các kết quả trên **không** được diễn giải thành tuyên bố rằng toàn bộ thông tin
+gốc được bảo toàn tuyệt đối. Cụ thể, chúng không chứng minh toàn bộ 36,096
+annotations đúng về mặt lâm sàng, không chứng minh JPEG Q95 là lossless hoặc
+tương đương pixel-wise/diagnostic với DICOM gốc, và không chứng minh preprocessing
+là optimal. Phạm vi kết luận được giới hạn ở annotation validity/duplicate QA,
+technical geometry/coordinate consistency và JPEG fidelity đã được đánh giá.
+
+---

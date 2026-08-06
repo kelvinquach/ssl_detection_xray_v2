@@ -7,9 +7,10 @@
 # Detectron2 is OPTIONAL and not installed by default (Windows build issues).
 
 # --- Core scientific stack ---
-numpy>=1.24,<2.0
+numpy>=2.2.6,<2.3
 pandas>=2.0
 scipy>=1.10
+scikit-image>=0.25.2,<0.26
 
 # --- Deep learning ---
 # Install torch/torchvision matching the target CUDA runtime via the official
@@ -36,10 +37,9 @@ Pillow>=10.0
 
 # Required JPEG 2000 decoder path for compressed DICOM pixel data.
 # Phase 2D.1B-Full used this path for 2,118 controlled-scope images.
-# Keep pylibjpeg-openjpeg below 2.3 while this environment keeps NumPy <2.0;
-# pylibjpeg-openjpeg 2.3+ requires NumPy 2.x on Python 3.9–3.12.
+# NumPy 2.x permits the current pylibjpeg-openjpeg release line.
 pylibjpeg>=2.0
-pylibjpeg-openjpeg>=2.0,<2.3
+pylibjpeg-openjpeg>=2.3
 
 # --- Detection metrics / annotations ---
 pycocotools>=2.0.7
@@ -50,7 +50,7 @@ seaborn>=0.13
 tqdm>=4.66
 
 # --- Config / utilities ---
-PyYAML>=6.0
+PyYAML>=6.0.3,<7
 rich>=13.0
 
 # --- Testing ---

@@ -7082,3 +7082,47 @@ training_authorized: false
 Phase 2D.1D closure package phải được lưu trong một commit riêng, không amend
 các commit Phase 2D.1C đã khóa. Hash của closure commit được tra từ Git history
 và không được ghi ngược vào chính closure package này.
+
+---
+
+## Ghi chú bổ sung — Evidence về annotation QA và kiểm chứng sau chuyển đổi
+
+> **Loại cập nhật:** supporting note only. Ghi chú này không mở lại, đổi trạng thái,
+> reclassify hoặc thay đổi bất kỳ gate/authorization/quyết định nào đã được khóa trước đó.
+
+Đối chiếu evidence hiện có cho thấy góp ý về kiểm tra bounding box, phát hiện
+annotation trùng lặp và trực quan hóa sau chuẩn hóa đã được xử lý trong phạm vi
+kỹ thuật của đề tài:
+
+* **Bounding-box validity:** tính hợp lệ của bounding box được kiểm tra trên toàn
+  bộ dữ liệu liên quan, bao gồm giới hạn tọa độ và tính nhất quán với kích thước
+  ảnh. Trong phạm vi thực nghiệm có **36,096 abnormal bbox annotations** và không
+  phát hiện bounding box không hợp lệ; do đó không phát sinh trường hợp cần loại bỏ.
+* **Duplicate / near-duplicate annotation QA:** Phase 1B đã kiểm tra exact duplicate
+  và near-duplicate trong cùng `(image_id, class)`. Kết quả ghi nhận **0 exact
+  duplicate candidates** và **147 near-duplicate bbox records** tại ngưỡng
+  `IoU >= 0.95`. Các near-duplicate này được giữ dưới dạng candidate vì dữ liệu
+  có nguồn annotation multi-radiologist; bbox rất giống nhau không mặc nhiên được
+  xem là lỗi dữ liệu và không bị xóa máy móc.
+* **Post-conversion geometry/annotation consistency:** kiểm tra tự động trên
+  **4,894 ảnh** và **36,096 bounding box** xác nhận tính nhất quán về kích thước,
+  geometry và hệ tọa độ sau quá trình xây dựng biểu diễn ảnh.
+* **Visual QA:** kiểm tra trực quan trên **16 mẫu representative/stress**, bao phủ
+  **14/14 lớp bất thường** và gồm **4 ảnh zero-GT**, không phát hiện sai lệch không
+  gian rõ rệt giữa ảnh JPEG và annotation COCO.
+* **JPEG fidelity:** sai khác do mã hóa **JPEG Q95** đã được đánh giá định lượng
+  so với biểu diễn lossless trước JPEG trong pilot (**64 ảnh**, với đánh giá
+  bbox-ROI trên **402 annotations**). Đây là fidelity evidence ở phạm vi pilot,
+  không phải full-dataset MAE/PSNR/SSIM audit trên 4,894 ảnh.
+
+### Giới hạn diễn giải của ghi chú
+
+Các evidence trên hỗ trợ kết luận rằng tính hợp lệ của annotation, geometry và
+hệ tọa độ bounding box được duy trì nhất quán cho mục tiêu object detection, và
+sai khác do JPEG Q95 đã được định lượng trong pilot. Chúng **không** được diễn
+giải thành bằng chứng rằng DICOM và JPEG giống hệt ở mức pixel, rằng toàn bộ
+thông tin lâm sàng của DICOM gốc được bảo toàn tuyệt đối, hoặc rằng JPEG Q95 là
+lossless/clinically equivalent với DICOM gốc.
+
+Ghi chú này chỉ tổng hợp evidence đã có; **không thay đổi các trạng thái phase,
+gate, readiness hoặc authorization đã được ghi nhận trước đó trong research log**.

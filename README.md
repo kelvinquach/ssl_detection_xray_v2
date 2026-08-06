@@ -528,3 +528,36 @@ Mọi thay đổi phải tuân theo:
 ```text
 script → output → DoD → GPT review → researcher decision
 ```
+
+## Ghi chú bổ sung — Annotation QA và kiểm chứng sau chuyển đổi
+
+> **Supporting note only:** ghi chú này chỉ tổng hợp và làm rõ evidence đã có;
+> không mở lại, phân loại lại hoặc thay đổi trạng thái của bất kỳ phase, gate,
+> authorization hay quyết định đã khóa nào ở trên.
+
+- Tính hợp lệ của bounding box đã được kiểm tra trên dữ liệu annotation, bao gồm
+  điều kiện tọa độ hợp lệ và kiểm tra biên theo kích thước ảnh trong controlled
+  scope. Không phát hiện bounding box không hợp lệ, vì vậy không phát sinh
+  trường hợp cần loại bỏ vì lỗi validity/boundary.
+- Phase 1B đã thực hiện phát hiện annotation trùng lặp trong cùng
+  `(image_id, class)`: **exact duplicate = 0**; đồng thời phát hiện
+  **147 near-duplicate bbox records** tại ngưỡng **IoU >= 0.95**, thuộc
+  **71 `(image, class)` groups**. Đây là các *near-duplicate candidates*, không
+  phải 147 cặp duplicate và không mặc nhiên được xem là annotation lỗi.
+- Các near-duplicate candidates được giữ lại có chủ đích do đặc tính annotation
+  multi-radiologist; không thực hiện xóa, hợp nhất hoặc sửa bbox một cách tự động.
+- Sau chuyển đổi, kiểm tra tự động trên **4,894 ảnh** và **36,096 bounding box**
+  xác nhận tính nhất quán về kích thước, geometry và hệ tọa độ annotation trong
+  controlled scope.
+- Kiểm tra trực quan sau chuyển đổi trên **16 mẫu representative/stress**
+  (bao phủ **14/14 lớp** và **4 zero-GT samples**) không phát hiện sai lệch
+  không gian rõ rệt của bounding box.
+- Sai khác do mã hóa **JPEG Q95** đã được định lượng so với biểu diễn lossless
+  trước JPEG trong representative pilot: **64 whole-image comparisons** và
+  **402 bbox-ROI comparisons**. Evidence fidelity này thuộc phạm vi pilot,
+  không phải full-dataset pixel-fidelity audit trên 4,894 ảnh.
+- Các kiểm chứng trên hỗ trợ kết luận về **geometry/coordinate consistency** và
+  fidelity của representation trong phạm vi đã đánh giá. Không được diễn giải
+  chúng thành bằng chứng rằng JPEG Q95 giống hệt DICOM ở mức pixel, bảo toàn
+  tuyệt đối mọi thông tin lâm sàng, hoặc chứng minh clinical equivalence với
+  DICOM gốc.

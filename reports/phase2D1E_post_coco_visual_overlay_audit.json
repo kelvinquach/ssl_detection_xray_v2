@@ -1,0 +1,261 @@
+{
+  "audit_name": "Post-COCO Visual Overlay Audit",
+  "automated_checks_scope": "exhaustive over ALL COCO images and ALL COCO annotations",
+  "automated_checks_status": "PASS",
+  "checks": {
+    "annotations_present": true,
+    "categories_present": true,
+    "coco_exists": true,
+    "coco_json_parse": true,
+    "coco_sha256_matches_recorded": true,
+    "coco_structure_analyzed": true,
+    "contact_sheet_created": true,
+    "counts_match_expected": true,
+    "full_dataset_bbox_validity": true,
+    "full_dataset_category_mapping": true,
+    "full_dataset_coverage": true,
+    "full_dataset_dimension_consistency": true,
+    "full_dataset_jpeg_availability": true,
+    "full_dataset_reference_integrity": true,
+    "images_present": true,
+    "no_duplicate_annotation_ids": true,
+    "no_duplicate_category_ids": true,
+    "no_duplicate_image_ids": true,
+    "no_invalid_category_refs": true,
+    "no_invalid_image_refs": true,
+    "representative_overlays_rendered": true
+  },
+  "coco_sha256": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+  "coco_sha256_expected": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+  "dataset_or_coco_modified": false,
+  "errors": [],
+  "exhaustive_automated_validation": {
+    "full_dataset_all_invariants_pass": true,
+    "full_dataset_ambiguous_jpeg_count": 0,
+    "full_dataset_annotations_checked": 36096,
+    "full_dataset_annotations_fully_covered": true,
+    "full_dataset_annotations_geometry_unchecked_count": 0,
+    "full_dataset_bbox_tolerance_note": "Intentional +/-1px in-bounds tolerance from the existing validate_bbox_xywh validator; preserved, not changed.",
+    "full_dataset_bbox_tolerance_px": 1.0,
+    "full_dataset_bbox_validity_status": "PASS",
+    "full_dataset_category_mapping_status": "PASS",
+    "full_dataset_coverage_status": "PASS",
+    "full_dataset_dimension_consistency_status": "PASS",
+    "full_dataset_dimension_mismatch_count": 0,
+    "full_dataset_failure_samples": [],
+    "full_dataset_failure_samples_truncated": false,
+    "full_dataset_images_checked": 4894,
+    "full_dataset_images_fully_covered": true,
+    "full_dataset_invalid_bbox_count": 0,
+    "full_dataset_invalid_category_reference_count": 0,
+    "full_dataset_invalid_image_reference_count": 0,
+    "full_dataset_jpeg_availability_status": "PASS",
+    "full_dataset_jpegs_resolved": 4894,
+    "full_dataset_missing_jpeg_count": 0,
+    "full_dataset_reference_integrity_status": "PASS",
+    "full_dataset_total_annotations": 36096,
+    "full_dataset_total_images": 4894,
+    "full_dataset_unreadable_jpeg_count": 0,
+    "scope": "ALL COCO images + ALL COCO annotations"
+  },
+  "expected_counts": {
+    "annotations": 36096,
+    "categories": 14,
+    "images": 4894,
+    "zero_gt_images": 500
+  },
+  "global_structural_precheck": {
+    "counts_match_expected": true,
+    "no_duplicate_annotation_ids": true,
+    "no_duplicate_category_ids": true,
+    "no_duplicate_image_ids": true,
+    "no_invalid_category_refs": true,
+    "no_invalid_image_refs": true
+  },
+  "image_root_resolution": {
+    "file_name_convention_example": "train/0005e8e3701dfb1dd93d53e2ff537b6e.jpg",
+    "image_root": "D:\\ssl_detection_xray_v2\\data\\processed\\images_jpg"
+  },
+  "input_paths": {
+    "coco_json": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\coco_master_jpg.json",
+    "image_root": "D:\\ssl_detection_xray_v2\\data\\processed\\images_jpg",
+    "manifest_csv": "D:\\ssl_detection_xray_v2\\reports\\phase2D1E_post_coco_visual_overlay_manifest.csv",
+    "plots_dir": "D:\\ssl_detection_xray_v2\\plots\\phase2D1E_post_coco_visual_overlay",
+    "repo_root": "D:\\ssl_detection_xray_v2",
+    "report_json": "D:\\ssl_detection_xray_v2\\reports\\phase2D1E_post_coco_visual_overlay_audit.json"
+  },
+  "manual_visual_review_scope": "representative selected samples only",
+  "manual_visual_review_status": "PENDING_GPT_REVIEW",
+  "note": "Supporting QA evidence only; a visual sample does not prove the absence of errors across the entire dataset. Not a new phase, method, or algorithm.",
+  "observed_counts": {
+    "annotations": 36096,
+    "categories": 14,
+    "images": 4894,
+    "zero_gt_images": 500
+  },
+  "representative_visual_qa": {
+    "categories_represented": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "category_coverage": {
+      "complete": true,
+      "represented": 14,
+      "total": 14
+    },
+    "contact_sheet_path": "D:\\ssl_detection_xray_v2\\plots\\phase2D1E_post_coco_visual_overlay\\contact_sheet_post_coco_overlay.png",
+    "images_with_gt": 12,
+    "manifest_path": "D:\\ssl_detection_xray_v2\\reports\\phase2D1E_post_coco_visual_overlay_manifest.csv",
+    "not_statistical_proof": "A representative visual sample does not prove the absence of errors across the entire dataset.",
+    "num_overlay_artifacts": 16,
+    "overlays_rendered_ok": true,
+    "scope": "deterministic stress/representative selection only",
+    "selected_sample_count": 16,
+    "selection": [
+      {
+        "image_id": 1,
+        "selection_reasons": [
+          "category_coverage:Consolidation",
+          "category_coverage:Infiltration",
+          "category_coverage:Lung Opacity",
+          "category_coverage:Nodule/Mass"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 2,
+        "selection_reasons": [
+          "category_coverage:Aortic enlargement",
+          "category_coverage:Cardiomegaly",
+          "category_coverage:ILD",
+          "category_coverage:Pleural thickening",
+          "category_coverage:Pulmonary fibrosis"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 3,
+        "selection_reasons": [
+          "category_coverage:Other lesion",
+          "near_boundary_bbox"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 4,
+        "selection_reasons": [
+          "category_coverage:Pleural effusion"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 5,
+        "selection_reasons": [
+          "category_coverage:Calcification"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 28,
+        "selection_reasons": [
+          "category_coverage:Atelectasis"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 46,
+        "selection_reasons": [
+          "category_coverage:Pneumothorax"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 22,
+        "selection_reasons": [
+          "fewest_bboxes"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 84,
+        "selection_reasons": [
+          "most_bboxes"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 244,
+        "selection_reasons": [
+          "most_categories"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 262,
+        "selection_reasons": [
+          "largest_bbox_area"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 1439,
+        "selection_reasons": [
+          "smallest_bbox_area"
+        ],
+        "zero_gt": false
+      },
+      {
+        "image_id": 6,
+        "selection_reasons": [
+          "zero_gt_no_finding"
+        ],
+        "zero_gt": true
+      },
+      {
+        "image_id": 8,
+        "selection_reasons": [
+          "zero_gt_no_finding"
+        ],
+        "zero_gt": true
+      },
+      {
+        "image_id": 14,
+        "selection_reasons": [
+          "zero_gt_no_finding"
+        ],
+        "zero_gt": true
+      },
+      {
+        "image_id": 17,
+        "selection_reasons": [
+          "zero_gt_no_finding"
+        ],
+        "zero_gt": true
+      }
+    ],
+    "selection_strategy": "deterministic; ascending-image_id tie-breaks; category coverage + fewest/most bboxes + smallest/largest bbox area + most categories + near-boundary + first-N zero-GT; no randomness",
+    "zero_gt_samples": 4
+  },
+  "scientific_scope": "Exhaustive automated validation checks the code-verifiable technical invariants over the entire COCO/JPEG dataset. The representative visual overlay audit is supporting evidence to detect gross COCO-to-JPEG spatial/geometry misalignment on a purposeful stress/representative subset. A visual sample does not prove the absence of errors across the entire dataset, is not clinical ground truth, and implies no bbox fusion/dedup decision.",
+  "seed": 2026,
+  "selection_strategy": "deterministic; ascending-image_id tie-breaks; category coverage + fewest/most bboxes + smallest/largest bbox area + most categories + near-boundary + first-N zero-GT; no randomness",
+  "technical_label": "2D1E",
+  "timestamp_utc": "2026-08-06T09:49:59Z",
+  "total_categories": 14,
+  "total_coco_annotations": 36096,
+  "total_coco_images": 4894,
+  "total_zero_gt_images": 500,
+  "warnings": []
+}
