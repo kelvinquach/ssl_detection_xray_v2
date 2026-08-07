@@ -1,6 +1,6 @@
 # PHASE HANDOFF — `ssl_detection_xray_v2`
 
-Ngày cập nhật: 2026-07-31
+Ngày cập nhật: 2026-08-07
 
 Dự án: **Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi**
 
@@ -44,8 +44,8 @@ Không tick checklist nếu chưa có evidence.
 ## 3. Trạng thái hiện tại
 
 ```text
-Current checkpoint: Phase 2D.1 — Image Representation & Dataset-Loading Readiness: CLOSED / PASS
-Next checkpoint: Phase 2E — Fixed Train/Validation/Test Split: NOT STARTED / NEXT
+Current checkpoint: Phase 2E — Fixed Train/Validation/Test Split: CLOSED / PASS
+Next checkpoint: Phase 2F — Labeled/Unlabeled Construction: NEXT
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
 Phase 1A — Dataset Overview: PASS
@@ -61,6 +61,7 @@ Phase 2D.1B-Full — Full DICOM-to-JPG Conversion: CLOSED / PASS
 Phase 2D.1C — MMDetection Dataset Loading & Full Pipeline Audit: CLOSED / PASS
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure: CLOSED / PASS
 Phase 2D.1 overall: CLOSED / PASS
+Phase 2E — Fixed Train/Validation/Test Split: CLOSED / PASS
 Dataset training-ready: TRUE
 Training authorized: FALSE
 Phase 2D.1C implementation/evidence commit: 0bf30cb (pushed to origin/main)
@@ -80,8 +81,8 @@ into this same closure package.
 Phase tiếp theo:
 
 ```text
-Phase 2E — Fixed Train/Validation/Test Split
-Status: NOT STARTED / NEXT
+Phase 2F — Labeled/Unlabeled Construction
+Status: NEXT
 ```
 
 Chưa được làm:
@@ -91,7 +92,7 @@ Train supervised detector
 Train SSL detector
 Generate pseudo-label
 Tune threshold
-Use test set
+Use test set for tuning/model selection before final evaluation
 Any training command before training_authorized is explicitly changed to true
 ```
 
@@ -115,6 +116,13 @@ Regression test cho hành vi MMEngine `serialize_data=True` đã được bổ s
 Phase 2D.1C dataloader validation đã chạy với `num_workers=0`; multi-worker loading không được kiểm định trong phase này.
 `dataset_training_ready=True` chỉ là kết luận kỹ thuật về dataset; không đồng nghĩa với quyền bắt đầu training.
 `training_authorized=False` vẫn là gate có hiệu lực.
+Phase 2E đã tạo và khóa fixed train/validation/test split ở cấp image_id với tỷ lệ mục tiêu 70/15/15.
+Fixed split có 3,426/734/734 ảnh và 25,260/5,399/5,437 annotations tương ứng train/val/test.
+No Finding/zero-GT được giữ trong cả ba split: 350/75/75 ảnh.
+Image-level overlap giữa mọi cặp split bằng 0; union bao phủ đủ 4,894/4,894 ảnh.
+Annotation ownership theo split bao phủ đủ 36,096/36,096 annotations.
+Test set đã cố định và có 75 ảnh No Finding để hỗ trợ tính FP per negative image.
+Patient-level leakage không thể kiểm định độc lập vì PatientID và các định danh nhóm liên quan không còn khả dụng sau de-identification của VinDr-CXR; không được tuyên bố patient-level leakage = 0.
 ```
 ---
 
@@ -1655,11 +1663,11 @@ Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
 Status: CLOSED / PASS
 ```
 
-Phase tiếp theo:
+Phase 2E sau đó đã hoàn tất (xem mục Phase 2E ở cuối handoff). Phase tiếp theo hiện tại:
 
 ```text
-Phase 2E — Fixed Train/Validation/Test Split
-Status: NOT STARTED / NEXT
+Phase 2F — Labeled/Unlabeled Construction
+Status: NEXT
 ```
 
 ---
@@ -1846,9 +1854,9 @@ hiện lỗi kỹ thuật hoặc bằng chứng mâu thuẫn mới.
 
 > **NOTE ONLY — không thay đổi bất kỳ trạng thái phase/gate hiện có nào.**
 > Ghi chú này chỉ tổng hợp và làm rõ evidence đã có/bổ sung sau closure; không
-> mở lại Phase 1B, Phase 2D.1 hay Phase 2D.1D, không thay đổi quyết định
-> `CLOSED / PASS`, `NOT STARTED / NEXT`, `dataset_training_ready` hoặc
-> `training_authorized`.
+> mở lại Phase 1B, Phase 2D.1 hay Phase 2D.1D. Ghi chú được tạo trước closure
+> Phase 2E; trạng thái phase hiện hành phải đọc theo mục 3 và mục Phase 2E bên
+> dưới. `dataset_training_ready=True` và `training_authorized=False` vẫn giữ nguyên.
 
 ### Bounding-box validity và duplicate/near-duplicate annotation
 
@@ -1918,5 +1926,191 @@ annotations đúng về mặt lâm sàng, không chứng minh JPEG Q95 là lossl
 tương đương pixel-wise/diagnostic với DICOM gốc, và không chứng minh preprocessing
 là optimal. Phạm vi kết luận được giới hạn ở annotation validity/duplicate QA,
 technical geometry/coordinate consistency và JPEG fidelity đã được đánh giá.
+
+---
+
+## 21. Phase 2E — Fixed Train/Validation/Test Split
+
+Status: **CLOSED / PASS**
+
+Date closed: 2026-08-07
+
+### Mục tiêu và nguyên tắc khóa
+
+Phase 2E tạo một train/validation/test split cố định từ phạm vi thực nghiệm đã
+khóa gồm 4,894 ảnh. Đơn vị phân hoạch là `image_id`. Candidate split đã qua gate
+được tái tạo chính xác trước khi materialize; bước materialization không được
+stratify lại, tìm seed mới hoặc tối ưu lại candidate.
+
+Protocol sử dụng tỷ lệ mục tiêu 70/15/15 và giữ No Finding/zero-GT trong cả ba
+split. Test set được khóa để chỉ dùng cho final evaluation; không dùng test để
+tune threshold, chọn checkpoint, chọn model/backbone, augmentation hoặc các
+quyết định ablation.
+
+Tất cả experiment downstream phải sử dụng cùng fixed test set. Việc tuân thủ
+quy tắc này phải được xác minh tiếp từ config/log của từng experiment; tại thời
+điểm closure Phase 2E chưa được diễn giải thành “mọi experiment đã chạy trên
+cùng test set”.
+
+### Script và execution evidence
+
+Script materialization chính thức:
+
+```text
+scripts/02E_build_fixed_split.py
+```
+
+Candidate implementation được kế thừa và khóa từ R2:
+
+```text
+scripts/02E_C0_R2_exact_constrained_candidate_split.py
+```
+
+Console evidence sau khi chạy trên máy dự án:
+
+```text
+02E_build_fixed_split_output.txt
+```
+
+Execution mode:
+
+```text
+STAGE_VALIDATE_THEN_PROMOTE
+SEED_POLICY=INHERIT_R2_PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH
+R2_CANDIDATE_LOCK=PASS
+FIXED_SPLIT_GATE=PASS
+FILES_WRITTEN=9
+FIXED_SPLIT_CREATED=True
+FIXED_SPLIT_VALIDATED=True
+```
+
+Script ghi vào staging, đọc lại độc lập các artifact vừa tạo, chỉ promote khi
+toàn bộ validation PASS, từ chối ghi đè artifact đích đã tồn tại và rollback
+các file đã promote nếu quá trình promotion thất bại giữa chừng.
+
+### Fixed split đã khóa
+
+```text
+Split            Train      Val       Test
+Images           3,426      734       734
+Annotations      25,260     5,399     5,437
+No Finding       350        75        75
+Categories       14         14        14
+```
+
+Tổng kiểm tra:
+
+```text
+Image union: 4,894 / 4,894
+Annotation union: 36,096 / 36,096
+Manifest rows: 4,894
+Train–val image overlap: 0
+Train–test image overlap: 0
+Val–test image overlap: 0
+```
+
+Phân bố negative/No Finding:
+
+```text
+Train: 350 / 3,426 = 10.216%
+Val:    75 /   734 = 10.218%
+Test:   75 /   734 = 10.218%
+```
+
+Test set vì vậy chứa 75 ảnh No Finding/zero-GT và hỗ trợ tính chỉ số
+`FP per negative image`. Việc có 75 ảnh âm tính cho phép tính metric này nhưng
+không tự động đảm bảo độ bất định thống kê nhỏ; nếu dùng để so sánh phương pháp,
+cần báo cáo uncertainty phù hợp trong protocol đánh giá/thống kê.
+
+### Identity lock và checksum
+
+SHA-256 của membership `image_id` tái tạo từ candidate R2:
+
+```text
+train: 628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a
+val:   87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6
+test:  1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37
+```
+
+SHA-256 của ba COCO JSON sau independent readback validation:
+
+```text
+instances_train.json: 0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3
+instances_val.json:   33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a
+instances_test.json:  e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4
+```
+
+### Artifact chính thức
+
+Phase 2E materialization tạo đúng 9 artifact:
+
+```text
+data/processed/coco/instances_train.json
+data/processed/coco/instances_val.json
+data/processed/coco/instances_test.json
+data/manifests/fixed_split_manifest.csv
+data/manifests/split_lock_manifest.json
+data/manifests/leakage_check_report.json
+reports/split_negative_distribution.csv
+reports/02E_build_fixed_split_validation_report.json
+reports/02E_build_fixed_split_log.json
+```
+
+### Leakage interpretation
+
+Kết quả phân hoạch chứng minh zero overlap ở cấp `image_id`. Annotation thuộc
+về ảnh tương ứng và được phân bổ theo ownership của ảnh; toàn bộ 36,096
+annotations được bao phủ trong ba split mà không trộn image membership giữa
+train/validation/test.
+
+Không được mở rộng kết luận này thành `patient-level leakage = 0`. Trong bản
+VinDr-CXR đã de-identify dùng cho dự án, `PatientID` và các định danh DICOM có
+thể dùng để liên kết ảnh theo bệnh nhân/study không còn khả dụng. Audit dữ liệu
+trong phạm vi dự án không cung cấp khóa bệnh nhân/study để thực hiện grouped
+split hoặc patient-level leakage check độc lập. Vì vậy kết luận chính xác là:
+
+```text
+Image-level leakage: 0 — PASS
+Annotation ownership/leakage relative to image split: PASS
+Patient-level leakage: NOT ASSESSABLE from the released de-identified data
+```
+
+Đây là giới hạn của dữ liệu công bố, không phải bằng chứng rằng patient-level
+leakage tồn tại, và cũng không phải cơ sở để tuyên bố patient-level leakage bằng 0.
+
+### DoD và trạng thái gate
+
+```text
+Fixed candidate reproduced and identity-hash matched: PASS
+Fixed manifests written: PASS
+COCO train/val/test materialized: PASS
+Independent readback validation: PASS
+All three splits contain 14 categories: PASS
+No Finding retained in train/val/test: PASS
+Pairwise image overlap = 0: PASS
+Image union = 4,894: PASS
+Annotation union = 36,096: PASS
+Checksums recorded: PASS
+Reproducibility/overwrite guardrails: PASS
+Phase 2E — Fixed Train/Validation/Test Split: CLOSED / PASS
+```
+
+Phase 2E closure không thay đổi training authorization:
+
+```text
+dataset_training_ready=True
+training_authorized=False
+```
+
+### Next phase
+
+```text
+Phase 2F — Labeled/Unlabeled Construction: NEXT
+```
+
+Labeled/unlabeled construction chỉ được thực hiện từ fixed training split
+`instances_train.json`, theo các ngân sách nhãn đã khóa của nghiên cứu. Fixed
+validation và test split không tham gia phân bổ labeled/unlabeled và test không
+được dùng làm nguồn pseudo-label hoặc để tune.
 
 ---

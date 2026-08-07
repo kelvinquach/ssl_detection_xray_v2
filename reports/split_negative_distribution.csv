@@ -1,0 +1,4 @@
+split,total_images,negative_images,abnormal_images,negative_fraction,negative_percent
+train,3426,350,3076,0.102159953298,10.215995330
+val,734,75,659,0.102179836512,10.217983651
+test,734,75,659,0.102179836512,10.217983651

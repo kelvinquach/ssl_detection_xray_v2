@@ -7126,3 +7126,216 @@ lossless/clinically equivalent với DICOM gốc.
 
 Ghi chú này chỉ tổng hợp evidence đã có; **không thay đổi các trạng thái phase,
 gate, readiness hoặc authorization đã được ghi nhận trước đó trong research log**.
+
+---
+
+## 2026-08-07 — PHASE 2E: Fixed Train/Validation/Test Split — Materialization, Validation & Closure
+
+### Mục tiêu và phạm vi
+
+Phase 2E xây dựng và khóa một phân hoạch train/validation/test cố định trên
+toàn bộ controlled scope đã qua Phase 2D.1. Đơn vị phân hoạch là `image_id`.
+Phase này không tạo các tỷ lệ labeled/unlabeled, không huấn luyện detector,
+không tạo pseudo-label và không đánh giá AP/mAP.
+
+Nguồn đầu vào chính thức:
+
+```text
+data/processed/coco/coco_master_jpg.json
+
+Images: 4,894
+Annotations: 36,096
+Categories: 14
+No Finding / zero-GT images: 500
+```
+
+### Fixed-split result
+
+```text
+Split ratio: 70% / 15% / 15%
+
+Train: 3,426 images; 25,260 annotations; 350 No Finding
+Val:     734 images;  5,399 annotations;  75 No Finding
+Test:    734 images;  5,437 annotations;  75 No Finding
+
+Image union: 4,894 / 4,894
+Annotation union: 36,096 / 36,096
+Manifest rows: 4,894
+Categories per split: 14
+```
+
+Phân bố ảnh âm tính được duy trì gần như đồng nhất:
+
+```text
+Train: 350 / 3,426 = 10.216%
+Val:    75 /   734 = 10.218%
+Test:   75 /   734 = 10.218%
+```
+
+Test set có 75 ảnh No Finding/zero-GT, vì vậy cho phép tính chỉ số false
+positive trên ảnh âm tính, ví dụ:
+
+```text
+FP per negative image = total false positives on test No Finding images / 75
+```
+
+Số lượng 75 ảnh cho phép tính chỉ số nhưng không mặc nhiên bảo đảm độ bất định
+nhỏ; khi so sánh phương pháp cần cân nhắc báo cáo khoảng tin cậy hoặc bootstrap.
+
+### Candidate lock và checksum
+
+Candidate cố định từ bước R2 đã được xác minh trước khi materialization bằng
+SHA-256 trên danh sách `image_id`:
+
+```text
+Train image-ID SHA-256:
+628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a
+
+Val image-ID SHA-256:
+87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6
+
+Test image-ID SHA-256:
+1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37
+```
+
+Ba COCO split chính thức được khóa bằng SHA-256:
+
+```text
+data/processed/coco/instances_train.json
+0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3
+
+data/processed/coco/instances_val.json
+33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a
+
+data/processed/coco/instances_test.json
+e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4
+```
+
+### Materialization và independent readback validation
+
+Script chính thức:
+
+```text
+scripts/02E_build_fixed_split.py
+```
+
+Script sử dụng cơ chế stage, đọc lại và kiểm định độc lập trước khi promote.
+Guardrail từ chối ghi đè nếu bất kỳ artifact đích nào đã tồn tại; nếu promotion
+thất bại giữa chừng, các file vừa tạo được rollback để tránh trạng thái đầu ra
+không hoàn chỉnh.
+
+Console evidence:
+
+```text
+02E_build_fixed_split_output.txt
+```
+
+Kết quả chạy thực tế:
+
+```text
+R2_CANDIDATE_LOCK: PASS
+IMAGE_OVERLAP: train-val=0; train-test=0; val-test=0
+IMAGE_UNION: 4,894
+ANNOTATION_UNION: 36,096
+MANIFEST_ROWS: 4,894
+FILES_WRITTEN: 9
+FIXED_SPLIT_GATE: PASS
+FIXED_SPLIT_CREATED: True
+FIXED_SPLIT_VALIDATED: True
+```
+
+### Artifact chính thức
+
+```text
+data/processed/coco/instances_train.json
+data/processed/coco/instances_val.json
+data/processed/coco/instances_test.json
+
+data/manifests/fixed_split_manifest.csv
+data/manifests/split_lock_manifest.json
+data/manifests/leakage_check_report.json
+
+reports/split_negative_distribution.csv
+reports/02E_build_fixed_split_validation_report.json
+reports/02E_build_fixed_split_log.json
+```
+
+Không duy trì thêm một bản sao `split_lock_manifest.json` ở project root.
+Nguồn chính thức duy nhất là
+`data/manifests/split_lock_manifest.json`, nhằm tránh hai bản manifest bị lệch.
+
+### Leakage result và giới hạn nhận dạng bệnh nhân
+
+```text
+Image-level leakage: 0 — PASS
+Annotation-level leakage: 0 — PASS
+Patient-level leakage: NOT ASSESSABLE
+```
+
+Không có `image_id` giao nhau giữa train, validation và test. Annotation được
+phân bổ theo ảnh và toàn bộ 36,096 annotation xuất hiện đúng trong hợp ba split,
+không có annotation xuyên split.
+
+Không thể kiểm tra độc lập leakage ở cấp bệnh nhân hoặc study từ bản dữ liệu
+công bố. `PatientID` và các định danh DICOM có khả năng liên kết ảnh theo bệnh
+nhân/study không còn khả dụng sau quá trình de-identification của VinDr-CXR.
+Vì vậy, kết quả `leakage = 0` của Phase 2E chỉ được tuyên bố ở cấp ảnh và
+annotation. Không được diễn giải thành `patient-level leakage = 0`, nhưng đây
+là giới hạn của dữ liệu công bố, không phải một trường `PatientID` sẵn có đã bị
+bỏ qua trong triển khai.
+
+### Chính sách sử dụng validation và test set
+
+`instances_test.json` là test set cố định và checksum-locked. Mọi experiment
+sau này bắt buộc sử dụng cùng test set này. Test set không được dùng cho:
+
+```text
+model selection
+hyperparameter tuning
+threshold selection
+early stopping
+ablation decisions
+pseudo-label generation
+```
+
+Các quyết định trên phải dựa vào train/validation theo experimental protocol.
+Tại thời điểm đóng Phase 2E, đây là policy đã khóa cho các thí nghiệm tương lai;
+việc mọi experiment thực tế tuân thủ cùng test set chỉ có thể được xác minh sau
+này từ config và log của từng lần chạy. Không được viết rằng mọi experiment
+“đã dùng” cùng test set khi training chưa bắt đầu.
+
+### Closure decision
+
+```text
+Phase 2E — Fixed Train/Validation/Test Split: CLOSED / PASS
+
+Fixed split created: true
+Fixed split validated: true
+Test set fixed and checksum-locked: true
+Image-level leakage: 0
+Annotation-level leakage: 0
+Test No Finding images: 75
+
+Labeled/unlabeled split created: false
+Training started: false
+training_authorized: false
+```
+
+Phase 2E PASS xác nhận fixed split đã được tạo và kiểm định, nhưng không tự động
+cấp quyền huấn luyện. Các tỷ lệ labeled/unlabeled chỉ được xây dựng từ
+`instances_train.json`; validation và test không tham gia phân bổ
+labeled/unlabeled và không được dùng làm nguồn pseudo-label.
+
+### Handoff
+
+```text
+Next phase: Phase 2F — Labeled/Unlabeled Construction
+Planned label budgets: 1% / 5% / 10% / 20%
+Source pool: fixed training split only
+Status: NOT STARTED / NEXT
+training_authorized: false
+```
+
+Phase 2F phải giữ nguyên `instances_val.json` và `instances_test.json`, đồng thời
+khóa identity/provenance của các tập labeled/unlabeled trước khi xem xét mở các
+gate huấn luyện tiếp theo.

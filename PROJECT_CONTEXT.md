@@ -301,9 +301,9 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-Current completed phase: Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation: **CLOSED / PASS**
-Final subphase: Phase 2D.1D — Evidence Consolidation, GPT Review & Closure: **CLOSED / PASS**
-Next phase: Phase 2E — Fixed Train/Validation/Test Split: **NOT STARTED / NEXT**
+Current completed phase: Phase 2E — Fixed Train/Validation/Test Split: **CLOSED / PASS**
+Previous completed phase: Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation: **CLOSED / PASS**
+Next phase: Phase 2F — Labeled/Unlabeled Construction: **NOT STARTED / NEXT**
 Final JPEG quality: **95 / LOCKED**
 Phase 2D.1C implementation/evidence commit: `0bf30cb` — pushed to `origin/main`.
 Phase 2D.1C prompt/environment commit: `5ce88f6` — pushed to `origin/main`.
@@ -314,6 +314,17 @@ MMDetection dataset loading ready: **true**
 Empty-image retention ready: **true**
 Dataset training-ready: **true**
 Training authorized: **false**
+
+Fixed split created: **true**
+Fixed split independently validated: **true**
+Split unit: **image_id**
+Split ratio: **70/15/15**
+Train/validation/test images: **3,426 / 734 / 734**
+Train/validation/test annotations: **25,260 / 5,399 / 5,437**
+Train/validation/test No Finding: **350 / 75 / 75**
+Image-level overlap: **0 / PASS**
+Annotation-level overlap: **0 / PASS**
+Patient-level leakage: **NOT ASSESSABLE** because patient/group identifiers are unavailable after VinDr-CXR de-identification.
 
 ### 7.1 Current gate
 
@@ -389,7 +400,10 @@ CLOSED / PASS
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure:
 CLOSED / PASS
 
-Split train/val/test: LOCKED
+Phase 2E — Fixed Train/Validation/Test Split:
+CLOSED / PASS
+
+Fixed train/val/test split: CREATED / VALIDATED / CHECKSUM-LOCKED
 Labeled/unlabeled split: LOCKED
 Training: LOCKED
 Inference: LOCKED
@@ -410,6 +424,9 @@ coco_jpg_training_annotation_ready: TRUE
 mmdetection_dataset_loading_ready: TRUE
 empty_image_retention_ready: TRUE
 dataset_training_ready: TRUE
+fixed_split_created: TRUE
+fixed_split_validated: TRUE
+fixed_split_checksum_locked: TRUE
 training_authorized: FALSE
 ```
 
@@ -1449,7 +1466,7 @@ Do not modify canonical annotations.
 
 Do not modify coco_master.json.
 
-Do not create train/val/test split.
+Do not modify or regenerate the checksum-locked train/val/test split.
 
 Do not create labeled/unlabeled split.
 
@@ -1511,7 +1528,8 @@ No downstream q95-versus-q100 detector ablation has been performed.
 A controlled downstream image-representation ablation is not
 a mandatory requirement and has not been confirmed as approved.
 
-Train/validation/test splits have not been created.
+The train/validation/test split has been created, independently validated,
+and checksum-locked by Phase 2E.
 
 Labeled/unlabeled SSL subsets have not been created.
 
@@ -1521,7 +1539,7 @@ Training authorization remains false.
 Next phase:
 
 ```text
-Phase 2E — Fixed Train/Validation/Test Split
+Phase 2F — Labeled/Unlabeled Construction
 Status: NOT STARTED / NEXT
 ```
 
@@ -1734,6 +1752,131 @@ training_authorized: false
 Closing Phase 2D.1D does not automatically authorize training. Split,
 leakage, labeled/unlabeled membership, seed protocol and training-configuration
 gates remain assigned to subsequent phases and must be reviewed separately.
+
+
+### 7.10 Phase 2E locked evidence
+
+Phase 2E — Fixed Train/Validation/Test Split: **CLOSED / PASS**
+
+```text
+Split unit: image_id
+Split ratio: 70/15/15
+Train: 3,426 images; 25,260 annotations; 350 No Finding / zero-GT
+Validation: 734 images; 5,399 annotations; 75 No Finding / zero-GT
+Test: 734 images; 5,437 annotations; 75 No Finding / zero-GT
+Categories: 14 in every split
+Image union: 4,894 / 4,894
+Annotation union: 36,096 / 36,096
+Manifest rows: 4,894
+```
+
+Negative-image distribution:
+
+```text
+Train: 350 / 3,426 = 10.216%
+Validation: 75 / 734 = 10.218%
+Test: 75 / 734 = 10.218%
+```
+
+The fixed test set contains 75 No Finding / zero-GT images and therefore
+supports calculation of false positives per negative image. When this metric
+is used to compare methods, its uncertainty should also be reported.
+
+Leakage and coverage validation:
+
+```text
+train-val image_id overlap: 0
+train-test image_id overlap: 0
+val-test image_id overlap: 0
+Image-level leakage: 0 / PASS
+Annotation-level leakage: 0 / PASS
+Complete image coverage: PASS
+Complete annotation coverage: PASS
+```
+
+Patient-level leakage is **not assessable** from the released data used by the
+project. `PatientID` and other patient/study grouping identifiers are not
+available after VinDr-CXR de-identification. Therefore, do not claim
+`patient-level leakage = 0`; the supported claim is limited to image and
+annotation level. This is a limitation of the released data, not an omitted
+check against an available patient key.
+
+Locked image-ID SHA-256 values:
+
+```text
+train: 628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a
+validation: 87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6
+test: 1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37
+```
+
+Locked COCO JSON SHA-256 values from independent readback validation:
+
+```text
+instances_train.json: 0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3
+instances_val.json: 33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a
+instances_test.json: e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4
+```
+
+Primary implementation and evidence:
+
+```text
+scripts/02E_build_fixed_split.py
+02E_build_fixed_split_output.txt
+data/processed/coco/instances_train.json
+data/processed/coco/instances_val.json
+data/processed/coco/instances_test.json
+data/manifests/fixed_split_manifest.csv
+data/manifests/split_lock_manifest.json
+data/manifests/leakage_check_report.json
+reports/split_negative_distribution.csv
+reports/02E_build_fixed_split_validation_report.json
+reports/02E_build_fixed_split_log.json
+```
+
+```text
+R2 candidate lock: PASS
+Independent readback validation: PASS
+Fixed split gate: PASS
+Files written: 9
+Fixed split created: true
+Fixed split validated: true
+```
+
+Locked test-set policy:
+
+- `instances_test.json` is used only for final evaluation.
+- Do not use test results for checkpoint selection, early stopping, model or
+  backbone selection, hyperparameter tuning, threshold selection, ablation
+  decisions or protocol changes.
+- All experiments must use the same fixed test JSON and locked checksum.
+- Compliance must later be verified from each experiment's config and log; do
+  not claim that all experiments have already complied before they exist.
+
+Readiness and restrictions after Phase 2E:
+
+```text
+fixed_split_created: true
+fixed_split_validated: true
+fixed_split_checksum_locked: true
+test_contains_no_finding: true
+image_level_leakage_zero: true
+annotation_level_leakage_zero: true
+patient_level_leakage_assessable: false
+labeled_unlabeled_construction_ready: true
+training_authorized: false
+```
+
+Next phase:
+
+```text
+Phase 2F — Labeled/Unlabeled Construction
+Status: NOT STARTED / NEXT
+Source: data/processed/coco/instances_train.json only
+Budgets: 1% / 5% / 10% / 20%
+Nested requirement: 1% subset 5% subset 10% subset 20%
+Validation and test sets remain unchanged and must not be used as
+pseudo-label sources.
+```
 
 
 ## 8. Nguyên tắc review bắt buộc
@@ -3188,7 +3331,8 @@ No downstream q95-versus-q100 detector ablation has been performed.
 A controlled downstream image-representation ablation is not
 a mandatory requirement and has not been confirmed as approved.
 
-Train/validation/test splits have not been created.
+The train/validation/test split has been created, independently validated,
+and checksum-locked by Phase 2E.
 
 Labeled/unlabeled SSL subsets have not been created.
 
@@ -3362,7 +3506,7 @@ Training authorization remains false.
 Forbidden actions confirmed:
 
 ```text
-No train/validation/test split created.
+No modification or regeneration of the checksum-locked train/validation/test split.
 No labeled/unlabeled split created.
 No training started.
 No inference run.
@@ -3378,7 +3522,7 @@ No coco_master.json modified.
 Next phase:
 
 ```text
-Phase 2E — Fixed Train/Validation/Test Split
+Phase 2F — Labeled/Unlabeled Construction
 Status: NOT STARTED / NEXT
 ```
 

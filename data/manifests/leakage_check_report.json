@@ -1,0 +1,21 @@
+{
+  "phase": "2E-C0-R3",
+  "status": "PASS",
+  "unit_of_split": "image_id",
+  "image_overlap": {
+    "train_val": 0,
+    "train_test": 0,
+    "val_test": 0
+  },
+  "image_union": 4894,
+  "expected_image_union": 4894,
+  "annotation_overlap": {
+    "train_val": 0,
+    "train_test": 0,
+    "val_test": 0
+  },
+  "annotation_union": 36096,
+  "expected_annotation_union": 36096,
+  "completeness_pass": true,
+  "zero_overlap_pass": true
+}

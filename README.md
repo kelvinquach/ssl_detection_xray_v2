@@ -6,8 +6,16 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 **Trọng tâm:** Semi-supervised object detection trên **VinBigData Chest X-ray**.  
 **Framework chính:** [MMDetection](https://github.com/open-mmlab/mmdetection) (OpenMMLab). Detectron2 là *optional fallback*.
 
-> **Trạng thái hiện tại: Phase 2D.1 — Image Representation & Dataset-Loading Readiness: CLOSED / PASS**
+> **Trạng thái hiện tại: Phase 2E — Fixed Train/Validation/Test Split: CLOSED / PASS**
 >
+> - Phase 2E — Fixed Train/Validation/Test Split: **CLOSED / PASS**
+> - Fixed split created: **TRUE**
+> - Fixed split independently validated: **TRUE**
+> - Split ratio: **70/15/15**
+> - Train/validation/test images: **3,426 / 734 / 734**
+> - Train/validation/test annotations: **25,260 / 5,399 / 5,437**
+> - Train/validation/test No Finding images: **350 / 75 / 75**
+> - Image-level and annotation-level leakage: **0 / PASS**
 > - Phase 2D.1 overall: **CLOSED / PASS**
 > - Phase 2D.1D — Evidence Consolidation, GPT Review & Closure: **CLOSED / PASS**
 > - Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation: **CLOSED / PASS**
@@ -26,9 +34,80 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 > - Phase 1B — Annotation Quality: **PASS**
 > - Phase 1A — Dataset Overview: **PASS**
 > - Phase 0 — Setup Environment: **CORE PASS**
-> - Next phase: Phase 2E — Fixed Train/Validation/Test Split: **NOT STARTED / NEXT**
+> - Next phase: Phase 2F — Labeled/Unlabeled Construction: **NOT STARTED / NEXT**
 >
-> Phase 2D.1 đã xác nhận dataset **training-ready về mặt kỹ thuật**, nhưng training vẫn **chưa được phép**.
+> Phase 2E đã khóa fixed split dùng chung cho downstream experiments. Dataset
+> **training-ready về mặt kỹ thuật**, nhưng training vẫn **chưa được phép**.
+
+## Trạng thái Phase 2E
+
+| Hạng mục | Train | Validation | Test |
+|---|---:|---:|---:|
+| Ảnh | 3,426 | 734 | 734 |
+| Annotation | 25,260 | 5,399 | 5,437 |
+| No Finding / zero-GT | 350 | 75 | 75 |
+| Tỷ lệ No Finding | 10.216% | 10.218% | 10.218% |
+| Categories | 14 | 14 | 14 |
+
+```text
+Split unit: image_id
+Split ratio: 70/15/15
+Image union: 4,894/4,894
+Annotation union: 36,096/36,096
+Train-validation overlap: 0
+Train-test overlap: 0
+Validation-test overlap: 0
+Fixed split created: true
+Fixed split validated: true
+Phase 2E: CLOSED / PASS
+training_authorized: false
+```
+
+SHA-256 của danh sách `image_id` đã khóa:
+
+```text
+train: 628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a
+val:   87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6
+test:  1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37
+```
+
+SHA-256 của ba COCO JSON chính thức:
+
+```text
+instances_train.json: 0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3
+instances_val.json:   33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a
+instances_test.json:  e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4
+```
+
+Test set chứa 75 ảnh No Finding, cho phép tính
+`FP per negative image = tổng FP trên ảnh No Finding / 75`. Test set được khóa
+và chỉ dùng cho đánh giá cuối; không được dùng để chọn checkpoint, mô hình,
+hyperparameter, threshold, augmentation hoặc pseudo-label filtering policy.
+
+Kết quả leakage bằng 0 chỉ được khẳng định ở cấp `image_id` và annotation.
+Patient-level leakage là **NOT ASSESSABLE** vì `PatientID` và các định danh DICOM
+có thể dùng để liên kết ảnh theo bệnh nhân/study không còn khả dụng sau quy trình
+de-identification của VinDr-CXR. Đây là giới hạn của dữ liệu công bố, không phải
+bằng chứng rằng patient-level leakage bằng 0.
+
+Artifact chính thức của Phase 2E:
+
+```text
+scripts/02E_build_fixed_split.py
+02E_build_fixed_split_output.txt
+
+data/processed/coco/instances_train.json
+data/processed/coco/instances_val.json
+data/processed/coco/instances_test.json
+
+data/manifests/fixed_split_manifest.csv
+data/manifests/split_lock_manifest.json
+data/manifests/leakage_check_report.json
+
+reports/split_negative_distribution.csv
+reports/02E_build_fixed_split_validation_report.json
+reports/02E_build_fixed_split_log.json
+```
 
 ## Trạng thái Phase 2D.1
 
@@ -222,10 +301,10 @@ Q100 có numerical fidelity cao hơn Q95 trên toàn bộ 64 whole-image compari
 và 402 bbox-ROI comparisons. Q95 được khóa như một
 fidelity–storage/I/O trade-off, không phải bằng chứng detector superiority.
 
-Phân chia phase tiếp theo:
+Trình tự phase downstream:
 
 ```text
-Phase 2E: Fixed Train/Validation/Test Split
+Phase 2E: Fixed Train/Validation/Test Split — CLOSED / PASS
 Phase 2F: Labeled/Unlabeled Split for SSL
 Phase 2F.1: Seed Protocol — split_seed versus training_seed
 ```
@@ -285,12 +364,21 @@ Training đã được phép.
 - `coco_jpg_training_annotation_ready=true` chỉ xác nhận COCO JPG derivative đã được tạo và validate.
 - `dataset_training_ready=true` còn bao gồm bằng chứng MMDetection loading và empty-image retention từ Phase 2D.1C.
 - `dataset_training_ready=true` không đồng nghĩa `training_authorized=true`.
-- Training tiếp tục bị khóa sau khi Phase 2D.1D đóng và chỉ được xem xét sau khi các
-  gate split, leakage, labeled/unlabeled membership, seed protocol và training
-  configuration ở các phase tiếp theo đã được review.
+- Fixed train/validation/test split của Phase 2E đã được tạo, checksum-lock và
+  independently validated; không được tái chia theo từng experiment.
+- Mọi experiment downstream phải dùng cùng `instances_val.json` và
+  `instances_test.json`; việc tuân thủ phải được xác minh từ config và log của
+  từng lần chạy.
+- Chỉ `instances_train.json` được dùng để xây dựng labeled/unlabeled subsets;
+  validation và test không được tham gia phân bổ hoặc làm nguồn pseudo-label.
+- Training tiếp tục bị khóa sau khi Phase 2E đóng và chỉ được xem xét sau khi
+  labeled/unlabeled membership, seed protocol và training configuration ở các
+  phase tiếp theo đã được review.
 - Không chạy lại `--execute-full` nếu không có lý do kỹ thuật được ghi nhận và phê duyệt.
 - Không commit 4,894 JPG files vào ordinary Git.
-- Không tạo train/validation/test split, labeled/unlabeled split hoặc bắt đầu training trước đúng phase.
+- Không thay đổi hoặc tái tạo fixed train/validation/test split đã khóa nếu
+  không có change-control và lý do kỹ thuật được ghi nhận.
+- Không tạo labeled/unlabeled split hoặc bắt đầu training trước đúng phase.
 
 ## Vai trò trong dự án
 

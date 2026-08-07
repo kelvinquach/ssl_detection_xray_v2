@@ -1,0 +1,203 @@
+{
+  "phase": "2E-C0-R3",
+  "status": "PASS",
+  "mode": "stage_validate_then_transactional_promote",
+  "files_written": 9,
+  "official_artifacts": [
+    "data/processed/coco/instances_train.json",
+    "data/processed/coco/instances_val.json",
+    "data/processed/coco/instances_test.json",
+    "data/manifests/fixed_split_manifest.csv",
+    "data/manifests/split_lock_manifest.json",
+    "data/manifests/leakage_check_report.json",
+    "reports/split_negative_distribution.csv",
+    "reports/phase2E_C0_R3_validation_report.json",
+    "reports/phase2E_C0_R3_materialization_log.json"
+  ],
+  "r2_size_repair_moves": [
+    {
+      "iteration": 1,
+      "image_id": 2021,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 2,
+      "image_id": 752,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 3,
+      "image_id": 1009,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 4,
+      "image_id": 2031,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 5,
+      "image_id": 1024,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 6,
+      "image_id": 2465,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 7,
+      "image_id": 1341,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 8,
+      "image_id": 2363,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 9,
+      "image_id": 1583,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 10,
+      "image_id": 4757,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 11,
+      "image_id": 1438,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 12,
+      "image_id": 1074,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 13,
+      "image_id": 2438,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 14,
+      "image_id": 1820,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 15,
+      "image_id": 1249,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 16,
+      "image_id": 1119,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 17,
+      "image_id": 104,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 18,
+      "image_id": 2030,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 19,
+      "image_id": 1092,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 20,
+      "image_id": 128,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 21,
+      "image_id": 1172,
+      "source": "train",
+      "destination": "val"
+    },
+    {
+      "iteration": 22,
+      "image_id": 1025,
+      "source": "train",
+      "destination": "test"
+    },
+    {
+      "iteration": 23,
+      "image_id": 2445,
+      "source": "train",
+      "destination": "test"
+    }
+  ],
+  "r2_no_finding_swaps": [
+    {
+      "iteration": 1,
+      "no_finding_image_id": 1025,
+      "abnormal_image_id": 1241,
+      "no_finding_source": "test",
+      "no_finding_destination": "train",
+      "abnormal_source": "train",
+      "abnormal_destination": "test",
+      "objective": [
+        0.0030260041489940936,
+        8.023685770465133e-05,
+        0.02665389082332892
+      ]
+    },
+    {
+      "iteration": 2,
+      "no_finding_image_id": 1009,
+      "abnormal_image_id": 1098,
+      "no_finding_source": "val",
+      "no_finding_destination": "train",
+      "abnormal_source": "train",
+      "abnormal_destination": "val",
+      "objective": [
+        0.0030260041489940936,
+        8.628257341943327e-05,
+        0.028016288643492704
+      ]
+    },
+    {
+      "iteration": 3,
+      "no_finding_image_id": 1024,
+      "abnormal_image_id": 135,
+      "no_finding_source": "val",
+      "no_finding_destination": "train",
+      "abnormal_source": "train",
+      "abnormal_destination": "val",
+      "objective": [
+        0.0030260041489940936,
+        9.336525687357026e-05,
+        0.030741084283819387
+      ]
+    }
+  ],
+  "overwrite_policy": "REFUSE_IF_ANY_OFFICIAL_ARTIFACT_EXISTS",
+  "rollback_policy": "REMOVE_FILES_PROMOTED_BY_FAILED_RUN"
+}

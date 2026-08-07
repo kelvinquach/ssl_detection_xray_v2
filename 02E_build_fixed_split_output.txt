@@ -1,0 +1,35 @@
+=== PHASE 2E-C0-R3: MATERIALIZE & INDEPENDENTLY VALIDATE FIXED SPLIT ===
+MODE= STAGE_VALIDATE_THEN_PROMOTE
+R2_SCRIPT= D:\ssl_detection_xray_v2\scripts\02E_C0_R2_exact_constrained_candidate_split.py
+COCO= D:\ssl_detection_xray_v2\data\processed\coco\coco_master_jpg.json
+PROJECT_ROOT= D:\ssl_detection_xray_v2
+PYTHON= 3.10.20
+SEED_POLICY= INHERIT_R2_PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH
+R2_CANDIDATE_LOCK= PASS
+R2_TRAIN_SHA256_IMAGE_IDS= 628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a
+R2_VAL_SHA256_IMAGE_IDS= 87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6
+R2_TEST_SHA256_IMAGE_IDS= 1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37
+--- INDEPENDENT READBACK VALIDATION ---
+TRAIN_COUNTS= images:3426 annotations:25260 zero_gt:350 categories:14
+TRAIN_SHA256_COCO_JSON= 0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3
+VAL_COUNTS= images:734 annotations:5399 zero_gt:75 categories:14
+VAL_SHA256_COCO_JSON= 33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a
+TEST_COUNTS= images:734 annotations:5437 zero_gt:75 categories:14
+TEST_SHA256_COCO_JSON= e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4
+IMAGE_OVERLAP= {'train_val': 0, 'train_test': 0, 'val_test': 0}
+IMAGE_UNION= 4894
+ANNOTATION_UNION= 36096
+MANIFEST_ROWS= 4894
+FIXED_SPLIT_GATE= PASS
+FILES_WRITTEN= 9
+FIXED_SPLIT_CREATED= True
+FIXED_SPLIT_VALIDATED= True
+OUTPUT_FILE= D:\ssl_detection_xray_v2\data\processed\coco\instances_train.json
+OUTPUT_FILE= D:\ssl_detection_xray_v2\data\processed\coco\instances_val.json
+OUTPUT_FILE= D:\ssl_detection_xray_v2\data\processed\coco\instances_test.json
+OUTPUT_FILE= D:\ssl_detection_xray_v2\data\manifests\fixed_split_manifest.csv
+OUTPUT_FILE= D:\ssl_detection_xray_v2\data\manifests\split_lock_manifest.json
+OUTPUT_FILE= D:\ssl_detection_xray_v2\data\manifests\leakage_check_report.json
+OUTPUT_FILE= D:\ssl_detection_xray_v2\reports\split_negative_distribution.csv
+OUTPUT_FILE= D:\ssl_detection_xray_v2\reports\phase2E_C0_R3_validation_report.json
+OUTPUT_FILE= D:\ssl_detection_xray_v2\reports\phase2E_C0_R3_materialization_log.json

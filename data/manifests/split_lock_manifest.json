@@ -1,0 +1,34 @@
+{
+  "phase": "Phase 2E — Fixed Train/Validation/Test Split",
+  "stage": "2E-C0-R3",
+  "status": "LOCKED",
+  "seed": 42,
+  "seed_policy": "PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH",
+  "split_ratio": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "split_sizes": {
+    "train": 3426,
+    "val": 734,
+    "test": 734
+  },
+  "no_finding_allocation": {
+    "train": 350,
+    "val": 75,
+    "test": 75
+  },
+  "image_id_sha256": {
+    "train": "628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a",
+    "val": "87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6",
+    "test": "1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37"
+  },
+  "coco_json_sha256": {
+    "train": "0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3",
+    "val": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+    "test": "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4"
+  },
+  "master_coco_sha256": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+  "r2_script_sha256": "caeb03cf3d5454ab12a9a35fd8735d93431a33ff7a1c6053730d0503cca6ecda"
+}
