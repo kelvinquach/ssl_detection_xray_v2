@@ -301,9 +301,9 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-Current completed phase: Phase 2E — Fixed Train/Validation/Test Split: **CLOSED / PASS**
-Previous completed phase: Phase 2D.1 — JPG Training Representation & MMDetection Empty-Image Loading Validation: **CLOSED / PASS**
-Next phase: Phase 2F — Labeled/Unlabeled Construction: **NOT STARTED / NEXT**
+Current completed phase: Phase 2F — Labeled/Unlabeled Construction: **CLOSED / PASS**
+Previous completed phase: Phase 2E — Fixed Train/Validation/Test Split: **CLOSED / PASS**
+Next phase: Phase 2F.1 — Seed Protocol: **NOT STARTED / NEXT**
 Final JPEG quality: **95 / LOCKED**
 Phase 2D.1C implementation/evidence commit: `0bf30cb` — pushed to `origin/main`.
 Phase 2D.1C prompt/environment commit: `5ce88f6` — pushed to `origin/main`.
@@ -325,6 +325,15 @@ Train/validation/test No Finding: **350 / 75 / 75**
 Image-level overlap: **0 / PASS**
 Annotation-level overlap: **0 / PASS**
 Patient-level leakage: **NOT ASSESSABLE** because patient/group identifiers are unavailable after VinDr-CXR de-identification.
+
+Phase 2F protocol: **2F-C0-R11 / 2.0.0**
+Phase 2F partition seed: **42 / PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH**
+Labeled budgets 1%/5%/10%/20%: **34 / 171 / 343 / 685 images**
+Nested labeled and No Finding subsets: **PASS**
+Labeled/unlabeled disjointness and completeness: **PASS**
+Validation/test isolation: **PASS**
+Independent readback: **PASS**
+Deterministic reconstruction: **MATCH (4/4 budgets)**
 
 ### 7.1 Current gate
 
@@ -403,6 +412,9 @@ CLOSED / PASS
 Phase 2E — Fixed Train/Validation/Test Split:
 CLOSED / PASS
 
+Phase 2F — Labeled/Unlabeled Construction:
+CLOSED / PASS
+
 Fixed train/val/test split: CREATED / VALIDATED / CHECKSUM-LOCKED
 Labeled/unlabeled split: LOCKED
 Training: LOCKED
@@ -427,6 +439,8 @@ dataset_training_ready: TRUE
 fixed_split_created: TRUE
 fixed_split_validated: TRUE
 fixed_split_checksum_locked: TRUE
+labeled_unlabeled_membership_locked: TRUE
+phase2f_deterministic_reconstruction_match: TRUE
 training_authorized: FALSE
 ```
 
@@ -1531,7 +1545,8 @@ a mandatory requirement and has not been confirmed as approved.
 The train/validation/test split has been created, independently validated,
 and checksum-locked by Phase 2E.
 
-Labeled/unlabeled SSL subsets have not been created.
+Nested labeled/unlabeled SSL subsets have been created, independently read
+back, checksum-locked and deterministically reconstructed by Phase 2F.
 
 Training authorization remains false.
 ```
@@ -1539,7 +1554,7 @@ Training authorization remains false.
 Next phase:
 
 ```text
-Phase 2F — Labeled/Unlabeled Construction
+Phase 2F.1 — Seed Protocol
 Status: NOT STARTED / NEXT
 ```
 
@@ -1869,14 +1884,156 @@ training_authorized: false
 Next phase:
 
 ```text
-Phase 2F — Labeled/Unlabeled Construction
-Status: NOT STARTED / NEXT
-Source: data/processed/coco/instances_train.json only
-Budgets: 1% / 5% / 10% / 20%
-Nested requirement: 1% subset 5% subset 10% subset 20%
-Validation and test sets remain unchanged and must not be used as
-pseudo-label sources.
+Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS
+Phase 2F.1 — Seed Protocol: NOT STARTED / NEXT
 ```
+
+Phase 2F used `data/processed/coco/instances_train.json` only. Validation and
+test remained unchanged and were not used as pseudo-label sources. The resulting
+membership is locked and must not be resampled per experiment.
+
+### 7.11 Phase 2F locked evidence
+
+Phase 2F — Labeled/Unlabeled Construction: **CLOSED / PASS**
+
+```text
+Date closed: 2026-08-13
+Stage: 2F-C0-R11
+Protocol version: 2.0.0
+Partition seed: 42
+Seed policy: PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH
+Active repair policy: ONE_FOR_ONE_EXHAUSTIVE_DETERMINISTIC
+Local-optimum neighborhood: one_for_one
+Global optimum claimed: false
+```
+
+Active construction order:
+
+```text
+iterative multilabel stratification
+→ exact-size repair
+→ exact-No-Finding repair
+→ minimum-class-coverage one-for-one repair
+→ deterministic exhaustive one-for-one objective repair
+→ one-for-one local optimum
+```
+
+Legacy two-for-two engine was not invoked by active construction. The supported
+claim is a local optimum for the admissible one-for-one swap neighborhood, not
+a global optimum and not an optimum over every possible neighborhood.
+
+Locked budget summary:
+
+| Budget | Labeled | Unlabeled | No Finding in labeled | Repair moves |
+|---|---:|---:|---:|---:|
+| 1% | 34 | 3,392 | 3 | 3 |
+| 5% | 171 | 3,255 | 17 | 7 |
+| 10% | 343 | 3,083 | 35 | 10 |
+| 20% | 685 | 2,741 | 70 | 26 |
+
+Total repair moves: `46`.
+
+All four budgets satisfy exact labeled size, exact No Finding size, 14/14 class
+coverage and one-for-one local-optimum checks. The locked nesting relation is:
+
+```text
+1pct ⊆ 5pct ⊆ 10pct ⊆ 20pct
+Nested labeled subsets: PASS
+Nested No Finding subsets: PASS
+```
+
+Canonical labeled-membership SHA-256:
+
+```text
+1pct:  c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071
+5pct:  c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b
+10pct: fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6
+20pct: 6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e
+```
+
+Validation and reconstruction:
+
+```text
+Guardrails: 183 passed, 15 subtests passed
+PREFLIGHT_GATE: PASS
+PHASE_2F_GATE: PASS
+Nested split check: PASS
+Nested No Finding check: PASS
+Labeled/unlabeled disjoint and complete: PASS
+Validation/test isolation: PASS
+Unlabeled GT exposure violations: []
+Independent readback gates: PASS
+Deterministic reconstruction: MATCH for 4/4 budgets
+```
+
+Reconstruct-check compared labeled membership, labeled and unlabeled COCO
+checksums, labeled size, No Finding size, repair move counts and final integer
+objective. Timing was intentionally excluded from deterministic comparison.
+
+Runtime evidence:
+
+```text
+1pct: 7.063 seconds
+5pct: 130.437 seconds
+10pct: 253.485 seconds
+20pct: 1255.344 seconds
+Total construction: 1646.329 seconds
+Timing clock: time.monotonic
+Timing role: OBSERVABILITY_ONLY_NOT_SELECTION_CRITERION
+```
+
+Timing does not influence membership, seed, objective, acceptance, tie-break,
+checksum or reconstruction identity.
+
+Primary implementation and evidence:
+
+```text
+scripts/02F_build_labeled_unlabeled.py
+configs/protocol/phase2F_labeled_unlabeled.yaml
+tests/test_phase2F_labeled_unlabeled_guardrails.py
+data/manifests/phase2F_lock_manifest.json
+data/manifests/phase2F_nested_split_check.json
+data/manifests/phase2F_leakage_check.json
+data/manifests/phase2F_seed_manifest.json
+reports/02F_labeled_unlabeled_validation_report.json
+reports/02F_labeled_unlabeled_log.json
+reports/02F_deterministic_reconstruction_check.json
+reports/02F_class_distribution.csv
+reports/02F_negative_distribution.csv
+reports/02F_repair_log.jsonl
+reports/02F_errors.csv
+```
+
+Official labeled and unlabeled COCO JSON files exist for 1%, 5%, 10% and 20%
+budgets. Phase 2F promoted 20 official artifacts only after independent readback
+and validation passed, using refuse-overwrite and transactional rollback.
+
+Readiness and restrictions after Phase 2F:
+
+```text
+fixed_split_checksum_locked: true
+labeled_unlabeled_membership_locked: true
+nested_labeled_subsets_pass: true
+nested_no_finding_subsets_pass: true
+deterministic_reconstruction_match: true
+training_authorized: false
+training_started: false
+pseudo_labels_generated: false
+test_used: false
+```
+
+Phase 2F closure does not authorize training. Fixed split and Phase 2F
+membership must remain unchanged. `partition_seed=42` must not be searched or
+changed to obtain a favorable membership.
+
+Next phase:
+
+```text
+Phase 2F.1 — Seed Protocol: NOT STARTED / NEXT
+```
+
+Phase 2F.1 must distinguish the locked partition seed from future training
+seeds and must not alter any Phase 2E or Phase 2F membership.
 
 
 ## 8. Nguyên tắc review bắt buộc
@@ -3522,9 +3679,14 @@ No coco_master.json modified.
 Next phase:
 
 ```text
-Phase 2F — Labeled/Unlabeled Construction
-Status: NOT STARTED / NEXT
+Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS
+Phase 2F.1 — Seed Protocol: NOT STARTED / NEXT
 ```
+
+Resolution update: Phase 2F subsequently completed with PASS, locked all four
+nested labeled/unlabeled memberships and achieved deterministic reconstruction
+`MATCH`. The Phase 2D.1C restrictions above remain historical records of that
+phase's execution time; they are not the current project state.
 
 ---
 

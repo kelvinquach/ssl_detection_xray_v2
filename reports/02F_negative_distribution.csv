@@ -1,0 +1,5 @@
+budget,total_images,negative_images,abnormal_images,negative_fraction
+1pct,34,3,31,3/34
+5pct,171,17,154,17/171
+10pct,343,35,308,5/49
+20pct,685,70,615,14/137

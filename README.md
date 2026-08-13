@@ -6,8 +6,17 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 **Trọng tâm:** Semi-supervised object detection trên **VinBigData Chest X-ray**.  
 **Framework chính:** [MMDetection](https://github.com/open-mmlab/mmdetection) (OpenMMLab). Detectron2 là *optional fallback*.
 
-> **Trạng thái hiện tại: Phase 2E — Fixed Train/Validation/Test Split: CLOSED / PASS**
+> **Trạng thái hiện tại: Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS**
 >
+> - Phase 2F — Labeled/Unlabeled Construction: **CLOSED / PASS**
+> - Protocol identity: **2F-C0-R11 / 2.0.0**
+> - Labeled budgets: **1% / 5% / 10% / 20% = 34 / 171 / 343 / 685 ảnh**
+> - Nested labeled subsets: **PASS**
+> - Nested No Finding subsets: **PASS**
+> - Labeled/unlabeled disjointness and completeness: **PASS**
+> - Validation/test isolation: **PASS**
+> - Independent readback gates: **PASS**
+> - Deterministic reconstruction: **MATCH (4/4 budgets)**
 > - Phase 2E — Fixed Train/Validation/Test Split: **CLOSED / PASS**
 > - Fixed split created: **TRUE**
 > - Fixed split independently validated: **TRUE**
@@ -34,10 +43,88 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 > - Phase 1B — Annotation Quality: **PASS**
 > - Phase 1A — Dataset Overview: **PASS**
 > - Phase 0 — Setup Environment: **CORE PASS**
-> - Next phase: Phase 2F — Labeled/Unlabeled Construction: **NOT STARTED / NEXT**
+> - Next phase: Phase 2F.1 — Seed Protocol: **NOT STARTED / NEXT**
 >
-> Phase 2E đã khóa fixed split dùng chung cho downstream experiments. Dataset
-> **training-ready về mặt kỹ thuật**, nhưng training vẫn **chưa được phép**.
+> Phase 2F đã khóa membership labeled/unlabeled lồng nhau trong tập train của
+> Phase 2E. Dataset **training-ready về mặt kỹ thuật**, nhưng training vẫn
+> **chưa được phép** (`training_authorized=false`).
+
+## Trạng thái Phase 2F
+
+Phase 2F chỉ xây dựng labeled/unlabeled subsets từ 3.426 ảnh thuộc fixed train
+split. Validation và test không tham gia phân bổ membership và không được dùng
+làm nguồn pseudo-label. Tất cả budget sử dụng `partition_seed=42` theo chính
+sách `PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH`.
+
+| Budget | Labeled | Unlabeled | No Finding trong labeled | Repair moves | Thời gian |
+|---|---:|---:|---:|---:|---:|
+| 1% | 34 | 3.392 | 3 | 3 | 7,063 giây |
+| 5% | 171 | 3.255 | 17 | 7 | 130,437 giây |
+| 10% | 343 | 3.083 | 35 | 10 | 253,485 giây |
+| 20% | 685 | 2.741 | 70 | 26 | 1.255,344 giây |
+
+```text
+Protocol stage/version: 2F-C0-R11 / 2.0.0
+Active repair policy: ONE_FOR_ONE_EXHAUSTIVE_DETERMINISTIC
+Nested relation: 1pct subset_of 5pct subset_of 10pct subset_of 20pct
+Nested labeled subsets: PASS
+Nested No Finding subsets: PASS
+Class coverage: 14/14 ở mọi budget
+Labeled/unlabeled disjoint and complete: PASS
+Validation/test isolation: PASS
+Independent readback: PASS
+Repair moves total: 46
+Total construction elapsed: 1646.329 seconds
+Timing role: OBSERVABILITY_ONLY_NOT_SELECTION_CRITERION
+Phase 2F: CLOSED / PASS
+training_authorized: false
+```
+
+Objective repair duyệt exhaustively admissible one-for-one swap neighborhood và
+dừng tại **one-for-one local optimum** cho từng budget. Kết quả này không phải
+bằng chứng về global optimum; report ghi rõ `global_optimum_claimed=false`.
+Legacy two-for-two engine không được gọi trong active construction.
+
+SHA-256 của labeled `image_id` membership đã khóa:
+
+```text
+1pct:  c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071
+5pct:  c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b
+10pct: fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6
+20pct: 6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e
+```
+
+Deterministic reconstruction đã so sánh lại bảy nhóm trường cho từng budget:
+labeled membership checksum, labeled/unlabeled COCO checksum, labeled size,
+No Finding size, repair move count và integer objective cuối. Tất cả trường ở
+cả bốn budget đều khớp với official lock manifest (`MATCH`). Runtime timing
+không được so sánh vì chỉ phục vụ observability và tự nhiên có thể thay đổi giữa
+các lần chạy.
+
+Artifact chính thức của Phase 2F:
+
+```text
+scripts/02F_build_labeled_unlabeled.py
+configs/protocol/phase2F_labeled_unlabeled.yaml
+tests/test_phase2F_labeled_unlabeled_guardrails.py
+
+data/processed/coco/labeled_splits/instances_labeled_{1pct,5pct,10pct,20pct}.json
+data/processed/coco/unlabeled_splits/instances_unlabeled_{1pct,5pct,10pct,20pct}.json
+data/manifests/audit/phase2F_unlabeled_gt_audit.csv
+data/manifests/phase2F_partition_manifest.csv
+data/manifests/phase2F_lock_manifest.json
+data/manifests/phase2F_nested_split_check.json
+data/manifests/phase2F_leakage_check.json
+data/manifests/phase2F_seed_manifest.json
+
+reports/02F_labeled_unlabeled_validation_report.json
+reports/02F_labeled_unlabeled_log.json
+reports/02F_deterministic_reconstruction_check.json
+reports/02F_class_distribution.csv
+reports/02F_negative_distribution.csv
+reports/02F_repair_log.jsonl
+reports/02F_errors.csv
+```
 
 ## Trạng thái Phase 2E
 
@@ -305,8 +392,8 @@ Trình tự phase downstream:
 
 ```text
 Phase 2E: Fixed Train/Validation/Test Split — CLOSED / PASS
-Phase 2F: Labeled/Unlabeled Split for SSL
-Phase 2F.1: Seed Protocol — split_seed versus training_seed
+Phase 2F: Labeled/Unlabeled Split for SSL — CLOSED / PASS
+Phase 2F.1: Seed Protocol — split_seed versus training_seed — NEXT
 ```
 
 Việc đóng Phase 2D.1D không tự động cấp quyền training.
@@ -371,14 +458,27 @@ Training đã được phép.
   từng lần chạy.
 - Chỉ `instances_train.json` được dùng để xây dựng labeled/unlabeled subsets;
   validation và test không được tham gia phân bổ hoặc làm nguồn pseudo-label.
-- Training tiếp tục bị khóa sau khi Phase 2E đóng và chỉ được xem xét sau khi
-  labeled/unlabeled membership, seed protocol và training configuration ở các
-  phase tiếp theo đã được review.
+- Labeled membership của Phase 2F đã được checksum-lock và xác minh bằng
+  deterministic reconstruction; không được lấy mẫu lại theo từng experiment.
+- Bốn labeled subsets và các No Finding subsets tương ứng có quan hệ lồng nhau
+  `1pct ⊆ 5pct ⊆ 10pct ⊆ 20pct`; unlabeled set ở mỗi budget là phần bù chính
+  xác trong fixed train split.
+- Unlabeled COCO JSON không chứa annotations hoặc trường dẫn xuất từ ground
+  truth; audit không phát hiện GT exposure violation.
+- Kết luận local optimum chỉ áp dụng cho admissible one-for-one neighborhood;
+  không được diễn giải thành global optimum hoặc tối ưu trên mọi neighborhood.
+- Timing Phase 2F chỉ dùng để quan sát runtime, không tham gia seed, membership,
+  objective, acceptance, tie-break, checksum hay reconstruct comparison.
+- Training tiếp tục bị khóa sau khi Phase 2F đóng và chỉ được xem xét sau khi
+  seed protocol, training configuration và các authorization gate tiếp theo
+  đã được review.
 - Không chạy lại `--execute-full` nếu không có lý do kỹ thuật được ghi nhận và phê duyệt.
 - Không commit 4,894 JPG files vào ordinary Git.
 - Không thay đổi hoặc tái tạo fixed train/validation/test split đã khóa nếu
   không có change-control và lý do kỹ thuật được ghi nhận.
-- Không tạo labeled/unlabeled split hoặc bắt đầu training trước đúng phase.
+- Không tái tạo hoặc thay đổi labeled/unlabeled membership đã khóa nếu không có
+  change-control và lý do kỹ thuật được ghi nhận.
+- Không bắt đầu training khi `training_authorized=false`.
 
 ## Vai trò trong dự án
 

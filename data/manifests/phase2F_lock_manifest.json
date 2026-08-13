@@ -1,0 +1,81 @@
+{
+  "phase": "Phase 2F — Labeled/Unlabeled Construction",
+  "stage": "2F-C0-R11",
+  "protocol_version": "2.0.0",
+  "status": "LOCKED",
+  "partition_seed": 42,
+  "seed_policy": "PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH",
+  "active_repair_policy": "ONE_FOR_ONE_EXHAUSTIVE_DETERMINISTIC",
+  "per_budget_elapsed_seconds": {
+    "1pct": 7.062999999994645,
+    "5pct": 130.43700000000536,
+    "10pct": 253.48500000000058,
+    "20pct": 1255.3439999999973
+  },
+  "total_construction_elapsed_seconds": 1646.328999999998,
+  "timing_clock": "time.monotonic",
+  "timing_role": "OBSERVABILITY_ONLY_NOT_SELECTION_CRITERION",
+  "local_optimum_neighborhood": "one_for_one",
+  "global_optimum_claimed": false,
+  "labeled_size": {
+    "1pct": 34,
+    "5pct": 171,
+    "10pct": 343,
+    "20pct": 685
+  },
+  "no_finding_size": {
+    "1pct": 3,
+    "5pct": 17,
+    "10pct": 35,
+    "20pct": 70
+  },
+  "labeled_image_id_sha256": {
+    "1pct": "c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071",
+    "5pct": "c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b",
+    "10pct": "fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6",
+    "20pct": "6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e"
+  },
+  "coco_json_sha256": {
+    "labeled": {
+      "1pct": "1e267c547a8f535f6a69088da4735bd12c0188fae1b49e9d785b3e1e6883df98",
+      "5pct": "ebb98f32cad612fe48adbbd6b5da8aa5db10bec478d1c7fd9288a9a93bbc3763",
+      "10pct": "6814b5b9ba8dfcd4af483d97c1a6b7e7ab26914bdd02bbb923502b43ecf2fdf6",
+      "20pct": "6a8b5bf9c59baea41eefb0611e15a387257255b6fc59a3de607bfc2e80801a14"
+    },
+    "unlabeled": {
+      "1pct": "d2e1d0923f97ced05c1c4e319312d82d42e615defb55412d3c5e83e97486e3f5",
+      "5pct": "9b2c128a751a70db4c4680c0fd584cc34907bcda569567c3f9fb96af0722e387",
+      "10pct": "894c2de257cd5a33b60e00d782a5322a288f3d9a2b7c637ab29ad3419cce9260",
+      "20pct": "60699d361d86b61b66ad9c9553be555a23808adb53746cead0b190064df4d5bb"
+    }
+  },
+  "repair_move_counts": {
+    "1pct": 3,
+    "5pct": 7,
+    "10pct": 10,
+    "20pct": 26
+  },
+  "integer_objective_final": {
+    "1pct": [
+      1512,
+      11402,
+      1562
+    ],
+    "5pct": [
+      1674,
+      12651,
+      8259
+    ],
+    "10pct": [
+      1502,
+      12277,
+      3589
+    ],
+    "20pct": [
+      1555,
+      11109,
+      4201
+    ]
+  },
+  "train_coco_sha256": "0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3"
+}

@@ -7339,3 +7339,268 @@ training_authorized: false
 Phase 2F phải giữ nguyên `instances_val.json` và `instances_test.json`, đồng thời
 khóa identity/provenance của các tập labeled/unlabeled trước khi xem xét mở các
 gate huấn luyện tiếp theo.
+
+---
+
+## 2026-08-13 — PHASE 2F: Labeled/Unlabeled Construction
+
+### Mục tiêu
+
+Xây dựng và khóa bốn cặp labeled/unlabeled subsets lồng nhau từ fixed training
+split của Phase 2E, tương ứng với các ngân sách nhãn 1%, 5%, 10% và 20%.
+
+Phase này phải:
+
+* chỉ sử dụng `instances_train.json` làm universe phân bổ;
+* giữ nguyên `instances_val.json` và `instances_test.json`;
+* giữ `partition_seed=42`, không tìm kiếm seed;
+* đạt chính xác labeled-size và No Finding target;
+* giữ đủ 14/14 lớp trong mỗi labeled subset;
+* bảo đảm nested membership;
+* loại ground-truth annotations và các trường dẫn xuất bị cấm khỏi unlabeled
+  COCO JSON;
+* khóa checksum và provenance trước mọi downstream experiment;
+* không training, không tạo pseudo-label và không sử dụng test set.
+
+### Protocol chính thức
+
+```text
+stage: 2F-C0-R11
+protocol_version: 2.0.0
+partition_seed: 42
+seed_policy: PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH
+active_repair_policy: ONE_FOR_ONE_EXHAUSTIVE_DETERMINISTIC
+local_optimum_neighborhood: one_for_one
+global_optimum_claimed: false
+```
+
+Active construction đã khóa:
+
+```text
+iterative multilabel stratification
+→ exact-size repair
+→ exact-No-Finding repair
+→ minimum-class-coverage one-for-one repair
+→ deterministic exhaustive one-for-one objective repair
+→ one-for-one local optimum
+```
+
+Legacy two-for-two engine không được gọi trong active construction. Phạm vi
+kết luận được giới hạn ở one-for-one local optimum. Không tuyên bố global
+optimum hoặc tối ưu trên mọi neighborhood có thể có.
+
+### Guardrail verification
+
+Đã chạy:
+
+```text
+python -m pytest tests\test_phase2F_labeled_unlabeled_guardrails.py -v
+```
+
+Kết quả:
+
+```text
+183 passed
+15 subtests passed
+Elapsed: 27.57 seconds
+```
+
+Không có failed, error, skip hoặc xfail được báo trong output nghiên cứu cung
+cấp cho lần chạy này.
+
+### Official construction
+
+Đã chạy:
+
+```text
+python scripts\02F_build_labeled_unlabeled.py
+```
+
+Preflight xác nhận toàn bộ input, checksum, split identity, category mapping,
+disjointness, union và Phase 2E evidence đều PASS.
+
+Kết quả materialization:
+
+| Budget | Labeled | Unlabeled | No Finding trong labeled | Repair moves |
+|---|---:|---:|---:|---:|
+| 1% | 34 | 3.392 | 3 | 3 |
+| 5% | 171 | 3.255 | 17 | 7 |
+| 10% | 343 | 3.083 | 35 | 10 |
+| 20% | 685 | 2.741 | 70 | 26 |
+
+```text
+PREFLIGHT_GATE: PASS
+PHASE_2F_GATE: PASS
+Repair moves total: 46
+```
+
+Mọi budget đạt chính xác labeled-size target, No Finding target và class
+coverage 14/14. Objective-repair stage đã exhaust admissible one-for-one swap
+neighborhood và dừng tại one-for-one local optimum cho từng budget.
+
+### Nested membership và leakage/readback
+
+```text
+Nested relation: 1pct ⊆ 5pct ⊆ 10pct ⊆ 20pct
+Nested labeled subsets: PASS
+Nested No Finding subsets: PASS
+Labeled/unlabeled disjoint and complete: PASS
+Validation/test isolation: PASS
+Unlabeled GT exposure violations: []
+Independent readback gates: PASS
+```
+
+Unlabeled set của mỗi budget là phần bù chính xác của labeled set trong 3.426
+ảnh fixed train universe. Unlabeled COCO JSON không chứa annotations hoặc các
+trường dẫn xuất từ ground truth thuộc forbidden-field policy.
+
+### Membership identity đã khóa
+
+SHA-256 của canonical labeled `image_id` membership:
+
+```text
+1pct:  c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071
+5pct:  c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b
+10pct: fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6
+20pct: 6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e
+```
+
+### Runtime observability
+
+```text
+1pct: 7.063 seconds
+5pct: 130.437 seconds
+10pct: 253.485 seconds
+20pct: 1255.344 seconds
+Total construction: 1646.329 seconds
+Timing clock: time.monotonic
+Timing role: OBSERVABILITY_ONLY_NOT_SELECTION_CRITERION
+```
+
+Timing chỉ dùng để quan sát runtime. Timing không tham gia membership, seed,
+objective, acceptance, tie-break, checksum hoặc deterministic reconstruction
+comparison.
+
+### Deterministic reconstruction
+
+Sau official materialization, đã chạy:
+
+```text
+python scripts\02F_build_labeled_unlabeled.py --reconstruct-check
+```
+
+Kết quả:
+
+```text
+1pct: MATCH
+5pct: MATCH
+10pct: MATCH
+20pct: MATCH
+RECONSTRUCT_CHECK_STATUS: MATCH
+```
+
+Reconstruct-check đã so sánh ở từng budget:
+
+* labeled membership SHA-256;
+* labeled COCO JSON SHA-256;
+* unlabeled COCO JSON SHA-256;
+* labeled size;
+* No Finding size;
+* repair move counts;
+* integer objective cuối.
+
+Timing không nằm trong reconstruction comparison vì runtime tự nhiên có thể
+khác giữa các lần chạy.
+
+### Artifact chính thức
+
+Phase 2F đã promote 20 official artifacts sau khi independent validation PASS:
+
+```text
+data/processed/coco/labeled_splits/instances_labeled_1pct.json
+data/processed/coco/labeled_splits/instances_labeled_5pct.json
+data/processed/coco/labeled_splits/instances_labeled_10pct.json
+data/processed/coco/labeled_splits/instances_labeled_20pct.json
+data/processed/coco/unlabeled_splits/instances_unlabeled_1pct.json
+data/processed/coco/unlabeled_splits/instances_unlabeled_5pct.json
+data/processed/coco/unlabeled_splits/instances_unlabeled_10pct.json
+data/processed/coco/unlabeled_splits/instances_unlabeled_20pct.json
+data/manifests/audit/phase2F_unlabeled_gt_audit.csv
+data/manifests/phase2F_partition_manifest.csv
+data/manifests/phase2F_lock_manifest.json
+data/manifests/phase2F_nested_split_check.json
+data/manifests/phase2F_leakage_check.json
+data/manifests/phase2F_seed_manifest.json
+reports/02F_labeled_unlabeled_validation_report.json
+reports/02F_labeled_unlabeled_log.json
+reports/02F_class_distribution.csv
+reports/02F_negative_distribution.csv
+reports/02F_repair_log.jsonl
+reports/02F_errors.csv
+```
+
+Reconstruction evidence được ghi riêng tại:
+
+```text
+reports/02F_deterministic_reconstruction_check.json
+```
+
+Official materialization sử dụng staging, refuse-overwrite, independent
+readback và transactional rollback; không promote partial artifacts khi
+construction hoặc validation thất bại.
+
+### Evidence đã review
+
+```text
+configs/protocol/phase2F_labeled_unlabeled.yaml
+scripts/02F_build_labeled_unlabeled.py
+tests/test_phase2F_labeled_unlabeled_guardrails.py
+data/manifests/phase2F_lock_manifest.json
+data/manifests/phase2F_nested_split_check.json
+data/manifests/phase2F_leakage_check.json
+reports/02F_labeled_unlabeled_validation_report.json
+reports/02F_labeled_unlabeled_log.json
+reports/02F_deterministic_reconstruction_check.json
+```
+
+### Review decision và giới hạn diễn giải
+
+```text
+Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS
+Nested membership: LOCKED / PASS
+Deterministic reconstruction: MATCH
+Training authorized: FALSE
+```
+
+Phase 2F PASS chứng minh artifact integrity, locked membership, các ràng buộc
+đã khai báo và khả năng deterministic reconstruction trong phạm vi các trường
+được so sánh. Kết quả không chứng minh labeled subsets là global optimum,
+không chứng minh hiệu năng detector và không cấp quyền training.
+
+### Forbidden actions confirmed
+
+```text
+No train/validation/test resplit.
+No partition-seed search.
+No validation/test participation in membership construction.
+No supervised training started.
+No SSL training started.
+No pseudo-label generated.
+No threshold tuned.
+No AP/mAP computed.
+No test set used.
+```
+
+### Handoff
+
+```text
+Current completed phase: Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS
+Next phase: Phase 2F.1 — Seed Protocol
+Status: NOT STARTED / NEXT
+partition_seed: 42 / LOCKED / MUST NOT CHANGE
+training_authorized: false
+```
+
+Phase 2F.1 phải phân biệt rõ partition seed đã khóa với training seed. Việc
+xác định training-seed policy không được thay đổi fixed train/validation/test
+split hoặc bất kỳ labeled/unlabeled membership nào đã khóa ở Phase 2F.

@@ -1,0 +1,7 @@
+{
+  "phase": "2F-C0-R11",
+  "protocol_version": "2.0.0",
+  "status": "PASS",
+  "val_test_isolation_pass": true,
+  "labeled_unlabeled_disjoint_and_complete_pass": true
+}

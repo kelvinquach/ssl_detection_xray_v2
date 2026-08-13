@@ -1,0 +1,1292 @@
+# Phase 2F — Labeled/Unlabeled Construction — LOCKED PROTOCOL
+#
+# =========================== ACTIVE PROTOCOL (R11) ========================== #
+#
+# Revision: R11 (protocol simplification -- a real scientific scope change,
+# hence the MAJOR version bump to 2.0.0). The ACTIVE construction protocol is
+# now, in this exact order:
+#
+#   iterative multilabel stratification
+#   -> exact-size repair
+#   -> exact-No-Finding repair
+#   -> minimum-class-coverage ONE-FOR-ONE repair
+#   -> deterministic ONE-FOR-ONE objective repair
+#   -> stop at a ONE-FOR-ONE LOCAL OPTIMUM
+#   -> validation
+#   -> transactional promotion
+#
+# ACTIVE CLAIMS (the complete list -- nothing beyond these is claimed):
+#   - the ACTIVE objective neighborhood is the EXHAUSTIVE one-for-one swap
+#     neighborhood: every admissible (selected, addable-pool) pair of equal
+#     zero_gt status is enumerated on every iteration, with no top-k, no
+#     sampling, no early cut-off and no heuristic pruning;
+#   - termination is a ONE-FOR-ONE LOCAL OPTIMUM, and reaching it is a
+#     SUCCESSFUL result (RepairOutcome.OK) -- never COMPUTATIONAL_ABORT,
+#     never REPAIR_INFEASIBLE;
+#   - NO GLOBAL OPTIMUM IS CLAIMED, at any budget, under any circumstances.
+#
+# WHY THE TWO-FOR-TWO NEIGHBORHOOD WAS REMOVED FROM THE ACTIVE PROTOCOL:
+# computational tractability and proportionality, nothing else. A real,
+# non-promoting R9 operational-benchmark run (partition_seed=42, budget 1pct)
+# reached only 24,849,751 of 102,347,037 Phase-1 signature transitions
+# (R=303, A=337,779) in 591.922 s and ended in COMPUTATIONAL_ABORT with
+# two_for_two_move_count=0. A static audit of that run established that at
+# the moment the engine was first invoked, EVERY hard constraint was already
+# satisfied -- exact labeled size 34, exact No-Finding size 3, subset
+# entirely inside Phase 2E TRAIN, selected/unlabeled complement semantics,
+# no VAL/TEST data used for construction, all 14 abnormality classes
+# present, seed=42, no seed search -- and that the invocation occurred in
+# `objective_repair` only AFTER the one-for-one neighborhood had already
+# been exhausted. It was therefore OPTIONAL objective refinement, never
+# required hard-constraint repair. Spending that compute to search for one
+# further optional improvement on a 34-image subset is disproportionate.
+#
+# DECISION HYGIENE (recorded so it can be published verbatim): the decision
+# was made BEFORE any training, BEFORE any pseudo-labelling, WITHOUT model
+# metrics, WITHOUT VAL/TEST outcome selection, WITHOUT comparing candidate
+# partitions, and WITHOUT any seed search. partition_seed remains 42 and
+# seed_search_forbidden remains true, unconditionally.
+#
+# EVIDENCE PRESERVATION: reports/02F_two_for_two_operational_benchmark.json
+# (R7), ..._R8.json and ..._R9.json remain HISTORICAL EVIDENCE of their own
+# runs. R11 does not delete, overwrite, re-interpret or invalidate any of
+# them; it only stops treating the neighborhood they measured as part of the
+# active protocol.
+#
+# WHAT R11 REMOVED FROM ACTIVE STATUS (see legacy_two_for_two_engine below,
+# which is retained ONLY as a historical record and for the retained legacy
+# unit tests):
+#   - "exhaustive two-for-two search";
+#   - "two-for-two local optimum";
+#   - "mathematical completeness over the two-for-two neighborhood";
+#   - "operational tractability approval for two-for-two" (the
+#     operationally_approved gate no longer gates anything: active
+#     construction does not depend on it, and it was NOT flipped to true --
+#     compute_all_budgets now enforces repair.active_repair_policy instead);
+#   - the entire R10 hot-path-profiler mode, its CLI flags
+#     (--profile-two-for-two-hotpath / --profile-max-seconds) and its config
+#     block. It was never finished and never produced a report.
+#
+# LOCKED DECISIONS UNCHANGED BY R11: partition_seed=42;
+# PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH; budgets 1/5/10/20%; nested
+# small-to-large subsets; exact labeled-size targets; exact No-Finding
+# targets; TRAIN-only construction; fixed VAL/TEST; minimum coverage of all
+# 14 classes; exact integer lexicographic objective; strictly-improving
+# moves only; deterministic namespaced SHA-256 tie-break; canonical numeric
+# fallback; transactional staging/readback/promotion/rollback;
+# training_authorized=false; no training; no pseudo-labelling; no test use.
+#
+# ===================== HISTORICAL REVISION NOTES (R2-R10) ================== #
+# Everything below this line is a historical record of past static-review
+# cycles. It is NOT a description of the active protocol. Where a historical
+# note asserts a two-for-two claim, that claim is superseded by the ACTIVE
+# PROTOCOL section above.
+#
+# Revision: R10 (measurement instrumentation only -- NOT a scientific
+# algorithm change, NOT an optimization). Motivated by a real R9 benchmark
+# run that still ended in COMPUTATIONAL_ABORT at budget 1pct after 600s
+# (R=303, A=337,779, phase1_transition_count=102,347,037,
+# phase1_transitions_evaluated=24,849,751, elapsed_seconds=591.922,
+# observed_throughput~=41,981 transitions/second, progress~=24.28%). R9
+# processed more transitions than R8 in these two single benchmark runs;
+# this is not treated as a stable causal speedup estimate. A linear R9
+# extrapolation suggests ~40.6 minutes for one full Phase-1 pass (estimate,
+# not a measured completion time, and excludes Phase 2/resumption).
+# Adds a NEW, mutually-exclusive CLI mode (--profile-two-for-two-hotpath,
+# requiring --profile-max-seconds) that reproduces the real locked
+# reference invocation (budget=1pct, repair_phase=objective_repair,
+# locked=empty since 1pct has no nested parent) via build_budget_step (the
+# SAME production primitive the official run and the R7 benchmark both
+# use -- never re-implemented), then measures it via:
+#   - Layer A: coarse (bounded-phase, never per-transition) wall-clock
+#     timers around preflight, indicator construction, stratification,
+#     each repair phase, equivalence-class/removed-pair/added-pair
+#     construction, R9 aggregate precomputation, and the real engine
+#     invocation's own diagnostics (phase1_transitions_evaluated,
+#     throughput, percent-of-theoretical-complete, watchdog ticks,
+#     deadline status);
+#   - Layer B: ONE bounded, deterministic-PREFIX (never random/seed-
+#     searched) microbenchmark, reusing the real precomputed aggregate
+#     matrices and the real accept_and_rank closure as ground truth, run
+#     ONCE immediately after the R9 precompute and BEFORE the real Phase-1
+#     search begins (so it never competes with or depends on the real
+#     search's remaining deadline budget). Component isolation via
+#     separate cumulative passes over the same fixed prefix, never nested
+#     per-operation timers inside one combined loop. Every hand-computed
+#     component is cross-checked against the real accept_and_rank closure's
+#     own decisions; any disagreement is a hard fail
+#     (PROFILE_SEMANTIC_EQUIVALENCE_FAILURE), never silently ignored.
+# Implementation: two new, purely-additive, default-None keyword
+# parameters (`phase_timing`, `hotpath_profile`) threaded through
+# build_budget_step -> repair_objective_local_search ->
+# _equivalence_class_two_for_two_search. Every existing caller (the
+# official run, --reconstruct-check, --benchmark-two-for-two, and every
+# pre-R10 test) never passes these parameters, so their behavior, return
+# values, and diagnostics dict contents are BYTE-IDENTICAL to R9 -- see
+# TestR9AddedPairPrecompute and every other pre-R10 guardrail class, which
+# remain unmodified and passing. A fail-closed PROFILE_INVOCATION_IDENTITY_
+# MISMATCH check (inside the engine, for R/A/signature-count fields, and in
+# run_two_for_two_hotpath_profile itself, for the "engine never invoked"
+# case) runs BEFORE the Layer-B microbenchmark, comparing the real,
+# freshly-recomputed invocation against
+# two_for_two_hotpath_profiler.expected_invocation_identity below (the
+# locked R9 evidence numbers) -- a real-data invocation that has drifted
+# from that evidence is never silently profiled as if it matched.
+# CLAIM DISCIPLINE (explicit): this revision does NOT claim this round's
+# measurements will match the R9 evidence exactly outside the exact
+# machine/run conditions recorded in the report, does NOT claim the
+# deterministic-prefix microbenchmark is representative of the complete
+# R*A space, does NOT claim any suspected hotspot is proven before
+# measurement, does NOT claim memoization/vectorization/a Python-integer
+# representation will solve tractability, and does NOT claim profiler
+# completion implies engine approval -- operationally_approved and
+# training_authorized remain false, untouched by this revision.
+# two_for_two_engine.same_composition_algorithm (R9's precompute-hoisted
+# implementation) remains the active production engine being profiled;
+# this revision adds instrumentation only.
+#
+# Revision: R9 (static-audit-driven performance fix, implementing exactly
+# ONE optimization identified by the R8 static performance audit -- the
+# audit itself performed no execution and made no speedup claims).
+# Evidence that motivated this round: a real R8 benchmark run at budget
+# 1pct (COMPUTATIONAL_ABORT after 600s; R=303, A=337,779,
+# phase1_transition_count=102,347,037) plus a static source trace
+# confirming _stream_best_prefix_above reconstructed the ADDED-pair vector
+# via _signature_vector on every single (removed_pair, added_pair)
+# combination, even though that vector depends ONLY on the added pair,
+# never on the removed pair -- structurally certain redundant work.
+# Fixed by:
+#   - precomputing each ADDED signature pair's aggregate vector and sum
+#     EXACTLY ONCE per engine call (before the R x A loop), read via index
+#     lookup inside the loop instead of reconstructed on every (removed,
+#     added) combination; and hoisting the REMOVED pair's vector-sum out
+#     of the inner A loop (computed once per removed pair, not once per
+#     transition) -- both are pure loop-invariant-code-motion refactors,
+#     mathematically and bit-for-bit identical to the pre-R9 computation;
+#   - a contiguous (A, 14) int64 ndarray for the added-pair aggregates
+#     (never a Python list/dict of hundreds of thousands of individual
+#     ndarray objects), built from a small per-DISTINCT-signature base-
+#     vector table (p rows, p = pool_distinct_signature_count, not A);
+#   - the SAME bounded periodic deadline check (_tick_watchdog, same
+#     TWO_FOR_TWO_DEADLINE_WATCHDOG_INTERVAL, unchanged) now also covers
+#     the precompute loop itself, WITHOUT incrementing
+#     phase1_transitions_evaluated -- a deadline expiry during precompute
+#     is classified as an abort with phase1_transitions_evaluated=0
+#     (correctly: no logical R x A transition was ever evaluated yet),
+#     never a false COMPLETED/EXHAUSTED claim;
+#   - traversal order (removed_pairs outer, added_pairs inner), hard-
+#     constraint/objective/tie-break/acceptance semantics, Phase-2
+#     enumeration, and every other scientific decision are completely
+#     UNCHANGED -- proven via a dedicated TEST-ONLY reproduction of the
+#     exact pre-R9 (R8) algorithm compared bit-for-bit against the
+#     optimized production engine, including a full-sequence traversal-
+#     order comparison, not just final-output equality;
+#   - operationally_approved=false, training_authorized=false,
+#     partition_seed=42, budgets, nested policy, and every locked
+#     scientific decision are unchanged;
+#   - the R7 and R8 operational benchmark reports are PRESERVED unchanged;
+#     this round writes a NEW, distinct report path
+#     (reports/02F_two_for_two_operational_benchmark_R9.json) and records
+#     R8's report as the evidence it supersedes for approval purposes
+#     (NOT as invalid -- R8 remains valid historical evidence of its own
+#     run, exactly like R7 before it).
+# CLAIM DISCIPLINE (explicit, per this round's own instructions): this
+# revision does NOT claim the optimization makes the real 1pct benchmark
+# complete, and does NOT predict a speedup percentage from static
+# reasoning. What is claimed: (1) the structurally-certain redundant
+# _signature_vector reconstruction identified by the R8 audit has been
+# removed per the source; (2) scientific search semantics are unchanged
+# IF AND ONLY IF the regression/oracle-equivalence tests in
+# TestR9AddedPairPrecompute pass; (3) any actual operational speedup must
+# be measured empirically by a fresh R9 benchmark run, not asserted here.
+# See tests/test_phase2F_labeled_unlabeled_guardrails.py's
+# TestR9AddedPairPrecompute.
+#
+# Revision: R8 (production scientific-neighborhood-semantics fix,
+# discovered via a real R7 benchmark run). At BOTH production call sites
+# (repair_min_class_coverage, repair_objective_local_search),
+# _equivalence_class_two_for_two_search's `pool` argument was the RAW
+# new_region_pool (still containing `selected`) instead of the correct
+# addable-only complement new_region_pool - selected -- the one-for-one
+# branch in both functions already computed this correctly, proving the
+# defect was isolated to the two-for-two call sites only. This let an
+# image be simultaneously a removable (selected) and addable (pool)
+# candidate for the same move, which must never happen (locked semantics:
+# selected ∩ addable_pool = ∅). Evidence: a real 1pct-budget benchmark run
+# reported selected_abnormal_count=31 and pool_abnormal_count=3076 (~the
+# entire train abnormal population, not just the addable complement),
+# proving the addable pool was contaminated with images that were
+# simultaneously on the removed side, and that the concrete addable
+# candidate universe was wrong. The run reached COMPUTATIONAL_ABORT after
+# 600 seconds with a reported phase1_transition_count of 103,846,887 --
+# but Phase 1 counts DISTINCT SIGNATURE PAIRS, not raw pool size, so the
+# actual effect of this contamination on R (removed-pair signature count),
+# A (added-pair signature count), and phase1_transition_count is NOT
+# inferred from the R7 report; it must be measured empirically by a fresh
+# R8 benchmark run against the corrected neighborhood.
+# Fixed by:
+#   - passing new_region_pool - selected (not new_region_pool) to the
+#     engine at both production call sites, matching the one-for-one
+#     branches' existing pattern exactly;
+#   - adding fail-closed defense-in-depth INSIDE
+#     _equivalence_class_two_for_two_search: selected/pool overlap, and
+#     locked/selected or locked/pool overlap, now raise
+#     Phase2FError(..., "PROTOCOL_VIOLATION") immediately, before any
+#     search work begins -- never silently auto-subtracted/canonicalized,
+#     so a future caller regression is surfaced loudly instead of masked;
+#   - pool_abnormal_count and all other pool-derived diagnostics are
+#     automatically correct once the `pool` argument itself is correct (no
+#     separate diagnostics-only fix was needed or made);
+#   - the R7 operational benchmark report
+#     (reports/02F_two_for_two_operational_benchmark.json) is PRESERVED
+#     unchanged -- it remains valid historical evidence of the R7 run, but
+#     is no longer eligible for the operational-approval decision because
+#     it ran against the overlap-defective neighborhood implementation.
+#     Any future benchmark re-run must write to a distinct, versioned
+#     report path (see operational_benchmark.report_path and
+#     operational_benchmark.superseded_evidence_path below) and must never
+#     overwrite the R7 file;
+#   - no algorithm change beyond restoring the correct, always-intended
+#     locked neighborhood semantics -- budgets, NF/nested targets,
+#     objective/tie-break rules, operationally_approved, training_
+#     authorized, and partition_seed are all unchanged by this revision.
+# See tests/test_phase2F_labeled_unlabeled_guardrails.py's
+# TestTwoForTwoDisjointNeighborhoodInvariant.
+#
+# Revision: R7 (operational benchmark mode). Adds a NON-PROMOTING
+# operational benchmark of the two-for-two repair engine
+# (--benchmark-two-for-two) so the researcher can measure empirical
+# operational tractability on the REAL 3,426-image instances_train.json
+# before deciding two_for_two_engine.operationally_approved. This is NOT
+# full materialization and NOT a partition-creation step:
+#   - it reuses the exact production per-budget construction primitive
+#     (build_budget_step) so the membership/repair/objective algorithm is
+#     never copied or re-implemented;
+#   - it is the ONLY call path allowed to reach build_budget_step while
+#     two_for_two_engine.operationally_approved=false -- compute_all_
+#     budgets's unconditional approval gate (shared by the official run
+#     AND --reconstruct-check) is completely unchanged;
+#   - each budget gets its OWN fresh wall-clock deadline
+#     (time.monotonic() + benchmark_max_seconds_per_budget), reset at the
+#     start of every budget -- never one global deadline that lets an
+#     early budget consume a later budget's time;
+#   - it never writes official labeled/unlabeled COCO, never writes the
+#     official lock manifest, never calls write_all_outputs_and_promote or
+#     promote_with_rollback -- the ONLY file it may write is
+#     reports/02F_two_for_two_operational_benchmark.json (see
+#     operational_benchmark block below), and it refuses to overwrite that
+#     report if it already exists;
+#   - completing a benchmark run (even overall_status=COMPLETED) is
+#     explicitly NOT an operational-approval decision
+#     (operational_approval_decision=false is always recorded in the
+#     report) and is never printed as PHASE_2F_GATE=PASS.
+# See operational_benchmark: below for the full config contract.
+#
+# Revision: R6 (fifth GPT static review — REVISION REQUIRED, applied).
+# Fixes four blockers left open by R5 (R5-B1..R5-B4):
+#   - R5-B1 (image_ids_within_universe was computed but excluded from
+#     _STRUCTURAL_CRASH_RISK_CHECK_NAMES, so a staged out-of-universe id
+#     could leave struct["ok"]=True and later crash the nested No-Finding
+#     computation with KeyError on locked_image_id_to_position): fixed --
+#     image_ids_within_universe is now a crash-risk prerequisite, AND the
+#     nested No-Finding loop itself now does a separate, defense-in-depth,
+#     fail-closed membership check before any dict lookup keyed by a staged
+#     id, never silently dropping an invalid id and computing over the rest;
+#   - R5-B2 (a diagnostics record was only appended to the log AFTER the
+#     engine returned normally, so a DeadlineExceeded-raising invocation --
+#     precisely the highest-resource-risk one -- left no evidence at all):
+#     fixed -- callers now append a "started" placeholder record to the log
+#     BEFORE invoking the engine, and the engine mutates that exact object
+#     in place (including finalizing it to status="aborted" with every
+#     counter known at that moment, nullable-not-zero for the rest) right
+#     before re-raising DeadlineExceeded unchanged;
+#   - R5-B3 (the deadline watchdog only polled every 1024 candidates
+#     inside the search loops, so an invocation with fewer candidates than
+#     that, or one that expired in the gap after the last candidate but
+#     before returning, could complete undetected past the deadline): fixed
+#     -- _check_deadline is now ALSO called once at function entry and once
+#     immediately before every normal return path (trivial early-exit,
+#     exhausted, completed), as boundary checks layered on top of the
+#     existing in-loop watchdog, never a candidate cap;
+#   - R5-B4 (the "timeout does not promote" test only checked that
+#     compute_all_budgets's per-budget loop stopped, never that
+#     write_all_outputs_and_promote was actually never called): fixed with
+#     an orchestration-level test that patches write_all_outputs_and_promote
+#     and asserts it is never invoked when construction reports
+#     COMPUTATIONAL_ABORT.
+#
+# Revision: R5 (fourth GPT static review — REVISION REQUIRED, applied).
+# Fixes five blockers left open by R4 (R4-B1..R4-B5):
+#   - R4-B1 (independently_validate_staging() called build_indicators() on
+#     STAGED, possibly-corrupted data before any structural validation, so a
+#     corrupted staged file could crash readback with Phase2FError instead
+#     of producing a FAIL gate): fixed with a strict structural-validation-
+#     first pipeline (_safe_validate_staged_coco_structure /
+#     _safe_rebuild_staged_indicators) -- structural prerequisites are
+#     checked with functions that NEVER raise, and build_indicators()-
+#     equivalent semantic reconstruction is only attempted after they pass;
+#   - R4-B2 (Phase 2 complexity was mis-described as
+#     O(max equivalence-class size^2)): corrected everywhere (this file,
+#     script comments, preflight/report fields) to the precise formula
+#     Phase 1 = O(R*A), Phase 2 = O(sum over tied-best transitions w of
+#     C_out(w)*C_in(w)), Total = O(R*A + that sum), worst case still
+#     O(S^2*P^2). mathematical_completeness, empirical_operational_
+#     tractability, and operational_approval are now three explicitly
+#     distinct, separately labeled concepts (see two_for_two_engine below);
+#   - R4-B3 (the engine never checked a deadline internally, only the
+#     caller checked once before invoking it): fixed -- the engine now takes
+#     a `deadline` parameter and checks it inside both Phase 1 and Phase 2
+#     enumeration via a named watchdog check-interval constant (a resource-
+#     cutoff check FREQUENCY only, never a candidate cap, never altering
+#     results when deadline=None);
+#   - R4-B4 (Phase 1 stored every accepted signature transition in a list
+#     then sorted it, O(R*A) memory): fixed with a streaming best-prefix
+#     search (best_prefix / tied_best_transitions), O(|W|) auxiliary memory;
+#   - R4-B5 (preflight diagnostics -- 3 fields -- were insufficient for an
+#     operational-approval decision): expanded with full-train distribution
+#     diagnostics (min/max/mean/median/histogram of equivalence-class sizes,
+#     possible pair-signature counts, theoretical concrete-pair/Phase-1
+#     transition upper bounds, all with explicit non-representativeness/
+#     non-auto-approval/no-seed-selection caveats) and a new per-invocation
+#     runtime diagnostics contract recorded into evidence once the engine is
+#     approved and actually runs.
+# two_for_two_engine.operationally_approved remains false, unconditionally,
+# and is not touched by this revision; --max-seconds is never grounds for
+# self-approval.
+#
+# Revision: R4 (third GPT static review — REVISION REQUIRED, applied).
+# Changes from R3 (fixes blockers R3-B1 and R3-B2):
+#   - R3-B2 (independent readback did not compare exact labeled/unlabeled
+#     image-record PAYLOAD, only annotation-level content): fixed.
+#     independently_validate_staging now performs full semantic-payload
+#     comparison of images, categories, and top-level fields against a
+#     fresh re-read of the exact expected subset of instances_train.json,
+#     plus explicit duplicate-id and out-of-universe-id rejection gates.
+#     Never relies on staged-file/staged-lock-manifest self-consistency;
+#   - R3-B1 (same-composition two-for-two exhaustive at O(|selected|^2 *
+#     |pool|^2), infeasible at real scale): addressed with an exact
+#     equivalence-class signature search
+#     (_equivalence_class_two_for_two_search), mathematically PROVEN
+#     equivalent to exhaustive concrete enumeration on every tier of the
+#     locked acceptance ordering. Worst-case complexity is not proven
+#     better than brute force, so the engine is gated behind
+#     `two_for_two_engine.operationally_approved` (a locked, false-by-
+#     default researcher/GPT decision field); construction refuses closed
+#     with taxonomy TWO_FOR_TWO_ENGINE_NOT_OPERATIONALLY_APPROVED before
+#     starting any search while unapproved. Preflight surfaces the engine's
+#     status as informational fields (not part of PASS/FAIL) plus
+#     real-instances_train.json complexity diagnostics to inform the
+#     approval decision.
+#
+# Revision: R3 (second GPT static review — REVISION REQUIRED, applied).
+# Changes from R2:
+#   - iterative-stratification is version-locked to exactly 0.1.9, checked
+#     at runtime via importlib.metadata (never __version__/pkg_resources),
+#     fail-closed on mismatch/absence; version recorded in the validation
+#     report and the seed manifest;
+#   - --reconstruct-check now compares ALL fields in
+#     deterministic_reconstruction_mode.compared_fields (labeled AND
+#     unlabeled coco_json_sha256 added; every listed field is validated at
+#     runtime to have an implemented check, hard FAIL otherwise);
+#   - independent readback is now fully independent of any in-memory
+#     construction object: it re-reads instances_train.json and the STAGED
+#     phase2F_lock_manifest.json from disk, rebuilds zero-GT/coverage from
+#     the staged labeled COCO's own annotations, and verifies exact
+#     annotation ID-set/count/payload checksum against the locked-train
+#     subset, so any added/removed/modified annotation fails the gate;
+#   - minimum_class_coverage's progress rule is named
+#     STRICTLY_REDUCE_MISSING_CLASS_COUNT_BY_AT_LEAST_ONE and candidate
+#     ranking now prioritizes missing_count_after ahead of the integer
+#     objective;
+#   - the two-for-two mixed-composition branch is proven redundant with
+#     one-for-one (NF images contribute an all-zero labels14 row) and is no
+#     longer separately enumerated. The same-composition branch's
+#     O(|selected|^2*|pool|^2) exhaustive complexity is UNCHANGED and
+#     explicitly BLOCKED in this revision -- no complete polynomial pruning
+#     was found or proven; see scripts/02F_build_labeled_unlabeled.py's
+#     comment above _two_for_two_candidates and the R3 handoff for the full
+#     analysis and options. This is a known, disclosed limitation, not a
+#     silent gap.
+#
+# Revision: R2 (GPT static review — REVISION REQUIRED, applied).
+# Changes from R1: corrected canonical Phase 2E report file names; objective
+# restricted to the 14 abnormal class-presence indicators (zero_gt excluded
+# from D_max/D_mean, used only for stratification + the exact-No-Finding
+# hard constraint); D_mean redefined as mean ABSOLUTE deviation, not squared;
+# selection/repair ranking now uses an EXACT INTEGER tuple (E_max, E_mean,
+# E_LC), Fraction reserved for reporting/oracle only; added an
+# objective-repair local-search phase after exact size/NF/coverage are
+# satisfied; two-for-two neighborhood widened to both same-composition and
+# mixed-composition swaps; tie-break replaced with three canonical
+# namespaced SHA-256 payloads; preflight, independent readback, and required
+# evidence substantially expanded; added a non-promoting deterministic
+# reconstruction/readback mode.
+#
+# This file is the single configuration-driven source of protocol parameters
+# for scripts/02F_build_labeled_unlabeled.py. The script MUST read these
+# values at runtime; it must not hard-code image_id membership, expected
+# checksums, expected repair-move counts, expected distribution metrics, or
+# any other output-specific value that the script itself has not yet
+# produced. The `locked_reference_targets` block below is a defensive
+# cross-check only (pre-specified design targets, computed by round-half-up
+# on the already-checksum-locked Phase 2E train split) — the script must
+# still recompute these figures independently from instances_train.json at
+# runtime and FAIL loudly if the recomputed value disagrees with the
+# reference below. It must never select image_id membership by trusting
+# this block directly.
+#
+# Claude may not edit the numeric/policy values in this file. Any change
+# requires an explicit researcher decision recorded in PHASE_HANDOFF.md /
+# research_log.md.
+
+protocol:
+  name: "Phase 2F — Labeled/Unlabeled Construction"
+  phase_id: "2F"
+  stage: "2F-C0-R11"
+  # MAJOR bump: R11 removes the two-for-two neighborhood from the ACTIVE
+  # final construction protocol. This is a scientific scope change, not a
+  # refactor or an instrumentation round.
+  version: "2.0.0"
+  research_topic: >-
+    Nghien cuu hoc ban giam sat cho do tim bat thuong tren X-quang phoi
+    (Semi-Supervised Object Detection tren VinBigData Chest X-ray)
+
+seed:
+  partition_seed: 42
+  seed_policy: PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH
+  seed_search_forbidden: true
+
+dependencies:
+  iterative_stratification:
+    package_name: iterative-stratification
+    import_name: iterstrat
+    required_version: "0.1.9"
+    version_check_method: importlib.metadata.version
+    note: >-
+      Runtime (run_preflight and compute_all_budgets, which backs both the
+      official run and --reconstruct-check) MUST read the installed version
+      via importlib.metadata ONLY -- never a __version__ attribute, never
+      pkg_resources -- and FAIL CLOSED (DEPENDENCY_VERSION_MISMATCH /
+      NOT_INSTALLED) if it differs from required_version at all, including
+      a patch-level difference. The resolved version string is recorded
+      verbatim in the validation report and in phase2F_seed_manifest.json.
+
+inputs:
+  train_coco: data/processed/coco/instances_train.json
+  val_coco: data/processed/coco/instances_val.json
+  test_coco: data/processed/coco/instances_test.json
+  split_lock_manifest: data/manifests/split_lock_manifest.json
+  leakage_check_report: data/manifests/leakage_check_report.json
+  # Corrected per GPT static review: the actual canonical Phase 2E evidence
+  # files in this repo use the `phase2E_` prefix, not `02E_`.
+  phase2e_validation_report: reports/phase2E_build_fixed_split_validation_report.json
+  phase2e_log_report: reports/phase2E_build_fixed_split_log.json
+
+# Phase 2E locked evidence. Used only to validate that Phase 2E inputs have
+# not drifted before Phase 2F samples from instances_train.json. Phase 2F
+# must never modify or regenerate these Phase 2E artifacts.
+locked_phase2e_reference:
+  total_images: 4894
+  total_annotations: 36096
+  total_categories: 14
+  split_sizes:
+    train: 3426
+    val: 734
+    test: 734
+  annotation_sizes:
+    train: 25260
+    val: 5399
+    test: 5437
+  no_finding_sizes:
+    train: 350
+    val: 75
+    test: 75
+  image_id_sha256:
+    train: 628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a
+    val: 87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6
+    test: 1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37
+  coco_json_sha256:
+    train: 0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3
+    val: 33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a
+    test: e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4
+  # image_id_sha256 above uses Phase 2E's own convention (sort key = str(id),
+  # LF join, UTF-8, SHA-256) — see scripts/02E_build_fixed_split.py
+  # sha256_image_ids(). Phase 2F's OWN membership checksum (below, under
+  # `checksum`) is a DIFFERENT, independently locked convention
+  # (validate-integer + numeric ascending sort). Do not conflate the two.
+
+preflight_required_checks:
+  checks:
+    - phase2e_canonical_reports_exist
+    - exact_image_counts_per_split
+    - exact_annotation_counts_per_split
+    - exact_no_finding_counts_per_split
+    - identical_category_id_and_name_mapping_across_splits
+    - image_overlap_zero_across_all_split_pairs
+    - annotation_id_overlap_zero_across_all_split_pairs
+    - image_union_identity_and_count
+    - annotation_union_identity_and_count
+    - split_lock_manifest_status_and_reference_match
+    - leakage_check_report_status_pass_and_reference_match
+    - train_val_test_coco_json_sha256
+    - phase2e_image_id_sha256
+  note: >-
+    training_authorized is a researcher/GPT policy decision recorded in
+    prose documents (PHASE_HANDOFF.md, PROJECT_CONTEXT.md, README.md), not a
+    structured, schema-guaranteed machine-checkable field. Preflight must
+    not fabricate a PASS check for it; it must report
+    POLICY_EVIDENCE_NOT_MACHINE_READABLE as an informational field, separate
+    from the PASS/FAIL check list, and must never let that field silently
+    count as PASS.
+
+sampling:
+  universe: train_only
+  universe_source: instances_train.json
+  unit: image_id
+  budgets_percent: [1, 5, 10, 20]
+  budget_order: [1pct, 5pct, 10pct, 20pct]
+  rounding: round_half_up
+  construction_order: small_to_large
+  nested: true
+  nested_relation: "L1pct subset_of L5pct subset_of L10pct subset_of L20pct"
+  nested_no_finding_relation: "NF(L1pct) subset_of NF(L5pct) subset_of NF(L10pct) subset_of NF(L20pct)"
+
+# Defensive cross-check only (see header note). The script recomputes these
+# independently every run from instances_train.json and FAILS if the
+# recomputed values disagree.
+locked_reference_targets:
+  labeled_size:
+    1pct: 34
+    5pct: 171
+    10pct: 343
+    20pct: 685
+  no_finding_size:
+    1pct: 3
+    5pct: 17
+    10pct: 35
+    20pct: 70
+  min_class_coverage: 14
+
+objective:
+  # Distribution objective indicators: the 14 abnormal class-presence
+  # indicators ONLY. zero_gt is a separate hard constraint (exact No-Finding
+  # count) and a separate stratification-matrix column; it must never enter
+  # D_max, D_mean, E_max, or E_mean.
+  distribution_indicators: 14
+  stratification_indicators: 15   # 14 class-presence + 1 zero_gt, sampling matrix only
+  zero_gt_role: stratification_and_exact_no_finding_hard_constraint_only
+  lexicographic_order: [D_max, D_mean, D_LC]
+  d_max_definition: "max over the 14 abnormal classes of abs(p_L,c - p_T,c)"
+  d_mean_definition: "mean ABSOLUTE per-class prevalence deviation = (1/14) * sum_c abs(p_L,c - p_T,c). NOT squared."
+  d_lc_definition: "abs(mean label cardinality in Lb (14 abnormal classes) - mean label cardinality in train)"
+  cumulative: true   # objective is evaluated over the whole nested L_b, not the increment alone
+
+  selection_arithmetic: exact_integer
+  selection_arithmetic_note: >-
+    Move selection/ranking in the repair search path uses an EXACT INTEGER
+    tuple (E_max, E_mean, E_LC), never a Fraction or float, and never
+    round()/math.isclose()/np.isclose(). fractions.Fraction is permitted
+    ONLY for post-hoc reporting (D_max/D_mean/D_LC in the validation report
+    and CSVs) and as the reference oracle in unit tests, never inside the
+    move-acceptance comparison itself.
+  integer_objective_definition: >-
+    Let n = |L_b| (current candidate size), N = |Train| (3426, fixed), k_c =
+    class-c presence count within the current candidate (14 classes), K_c =
+    class-c presence count within the full Train set, S_L = sum_c k_c, S_T =
+    sum_c K_c. Then:
+      E_max  = max_c abs(k_c*N - K_c*n)
+      E_mean = sum_c abs(k_c*N - K_c*n)
+      E_LC   = abs(S_L*N - S_T*n)
+    These are exact cross-multiplied integer forms of D_max, D_mean*14, D_LC
+    respectively (same shared positive scale factor n*N within any single
+    move comparison, since n is constant across all alternatives compared in
+    one search step), so integer comparison preserves the same total order
+    as the exact-fraction objective without ever performing division.
+
+tie_break:
+  # Three canonical, versioned, namespaced SHA-256 priority functions.
+  # Namespaces are frozen version strings; changing the payload format
+  # requires a new version suffix (v2, v3, ...), never silently redefining
+  # v1.
+  namespaces:
+    image_priority: phase2F_image_priority_v1
+    repair_move_priority: phase2F_repair_move_priority_v1
+    candidate_set_priority: phase2F_candidate_set_priority_v1
+  sha256_priority_seed: 42
+  image_priority_payload: "{namespace}|seed={seed}|image_id={image_id}"
+  image_priority_use: >-
+    Per-image deterministic priority, order-independent by construction
+    (pure function of seed and a single image_id). Exposed and tested for
+    determinism/order-independence; used wherever a single-image identity
+    (not a multi-image move) needs a canonical priority value.
+  repair_move_priority_payload: >-
+    "{namespace}|seed={seed}|budget={budget}|phase={repair_phase}|
+    move_type={move_type}|removed={canonical_sorted_removed_ids_csv}|
+    added={canonical_sorted_added_ids_csv}"
+  repair_move_priority_use: >-
+    The primary move-selection tie-break for every repair phase (exact_size
+    treats a single toggle as removed=[] or added=[] with the other side
+    holding the one image_id; exact_no_finding, minimum_class_coverage, and
+    objective_repair use the full removed/added ID lists of the swap). The
+    ENTIRE move identity is hashed once as a single payload — never a
+    combination of separate per-image hashes.
+  candidate_set_priority_payload: "{namespace}|seed={seed}|budget={budget}|members={canonical_sorted_member_ids_csv}"
+  candidate_set_priority_use: >-
+    A canonical whole-candidate-set fingerprint recorded alongside the
+    membership SHA-256 in every accepted repair-log entry, distinct from
+    the official NHIEM VU 5 membership checksum; provides a second,
+    independently-namespaced identity for deterministic-rerun comparison.
+  final_fallback: canonical_numeric_move_identity
+  final_fallback_definition: >-
+    If two candidate moves ever produce an identical priority digest (not
+    expected in practice, but must be handled), the tie-break falls back to
+    comparing (tuple(sorted(removed_ids)), tuple(sorted(added_ids))) as
+    plain integer tuples.
+  note: >-
+    Tie-break is used only to choose deterministically among moves that tie
+    on the exact same lexicographic integer objective tuple AND make the
+    same required hard-constraint (or, in objective_repair, strict
+    objective-improvement) progress. A move with a strictly better integer
+    objective always wins over tie-break priority; tie-break priority never
+    overrides a better objective.
+
+repair:
+  # R11 -- the single locked name of the ACTIVE repair policy. Cross-checked
+  # against scripts/02F_build_labeled_unlabeled.py's ACTIVE_REPAIR_POLICY
+  # constant in run_preflight (a PASS/FAIL check, not an informational
+  # field) AND enforced fail-closed in compute_all_budgets before any
+  # construction begins (taxonomy ACTIVE_REPAIR_POLICY_MISMATCH), so this
+  # document and the implementation can never silently disagree about which
+  # neighborhood is actually searched.
+  active_repair_policy: ONE_FOR_ONE_EXHAUSTIVE_DETERMINISTIC
+  active_repair_policy_note: >-
+    The objective-repair stage exhaustively enumerates the admissible
+    one-for-one swap neighborhood and terminates at a one-for-one local
+    optimum. No global optimum is claimed. This replaces the retired
+    two_for_two_engine.operationally_approved gate as the pre-construction
+    fail-closed check; that gate was NOT flipped to true, it was removed
+    together with the neighborhood it guarded.
+  phase_order: [exact_size, exact_no_finding, minimum_class_coverage, objective_repair]
+  phase_descriptions:
+    exact_size: "single-image add/remove moves until |L_b(new region)| equals the round-half-up target"
+    exact_no_finding: "one-for-one swaps (opposite zero_gt status) until the exact No-Finding target is met; size held fixed"
+    minimum_class_coverage: "deterministic ONE-FOR-ONE swaps only, until all 14 classes are present; size, exact NF and the locked nested prefix held fixed; if the complete admissible one-for-one coverage neighborhood is exhausted while classes remain missing, the phase reports REPAIR_INFEASIBLE and construction stops, naming the exact failing budget and phase -- it never widens the neighborhood and never retries with another seed"
+    objective_repair: "deterministic ONE-FOR-ONE local-search improvement pass after exact size/NF/coverage are satisfied; the complete admissible one-for-one neighborhood is enumerated every iteration and only strictly lexicographically-improving moves are accepted; size, exact NF, 14/14 coverage and the locked nested prefix are held fixed throughout; terminates at a one-for-one local optimum (RepairOutcome.OK)"
+  exact_no_finding_move_order: [one_for_one]
+  exact_no_finding_note: >-
+    exact_no_finding is inherently a composition-CHANGING swap (its entire
+    purpose is to shift the NF count by one). The two-for-two
+    composition-PRESERVING neighborhood defined below is only meaningful for
+    phases that must hold NF composition fixed (minimum_class_coverage,
+    objective_repair). No two-for-two fallback is defined for
+    exact_no_finding; if no one-for-one swap makes progress, the phase
+    reports REPAIR_INFEASIBLE, matching the precedent in Phase 2E's own
+    exact_no_finding_swap_repair (which is also one-for-one only).
+  # R11: the ACTIVE move order for BOTH minimum_class_coverage and
+  # objective_repair is one-for-one and nothing else. There is no second
+  # neighborhood to fall through to, and no heuristic replaced the removed
+  # two-for-two branch.
+  move_order_for_coverage_and_objective_repair: [one_for_one]
+  coverage_progress_rule: STRICTLY_REDUCE_MISSING_CLASS_COUNT_BY_AT_LEAST_ONE
+  coverage_progress_rule_note: >-
+    Locked constant name, cross-checked against
+    scripts/02F_build_labeled_unlabeled.py's COVERAGE_PROGRESS_RULE in
+    run_preflight so the protocol document and the implementation cannot
+    silently diverge on the semantics of "progress" for
+    minimum_class_coverage.
+  coverage_candidate_priority_order:
+    - missing_count_after
+    - integer_objective_tuple
+    - seeded_sha256_priority
+    - canonical_numeric_identity
+  coverage_candidate_priority_order_note: >-
+    For minimum_class_coverage ONLY (not objective_repair, which has no
+    missing-class concept once coverage is satisfied): among all candidate
+    moves that satisfy STRICTLY_REDUCE_MISSING_CLASS_COUNT_BY_AT_LEAST_ONE,
+    the one with the SMALLEST missing_count_after (i.e. the most coverage
+    progress) always wins first, ahead of a better integer objective tuple.
+    Only when missing_count_after ties does the integer objective tuple
+    decide, then the seeded namespaced SHA-256 move priority, then the
+    canonical numeric move identity as the final deterministic fallback.
+  # R11: the two-for-two neighborhood is NOT part of the active protocol.
+  # Its former specification (two_for_two_neighborhood,
+  # two_for_two_complexity_status, two_for_two_complexity_note) has been
+  # moved verbatim-in-spirit under legacy_two_for_two_engine below and is
+  # marked HISTORICAL there. No active repair phase enumerates it.
+  active_objective_neighborhood: one_for_one_swap_exhaustive
+  active_objective_neighborhood_definition: >-
+    Every ordered pair (out_position in the current selected set,
+    in_position in the addable complement new_region_pool - selected) whose
+    zero_gt status matches, whose resulting membership preserves the exact
+    labeled size, the exact No-Finding count and 14/14 class coverage, and
+    which has not already been visited by the membership cycle guard. Every
+    such pair is evaluated on every iteration -- there is no top-k, no
+    sampling, no early cut-off, no candidate cap and no heuristic pruning.
+  active_objective_termination: one_for_one_local_optimum
+  active_objective_termination_note: >-
+    The phase terminates when the complete admissible one-for-one
+    neighborhood contains no strictly-improving move. That state is a
+    ONE-FOR-ONE LOCAL OPTIMUM and is reported as a SUCCESS
+    (RepairOutcome.OK) with one_for_one_exhausted=true, local_optimum=true,
+    local_optimum_neighborhood="one_for_one" and
+    global_optimum_claimed=false. It is never reported as
+    COMPUTATIONAL_ABORT, never as REPAIR_INFEASIBLE, and never as a global
+    optimum.
+  global_optimum_claimed: false
+  arbitrary_k_swap_ge_3: forbidden
+  immutable_nested_prefix: true
+  immutable_prefix_note: >-
+    Repair moves for budget b may only add/remove/swap images within the
+    new-region pool (train universe minus the already-locked L_{prev}
+    prefix). Images already committed to a smaller nested budget are never
+    touched again.
+  strict_monotonic_progress: true
+  strict_monotonic_progress_note: >-
+    exact_size/exact_no_finding/minimum_class_coverage: each accepted move
+    must reduce the phase's own hard-constraint gap (size gap, No-Finding
+    gap, or missing-class count) by exactly one unit. objective_repair: each
+    accepted move must strictly lexicographically improve the integer
+    objective tuple (E_max, E_mean, E_LC); an equal-objective move is never
+    accepted in this phase.
+  equal_objective_move_forbidden: true
+  equal_objective_move_forbidden_scope: objective_repair_phase
+  objective_repair_termination: >-
+    Enumerate the COMPLETE admissible one-for-one neighborhood; accept the
+    single best strictly-improving move; repeat. The phase terminates
+    (status OK, not an error) when that neighborhood is exhausted with no
+    strictly-improving move remaining. The reported result is an
+    explicitly-labeled ONE-FOR-ONE LOCAL OPTIMUM, never claimed as a global
+    optimum. There is no second neighborhood to fall through to.
+  visited_membership_cycle_guard: true
+  # R11: scoped explicitly to the ACTIVE one-for-one neighborhood. This says
+  # the one-for-one neighborhood is enumerated in full with no top-k and no
+  # heuristic filter; it does NOT claim anything about any wider
+  # neighborhood.
+  neighborhood_exhaustion: full_no_topk_heuristic_over_one_for_one_neighborhood
+  move_count_cap: none
+  on_exhausted_no_solution: REPAIR_INFEASIBLE
+  on_resource_cutoff: COMPUTATIONAL_ABORT
+  computational_abort_seconds_default: null   # null = no time-based cutoff unless researcher passes --max-seconds
+
+# ===================== LEGACY / NON-ACTIVE (R11) ========================== #
+# HISTORICAL RECORD ONLY. This block describes the two-for-two
+# same-composition engine, which R11 REMOVED from the active construction
+# protocol. Every claim in this block -- "exhaustive two-for-two search",
+# "two-for-two local optimum", "mathematical completeness over the
+# two-for-two neighborhood", and the operational-tractability approval
+# concept -- is HISTORICAL and is NOT an active protocol claim.
+#
+# It is retained so the R7/R8/R9 historical benchmark reports remain
+# interpretable and so the retained legacy unit tests keep a documented
+# reference. It is NOT read by any active code path:
+#   - run_preflight no longer reads it and no longer reports any of its
+#     fields (its former informational fields were removed);
+#   - compute_all_budgets no longer gates on operationally_approved -- that
+#     gate was REMOVED, not set to true, and replaced by the fail-closed
+#     repair.active_repair_policy check;
+#   - build_budget_step never reaches _equivalence_class_two_for_two_search
+#     on any call path (official materialization, --reconstruct-check, or
+#     the non-promoting operational benchmark).
+# operationally_approved is deliberately left at false: it must never be
+# read as "the engine was approved", only as "the engine was never
+# approved, and then the question stopped applying".
+legacy_two_for_two_engine:
+  status: HISTORICAL_NOT_PART_OF_ACTIVE_PROTOCOL
+  removed_in: "2F-C0-R11"
+  removed_reason: COMPUTATIONAL_TRACTABILITY_AND_PROPORTIONALITY
+  removed_before_training: true
+  removed_without_val_or_test_outcomes: true
+  removed_without_model_performance: true
+  removed_without_candidate_comparison: true
+  removed_without_seed_search: true
+  active_protocol_depends_on_this_block: false
+  gates_materialization: false
+  same_composition_algorithm: equivalence_class_signature_search_streaming_best_prefix
+  operationally_approved: false
+  operationally_approved_note: >-
+    HISTORICAL R5--R9 field only. In those retired revisions, false caused
+    compute_all_budgets() to refuse construction with taxonomy
+    TWO_FOR_TWO_ENGINE_NOT_OPERATIONALLY_APPROVED. That behavior no longer
+    applies in R11: active construction never reads this field, never calls
+    the legacy engine and is gated instead by repair.active_repair_policy.
+    The value remains false solely to record that the engine was never
+    approved before it was removed from the active protocol.
+
+  # R5 / NHIEM VU 2 -- three DELIBERATELY DISTINCT concepts, each its own
+  # field, never conflated:
+  #   1. mathematical_completeness  -- proven UNCONDITIONALLY, independent
+  #      of the actual dataset (see completeness_claim below);
+  #   2. empirical_operational_tractability -- data-dependent, NOT proven,
+  #      NOT measured by Claude in this revision (see
+  #      operational_tractability_claim below);
+  #   3. operational_approval -- a separate, human-owned decision gate
+  #      (the operationally_approved field above), which may be granted or
+  #      withheld independent of (1) and (2) being favorable.
+  # HISTORICAL (R11): the three fields below were the R5 concept separation.
+  # None of them is an active claim any more. `completeness_claim` in
+  # particular is NOT asserted by the active protocol -- the only
+  # completeness the active protocol claims is over the one-for-one
+  # neighborhood (see repair.active_objective_neighborhood).
+  historical_completeness_claim: MATHEMATICALLY_PROVEN_EQUIVALENT_TO_EXHAUSTIVE_CONCRETE_SEARCH_ON_LOCKED_ACCEPTANCE_ORDERING
+  completeness_claim_note: >-
+    This is the mathematical_completeness concept. Proven equivalent to
+    _brute_force_same_composition_two_for_two_pairs (kept as a test-only
+    oracle, never called against real data) on all four tiers of the
+    locked candidate order: hard-constraint feasibility/progress, exact
+    integer objective, seeded SHA-256 move priority, and canonical numeric
+    identity. Holds UNCONDITIONALLY (true for any dataset), including after
+    the R5 streaming-best-prefix rewrite of Phase 1 (streaming an
+    already-total order via reset-on-strictly-better/append-on-tie/discard-
+    on-worse produces an identical winning set to sort-then-group; see the
+    PROOF 2 comment and the R5 STREAMING PROOF comment above
+    _equivalence_class_two_for_two_search in
+    scripts/02F_build_labeled_unlabeled.py).
+  historical_operational_tractability_claim: NOT_EMPIRICALLY_MEASURED_BY_CLAUDE_DATA_DEPENDENT_NOT_ASSUMED_FROM_COMPLETENESS_PROOF
+  operational_tractability_claim_note: >-
+    This is the empirical_operational_tractability concept, and it is
+    DELIBERATELY NOT the same claim as completeness_claim above:
+    mathematical correctness/completeness holds regardless of the dataset,
+    but whether the engine finishes in practical wall-clock time on the
+    real 3,426-image instances_train.json depends on that dataset's actual
+    equivalence-class-size distribution, which Claude has not inspected
+    (barred from running code against real data in this revision). See
+    complexity_policy below for the precise (now corrected) asymptotic
+    formula, and full_train_diagnostics_fields for what the researcher can
+    inspect via --preflight-only to inform their own tractability judgment.
+  historical_complexity_policy: >-
+    CORRECTED (R5 / fixes blocker R4-B2). Let R = number of valid
+    removed-pair signatures, A = number of valid added-pair signatures (both
+    counted once per signature-pair, not per concrete image-pair), W = the
+    set of signature transitions tied for the best Phase-1 prefix (hard-
+    constraint/objective tuple), and for each w in W let C_out(w) = number
+    of concrete removed image-pairs realizing w's removed-signature-pair and
+    C_in(w) = number of concrete added image-pairs realizing w's added-
+    signature-pair (C_out/C_in for a same-signature pair {c,c} is
+    C(|class c|,2); for a different-signature pair {c1,c2} it is
+    |class c1| * |class c2|). Then: Phase 1 time = O(R*A) (O(1) per
+    signature-pair via an incrementally-updated aggregate, no re-summing
+    labels14); Phase 2 time = O(sum_{w in W} C_out(w) * C_in(w)) -- bounded
+    by the TIED-BEST transitions only, never by all R*A of them; Total time
+    = O(R*A + sum_{w in W} C_out(w)*C_in(w)). After the R5 streaming
+    best-prefix rewrite, Phase 1 auxiliary memory is O(|W|), not O(R*A) (no
+    full candidate list is ever materialized or sorted). In the fully
+    label-vector-distinct adversarial case (every abnormal image a unique
+    14-bit vector), R=O(S^2), A=O(P^2), so Phase 1 degrades to the SAME
+    O(S^2*P^2) order as brute force -- NO WORST-CASE IMPROVEMENT IS PROVEN,
+    though in that exact adversarial case every equivalence class has
+    exactly one member, so every C_out(w)/C_in(w)=1 and Phase 2 is trivial.
+    Practical/expected performance on real VinDr-CXR/VinBigData
+    label-vector distributions (14 fixed classes, typically 1-3
+    co-occurring findings per abnormal image) is plausibly, but NOT
+    empirically verified by Claude, far better than worst case -- this
+    plausibility is the operational_tractability_claim above, kept
+    separate from this formula and from mathematical_completeness. This is
+    exactly why operationally_approved is a separate, human-owned gate
+    rather than an automatic consequence of implementing a
+    mathematically-correct engine, and practical tractability must NEVER be
+    inferred from the correctness proof alone.
+  deadline_watchdog_check_interval_candidates: 1024
+  deadline_watchdog_note: >-
+    R5 / fixes blocker R4-B3. _equivalence_class_two_for_two_search now
+    accepts a `deadline` parameter (propagated from
+    repair_min_class_coverage and repair_objective_local_search, both of
+    which already receive one from build_budget_step/compute_all_budgets)
+    and checks it inside BOTH Phase 1 (signature-pair enumeration) and
+    Phase 2 (concrete Cartesian-product enumeration), not just once by the
+    caller before invoking the engine. To bound the per-check overhead, the
+    deadline is polled at most once every
+    deadline_watchdog_check_interval_candidates enumerated candidates (a
+    named, deterministic constant) rather than before every single
+    candidate. This interval is PURELY a resource-cutoff check FREQUENCY:
+    it never skips, drops, or reorders a candidate, never depends on the
+    data, and never changes the returned result when deadline=None (in
+    which case _check_deadline is a no-op regardless of how often it is
+    called). On expiry, DeadlineExceeded propagates out of the engine and
+    is caught only by build_budget_step, which reports
+    RepairOutcome.COMPUTATIONAL_ABORT with two_for_two_exhausted=false and
+    local_optimum=false (never REPAIR_INFEASIBLE, never a false exhaustion/
+    local-optimum claim) and discards the in-progress candidate membership
+    (locked | initial_new is returned as an ABORTED, non-repaired state,
+    never treated by any downstream code as a valid repaired result to
+    promote or report as a scientific outcome). R6 / fixes blocker R5-B3:
+    on top of the in-loop watchdog above, `_check_deadline` is ALSO called
+    once at function entry and once immediately before each of the three
+    normal return paths (trivial early-exit, exhausted, completed) as
+    BOUNDARY checks -- so a neighborhood with fewer candidates than
+    deadline_watchdog_check_interval_candidates, or a deadline that expires
+    in the narrow gap after the last enumerated candidate but before the
+    function actually returns, is still caught. These boundary checks are
+    not a candidate cap either; deadline=None makes all of them no-ops.
+  fail_closed_taxonomy: TWO_FOR_TWO_ENGINE_NOT_OPERATIONALLY_APPROVED
+  fail_closed_note: >-
+    HISTORICAL R5--R9 behavior: compute_all_budgets() refused construction
+    whenever operationally_approved was false. R11 does not execute this
+    taxonomy, does not expose the legacy benchmark/profiler modes and does
+    not report legacy engine fields in active preflight output.
+
+  # R5 / NHIEM VU 5 -- expanded diagnostics contract (fixes blocker R4-B5).
+  full_train_diagnostics_fields:
+    - total_abnormal_images_in_train
+    - distinct_label_vector_count
+    - equivalence_class_size_min
+    - equivalence_class_size_max
+    - equivalence_class_size_mean
+    - equivalence_class_size_median
+    - equivalence_class_size_histogram
+    - possible_pair_signature_count
+    - theoretical_concrete_pair_count_upper_bound
+    - phase1_transition_count_upper_bound
+  full_train_diagnostics_caveats: >-
+    Computed ONCE over the FULL instances_train.json abnormal-image
+    population. This is explicitly NOT representative of any single
+    budget's actual incremental selected/pool subset during a real run
+    (those are strict subsets, typically far smaller, and their
+    equivalence-class structure can differ from the full-train structure).
+    These diagnostics alone are NOT sufficient to auto-approve the engine
+    -- operationally_approved remains a separate human decision regardless
+    of how favorable these numbers look. These diagnostics must NEVER be
+    used to choose, tune, or search over partition_seed or any other
+    randomness -- seed_search_forbidden applies unconditionally regardless
+    of what these numbers show.
+  runtime_diagnostics_fields:
+    - budget
+    - repair_phase
+    - status
+    - aborted_by_deadline
+    - deadline_enabled
+    - selected_abnormal_count
+    - pool_abnormal_count
+    - selected_distinct_signature_count
+    - pool_distinct_signature_count
+    - removed_pair_signature_count_R
+    - added_pair_signature_count_A
+    - phase1_transition_count
+    - phase1_transitions_evaluated
+    - tied_best_signature_transition_count_W
+    - concrete_candidates_evaluated_phase2
+    - theoretical_concrete_candidates_in_winning_ties
+    - elapsed_seconds
+  runtime_diagnostics_note: >-
+    One such record per actual _equivalence_class_two_for_two_search
+    invocation (i.e. per budget, per repair phase that reaches the
+    two-for-two branch), recorded into repair-log/validation-report
+    evidence ONLY once the engine is operationally_approved and a real run
+    actually executes it -- never fabricated or backfilled while
+    unapproved. The record is appended to the diagnostics log BEFORE the
+    engine is invoked (status="started" initially) and the engine mutates
+    the SAME object in place, so a record survives even if the invocation
+    raises DeadlineExceeded (R6 / fixes blocker R5-B2) -- "started" is only
+    ever a transient in-flight value and must never appear in final
+    evidence after the invocation has actually finished (successfully or
+    by abort). `status` is one of completed (a candidate move was found and
+    returned) / exhausted (the allowed neighborhood was fully searched with
+    no candidate) / aborted (a deadline/resource cutoff fired before either
+    of the above; aborted_by_deadline=true, and the run must never also
+    claim exhausted-with-no-solution or a local optimum). Field-level
+    nullable-on-early-abort semantics: `elapsed_seconds`, `phase1_
+    transitions_evaluated`, `concrete_candidates_evaluated_phase2`,
+    `deadline_enabled`, and `status`/`aborted_by_deadline` are ALWAYS
+    populated (pure functions of a clock/counter that exist from the first
+    line of the call); every other field (selected/pool_abnormal_count,
+    selected/pool_distinct_signature_count, removed/added_pair_signature_
+    count_R/A, phase1_transition_count, tied_best_signature_transition_
+    count_W, theoretical_concrete_candidates_in_winning_ties) is `null`,
+    NOT `0`, if the invocation aborted before that specific quantity was
+    ever actually computed -- a recorded `0` always means "measured and
+    found to be exactly zero", never "not yet measured". These diagnostics
+    are purely descriptive: they must never be used to change candidate
+    membership, the accepted move, or any selection decision.
+
+checksum:
+  image_id_membership:
+    validate_integer: true
+    sort: numeric_ascending
+    representation: canonical_decimal
+    join: LF
+    encoding: UTF-8
+    algorithm: SHA-256
+
+# R11 additive runtime observability. These fields are written to the
+# validation report and lock manifest, but are never membership identity,
+# checksum, seed, objective, acceptance, or reconstruction-comparison inputs.
+runtime_timing:
+  clock: "time.monotonic"
+  role: "OBSERVABILITY_ONLY_NOT_SELECTION_CRITERION"
+  per_budget_field: per_budget_elapsed_seconds
+  total_field: total_construction_elapsed_seconds
+  included_in_membership_checksum: false
+  included_in_reconstruct_comparison: false
+
+deterministic_reconstruction_mode:
+  cli_flag: --reconstruct-check
+  writes_official_artifacts: false
+  subject_to_refuse_overwrite_gate: false
+  compares_against: data/manifests/phase2F_lock_manifest.json (already promoted)
+  compared_fields:
+    - labeled_image_id_sha256
+    - labeled_coco_json_sha256
+    - unlabeled_coco_json_sha256
+    - labeled_size
+    - no_finding_size
+    - repair_move_counts
+    - integer_objective_final
+  compared_fields_note: >-
+    Every field listed here MUST have a corresponding implemented check in
+    run_reconstruct_check()'s RECONSTRUCTION_COMPARABLE_FIELDS; the field
+    list is read from THIS config at runtime and iterated over (never a
+    Python-hardcoded literal), and any listed field without an implemented
+    check is a hard FAIL (CONFIG_INVALID), never a silent skip. Both
+    labeled AND unlabeled coco_json_sha256 are compared separately (R2 only
+    declared a single ambiguous "coco_json_sha256" and never actually
+    compared it at all).
+  output_path: reports/02F_deterministic_reconstruction_check.json
+  output_path_note: >-
+    This diagnostic path is intentionally excluded from
+    official_relative_paths()/the transactional promotion set — it is
+    freely re-runnable and overwritable, and never gates or blocks the
+    official materialization it is checking.
+
+# R7 -- NON-PROMOTING operational benchmark of the two-for-two repair
+# engine on the real training split. Distinct from
+# deterministic_reconstruction_mode above: reconstruct-check still
+# requires operationally_approved=true (it calls compute_all_budgets
+# unchanged) and compares against an EXISTING promoted lock manifest;
+# operational_benchmark requires NO prior promotion, is the one and only
+# path allowed to run construction while operationally_approved=false, and
+# exists specifically to produce the tractability EVIDENCE the researcher
+# needs before deciding operationally_approved.
+operational_benchmark:
+  cli_flag: --benchmark-two-for-two
+  cli_deadline_flag: --benchmark-max-seconds-per-budget
+  mode_name: NON_PROMOTING_OPERATIONAL_BENCHMARK
+  # R9: this is a NEW, distinct path from BOTH the R7 canonical report and
+  # the R8 report below -- the R8 file ran against the pre-R9 (structurally
+  # redundant but scientifically correct) Phase-1 implementation, so it is
+  # superseded FOR APPROVAL-EVIDENCE PURPOSES ONLY, exactly like R7 before
+  # it. It is never characterized as invalid, is NEVER deleted or
+  # overwritten by any code path, and remains valid historical evidence of
+  # the R8 run. Any future revision that changes performance-relevant
+  # implementation or scientific semantics again must bump this path to yet
+  # another distinct name -- never reuse an old stage's report path.
+  report_path: reports/02F_two_for_two_operational_benchmark_R9.json
+  # R9 supersedes R8's report for approval purposes; R8's own
+  # superseded_evidence_path (reports/02F_two_for_two_operational_
+  # benchmark.json, the original R7 file) is untouched and remains
+  # reachable from the R8 report itself -- this project does not maintain
+  # a transitive chain field here, only the most recently superseded report.
+  superseded_evidence_path: reports/02F_two_for_two_operational_benchmark_R8.json
+  overwrite_policy: REFUSE_IF_EXISTS
+  deadline_policy: PER_BUDGET_MONOTONIC_DEADLINE
+  default_max_seconds_per_budget: null
+  require_cli_deadline: true
+  promotion_forbidden: true
+  official_partition_artifact: false
+  usable_for_training: false
+  operational_approval_decision: false
+  seed_search_forbidden: true
+  note: >-
+    require_cli_deadline=true and default_max_seconds_per_budget=null
+    together mean there is NO implicit default deadline -- the researcher
+    must always pass --benchmark-max-seconds-per-budget explicitly (a
+    positive, finite number of seconds), and the CLI fails closed
+    (BENCHMARK_ARGUMENT_INVALID) if it is missing, non-positive, NaN, or
+    infinite. deadline_policy=PER_BUDGET_MONOTONIC_DEADLINE means the
+    deadline is time.monotonic() + max_seconds_per_budget, freshly computed
+    at the START of EACH of the four budgets (1pct/5pct/10pct/20pct) in
+    small-to-large order -- never one deadline shared across the whole run,
+    so an earlier budget can never consume a later budget's time budget.
+    This flag cannot be combined with --preflight-only or
+    --reconstruct-check. promotion_forbidden/official_partition_artifact=
+    false/usable_for_training=false/operational_approval_decision=false
+    are all recorded verbatim in the report itself, not just here, so the
+    report can never be mistaken for an official artifact or an approval
+    decision even in isolation from this config file.
+
+# R11 -- the R10 two_for_two_hotpath_profiler config block has been REMOVED,
+# together with the profiler mode itself (--profile-two-for-two-hotpath /
+# --profile-max-seconds), its orchestration function, its report writer and
+# its expected_invocation_identity cross-check. It existed solely to measure
+# the two-for-two engine's Phase-1 hot loop; that neighborhood is no longer
+# part of the active construction protocol, the profiler was never finished,
+# and it never produced a report (reports/02F_two_for_two_hotpath_profile_
+# R10.json was never written). No profiler report is needed and nothing in
+# the active protocol replaces it.
+#
+# Note on a retired, never-verified figure: the removed block's
+# expected_invocation_identity asserted
+# one_for_one_move_count_before_two_for_two=3, which was INFERRED from the
+# R9 report's aggregate one_for_one_move_count=3 -- a field that (before
+# R11) merged exact-size add/remove toggles, exact-No-Finding swaps,
+# coverage swaps and objective-repair swaps into one ambiguous number. That
+# inference was never verified, because the profiler that would have checked
+# it never ran. It is recorded here as retired-and-unverified rather than
+# silently dropped. The R11 fix for that class of ambiguity is
+# compute_repair_summary's move_count_by_phase / move_count_by_type (see
+# required_evidence_fields below).
+
+outputs:
+  labeled_coco:
+    1pct: data/processed/coco/labeled_splits/instances_labeled_1pct.json
+    5pct: data/processed/coco/labeled_splits/instances_labeled_5pct.json
+    10pct: data/processed/coco/labeled_splits/instances_labeled_10pct.json
+    20pct: data/processed/coco/labeled_splits/instances_labeled_20pct.json
+  unlabeled_coco:
+    1pct: data/processed/coco/unlabeled_splits/instances_unlabeled_1pct.json
+    5pct: data/processed/coco/unlabeled_splits/instances_unlabeled_5pct.json
+    10pct: data/processed/coco/unlabeled_splits/instances_unlabeled_10pct.json
+    20pct: data/processed/coco/unlabeled_splits/instances_unlabeled_20pct.json
+  unlabeled_gt_audit_csv: data/manifests/audit/phase2F_unlabeled_gt_audit.csv
+  partition_manifest_csv: data/manifests/phase2F_partition_manifest.csv
+  lock_manifest_json: data/manifests/phase2F_lock_manifest.json
+  nested_split_check_json: data/manifests/phase2F_nested_split_check.json
+  leakage_check_json: data/manifests/phase2F_leakage_check.json
+  seed_manifest_json: data/manifests/phase2F_seed_manifest.json
+  validation_report_json: reports/02F_labeled_unlabeled_validation_report.json
+  log_json: reports/02F_labeled_unlabeled_log.json
+  class_distribution_csv: reports/02F_class_distribution.csv
+  negative_distribution_csv: reports/02F_negative_distribution.csv
+  repair_log_jsonl: reports/02F_repair_log.jsonl
+  errors_csv: reports/02F_errors.csv
+  # 02F_build_labeled_unlabeled_output.txt is produced by shell stdout/stderr
+  # redirection when the researcher runs the script; it is not written or
+  # promoted by the script itself and is not part of the transactional
+  # promotion set below.
+
+unlabeled_json_forbidden_fields:
+  images:
+    - is_negative
+    - scope_label
+    - zero_gt
+    - class_presence
+    - class_presence_vector
+    - annotation_count
+    - bbox
+    - bbox_count
+  note: >-
+    instances_train.json image records carry `is_negative` and
+    `scope_label`, which are 100%-correlated with zero-GT status and are
+    therefore GT-derived. These fields (and any other GT-derived field) must
+    be stripped from every image record written into an unlabeled COCO JSON.
+  unlabeled_annotations_must_equal: []
+  unlabeled_categories_must_be_preserved: true
+
+required_evidence_fields:
+  top_level:
+    - iterative_stratification_version
+    - active_repair_policy
+    - objective_repair_neighborhood
+    - objective_repair_termination_claim
+    - global_optimum_claimed
+  per_budget:
+    - D_max
+    - D_mean
+    - D_LC
+    - E_max
+    - E_mean
+    - E_LC
+    - train_reference_prevalence_per_class
+    - labeled_prevalence_per_class
+    - absolute_deviation_per_class
+    - worst_deviation_class
+    # R11: the ambiguous one_for_one_move_count / two_for_two_move_count
+    # pair is REPLACED by an unambiguous per-phase and per-type breakdown.
+    # The old one_for_one_move_count silently merged exact-size add/remove
+    # toggles with exact-No-Finding, coverage and objective-repair swaps,
+    # which made a recorded count impossible to attribute to a phase after
+    # the fact.
+    - move_count_by_phase
+    - move_count_by_type
+    - unique_ids_added
+    - unique_ids_removed
+    - repair_fraction
+    - candidate_final_intersection_count
+    - candidate_final_jaccard
+    - objective_before_repair
+    - objective_after_repair
+    - neighborhood_exhaustion_status
+    - final_one_for_one_diagnostics
+    - nested_no_finding_check
+
+# R11 / TASK 5 -- the evidence record written for EVERY budget at the final
+# one-for-one local optimum (validation report per-budget
+# `final_one_for_one_diagnostics`, and the same record in the non-promoting
+# operational-benchmark report). Every value is produced by an EXISTING
+# reference function -- integer_objective, fraction_distribution_report,
+# _missing_class_names, canonical_membership_sha256,
+# candidate_set_priority_digest, compute_repair_summary -- never by a
+# re-derived competing formula. Purely descriptive: nothing here is ever
+# read back to change membership, a move, or any selection decision. It is
+# emitted even though the legacy two-for-two engine is never invoked.
+final_one_for_one_diagnostics_fields:
+  - budget
+  - target_labeled_size
+  - actual_labeled_size
+  - labeled_size_matches_target
+  - target_no_finding_size
+  - actual_no_finding_size
+  - no_finding_size_matches_target
+  - class_coverage_count
+  - present_class_ids
+  - missing_classes
+  - integer_objective_before_objective_repair
+  - integer_objective_after_objective_repair
+  - integer_objective_final_E_max_E_mean_E_LC
+  - objective_repair_one_for_one_move_count
+  - repair_move_count_total
+  - move_count_by_phase
+  - move_count_by_type
+  - max_per_class_prevalence_deviation_D_max
+  - mean_absolute_per_class_prevalence_deviation_D_mean
+  - label_cardinality_deviation_D_LC
+  - worst_deviation_class_id
+  - worst_deviation_class_name
+  - train_reference_prevalence_per_class
+  - labeled_prevalence_per_class
+  - absolute_deviation_per_class
+  - membership_sha256
+  - candidate_set_priority_digest
+  - one_for_one_exhausted
+  - local_optimum
+  - local_optimum_neighborhood
+  - global_optimum_claimed
+  - active_repair_policy
+  - termination_claim
+
+gates_recorded_in_every_output:
+  training_authorized: false
+  training_started: false
+  pseudo_labels_generated: false
+  test_used: false
+
+materialization:
+  mode: stage_validate_readback_then_promote
+  overwrite_policy: refuse_if_any_official_artifact_exists
+  rollback_policy: remove_files_promoted_by_failed_run
+  independent_readback_note: >-
+    Independent readback must recompute every hard gate (exact L/U sizes,
+    exact NF, 14/14 coverage, nested labeled AND nested NF, L-intersect-U is
+    empty, L-union-U equals Train, val/test isolation, labeled annotation
+    ownership, unlabeled annotations=[], no GT-derived fields present,
+    category mapping, membership checksums) directly from the STAGED files
+    on disk, not from in-memory Python objects still held from construction.
+    The validation report status is PASS only if every hard gate is PASS.
+  forbid_modifying:
+    - data/processed/coco/instances_train.json
+    - data/processed/coco/instances_val.json
+    - data/processed/coco/instances_test.json
+    - data/manifests/fixed_split_manifest.csv
+    - data/manifests/split_lock_manifest.json
+    - data/manifests/leakage_check_report.json
+    - data/processed/coco/coco_master.json
+    - data/processed/coco/coco_master_jpg.json
+
+forbidden_actions:
+  training: true
+  inference: true
+  pseudo_label_generation: true
+  threshold_tuning: true
+  ap_map_evaluation: true
+  test_set_usage: true
+  val_or_test_membership_modification: true
+  seed_search: true
+  protocol_self_modification: true

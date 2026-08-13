@@ -1,0 +1,19 @@
+{
+  "phase": "2F-C0-R11",
+  "protocol_version": "2.0.0",
+  "status": "PASS",
+  "nested_relation": "1pct subset_of 5pct subset_of 10pct subset_of 20pct",
+  "nested_pass": true,
+  "nested_no_finding_checks": {
+    "1pct_in_5pct": true,
+    "5pct_in_10pct": true,
+    "10pct_in_20pct": true
+  },
+  "nested_no_finding_pass": true,
+  "labeled_sizes": {
+    "1pct": 34,
+    "5pct": 171,
+    "10pct": 343,
+    "20pct": 685
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "phase": "2F-C0-R11",
+  "protocol_version": "2.0.0",
+  "status": "PASS",
+  "files_written": 20,
+  "official_artifacts": [
+    "data/processed/coco/labeled_splits/instances_labeled_1pct.json",
+    "data/processed/coco/labeled_splits/instances_labeled_5pct.json",
+    "data/processed/coco/labeled_splits/instances_labeled_10pct.json",
+    "data/processed/coco/labeled_splits/instances_labeled_20pct.json",
+    "data/processed/coco/unlabeled_splits/instances_unlabeled_1pct.json",
+    "data/processed/coco/unlabeled_splits/instances_unlabeled_5pct.json",
+    "data/processed/coco/unlabeled_splits/instances_unlabeled_10pct.json",
+    "data/processed/coco/unlabeled_splits/instances_unlabeled_20pct.json",
+    "data/manifests/audit/phase2F_unlabeled_gt_audit.csv",
+    "data/manifests/phase2F_partition_manifest.csv",
+    "data/manifests/phase2F_lock_manifest.json",
+    "data/manifests/phase2F_nested_split_check.json",
+    "data/manifests/phase2F_leakage_check.json",
+    "data/manifests/phase2F_seed_manifest.json",
+    "reports/02F_labeled_unlabeled_validation_report.json",
+    "reports/02F_labeled_unlabeled_log.json",
+    "reports/02F_class_distribution.csv",
+    "reports/02F_negative_distribution.csv",
+    "reports/02F_repair_log.jsonl",
+    "reports/02F_errors.csv"
+  ],
+  "overwrite_policy": "REFUSE_IF_ANY_OFFICIAL_ARTIFACT_EXISTS",
+  "rollback_policy": "REMOVE_FILES_PROMOTED_BY_FAILED_RUN"
+}

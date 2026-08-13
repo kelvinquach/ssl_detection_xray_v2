@@ -1,0 +1,14 @@
+{
+  "phase": "2F-C0-R11",
+  "protocol_version": "2.0.0",
+  "partition_seed": 42,
+  "seed_policy": "PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH",
+  "tie_break_sha256_priority_seed": 42,
+  "tie_break_namespaces": {
+    "image_priority": "phase2F_image_priority_v1",
+    "repair_move_priority": "phase2F_repair_move_priority_v1",
+    "candidate_set_priority": "phase2F_candidate_set_priority_v1"
+  },
+  "iterative_stratification_version": "0.1.9",
+  "iterative_stratification_required_version": "0.1.9"
+}

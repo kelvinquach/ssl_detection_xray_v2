@@ -1,10 +1,223 @@
 # PHASE HANDOFF — `ssl_detection_xray_v2`
 
-Ngày cập nhật: 2026-08-07
+Ngày cập nhật: 2026-08-13
 
 Dự án: **Nghiên cứu học bán giám sát cho dò tìm bất thường trên X-quang phổi**
 
 Bài toán: **Semi-supervised object detection trên VinBigData Chest X-ray**
+
+---
+
+## Cập nhật closure hiện hành — Phase 2F: Labeled/Unlabeled Construction
+
+Status: **CLOSED / PASS**
+
+Date closed: 2026-08-13
+
+### Protocol identity và phạm vi
+
+```text
+stage: 2F-C0-R11
+protocol_version: 2.0.0
+partition_seed: 42
+seed_policy: PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH
+active_repair_policy: ONE_FOR_ONE_EXHAUSTIVE_DETERMINISTIC
+local_optimum_neighborhood: one_for_one
+global_optimum_claimed: false
+```
+
+Phase 2F chỉ sử dụng 3.426 ảnh thuộc fixed training split của Phase 2E để tạo
+các cặp labeled/unlabeled. Validation và test không tham gia lựa chọn membership
+và không được dùng làm nguồn pseudo-label.
+
+Active construction thực hiện theo thứ tự:
+
+```text
+iterative multilabel stratification
+→ exact-size repair
+→ exact-No-Finding repair
+→ minimum-class-coverage one-for-one repair
+→ deterministic exhaustive one-for-one objective repair
+→ one-for-one local optimum
+```
+
+Legacy two-for-two engine không được gọi trong active construction. Kết quả
+objective repair chỉ chứng minh local optimum đối với admissible one-for-one
+swap neighborhood; không chứng minh global optimum và không chứng minh tối ưu
+đối với mọi neighborhood có thể có.
+
+### Labeled/unlabeled membership đã khóa
+
+| Budget | Labeled | Unlabeled | No Finding trong labeled | Repair moves |
+|---|---:|---:|---:|---:|
+| 1% | 34 | 3.392 | 3 | 3 |
+| 5% | 171 | 3.255 | 17 | 7 |
+| 10% | 343 | 3.083 | 35 | 10 |
+| 20% | 685 | 2.741 | 70 | 26 |
+
+Tổng số repair moves: `46`.
+
+Mọi budget đạt:
+
+```text
+Exact labeled-size target: PASS
+Exact No Finding target: PASS
+Class coverage 14/14: PASS
+One-for-one neighborhood exhausted: TRUE
+One-for-one local optimum: TRUE
+Global optimum claimed: FALSE
+```
+
+Quan hệ nested đã được kiểm định:
+
+```text
+1pct ⊆ 5pct ⊆ 10pct ⊆ 20pct
+Nested labeled subsets: PASS
+Nested No Finding subsets: PASS
+```
+
+Unlabeled set của mỗi budget là phần bù chính xác của labeled set trong fixed
+train universe.
+
+### Membership checksum
+
+SHA-256 của canonical labeled `image_id` membership:
+
+```text
+1pct:  c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071
+5pct:  c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b
+10pct: fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6
+20pct: 6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e
+```
+
+### Validation, leakage và readback
+
+```text
+Guardrails: 183 passed, 15 subtests passed
+PREFLIGHT_GATE: PASS
+PHASE_2F_GATE: PASS
+Nested split check: PASS
+Nested No Finding check: PASS
+Labeled/unlabeled disjoint and complete: PASS
+Validation/test isolation: PASS
+Unlabeled GT exposure violations: []
+Independent readback gates: PASS
+```
+
+Unlabeled COCO JSON không chứa annotations hoặc các trường dẫn xuất từ ground
+truth thuộc forbidden-field policy. Kết luận leakage của Phase 2F giới hạn ở
+fixed train/validation/test membership và các trường có thể kiểm tra từ artifact;
+nó không mở rộng thành patient-level leakage claim.
+
+### Deterministic reconstruction
+
+Lệnh kiểm tra không promote official artifacts:
+
+```text
+python scripts\02F_build_labeled_unlabeled.py --reconstruct-check
+```
+
+Kết quả:
+
+```text
+1pct: MATCH
+5pct: MATCH
+10pct: MATCH
+20pct: MATCH
+RECONSTRUCT_CHECK_STATUS: MATCH
+```
+
+Reconstruct-check so sánh bảy nhóm trường ở từng budget:
+
+```text
+labeled_image_id_sha256
+labeled_coco_json_sha256
+unlabeled_coco_json_sha256
+labeled_size
+no_finding_size
+repair_move_counts
+integer_objective_final
+```
+
+### Runtime observability
+
+```text
+1pct: 7.063 seconds
+5pct: 130.437 seconds
+10pct: 253.485 seconds
+20pct: 1255.344 seconds
+total construction: 1646.329 seconds
+timing_clock: time.monotonic
+timing_role: OBSERVABILITY_ONLY_NOT_SELECTION_CRITERION
+```
+
+Timing không tham gia membership, seed, objective, acceptance criterion,
+tie-break, checksum hoặc deterministic reconstruction comparison.
+
+### Official artifacts
+
+```text
+scripts/02F_build_labeled_unlabeled.py
+configs/protocol/phase2F_labeled_unlabeled.yaml
+tests/test_phase2F_labeled_unlabeled_guardrails.py
+
+data/processed/coco/labeled_splits/instances_labeled_1pct.json
+data/processed/coco/labeled_splits/instances_labeled_5pct.json
+data/processed/coco/labeled_splits/instances_labeled_10pct.json
+data/processed/coco/labeled_splits/instances_labeled_20pct.json
+data/processed/coco/unlabeled_splits/instances_unlabeled_1pct.json
+data/processed/coco/unlabeled_splits/instances_unlabeled_5pct.json
+data/processed/coco/unlabeled_splits/instances_unlabeled_10pct.json
+data/processed/coco/unlabeled_splits/instances_unlabeled_20pct.json
+
+data/manifests/audit/phase2F_unlabeled_gt_audit.csv
+data/manifests/phase2F_partition_manifest.csv
+data/manifests/phase2F_lock_manifest.json
+data/manifests/phase2F_nested_split_check.json
+data/manifests/phase2F_leakage_check.json
+data/manifests/phase2F_seed_manifest.json
+
+reports/02F_labeled_unlabeled_validation_report.json
+reports/02F_labeled_unlabeled_log.json
+reports/02F_deterministic_reconstruction_check.json
+reports/02F_class_distribution.csv
+reports/02F_negative_distribution.csv
+reports/02F_repair_log.jsonl
+reports/02F_errors.csv
+```
+
+Official materialization sử dụng staging, independent readback, refuse-overwrite
+và transactional rollback. Tổng cộng 20 official artifacts được promote sau
+khi validation PASS.
+
+### Authorization và bất biến downstream
+
+```text
+training_authorized: false
+training_started: false
+pseudo_labels_generated: false
+test_used: false
+```
+
+Phase 2F closure không cấp quyền training. Không được:
+
+* tái chia train/validation/test;
+* tái lấy mẫu labeled membership theo experiment;
+* tìm kiếm hoặc thay đổi `partition_seed=42` để có kết quả thuận lợi;
+* dùng validation/test để tạo labeled/unlabeled membership;
+* dùng test để chọn checkpoint, model, threshold hoặc pseudo-label policy;
+* diễn giải one-for-one local optimum thành global optimum;
+* bắt đầu training khi `training_authorized=false`.
+
+### Next phase
+
+```text
+Phase 2F.1 — Seed Protocol: NEXT
+```
+
+Phase 2F.1 phải phân biệt rõ partition seed đã khóa với training seed. Việc
+định nghĩa training-seed policy không được làm thay đổi fixed split hoặc bất kỳ
+labeled/unlabeled membership nào đã khóa ở Phase 2F.
 
 ---
 
@@ -44,8 +257,8 @@ Không tick checklist nếu chưa có evidence.
 ## 3. Trạng thái hiện tại
 
 ```text
-Current checkpoint: Phase 2E — Fixed Train/Validation/Test Split: CLOSED / PASS
-Next checkpoint: Phase 2F — Labeled/Unlabeled Construction: NEXT
+Current checkpoint: Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS
+Next checkpoint: Phase 2F.1 — Seed Protocol: NEXT
 Phase 0 core: PASS
 Phase 0 local training framework: DEFERRED
 Phase 1A — Dataset Overview: PASS
@@ -62,6 +275,7 @@ Phase 2D.1C — MMDetection Dataset Loading & Full Pipeline Audit: CLOSED / PASS
 Phase 2D.1D — Evidence Consolidation, GPT Review & Closure: CLOSED / PASS
 Phase 2D.1 overall: CLOSED / PASS
 Phase 2E — Fixed Train/Validation/Test Split: CLOSED / PASS
+Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS
 Dataset training-ready: TRUE
 Training authorized: FALSE
 Phase 2D.1C implementation/evidence commit: 0bf30cb (pushed to origin/main)
@@ -81,7 +295,7 @@ into this same closure package.
 Phase tiếp theo:
 
 ```text
-Phase 2F — Labeled/Unlabeled Construction
+Phase 2F.1 — Seed Protocol
 Status: NEXT
 ```
 
@@ -123,6 +337,12 @@ Image-level overlap giữa mọi cặp split bằng 0; union bao phủ đủ 4,8
 Annotation ownership theo split bao phủ đủ 36,096/36,096 annotations.
 Test set đã cố định và có 75 ảnh No Finding để hỗ trợ tính FP per negative image.
 Patient-level leakage không thể kiểm định độc lập vì PatientID và các định danh nhóm liên quan không còn khả dụng sau de-identification của VinDr-CXR; không được tuyên bố patient-level leakage = 0.
+Phase 2F đã xây dựng và khóa bốn labeled/unlabeled budgets lồng nhau chỉ từ fixed train split.
+Labeled sizes 1%/5%/10%/20% lần lượt là 34/171/343/685 ảnh; No Finding trong labeled là 3/17/35/70 ảnh.
+Mỗi labeled subset bao phủ 14/14 lớp; labeled/unlabeled disjoint và complete trong train universe; validation/test isolation PASS.
+Active repair policy là ONE_FOR_ONE_EXHAUSTIVE_DETERMINISTIC và chỉ chứng minh one-for-one local optimum, không tuyên bố global optimum.
+Phase 2F official construction, independent readback, nested/leakage checks đều PASS; deterministic reconstruction MATCH cho 4/4 budgets.
+Phase 2F không thay đổi training authorization: training_authorized=False.
 ```
 ---
 
@@ -1663,10 +1883,11 @@ Phase 2D.1D — Evidence Consolidation, GPT Review & Closure
 Status: CLOSED / PASS
 ```
 
-Phase 2E sau đó đã hoàn tất (xem mục Phase 2E ở cuối handoff). Phase tiếp theo hiện tại:
+Phase 2E và Phase 2F sau đó đã hoàn tất (xem các mục tương ứng ở cuối handoff).
+Phase tiếp theo hiện tại:
 
 ```text
-Phase 2F — Labeled/Unlabeled Construction
+Phase 2F.1 — Seed Protocol
 Status: NEXT
 ```
 
@@ -2105,12 +2326,14 @@ training_authorized=False
 ### Next phase
 
 ```text
-Phase 2F — Labeled/Unlabeled Construction: NEXT
+Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS
+Phase 2F.1 — Seed Protocol: NEXT
 ```
 
-Labeled/unlabeled construction chỉ được thực hiện từ fixed training split
+Phase 2F đã thực hiện labeled/unlabeled construction chỉ từ fixed training split
 `instances_train.json`, theo các ngân sách nhãn đã khóa của nghiên cứu. Fixed
 validation và test split không tham gia phân bổ labeled/unlabeled và test không
-được dùng làm nguồn pseudo-label hoặc để tune.
+được dùng làm nguồn pseudo-label hoặc để tune. Membership Phase 2F hiện đã khóa;
+không được lấy mẫu lại theo từng experiment.
 
 ---

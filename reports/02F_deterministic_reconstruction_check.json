@@ -1,0 +1,55 @@
+{
+  "phase": "2F-C0-R11",
+  "protocol_version": "2.0.0",
+  "mode": "deterministic_reconstruction_check",
+  "official_lock_manifest": "D:\\ssl_detection_xray_v2\\data\\manifests\\phase2F_lock_manifest.json",
+  "status": "MATCH",
+  "compared_fields": [
+    "labeled_image_id_sha256",
+    "labeled_coco_json_sha256",
+    "unlabeled_coco_json_sha256",
+    "labeled_size",
+    "no_finding_size",
+    "repair_move_counts",
+    "integer_objective_final"
+  ],
+  "iterative_stratification_version": "0.1.9",
+  "per_budget_diff": {
+    "1pct": {
+      "labeled_image_id_sha256_match": true,
+      "labeled_coco_json_sha256_match": true,
+      "unlabeled_coco_json_sha256_match": true,
+      "labeled_size_match": true,
+      "no_finding_size_match": true,
+      "repair_move_counts_match": true,
+      "integer_objective_final_match": true
+    },
+    "5pct": {
+      "labeled_image_id_sha256_match": true,
+      "labeled_coco_json_sha256_match": true,
+      "unlabeled_coco_json_sha256_match": true,
+      "labeled_size_match": true,
+      "no_finding_size_match": true,
+      "repair_move_counts_match": true,
+      "integer_objective_final_match": true
+    },
+    "10pct": {
+      "labeled_image_id_sha256_match": true,
+      "labeled_coco_json_sha256_match": true,
+      "unlabeled_coco_json_sha256_match": true,
+      "labeled_size_match": true,
+      "no_finding_size_match": true,
+      "repair_move_counts_match": true,
+      "integer_objective_final_match": true
+    },
+    "20pct": {
+      "labeled_image_id_sha256_match": true,
+      "labeled_coco_json_sha256_match": true,
+      "unlabeled_coco_json_sha256_match": true,
+      "labeled_size_match": true,
+      "no_finding_size_match": true,
+      "repair_move_counts_match": true,
+      "integer_objective_final_match": true
+    }
+  }
+}
