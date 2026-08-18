@@ -7604,3 +7604,423 @@ training_authorized: false
 Phase 2F.1 phải phân biệt rõ partition seed đã khóa với training seed. Việc
 xác định training-seed policy không được thay đổi fixed train/validation/test
 split hoặc bất kỳ labeled/unlabeled membership nào đã khóa ở Phase 2F.
+
+---
+
+## 2026-08-18 — PHASE 2F.1: Seed Protocol — Validation, Provenance & Closure
+
+### Mục tiêu và phạm vi
+
+Phase 2F.1 xây dựng và khóa hợp đồng seed để các thí nghiệm supervised và
+semi-supervised ở Phase 4–5 kế thừa nhất quán. Đây không phải một lần chia dữ
+liệu mới và không triển khai runtime training.
+
+Phase này phải phân biệt hai khái niệm:
+
+```text
+partition_seed:
+khóa membership train/validation/test và labeled/unlabeled.
+
+training_seed:
+kiểm soát các nguồn ngẫu nhiên của từng future training run.
+```
+
+Phase 2F.1 không thực hiện:
+
+```text
+dataset resplit
+membership reconstruction hoặc modification
+training
+model initialization thực tế
+DataLoader/augmentation runtime
+pseudo-labeling
+checkpoint hoặc result generation
+hyperparameter/threshold selection
+GPU determinism validation
+RNG-state capture hoặc restore
+test-set usage
+```
+
+### Trạng thái kế thừa bất biến
+
+Protocol tiếp tục giữ nguyên:
+
+```text
+partition_seed: 42
+partition_seed_policy: PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH
+split_seed: legacy alias of partition_seed
+
+Phase 2F protocol identity: 2F-C0-R11
+Phase 2F protocol version: 2.0.0
+Train universe: 3,426 images
+```
+
+Labeled/unlabeled membership của Phase 2F không thay đổi:
+
+| Budget | Labeled | Unlabeled | Labeled membership SHA-256 |
+|---|---:|---:|---|
+| 1% | 34 | 3,392 | `c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071` |
+| 5% | 171 | 3,255 | `c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b` |
+| 10% | 343 | 3,083 | `fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6` |
+| 20% | 685 | 2,741 | `6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e` |
+
+Validation C15 đã đối chiếu lại các giá trị kế thừa và bốn checksum trên.
+Kết quả: `PASS`.
+
+### Training-seed protocol đã khóa
+
+Researcher đã quyết định trước training:
+
+```text
+training_seed_count: 10
+deterministic_policy: CONTROLLED_BEST_EFFORT
+ordering: FIXED_ORDERED_LIST
+seed domain: 1..2^31-1
+```
+
+Ordered training-seed list:
+
+| Index | training_seed |
+|---:|---:|
+| 1 | 204886845 |
+| 2 | 1480646854 |
+| 3 | 1798418854 |
+| 4 | 2045683682 |
+| 5 | 1814859839 |
+| 6 | 1603952859 |
+| 7 | 1878351743 |
+| 8 | 875651179 |
+| 9 | 477581743 |
+| 10 | 869675675 |
+
+Danh sách được sinh một lần, trước training, không gọi RNG, theo quy tắc công
+khai:
+
+```text
+namespace = ssl_detection_xray_v2|phase2F.1|training_seed
+payload_i = namespace + |index=i
+digest_i = SHA256(UTF-8(payload_i))
+seed_i = 1 + (integer(first 8 hexadecimal characters of digest_i)
+              mod (2^31 - 1))
+i = 1,...,10
+```
+
+Builder và guardrail test đã tính lại độc lập danh sách. Kết quả:
+
+```text
+SHA-256 derivation versus locked ordered list: MATCH 10/10
+RNG calls used to create seed list: 0
+Seed search performed: false
+Validation/test data used for seed selection: false
+```
+
+Mười seed được xác định trước training để định lượng biến thiên giữa các lần
+huấn luyện, giảm phụ thuộc vào một run duy nhất và hỗ trợ so sánh paired giữa
+supervised và SSL. Không có power analysis trong phase này và không tuyên bố
+10 là số seed tối ưu về thống kê.
+
+### Pairing, retry và aggregation policy
+
+Pairing policy:
+
+```text
+Mọi budget và configuration dùng cùng ordered seed list.
+Supervised baseline và SSL được ghép theo training_seed_index.
+partition_seed vẫn bằng 42 cho mọi future run.
+Không cho phép seed list riêng theo method, reorder hoặc subset seed.
+```
+
+Retry policy:
+
+```text
+Retry chỉ được phép cho technical failure có ghi nhận.
+Retry phải giữ nguyên training_seed và training_seed_index.
+Run lỗi phải được giữ lại với technical_failure_reason.
+Run retry phải tham chiếu run gốc qua retry_of.
+Không silent replacement và không retry vì kết quả kém.
+```
+
+Aggregation policy:
+
+```text
+Báo cáo kết quả từng seed.
+Báo cáo mean trên 10 seed.
+Báo cáo sample standard deviation với ddof=1.
+Không bỏ seed, loại outlier hoặc chỉ báo cáo seed tốt nhất.
+Technical-failure attempt phải được báo cáo và không được giả làm completed run.
+```
+
+### Reproducibility policy và giới hạn
+
+Policy được khóa là:
+
+```text
+CONTROLLED_BEST_EFFORT
+```
+
+Phase 4–5 phải seed và ghi nhận các nguồn ngẫu nhiên có thể kiểm soát, gồm:
+
+```text
+Python random
+NumPy
+PyTorch CPU
+PyTorch CUDA
+DataLoader workers
+sampler
+augmentation
+```
+
+Phase 2F.1 chỉ khóa hợp đồng; chưa kiểm chứng deterministic behavior bằng
+training runtime. Không tuyên bố bitwise-identical output giữa các GPU, CUDA,
+cuDNN, driver, phần cứng hoặc phiên bản phần mềm khác nhau.
+
+### Metadata bắt buộc cho future run
+
+Schema 18 trường được khóa nhưng chưa tạo run thật:
+
+```text
+run_id
+run_status
+method
+configuration_id
+budget
+partition_seed
+training_seed
+training_seed_index
+rng_state_id
+membership_checksum
+config_hash
+code_revision
+environment
+deterministic_runtime_settings
+checkpoint
+results
+retry_of
+technical_failure_reason
+```
+
+`rng_state_id` chỉ là trường bắt buộc cho future run. Phase 2F.1 không capture
+hoặc restore RNG state.
+
+### Implementation và artifact
+
+Ba file nguồn:
+
+```text
+configs/protocol/phase2F1_seed_protocol.yaml
+scripts/02F1_build_seed_protocol.py
+tests/test_phase2F1_seed_protocol_guardrails.py
+```
+
+Bốn artifact do builder tạo:
+
+```text
+data/manifests/seed_manifest.json
+data/manifests/seed_state_manifest.json
+reports/seed_protocol.md
+reports/02F1_seed_protocol_validation_report.json
+```
+
+Pytest evidence:
+
+```text
+reports/02F1_guardrails_junit.xml
+```
+
+SHA-256 của source protocol YAML:
+
+```text
+ba5b1a1adce67c3f1cf9dd46657e3db89c9d29b85cc37a744462c55a617d3234
+```
+
+Hash này khớp trong seed manifest, seed-state manifest, validation report và
+snapshot runtime local.
+
+State manifest tại thời điểm closure:
+
+```text
+state: TEMPLATE_LOCKED_NO_RUNS
+training_started: false
+training_authorized: false
+runs: []
+```
+
+Không tạo run, RNG state, checkpoint hoặc result giả.
+
+### Lệnh đã chạy và kết quả định lượng
+
+Researcher đã chạy tuần tự:
+
+```cmd
+python scripts\02F1_build_seed_protocol.py --execute
+python -m pytest tests\test_phase2F1_seed_protocol_guardrails.py -v --junitxml=reports\02F1_guardrails_junit.xml
+python scripts\02F1_build_seed_protocol.py --validate-existing
+```
+
+Kết quả:
+
+| Bước | Bằng chứng | Kết quả | Exit code |
+|---|---|---:|---:|
+| Builder execute | required checks | 22/22 PASS | 0 |
+| Independent pytest guardrails | tests | 20/20 PASS | 0 |
+| Existing-artifact readback | required checks | 23/23 PASS | 0 |
+
+JUnit xác nhận:
+
+```text
+tests: 20
+failures: 0
+errors: 0
+skipped: 0
+```
+
+`--validate-existing` kết thúc ở chế độ read-only và không tạo hoặc sửa
+artifact.
+
+### Snapshot môi trường local
+
+Môi trường local dùng để tạo/kiểm định dữ liệu và protocol đã được lưu như
+provenance evidence:
+
+```text
+reports/02F1_local_conda_environment.yml
+reports/02F1_local_conda_explicit.txt
+reports/02F1_local_pip_freeze.txt
+reports/02F1_local_runtime_environment.json
+reports/02F1_local_environment_checksums.json
+```
+
+Runtime snapshot:
+
+```text
+Environment role: LOCAL_DATA_AND_PROTOCOL_PROVENANCE
+Captured at UTC: 2026-08-18T09:15:14Z
+Platform: Windows-10-10.0.26200-SP0 / AMD64
+Python: 3.10.20
+PyYAML: 6.0.3
+pytest: 9.1.0
+NumPy imported runtime: 2.2.6
+SciPy imported runtime: 1.15.2
+scikit-learn: 1.7.0
+iterative-stratification: 0.1.9
+```
+
+Snapshot file checksums:
+
+```text
+02F1_local_conda_environment.yml
+6ec68eb4bc0951f116559297085be35c5491ed712607e55f9dee7cd9b772043e
+
+02F1_local_conda_explicit.txt
+85ed214594e1e14aa328131e5554360f0686d85b2ce3a04f6dbe15b0e4d19d68
+
+02F1_local_pip_freeze.txt
+8afbc2590fa632409b0eab9725065a4441384c9ad9ae8141d336f4f918be3e62
+
+02F1_local_runtime_environment.json
+916c6aa998ad9f0192167c2f3a01419260c7d6902064f8e86e41b8e314b0418d
+```
+
+Môi trường là mixed conda/pip. Raw snapshot ghi nhận khác biệt provenance:
+
+```text
+NumPy trong conda explicit record: 1.24.3
+NumPy imported runtime / pip record: 2.2.6
+
+SciPy trong conda YAML pip section: 1.15.3
+SciPy imported runtime / explicit / pip record: 1.15.2
+```
+
+Vì vậy, imported runtime snapshot là bằng chứng trực tiếp cho phiên thực thi;
+các export thô tiếp tục được giữ để audit provenance. Snapshot này không phải
+environment lock cho Google Colab và không bảo đảm tái tạo bitwise.
+
+Môi trường Google Colab của Phase 4–5 phải được kiểm tra compatibility, khóa và
+ghi snapshot riêng trước official training.
+
+### Review và closure decision
+
+Review đã đối chiếu:
+
+```text
+partition seed và policy
+ordered 10-seed list và SHA-256 derivation
+pairing, retry và aggregation policies
+CONTROLLED_BEST_EFFORT limitation
+Phase 2F membership checksums
+future-run metadata schema
+authorization/state flags
+builder validation report
+JUnit guardrails
+read-only reconstruct/readback output
+local environment provenance snapshot
+```
+
+Kết quả review:
+
+```text
+Phase 2F.1 — Seed Protocol: CLOSED / PASS
+
+Builder execute validation: 22/22 PASS
+Independent guardrails: 20/20 PASS
+Read-only existing-artifact validation: 23/23 PASS
+Training-seed derivation: MATCH 10/10
+Phase 2F membership checksums: MATCH 4/4
+Local environment snapshot: CAPTURED / CHECKSUM-LOCKED
+
+dataset membership changed: false
+partition_seed changed: false
+training started: false
+training authorized: false
+```
+
+Các generated artifact vẫn ghi:
+
+```text
+phase_closure_status: PENDING_RESEARCHER_GPT_REVIEW
+```
+
+Đây là trạng thái pre-review tại thời điểm artifact được sinh, không phải mâu
+thuẫn với closure decision sau đó. Không sửa ngược generated evidence để làm
+mất lịch sử. Closure được xác lập bởi researcher/GPT review và entry này.
+
+### Claim boundary
+
+Phase 2F.1 PASS cho phép kết luận:
+
+```text
+Seed protocol đã được xác định trước training và khóa bằng artifact máy đọc được.
+Supervised và SSL phải dùng cùng ordered training-seed list.
+partition_seed và training_seed là hai khái niệm tách biệt.
+Retry và aggregation policy đã được xác định trước.
+Future-run metadata contract đã được khóa.
+```
+
+Phase 2F.1 PASS không chứng minh:
+
+```text
+10 là số seed tối ưu về thống kê.
+Power analysis đã được thực hiện.
+Training stability đã được chứng minh.
+Variance đã được đo.
+CONTROLLED_BEST_EFFORT đã được kiểm chứng trên GPU.
+Bitwise reproducibility được bảo đảm giữa các môi trường.
+Model performance hoặc SSL superiority.
+```
+
+### Trạng thái handoff
+
+```text
+Current completed phase: Phase 2F.1 — Seed Protocol: CLOSED / PASS
+partition_seed: 42 / LOCKED / MUST NOT CHANGE
+training_seed_count: 10 / LOCKED
+deterministic_policy: CONTROLLED_BEST_EFFORT / LOCKED
+Phase 2E/2F membership and checksums: UNCHANGED / LOCKED
+training_started: false
+training_authorized: false
+```
+
+Phase tiếp theo phải được xác định từ roadmap/checklist hiện hành. Khi Phase
+4–5 được mở, implementation phải tích hợp seed cho Python, NumPy, PyTorch
+CPU/CUDA, DataLoader workers, sampler và augmentation; đồng thời phải tạo
+environment snapshot riêng trên Google Colab trước official training.

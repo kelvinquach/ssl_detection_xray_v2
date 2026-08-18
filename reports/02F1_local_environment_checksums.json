@@ -1,0 +1,9 @@
+{
+  "algorithm": "SHA-256",
+  "files": {
+    "reports/02F1_local_conda_environment.yml": "6ec68eb4bc0951f116559297085be35c5491ed712607e55f9dee7cd9b772043e",
+    "reports/02F1_local_conda_explicit.txt": "85ed214594e1e14aa328131e5554360f0686d85b2ce3a04f6dbe15b0e4d19d68",
+    "reports/02F1_local_pip_freeze.txt": "8afbc2590fa632409b0eab9725065a4441384c9ad9ae8141d336f4f918be3e62",
+    "reports/02F1_local_runtime_environment.json": "916c6aa998ad9f0192167c2f3a01419260c7d6902064f8e86e41b8e314b0418d"
+  }
+}

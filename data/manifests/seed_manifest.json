@@ -1,0 +1,404 @@
+{
+  "manifest_id": "phase2F1_seed_manifest",
+  "schema_version": "1.0.0",
+  "phase": "2F.1",
+  "manifest_status": "CANDIDATE_PENDING_RESEARCHER_GPT_REVIEW",
+  "phase_closure_status": "PENDING_RESEARCHER_GPT_REVIEW",
+  "generated_at_utc": "2026-08-18T08:54:43Z",
+  "generated_by": "scripts/02F1_build_seed_protocol.py",
+  "source_config": "configs/protocol/phase2F1_seed_protocol.yaml",
+  "source_config_sha256": "ba5b1a1adce67c3f1cf9dd46657e3db89c9d29b85cc37a744462c55a617d3234",
+  "inherited": {
+    "source_phase": "2F",
+    "protocol_identity": "2F-C0-R11",
+    "protocol_version": "2.0.0",
+    "train_size": 3426,
+    "labeled_budgets": [
+      "1pct",
+      "5pct",
+      "10pct",
+      "20pct"
+    ],
+    "labeled_sizes": [
+      34,
+      171,
+      343,
+      685
+    ],
+    "unlabeled_sizes": [
+      3392,
+      3255,
+      3083,
+      2741
+    ],
+    "membership_checksum_algorithm": "SHA-256",
+    "labeled_membership_checksums": {
+      "1pct": "c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071",
+      "5pct": "c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b",
+      "10pct": "fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6",
+      "20pct": "6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e"
+    },
+    "immutability": {
+      "phase2E_artifacts": "IMMUTABLE_IN_PHASE_2F1",
+      "phase2F_artifacts": "IMMUTABLE_IN_PHASE_2F1",
+      "dataset_membership": "FROZEN",
+      "labeled_membership_checksums": "FROZEN"
+    }
+  },
+  "partition": {
+    "partition_seed": 42,
+    "partition_seed_policy": "PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH",
+    "partition_seed_scope": [
+      "train_validation_test_split",
+      "labeled_unlabeled_membership"
+    ],
+    "terminology": {
+      "canonical_term": "partition_seed",
+      "legacy_alias_note": "split_seed = legacy alias of partition_seed"
+    },
+    "constraints": {
+      "partition_seed_mutable": false,
+      "seed_search_performed": false,
+      "split_regeneration_allowed": false,
+      "membership_modification_allowed": false,
+      "validation_data_used_for_seed_selection": false,
+      "test_data_used_for_seed_selection": false,
+      "partition_seed_equals_training_seed": false,
+      "training_seed_may_alter_partition": false
+    }
+  },
+  "training_seed": {
+    "training_seed_count": 10,
+    "deterministic_policy": "CONTROLLED_BEST_EFFORT",
+    "ordering": "FIXED_ORDERED_LIST",
+    "seed_domain": {
+      "minimum": 1,
+      "maximum": 2147483647,
+      "inclusive": true
+    },
+    "generation": {
+      "method": "SHA256_PUBLIC_DERIVATION_NO_RNG",
+      "generated_before_training": true,
+      "rng_calls_used": 0,
+      "namespace": "ssl_detection_xray_v2|phase2F.1|training_seed",
+      "payload_template": "{namespace}|index={index}",
+      "input_encoding": "UTF-8",
+      "digest_algorithm": "SHA-256",
+      "digest_representation": "lowercase_hexadecimal",
+      "digest_prefix_hex_chars": 8,
+      "integer_base": 16,
+      "modulus": 2147483647,
+      "offset": 1,
+      "index_start": 1,
+      "index_end": 10,
+      "formula": "seed_i = 1 + (int(sha256(utf8(namespace + '|index=' + str(i))).hexdigest()[:8], 16) mod (2**31 - 1)), i = 1..10",
+      "recomputation_required": true,
+      "must_match_locked_list_exactly": true
+    },
+    "selection_constraints": {
+      "seed_search_performed": false,
+      "seeds_selected_using_validation_data": false,
+      "seeds_selected_using_test_data": false,
+      "seeds_selected_using_results": false,
+      "seed_list_mutable_after_lock": false,
+      "additional_seeds_allowed": false,
+      "seed_reordering_allowed": false
+    },
+    "ordered_training_seed_values": [
+      204886845,
+      1480646854,
+      1798418854,
+      2045683682,
+      1814859839,
+      1603952859,
+      1878351743,
+      875651179,
+      477581743,
+      869675675
+    ],
+    "seeds": [
+      {
+        "index": 1,
+        "training_seed": 204886845,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=1",
+        "sha256_digest": "0c36533cff89cf810d77b495d5fe36d37d9c864ac27e11358ebc75f7eedcf86f",
+        "digest_prefix_hex": "0c36533c",
+        "integer_of_prefix": 204886844
+      },
+      {
+        "index": 2,
+        "training_seed": 1480646854,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=2",
+        "sha256_digest": "5840e0c591c35543360e29aca040c28185bc0bc14f1242711c6e4b4d9a6bb95e",
+        "digest_prefix_hex": "5840e0c5",
+        "integer_of_prefix": 1480646853
+      },
+      {
+        "index": 3,
+        "training_seed": 1798418854,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=3",
+        "sha256_digest": "6b31b1a5df99182827f909082f0c101bad21c1a1b9ee224b076ea1e6293f0829",
+        "digest_prefix_hex": "6b31b1a5",
+        "integer_of_prefix": 1798418853
+      },
+      {
+        "index": 4,
+        "training_seed": 2045683682,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=4",
+        "sha256_digest": "f9eea7e019cc8611db13a47e1d71e364988c8b08096d4c7c6a6acd5d9cbaa2de",
+        "digest_prefix_hex": "f9eea7e0",
+        "integer_of_prefix": 4193167328
+      },
+      {
+        "index": 5,
+        "training_seed": 1814859839,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=5",
+        "sha256_digest": "6c2c903ed11689a1a5a79151ef18f58f78ff0cfb88bbfce26bd25bc41bb274ec",
+        "digest_prefix_hex": "6c2c903e",
+        "integer_of_prefix": 1814859838
+      },
+      {
+        "index": 6,
+        "training_seed": 1603952859,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=6",
+        "sha256_digest": "df9a60d91787108130fc599e6f958dbfaa715427683594c1b46d1faea044d8c3",
+        "digest_prefix_hex": "df9a60d9",
+        "integer_of_prefix": 3751436505
+      },
+      {
+        "index": 7,
+        "training_seed": 1878351743,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=7",
+        "sha256_digest": "eff55f7d48b0b10f86aff9704a45e56ad902f222cdbe99de90da13166b7e0faa",
+        "digest_prefix_hex": "eff55f7d",
+        "integer_of_prefix": 4025835389
+      },
+      {
+        "index": 8,
+        "training_seed": 875651179,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=8",
+        "sha256_digest": "b4316069836d7b7bb57a58f1106f52a6f07daa9ab2589df4f815e1ffefe0fdf6",
+        "digest_prefix_hex": "b4316069",
+        "integer_of_prefix": 3023134825
+      },
+      {
+        "index": 9,
+        "training_seed": 477581743,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=9",
+        "sha256_digest": "9c7751add209ccea8986622a9e5973d1e7b2807886017a74a8f5c2aef8920198",
+        "digest_prefix_hex": "9c7751ad",
+        "integer_of_prefix": 2625065389
+      },
+      {
+        "index": 10,
+        "training_seed": 869675675,
+        "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=10",
+        "sha256_digest": "33d6329a4c00847f52d24e5a111a9b86e2dc66c76d3c51a60f667d81e46dabbe",
+        "digest_prefix_hex": "33d6329a",
+        "integer_of_prefix": 869675674
+      }
+    ],
+    "derivation_recomputed": true,
+    "derivation_matches_locked_list": true,
+    "rng_calls_used": 0
+  },
+  "pairing_policy": {
+    "supervised_and_ssl_share_same_ordered_seed_list": true,
+    "pairing_key": "training_seed_index",
+    "rule": "For every labeled budget and every training_seed_index k in 1..10, the supervised baseline run and the semi-supervised run use the same training_seed and the same partition_seed.",
+    "per_method_seed_lists_allowed": false,
+    "reshuffling_allowed": false,
+    "subsetting_allowed": false,
+    "partition_seed_shared_across_all_runs": true,
+    "budgets_covered": [
+      "1pct",
+      "5pct",
+      "10pct",
+      "20pct"
+    ],
+    "comparison_unit": "(method, configuration_id, budget, training_seed_index)"
+  },
+  "retry_policy": {
+    "retry_allowed_reason": "TECHNICAL_FAILURE_ONLY",
+    "technical_failure_examples": [
+      "process_crash",
+      "out_of_memory",
+      "hardware_fault",
+      "infrastructure_interruption",
+      "io_error"
+    ],
+    "result_based_retry_allowed": false,
+    "retry_changes_training_seed": false,
+    "retry_must_reuse_same_training_seed": true,
+    "retry_must_reuse_same_training_seed_index": true,
+    "silent_replacement_allowed": false,
+    "failed_run_must_be_retained": true,
+    "failed_run_status_value": "TECHNICAL_FAILURE",
+    "technical_failure_reason_required": true,
+    "retry_run_must_reference_original": true,
+    "retry_reference_field": "retry_of",
+    "retry_attempt_limit": "NOT_SET_IN_PHASE_2F1",
+    "all_attempts_must_be_recorded": true
+  },
+  "aggregation_policy": {
+    "report_per_seed_results": true,
+    "report_mean_across_seeds": true,
+    "report_sample_standard_deviation": true,
+    "standard_deviation_type": "SAMPLE",
+    "standard_deviation_ddof": 1,
+    "n_for_aggregation": 10,
+    "aggregation_requires_all_seeds_completed": true,
+    "seed_dropping_allowed": false,
+    "outlier_removal_allowed": false,
+    "best_seed_only_reporting_allowed": false,
+    "technical_failure_runs_excluded_from_aggregation": true,
+    "technical_failure_runs_must_be_reported": true,
+    "metric_set": "DEFERRED_TO_PHASE_4_5",
+    "formula_mean": "mean = (1 / n) * sum_k x_k",
+    "formula_sd": "sd = sqrt( sum_k (x_k - mean)^2 / (n - 1) )"
+  },
+  "reproducibility": {
+    "deterministic_policy": "CONTROLLED_BEST_EFFORT",
+    "controllable_sources_to_be_seeded_in_phase_4_5": [
+      "python_random",
+      "numpy_random",
+      "torch_cpu",
+      "torch_cuda",
+      "dataloader_workers",
+      "sampler",
+      "augmentation"
+    ],
+    "runtime_settings_must_be_recorded": true,
+    "limitation_statement": "Identical numerical output across different GPU models, CUDA versions, cuDNN versions, drivers, hardware or software versions is not asserted.",
+    "cross_gpu_identical_output_asserted": false,
+    "cross_cuda_version_identical_output_asserted": false,
+    "cross_cudnn_version_identical_output_asserted": false,
+    "cross_driver_version_identical_output_asserted": false,
+    "cross_hardware_identical_output_asserted": false,
+    "cross_software_version_identical_output_asserted": false,
+    "policy_verified_by_runtime_in_phase2F1": false,
+    "verification_deferred_to": "Phase 4-5"
+  },
+  "future_run_metadata_schema": {
+    "applies_to": "FUTURE_RUNS_ONLY",
+    "runs_created_in_phase2F1": 0,
+    "rng_state_id_note": "rng_state_id is a mandatory field of the future-run record only. No RNG state is captured or restored in Phase 2F.1.",
+    "required_fields": [
+      {
+        "name": "run_id",
+        "required": true,
+        "description": "Unique identifier of one training run attempt."
+      },
+      {
+        "name": "run_status",
+        "required": true,
+        "description": "Lifecycle state of the run attempt, for example PLANNED, RUNNING, COMPLETED or TECHNICAL_FAILURE."
+      },
+      {
+        "name": "method",
+        "required": true,
+        "description": "Method under comparison, for example the supervised baseline or the semi-supervised method."
+      },
+      {
+        "name": "configuration_id",
+        "required": true,
+        "description": "Identifier of the frozen configuration used by the run."
+      },
+      {
+        "name": "budget",
+        "required": true,
+        "description": "Labeled budget of the run, one of the inherited labeled_budgets."
+      },
+      {
+        "name": "partition_seed",
+        "required": true,
+        "description": "Inherited partition seed. Must equal 42 for every run."
+      },
+      {
+        "name": "training_seed",
+        "required": true,
+        "description": "Training seed value taken from ordered_training_seed_values."
+      },
+      {
+        "name": "training_seed_index",
+        "required": true,
+        "description": "Position 1..10 of training_seed inside the ordered list."
+      },
+      {
+        "name": "rng_state_id",
+        "required": true,
+        "description": "Identifier of the RNG state record associated with the run. Mandatory field for future runs only."
+      },
+      {
+        "name": "membership_checksum",
+        "required": true,
+        "description": "SHA-256 checksum of the labeled membership used, must equal the inherited checksum of the budget."
+      },
+      {
+        "name": "config_hash",
+        "required": true,
+        "description": "Hash of the resolved configuration actually used by the run."
+      },
+      {
+        "name": "code_revision",
+        "required": true,
+        "description": "Source code revision identifier of the run."
+      },
+      {
+        "name": "environment",
+        "required": true,
+        "description": "Recorded execution environment: hardware, driver, CUDA, cuDNN and library versions."
+      },
+      {
+        "name": "deterministic_runtime_settings",
+        "required": true,
+        "description": "Determinism related runtime settings actually applied by the run."
+      },
+      {
+        "name": "checkpoint",
+        "required": true,
+        "description": "Reference to the checkpoint produced by the run. Null until a real run produces one."
+      },
+      {
+        "name": "results",
+        "required": true,
+        "description": "Recorded metrics of the run. Null until a real run produces them."
+      },
+      {
+        "name": "retry_of",
+        "required": true,
+        "description": "run_id of the original attempt when this run is a retry, null otherwise."
+      },
+      {
+        "name": "technical_failure_reason",
+        "required": true,
+        "description": "Reason recorded when run_status is TECHNICAL_FAILURE, null otherwise."
+      }
+    ]
+  },
+  "rationale": {
+    "training_seed_count_rationale": "Ten training seeds are fixed in advance of any training run so that run-to-run variation of the reported metrics can be reported, so that the conclusions of the study do not rest on a single run, and so that the supervised baseline and the semi-supervised method can be compared under the same training_seed. The value 10 is a pre-registered protocol decision of the researcher: no claim of `statistical_optimality_of_seed_count` is made, no `power_analysis_performed` is claimed, `stability_proven` is not asserted, and `variance_measured_in_phase2F1` is false because Phase 2F.1 executes no training run.",
+    "training_seed_count_rationale_vi": "Muoi training seed duoc xac dinh truoc khi training nham dinh luong bien thien giua cac lan huan luyen, giam su phu thuoc cua ket luan vao mot lan chay duy nhat, va ho tro so sanh supervised va SSL theo cung mot seed. Con so 10 la quyet dinh giao thuc duoc dang ky truoc cua researcher; Phase 2F.1 khong tuyen bo `statistical_optimality_of_seed_count`, khong thuc hien `power_analysis_performed`, khong khang dinh `stability_proven`, va `variance_measured_in_phase2F1` la false.",
+    "controlled_best_effort_rationale": "Under `CONTROLLED_BEST_EFFORT`, Phase 4-5 must seed every controllable source of randomness, namely Python, NumPy, PyTorch on CPU and CUDA, DataLoader workers, the sampler and the augmentation pipeline, and must record the runtime settings actually applied by each run. Identical numerical output across different GPU models, CUDA versions, cuDNN versions, drivers, hardware or software versions is not asserted; `bitwise_reproducibility_across_environments` is listed under prohibited_claims. Phase 2F.1 locks this policy as a contract only and does not verify it with any training runtime.",
+    "controlled_best_effort_rationale_vi": "Trong Phase 4-5, moi nguon ngau nhien co the kiem soat phai duoc seed va cac thiet lap runtime thuc te phai duoc ghi nhan. Ket qua so hoc giong het nhau giua cac GPU, phien ban CUDA, cuDNN, driver, phan cung hoac phien ban phan mem khac nhau khong duoc khang dinh. Phase 2F.1 chi khoa chinh sach nay, chua kiem chung bang training runtime."
+  },
+  "prohibited_claims": {
+    "statistical_optimality_of_seed_count": "PROHIBITED",
+    "power_analysis_performed": "PROHIBITED",
+    "stability_proven": "PROHIBITED",
+    "variance_measured_in_phase2F1": "PROHIBITED",
+    "bitwise_reproducibility_across_environments": "PROHIBITED",
+    "self_declared_phase_closure": "PROHIBITED"
+  },
+  "authorization": {
+    "training_authorized": false,
+    "training_started": false,
+    "authorization_granted_by": "NONE",
+    "unlock_condition": "Researcher and GPT review of the Phase 2F.1 artifacts and console output."
+  },
+  "runs": [],
+  "runs_present": 0,
+  "checkpoints_present": 0,
+  "results_present": 0,
+  "rng_state_captured": false
+}

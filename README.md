@@ -6,8 +6,19 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 **Trọng tâm:** Semi-supervised object detection trên **VinBigData Chest X-ray**.  
 **Framework chính:** [MMDetection](https://github.com/open-mmlab/mmdetection) (OpenMMLab). Detectron2 là *optional fallback*.
 
-> **Trạng thái hiện tại: Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS**
+> **Trạng thái hiện tại: Phase 2F.1 — Seed Protocol: CLOSED / PASS**
 >
+> - Phase 2F.1 — Seed Protocol: **CLOSED / PASS**
+> - Partition seed: **42 / PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH**
+> - Training seed count: **10 / FIXED ORDERED LIST / LOCKED**
+> - Deterministic policy: **CONTROLLED_BEST_EFFORT / LOCKED**
+> - Supervised–SSL seed pairing: **SAME ORDERED LIST / PASS**
+> - Builder validation: **22/22 PASS / exit 0**
+> - Independent guardrails: **20/20 PASS / exit 0**
+> - Read-only artifact validation: **23/23 PASS / exit 0**
+> - Training-seed derivation: **MATCH 10/10**
+> - Local environment provenance: **CAPTURED / CHECKSUM-LOCKED**
+> - Google Colab training environment: **NOT YET LOCKED**
 > - Phase 2F — Labeled/Unlabeled Construction: **CLOSED / PASS**
 > - Protocol identity: **2F-C0-R11 / 2.0.0**
 > - Labeled budgets: **1% / 5% / 10% / 20% = 34 / 171 / 343 / 685 ảnh**
@@ -43,11 +54,121 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 > - Phase 1B — Annotation Quality: **PASS**
 > - Phase 1A — Dataset Overview: **PASS**
 > - Phase 0 — Setup Environment: **CORE PASS**
-> - Next phase: Phase 2F.1 — Seed Protocol: **NOT STARTED / NEXT**
+> - Next planned phase: Phase 3A — Dataset Diagnostics Before Training:
+>   **NOT STARTED / PENDING RESEARCHER OPENING**
 >
-> Phase 2F đã khóa membership labeled/unlabeled lồng nhau trong tập train của
-> Phase 2E. Dataset **training-ready về mặt kỹ thuật**, nhưng training vẫn
-> **chưa được phép** (`training_authorized=false`).
+> Phase 2F.1 đã khóa seed contract để Phase 4–5 kế thừa mà không thay đổi bất
+> kỳ membership nào của Phase 2E/2F. Dataset **training-ready về mặt kỹ thuật**,
+> nhưng training vẫn **chưa được phép** (`training_authorized=false`).
+
+## Trạng thái Phase 2F.1
+
+Phase 2F.1 không tạo split mới. Phase này tách rõ:
+
+```text
+partition_seed:
+khóa train/validation/test và labeled/unlabeled membership.
+
+training_seed:
+kiểm soát model initialization, data-loader shuffling, augmentation,
+sampler và các nguồn ngẫu nhiên của future training run.
+```
+
+Thuật ngữ chính thức là `partition_seed`; `split_seed` chỉ là legacy alias.
+`partition_seed=42` không được thay đổi, tìm kiếm lại hoặc dùng chung khái niệm
+với `training_seed`.
+
+Ordered training-seed list đã khóa:
+
+```text
+1:  204886845
+2:  1480646854
+3:  1798418854
+4:  2045683682
+5:  1814859839
+6:  1603952859
+7:  1878351743
+8:  875651179
+9:  477581743
+10: 869675675
+```
+
+Danh sách được sinh trước training, không gọi RNG và không dựa trên validation,
+test hoặc kết quả thí nghiệm:
+
+```text
+namespace = ssl_detection_xray_v2|phase2F.1|training_seed
+payload_i = namespace + |index=i
+digest_i = SHA256(UTF-8(payload_i))
+seed_i = 1 + (integer(first 8 hex characters of digest_i) mod (2^31 - 1))
+```
+
+Protocol chính:
+
+```text
+Supervised và SSL dùng cùng ordered seed list.
+Pairing key: training_seed_index.
+Retry chỉ dành cho technical failure và phải giữ nguyên seed.
+Không silently replace run hoặc đổi seed vì kết quả kém.
+Báo cáo per-seed, mean và sample SD với ddof=1.
+Không bỏ seed, loại outlier hoặc chỉ báo cáo seed tốt nhất.
+```
+
+Kết quả kiểm định:
+
+| Kiểm định | Kết quả |
+|---|---:|
+| Builder execute | 22/22 PASS; exit 0 |
+| Independent pytest guardrails | 20/20 PASS; exit 0 |
+| Read-only artifact validation | 23/23 PASS; exit 0 |
+| SHA-256 seed derivation | MATCH 10/10 |
+| Phase 2F membership checksums | MATCH 4/4 |
+
+Source và evidence:
+
+```text
+configs/protocol/phase2F1_seed_protocol.yaml
+scripts/02F1_build_seed_protocol.py
+tests/test_phase2F1_seed_protocol_guardrails.py
+
+data/manifests/seed_manifest.json
+data/manifests/seed_state_manifest.json
+reports/seed_protocol.md
+reports/02F1_seed_protocol_validation_report.json
+reports/02F1_guardrails_junit.xml
+```
+
+Source protocol SHA-256:
+
+```text
+ba5b1a1adce67c3f1cf9dd46657e3db89c9d29b85cc37a744462c55a617d3234
+```
+
+State tại closure:
+
+```text
+state: TEMPLATE_LOCKED_NO_RUNS
+runs: []
+training_started: false
+training_authorized: false
+```
+
+Các generated artifact vẫn giữ
+`phase_closure_status=PENDING_RESEARCHER_GPT_REVIEW` vì đó là snapshot trước
+review. Quyết định `CLOSED / PASS` được xác lập sau đó bằng researcher/GPT
+review; không sửa ngược artifact lịch sử. File
+`data/manifests/seed_state_manifest.json` hiện là template của Phase 2F.1,
+không phải schema seed-state lịch sử của Phase 0.
+
+Snapshot môi trường local chỉ có vai trò
+`LOCAL_DATA_AND_PROTOCOL_PROVENANCE`. Đây không phải environment lock cho
+Google Colab. Môi trường Phase 4–5 phải được compatibility-test và snapshot
+riêng trước official training.
+
+Policy `CONTROLLED_BEST_EFFORT` không bảo đảm bitwise reproducibility giữa các
+GPU, CUDA, cuDNN, driver, phần cứng hoặc phiên bản phần mềm khác nhau. Phase
+2F.1 cũng không chứng minh 10 là số seed tối ưu, không thực hiện power analysis
+và chưa đo variance hoặc training stability.
 
 ## Trạng thái Phase 2F
 
@@ -239,7 +360,7 @@ reports/02E_build_fixed_split_log.json
 | Phase 2D.1D — Evidence Consolidation, GPT Review & Closure | Đối chiếu bằng chứng, sửa tài liệu và quyết định đóng Phase 2D.1. | Ngăn trạng thái mâu thuẫn hoặc kết luận vượt quá bằng chứng trước khi chuyển phase. | Phase 2E, 2F, 2F.1 và quy trình xem xét training authorization. |
 | Phase 2E — Fixed Train/Validation/Test Split | Tạo split cố định, disjoint và kiểm tra leakage. | Nếu split không khóa, so sánh mô hình không công bằng và test có thể bị rò rỉ. | Phase 2F, 3, 4, 5 và 6. |
 | Phase 2F — Labeled/Unlabeled Split for SSL | Khóa tập labeled/unlabeled và các labeled fractions lồng nhau. | SSL cần biết chính xác mẫu nào có nhãn được phép dùng ở từng mức. | Phase 3, 4, 5 và 6. |
-| Phase 2F.1 — Seed Protocol | Tách và khóa split seed với training seed. | Tránh thay đổi membership khi chỉ muốn đo biến thiên huấn luyện. | Phase 3, 4, 5 và 6. |
+| Phase 2F.1 — Seed Protocol | Tách `partition_seed` đã khóa khỏi ordered 10-`training_seed` protocol. | Giữ membership bất biến, cho phép đo biến thiên huấn luyện và paired comparison công bằng. | Phase 3, 4, 5 và 6. |
 | Phase 3 — Pre-training Dataset Diagnostics | Kiểm tra phân bố lớp, bbox, split và subset trước training. | Phát hiện lệch dữ liệu hoặc lỗi membership trước khi tiêu tốn tài nguyên huấn luyện. | Phase 4, 5 và 6. |
 | Phase 4 — Supervised Baseline | Xây dựng mốc supervised có kiểm soát. | Cần baseline để xác định SSL có cải thiện thực sự hay không. | Phase 5, 6 và 7. |
 | Phase 5 — SSL Detection | Huấn luyện và đánh giá teacher–student pseudo-labeling. | Đây là thí nghiệm chính trả lời câu hỏi nghiên cứu bán giám sát. | Phase 6 và 7. |
@@ -393,7 +514,9 @@ Trình tự phase downstream:
 ```text
 Phase 2E: Fixed Train/Validation/Test Split — CLOSED / PASS
 Phase 2F: Labeled/Unlabeled Split for SSL — CLOSED / PASS
-Phase 2F.1: Seed Protocol — split_seed versus training_seed — NEXT
+Phase 2F.1: Seed Protocol — partition_seed versus training_seed — CLOSED / PASS
+Phase 3A: Dataset Diagnostics Before Training —
+NOT STARTED / PENDING RESEARCHER OPENING
 ```
 
 Việc đóng Phase 2D.1D không tự động cấp quyền training.
@@ -469,9 +592,19 @@ Training đã được phép.
   không được diễn giải thành global optimum hoặc tối ưu trên mọi neighborhood.
 - Timing Phase 2F chỉ dùng để quan sát runtime, không tham gia seed, membership,
   objective, acceptance, tie-break, checksum hay reconstruct comparison.
-- Training tiếp tục bị khóa sau khi Phase 2F đóng và chỉ được xem xét sau khi
-  seed protocol, training configuration và các authorization gate tiếp theo
-  đã được review.
+- Phase 2F.1 đã khóa seed protocol nhưng không triển khai runtime seeding cho
+  Python/NumPy/PyTorch/CUDA/DataLoader/sampler/augmentation; việc tích hợp và
+  kiểm chứng thực tế thuộc Phase 4–5.
+- Supervised và SSL phải dùng cùng ordered 10-seed list, ghép theo
+  `training_seed_index`; không được dùng một seed duy nhất, bỏ seed, chọn seed
+  tốt nhất hoặc đổi seed vì kết quả kém.
+- Mỗi experiment phải báo cáo kết quả từng seed, mean và sample SD với
+  `ddof=1`; technical-failure retry phải giữ nguyên seed và lưu đầy đủ attempt.
+- Snapshot môi trường local của Phase 2F.1 chỉ là provenance evidence; môi
+  trường Google Colab cho Phase 4–5 chưa được khóa và phải được snapshot riêng.
+- Training tiếp tục bị khóa sau khi Phase 2F.1 đóng và chỉ được xem xét sau khi
+  training configuration, runtime seed integration, Colab environment và các
+  authorization gate tiếp theo đã được review.
 - Không chạy lại `--execute-full` nếu không có lý do kỹ thuật được ghi nhận và phê duyệt.
 - Không commit 4,894 JPG files vào ordinary Git.
 - Không thay đổi hoặc tái tạo fixed train/validation/test split đã khóa nếu

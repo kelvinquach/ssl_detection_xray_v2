@@ -1,0 +1,701 @@
+{
+  "report_id": "02F1_seed_protocol_validation_report",
+  "schema_version": "1.0.0",
+  "phase": "2F.1",
+  "mode": "execute",
+  "generated_at_utc": "2026-08-18T08:54:43Z",
+  "generated_by": "scripts/02F1_build_seed_protocol.py",
+  "source_config": "configs/protocol/phase2F1_seed_protocol.yaml",
+  "source_config_sha256": "ba5b1a1adce67c3f1cf9dd46657e3db89c9d29b85cc37a744462c55a617d3234",
+  "validation_status": "PASS",
+  "phase_closure_status": "PENDING_RESEARCHER_GPT_REVIEW",
+  "validation_pass_implies_phase_closure": false,
+  "closure_decision_authority": "RESEARCHER_AND_GPT_REVIEW",
+  "note": "validation_status refers only to the internal consistency of the Phase 2F.1 contract artifacts. It does not close Phase 2F.1.",
+  "summary": {
+    "total_checks": 22,
+    "required_checks": 22,
+    "passed": 22,
+    "failed": 0,
+    "failed_required_check_ids": []
+  },
+  "artifacts_written": [
+    "data/manifests/seed_manifest.json",
+    "data/manifests/seed_state_manifest.json",
+    "reports/seed_protocol.md",
+    "reports/02F1_seed_protocol_validation_report.json"
+  ],
+  "checks": [
+    {
+      "check_id": "C01",
+      "description": "partition_seed is the locked value 42",
+      "required": true,
+      "status": "PASS",
+      "expected": 42,
+      "observed": 42,
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::partition.partition_seed"
+    },
+    {
+      "check_id": "C02",
+      "description": "partition_seed_policy matches exactly",
+      "required": true,
+      "status": "PASS",
+      "expected": "PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH",
+      "observed": "PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH",
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::partition.partition_seed_policy"
+    },
+    {
+      "check_id": "C03",
+      "description": "exactly 10 training seeds are declared everywhere",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "training_seed_count": 10,
+        "list_lengths": 10
+      },
+      "observed": {
+        "training_seed_count": 10,
+        "ordered_training_seed_values": 10,
+        "ordered_training_seeds": 10,
+        "derived": 10
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::training_seed"
+    },
+    {
+      "check_id": "C04",
+      "description": "ordered training-seed list matches the locked list exactly",
+      "required": true,
+      "status": "PASS",
+      "expected": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "observed": {
+        "ordered_training_seed_values": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "ordered_training_seeds_values": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::training_seed.ordered_training_seeds"
+    },
+    {
+      "check_id": "C05",
+      "description": "training seeds are unique and inside [1, 2**31 - 1]",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "unique": true,
+        "domain": [
+          1,
+          2147483647
+        ]
+      },
+      "observed": {
+        "unique": true,
+        "in_domain": true,
+        "declared_domain": [
+          1,
+          2147483647
+        ],
+        "duplicates": []
+      },
+      "evidence": "recomputed in scripts/02F1_build_seed_protocol.py::derive_training_seeds"
+    },
+    {
+      "check_id": "C06",
+      "description": "the public SHA-256 rule reproduces all 10 locked seeds",
+      "required": true,
+      "status": "PASS",
+      "expected": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "observed": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "evidence": {
+        "namespace": "ssl_detection_xray_v2|phase2F.1|training_seed",
+        "payload_template": "{namespace}|index={index}",
+        "digest_prefix_hex_chars": 8,
+        "modulus": 2147483647,
+        "offset": 1,
+        "per_seed": [
+          {
+            "index": 1,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=1",
+            "digest_prefix_hex": "0c36533c",
+            "training_seed": 204886845
+          },
+          {
+            "index": 2,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=2",
+            "digest_prefix_hex": "5840e0c5",
+            "training_seed": 1480646854
+          },
+          {
+            "index": 3,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=3",
+            "digest_prefix_hex": "6b31b1a5",
+            "training_seed": 1798418854
+          },
+          {
+            "index": 4,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=4",
+            "digest_prefix_hex": "f9eea7e0",
+            "training_seed": 2045683682
+          },
+          {
+            "index": 5,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=5",
+            "digest_prefix_hex": "6c2c903e",
+            "training_seed": 1814859839
+          },
+          {
+            "index": 6,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=6",
+            "digest_prefix_hex": "df9a60d9",
+            "training_seed": 1603952859
+          },
+          {
+            "index": 7,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=7",
+            "digest_prefix_hex": "eff55f7d",
+            "training_seed": 1878351743
+          },
+          {
+            "index": 8,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=8",
+            "digest_prefix_hex": "b4316069",
+            "training_seed": 875651179
+          },
+          {
+            "index": 9,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=9",
+            "digest_prefix_hex": "9c7751ad",
+            "training_seed": 477581743
+          },
+          {
+            "index": 10,
+            "payload": "ssl_detection_xray_v2|phase2F.1|training_seed|index=10",
+            "digest_prefix_hex": "33d6329a",
+            "training_seed": 869675675
+          }
+        ]
+      }
+    },
+    {
+      "check_id": "C07",
+      "description": "no seed search: seeds are derived by a public rule, no RNG",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "seed_search_performed": false,
+        "rng_calls_used": 0,
+        "method": "SHA256_PUBLIC_DERIVATION_NO_RNG"
+      },
+      "observed": {
+        "partition.constraints.seed_search_performed": false,
+        "training_seed.selection_constraints.seed_search_performed": false,
+        "training_seed.generation.rng_calls_used": 0,
+        "training_seed.generation.method": "SHA256_PUBLIC_DERIVATION_NO_RNG"
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::partition.constraints, training_seed.generation"
+    },
+    {
+      "check_id": "C08",
+      "description": "validation and test data are not used to select any seed",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "partition.constraints.validation_data_used_for_seed_selection": false,
+        "partition.constraints.test_data_used_for_seed_selection": false,
+        "training_seed.selection_constraints.seeds_selected_using_validation_data": false,
+        "training_seed.selection_constraints.seeds_selected_using_test_data": false,
+        "training_seed.selection_constraints.seeds_selected_using_results": false
+      },
+      "observed": {
+        "partition.constraints.validation_data_used_for_seed_selection": false,
+        "partition.constraints.test_data_used_for_seed_selection": false,
+        "training_seed.selection_constraints.seeds_selected_using_validation_data": false,
+        "training_seed.selection_constraints.seeds_selected_using_test_data": false,
+        "training_seed.selection_constraints.seeds_selected_using_results": false
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::partition.constraints, training_seed.selection_constraints"
+    },
+    {
+      "check_id": "C09",
+      "description": "supervised and SSL use the same ordered seed list",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "shared": true,
+        "pairing_key": "training_seed_index",
+        "per_method_seed_lists_allowed": false,
+        "budgets_covered": [
+          "1pct",
+          "5pct",
+          "10pct",
+          "20pct"
+        ]
+      },
+      "observed": {
+        "supervised_and_ssl_share_same_ordered_seed_list": true,
+        "pairing_key": "training_seed_index",
+        "per_method_seed_lists_allowed": false,
+        "reshuffling_allowed": false,
+        "subsetting_allowed": false,
+        "partition_seed_shared_across_all_runs": true,
+        "budgets_covered": [
+          "1pct",
+          "5pct",
+          "10pct",
+          "20pct"
+        ]
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::pairing_policy"
+    },
+    {
+      "check_id": "C10",
+      "description": "retry keeps the same seed and cannot silently replace a run",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "retry_changes_training_seed": false,
+        "silent_replacement_allowed": false,
+        "result_based_retry_allowed": false,
+        "failed_run_must_be_retained": true,
+        "retry_reference_field": "retry_of"
+      },
+      "observed": {
+        "retry_allowed_reason": "TECHNICAL_FAILURE_ONLY",
+        "retry_changes_training_seed": false,
+        "retry_must_reuse_same_training_seed": true,
+        "retry_must_reuse_same_training_seed_index": true,
+        "silent_replacement_allowed": false,
+        "result_based_retry_allowed": false,
+        "failed_run_must_be_retained": true,
+        "technical_failure_reason_required": true,
+        "retry_run_must_reference_original": true,
+        "retry_reference_field": "retry_of",
+        "all_attempts_must_be_recorded": true
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::retry_policy"
+    },
+    {
+      "check_id": "C11",
+      "description": "per-seed, mean and sample SD with ddof=1 are mandated",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "per_seed": true,
+        "mean": true,
+        "sample_sd": true,
+        "ddof": 1,
+        "n": 10
+      },
+      "observed": {
+        "report_per_seed_results": true,
+        "report_mean_across_seeds": true,
+        "report_sample_standard_deviation": true,
+        "standard_deviation_ddof": 1,
+        "standard_deviation_type": "SAMPLE",
+        "n_for_aggregation": 10,
+        "seed_dropping_allowed": false,
+        "outlier_removal_allowed": false,
+        "best_seed_only_reporting_allowed": false
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::aggregation_policy"
+    },
+    {
+      "check_id": "C12",
+      "description": "both mandatory rationales exist and are non-trivial",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "training_seed_count_rationale": ">=120 chars",
+        "controlled_best_effort_rationale": ">=120 chars"
+      },
+      "observed": {
+        "training_seed_count_rationale_len": 606,
+        "controlled_best_effort_rationale_len": 591
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::rationale"
+    },
+    {
+      "check_id": "C13",
+      "description": "no statistical-optimality, power-analysis, proven-stability or guaranteed-reproducibility claim appears",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "affirmative_claim_matches": 0,
+        "declared_prohibited_claims": [
+          "statistical_optimality_of_seed_count",
+          "power_analysis_performed",
+          "stability_proven",
+          "variance_measured_in_phase2F1",
+          "bitwise_reproducibility_across_environments"
+        ]
+      },
+      "observed": {
+        "affirmative_claim_matches": [],
+        "declared_prohibited_claims": {
+          "statistical_optimality_of_seed_count": "PROHIBITED",
+          "power_analysis_performed": "PROHIBITED",
+          "stability_proven": "PROHIBITED",
+          "variance_measured_in_phase2F1": "PROHIBITED",
+          "bitwise_reproducibility_across_environments": "PROHIBITED",
+          "self_declared_phase_closure": "PROHIBITED"
+        }
+      },
+      "evidence": "regex scan of configs/protocol/phase2F1_seed_protocol.yaml, reports/seed_protocol.md, data/manifests/seed_manifest.json, data/manifests/seed_state_manifest.json"
+    },
+    {
+      "check_id": "C14",
+      "description": "CONTROLLED_BEST_EFFORT and the cross-environment limitation are documented",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "deterministic_policy": "CONTROLLED_BEST_EFFORT",
+        "limitation_terms": [
+          "gpu",
+          "cuda",
+          "cudnn",
+          "driver",
+          "hardware",
+          "software"
+        ],
+        "policy_verified_by_runtime_in_phase2F1": false
+      },
+      "observed": {
+        "policy_values": {
+          "training_seed.deterministic_policy": "CONTROLLED_BEST_EFFORT",
+          "reproducibility.deterministic_policy": "CONTROLLED_BEST_EFFORT",
+          "policy_verified_by_runtime_in_phase2F1": false
+        },
+        "limitation_statement": "Identical numerical output across different GPU models, CUDA versions, cuDNN versions, drivers, hardware or software versions is not asserted.",
+        "missing_terms": []
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::reproducibility"
+    },
+    {
+      "check_id": "C15",
+      "description": "Phase 2F inherited values and membership checksums match",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "protocol_identity": "2F-C0-R11",
+        "protocol_version": "2.0.0",
+        "train_size": 3426,
+        "labeled_budgets": [
+          "1pct",
+          "5pct",
+          "10pct",
+          "20pct"
+        ],
+        "labeled_sizes": [
+          34,
+          171,
+          343,
+          685
+        ],
+        "unlabeled_sizes": [
+          3392,
+          3255,
+          3083,
+          2741
+        ],
+        "labeled_membership_checksums": {
+          "1pct": "c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071",
+          "5pct": "c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b",
+          "10pct": "fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6",
+          "20pct": "6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e"
+        }
+      },
+      "observed": {
+        "inherited": {
+          "protocol_identity": "2F-C0-R11",
+          "protocol_version": "2.0.0",
+          "train_size": 3426,
+          "labeled_budgets": [
+            "1pct",
+            "5pct",
+            "10pct",
+            "20pct"
+          ],
+          "labeled_sizes": [
+            34,
+            171,
+            343,
+            685
+          ],
+          "unlabeled_sizes": [
+            3392,
+            3255,
+            3083,
+            2741
+          ],
+          "labeled_membership_checksums": {
+            "1pct": "c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071",
+            "5pct": "c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b",
+            "10pct": "fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6",
+            "20pct": "6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e"
+          }
+        },
+        "labeled_plus_unlabeled_equals_train_size": true
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::inherited"
+    },
+    {
+      "check_id": "C16",
+      "description": "training_authorized is false in every artifact",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "config": false,
+        "seed_manifest": false,
+        "state_manifest": false
+      },
+      "observed": {
+        "config": false,
+        "seed_manifest": false,
+        "state_manifest": false
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml, data/manifests/seed_manifest.json, data/manifests/seed_state_manifest.json"
+    },
+    {
+      "check_id": "C17",
+      "description": "training_started is false in every artifact",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "config": false,
+        "seed_manifest": false,
+        "state_manifest": false
+      },
+      "observed": {
+        "config": false,
+        "seed_manifest": false,
+        "state_manifest": false
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml, data/manifests/seed_manifest.json, data/manifests/seed_state_manifest.json"
+    },
+    {
+      "check_id": "C18",
+      "description": "state manifest is the empty template with runs == []",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "state": "TEMPLATE_LOCKED_NO_RUNS",
+        "training_started": false,
+        "runs": [],
+        "rng_state_captured": false
+      },
+      "observed": {
+        "state": "TEMPLATE_LOCKED_NO_RUNS",
+        "training_started": false,
+        "runs": [],
+        "rng_state_captured": false
+      },
+      "evidence": "data/manifests/seed_state_manifest.json"
+    },
+    {
+      "check_id": "C19",
+      "description": "YAML, JSON manifests and Markdown report agree with each other",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "seed_values": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "partition_seed": 42,
+        "markdown_missing_tokens": [],
+        "both_rationales_in_markdown": true
+      },
+      "observed": {
+        "seed_manifest_values": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "state_manifest_values": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "markdown_missing_tokens": [],
+        "both_rationales_in_markdown": true
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml, data/manifests/seed_manifest.json, data/manifests/seed_state_manifest.json, reports/seed_protocol.md"
+    },
+    {
+      "check_id": "C20",
+      "description": "no fabricated run, RNG state, checkpoint or result exists",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "runs": [],
+        "checkpoints_present": 0,
+        "results_present": 0,
+        "rng_state_captured": false,
+        "runs_created_in_phase2F1": 0
+      },
+      "observed": {
+        "seed_manifest.runs": [],
+        "seed_manifest.checkpoints_present": 0,
+        "seed_manifest.results_present": 0,
+        "seed_manifest.rng_state_captured": false,
+        "state_manifest.checkpoints_present": 0,
+        "state_manifest.results_present": 0,
+        "future_run_metadata_schema.runs_created_in_phase2F1": 0
+      },
+      "evidence": "data/manifests/seed_manifest.json, data/manifests/seed_state_manifest.json, configs/protocol/phase2F1_seed_protocol.yaml"
+    },
+    {
+      "check_id": "C21",
+      "description": "the mandatory future-run metadata schema is complete",
+      "required": true,
+      "status": "PASS",
+      "expected": [
+        "run_id",
+        "run_status",
+        "method",
+        "configuration_id",
+        "budget",
+        "partition_seed",
+        "training_seed",
+        "training_seed_index",
+        "rng_state_id",
+        "membership_checksum",
+        "config_hash",
+        "code_revision",
+        "environment",
+        "deterministic_runtime_settings",
+        "checkpoint",
+        "results",
+        "retry_of",
+        "technical_failure_reason"
+      ],
+      "observed": {
+        "fields": [
+          "run_id",
+          "run_status",
+          "method",
+          "configuration_id",
+          "budget",
+          "partition_seed",
+          "training_seed",
+          "training_seed_index",
+          "rng_state_id",
+          "membership_checksum",
+          "config_hash",
+          "code_revision",
+          "environment",
+          "deterministic_runtime_settings",
+          "checkpoint",
+          "results",
+          "retry_of",
+          "technical_failure_reason"
+        ],
+        "all_marked_required": true
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml::future_run_metadata_schema.required_fields"
+    },
+    {
+      "check_id": "C22",
+      "description": "phase_closure_status stays PENDING_RESEARCHER_GPT_REVIEW",
+      "required": true,
+      "status": "PASS",
+      "expected": {
+        "phase_closure_status": "PENDING_RESEARCHER_GPT_REVIEW",
+        "self_declared_closure_allowed": false
+      },
+      "observed": {
+        "config": "PENDING_RESEARCHER_GPT_REVIEW",
+        "config.self_declared_closure_allowed": false,
+        "seed_manifest": "PENDING_RESEARCHER_GPT_REVIEW",
+        "state_manifest": "PENDING_RESEARCHER_GPT_REVIEW"
+      },
+      "evidence": "configs/protocol/phase2F1_seed_protocol.yaml, data/manifests/seed_manifest.json, data/manifests/seed_state_manifest.json"
+    }
+  ]
+}

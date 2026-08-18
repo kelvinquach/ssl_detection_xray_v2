@@ -55,25 +55,28 @@ Object detection bằng bounding box, **không phải classification**, **không
 - Nested sampling: **1% ⊂ 5% ⊂ 10% ⊂ 20%**.
 - Supervised low-label và SSL phải dùng:
   - cùng labeled split;
-  - cùng `split_seed`;
+  - cùng `partition_seed=42`;
   - cùng fixed train/val/test;
   - cùng fixed test set.
-- Stability dùng nhiều `training_seed`, thường 3–5 seeds.
+- Thuật ngữ chính thức là `partition_seed`; `split_seed` chỉ là legacy alias.
 - Phân biệt rõ:
-  - `split_seed`: tạo train/val/test và labeled/unlabeled split;
+  - `partition_seed`: đã khóa train/val/test và labeled/unlabeled membership;
   - `training_seed`: khởi tạo mô hình, dataloader shuffle, augmentation và training.
-- Không khóa cùng một `training_seed` cho mọi run vì sẽ tạo variance giả thấp.
-- Lưu đầy đủ:
-  - seed number;
-  - Python RNG state;
-  - NumPy RNG state;
-  - PyTorch CPU RNG state;
-  - PyTorch CUDA RNG state;
-  - deterministic flags;
-  - config snapshot;
-  - checkpoint;
-  - log;
-  - report.
+- `partition_seed=42` và policy
+  `PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH` không được thay đổi hoặc seed-search.
+- Ordered `training_seed` list gồm đúng 10 seed đã được khóa trước training tại
+  Phase 2F.1; supervised và SSL phải ghép theo cùng `training_seed_index`.
+- Mỗi tổ hợp method × configuration × budget phải chạy đủ ordered seed list;
+  không được dùng một seed duy nhất để đại diện cho stability, bỏ seed, chỉ báo
+  cáo seed tốt nhất hoặc thay seed vì kết quả kém.
+- Báo cáo kết quả từng seed, mean và sample standard deviation với `ddof=1`.
+- Retry chỉ dành cho technical failure có ghi nhận, giữ nguyên seed và không
+  silently replace run.
+- Deterministic policy: `CONTROLLED_BEST_EFFORT`; không bảo đảm bitwise
+  reproducibility giữa GPU/CUDA/cuDNN/driver/phần cứng/phần mềm khác nhau.
+- Future run phải lưu đủ seed, RNG-state identifier, membership checksum,
+  config hash, code revision, environment, deterministic runtime settings,
+  checkpoint, results và retry provenance theo schema Phase 2F.1.
 
 ### 2.4 Class imbalance
 
@@ -257,6 +260,8 @@ Lưu ý thống nhất tên file:
   - **2D.1D:** Evidence Consolidation, GPT Review & Closure.
 - **2E:** Fixed train/val/test split.
 - **2F:** Labeled/unlabeled split for SSL.
+- **2F.1:** Seed Protocol — tách `partition_seed` và `training_seed`, khóa
+  ordered 10-seed list, pairing/retry/aggregation policy và future-run metadata.
 
 ### PHASE 3 — Pre-training Diagnostics
 
@@ -301,9 +306,9 @@ Lưu ý thống nhất tên file:
 
 ## 7. Trạng thái hiện tại
 
-Current completed phase: Phase 2F — Labeled/Unlabeled Construction: **CLOSED / PASS**
-Previous completed phase: Phase 2E — Fixed Train/Validation/Test Split: **CLOSED / PASS**
-Next phase: Phase 2F.1 — Seed Protocol: **NOT STARTED / NEXT**
+Current completed phase: Phase 2F.1 — Seed Protocol: **CLOSED / PASS**
+Previous completed phase: Phase 2F — Labeled/Unlabeled Construction: **CLOSED / PASS**
+Next planned phase: Phase 3A — Dataset Diagnostics Before Training: **NOT STARTED / PENDING RESEARCHER OPENING**
 Final JPEG quality: **95 / LOCKED**
 Phase 2D.1C implementation/evidence commit: `0bf30cb` — pushed to `origin/main`.
 Phase 2D.1C prompt/environment commit: `5ce88f6` — pushed to `origin/main`.
@@ -334,6 +339,17 @@ Labeled/unlabeled disjointness and completeness: **PASS**
 Validation/test isolation: **PASS**
 Independent readback: **PASS**
 Deterministic reconstruction: **MATCH (4/4 budgets)**
+
+Phase 2F.1 partition seed: **42 / LOCKED / MUST NOT CHANGE**
+Phase 2F.1 training seed count: **10 / FIXED ORDERED LIST / LOCKED**
+Phase 2F.1 deterministic policy: **CONTROLLED_BEST_EFFORT / LOCKED**
+Supervised–SSL seed pairing: **SAME ORDERED LIST / PASS**
+Builder validation: **22/22 PASS / exit 0**
+Independent pytest guardrails: **20/20 PASS / exit 0**
+Read-only artifact validation: **23/23 PASS / exit 0**
+Training-seed derivation: **MATCH 10/10**
+Local environment provenance snapshot: **CAPTURED / CHECKSUM-LOCKED**
+Google Colab training environment: **NOT YET LOCKED**
 
 ### 7.1 Current gate
 
@@ -415,6 +431,9 @@ CLOSED / PASS
 Phase 2F — Labeled/Unlabeled Construction:
 CLOSED / PASS
 
+Phase 2F.1 — Seed Protocol:
+CLOSED / PASS
+
 Fixed train/val/test split: CREATED / VALIDATED / CHECKSUM-LOCKED
 Labeled/unlabeled split: LOCKED
 Training: LOCKED
@@ -441,6 +460,12 @@ fixed_split_validated: TRUE
 fixed_split_checksum_locked: TRUE
 labeled_unlabeled_membership_locked: TRUE
 phase2f_deterministic_reconstruction_match: TRUE
+phase2f1_seed_protocol_locked: TRUE
+phase2f1_training_seed_count: 10
+phase2f1_seed_derivation_match: TRUE
+phase2f1_guardrails_pass: TRUE
+phase2f1_local_environment_snapshot_captured: TRUE
+phase4_5_colab_environment_locked: FALSE
 training_authorized: FALSE
 ```
 
@@ -1554,8 +1579,9 @@ Training authorization remains false.
 Next phase:
 
 ```text
-Phase 2F.1 — Seed Protocol
-Status: NOT STARTED / NEXT
+Phase 2F.1 — Seed Protocol: CLOSED / PASS
+Next planned phase: Phase 3A — Dataset Diagnostics Before Training
+Status: NOT STARTED / PENDING RESEARCHER OPENING
 ```
 
 ### 7.8 Phase 2D.1C locked evidence
@@ -1694,7 +1720,7 @@ Correct downstream phase ownership:
 Phase 2D.1D: Evidence Consolidation, GPT Review & Closure
 Phase 2E: Fixed Train/Validation/Test Split
 Phase 2F: Labeled/Unlabeled Split for SSL
-Phase 2F.1: Seed Protocol — split_seed versus training_seed
+Phase 2F.1: Seed Protocol — partition_seed versus training_seed
 ```
 
 Evidence reviewed directly includes the protocol and decision reports, Pilot
@@ -1885,7 +1911,7 @@ Next phase:
 
 ```text
 Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS
-Phase 2F.1 — Seed Protocol: NOT STARTED / NEXT
+Phase 2F.1 — Seed Protocol: CLOSED / PASS
 ```
 
 Phase 2F used `data/processed/coco/instances_train.json` only. Validation and
@@ -2029,11 +2055,187 @@ changed to obtain a favorable membership.
 Next phase:
 
 ```text
-Phase 2F.1 — Seed Protocol: NOT STARTED / NEXT
+Phase 2F.1 — Seed Protocol: CLOSED / PASS
+Next planned phase: Phase 3A — Dataset Diagnostics Before Training
+Status: NOT STARTED / PENDING RESEARCHER OPENING
 ```
 
-Phase 2F.1 must distinguish the locked partition seed from future training
-seeds and must not alter any Phase 2E or Phase 2F membership.
+Phase 2F.1 distinguished the locked partition seed from future training seeds,
+locked the ordered 10-seed protocol and did not alter Phase 2E or Phase 2F
+membership.
+
+### 7.12 Phase 2F.1 locked evidence
+
+Phase 2F.1 — Seed Protocol: **CLOSED / PASS**
+
+```text
+Date closed: 2026-08-18
+partition_seed: 42
+partition_seed_policy: PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH
+training_seed_count: 10
+deterministic_policy: CONTROLLED_BEST_EFFORT
+training_started: false
+training_authorized: false
+```
+
+`partition_seed` is the canonical term. `split_seed` is retained only as a
+legacy alias. Phase 2F.1 is a seed-contract phase, not a new dataset split.
+
+Locked ordered training-seed list:
+
+```text
+1:  204886845
+2:  1480646854
+3:  1798418854
+4:  2045683682
+5:  1814859839
+6:  1603952859
+7:  1878351743
+8:  875651179
+9:  477581743
+10: 869675675
+```
+
+Public derivation rule:
+
+```text
+namespace = ssl_detection_xray_v2|phase2F.1|training_seed
+payload_i = namespace + |index=i
+digest_i = SHA256(UTF-8(payload_i))
+seed_i = 1 + (integer(first 8 hexadecimal characters of digest_i)
+              mod (2^31 - 1))
+i = 1,...,10
+```
+
+The list was generated before training without RNG calls or result-based seed
+selection. Independent recomputation matched all 10 locked values.
+
+Locked policies:
+
+```text
+Supervised and SSL use the same ordered seed list.
+Pairing key: training_seed_index.
+Retry reason: TECHNICAL_FAILURE_ONLY.
+Retry preserves training_seed and training_seed_index.
+Failed attempts remain auditable; silent replacement is forbidden.
+Report per-seed results, mean and sample SD with ddof=1.
+Seed dropping, outlier removal and best-seed-only reporting are forbidden.
+```
+
+Source files:
+
+```text
+configs/protocol/phase2F1_seed_protocol.yaml
+scripts/02F1_build_seed_protocol.py
+tests/test_phase2F1_seed_protocol_guardrails.py
+```
+
+Generated protocol evidence:
+
+```text
+data/manifests/seed_manifest.json
+data/manifests/seed_state_manifest.json
+reports/seed_protocol.md
+reports/02F1_seed_protocol_validation_report.json
+reports/02F1_guardrails_junit.xml
+```
+
+The current `data/manifests/seed_state_manifest.json` is the Phase 2F.1 empty
+future-run template. The Phase 0 progress-log reference to the same path is a
+historical record and must not be interpreted as the current file schema.
+
+Validation result:
+
+```text
+Builder execute: 22/22 PASS; exit code 0
+Independent pytest guardrails: 20/20 PASS; exit code 0
+Read-only existing-artifact validation: 23/23 PASS; exit code 0
+Training-seed derivation: MATCH 10/10
+Phase 2F inherited membership checksums: MATCH 4/4
+```
+
+Source protocol SHA-256:
+
+```text
+ba5b1a1adce67c3f1cf9dd46657e3db89c9d29b85cc37a744462c55a617d3234
+```
+
+The state manifest remains an empty future-run template:
+
+```text
+state: TEMPLATE_LOCKED_NO_RUNS
+runs: []
+training_started: false
+training_authorized: false
+```
+
+Future-run metadata schema requires 18 fields covering run identity/status,
+method/configuration/budget, both seed concepts, membership checksum, RNG-state
+identifier, config/code/environment provenance, deterministic settings,
+checkpoint/results and retry/failure provenance.
+
+Local environment provenance was captured and checksum-locked:
+
+```text
+Environment role: LOCAL_DATA_AND_PROTOCOL_PROVENANCE
+Platform: Windows-10-10.0.26200-SP0 / AMD64
+Python: 3.10.20
+PyYAML: 6.0.3
+pytest: 9.1.0
+Imported NumPy: 2.2.6
+Imported SciPy: 1.15.2
+scikit-learn: 1.7.0
+iterative-stratification: 0.1.9
+```
+
+Snapshot artifacts:
+
+```text
+reports/02F1_local_conda_environment.yml
+reports/02F1_local_conda_explicit.txt
+reports/02F1_local_pip_freeze.txt
+reports/02F1_local_runtime_environment.json
+reports/02F1_local_environment_checksums.json
+```
+
+The local environment is mixed conda/pip. Raw exports contain provenance
+differences for NumPy and SciPy, so the imported-runtime snapshot is the direct
+evidence of the execution environment. This snapshot is not the Phase 4–5
+Google Colab environment lock and does not guarantee bitwise reproduction.
+
+Google Colab must be compatibility-tested and independently snapshot/locked
+before official Phase 4–5 training. Runtime integration of Python, NumPy,
+PyTorch CPU/CUDA, DataLoader workers, sampler and augmentation seeds is also
+deferred to Phase 4–5.
+
+Generated artifacts record
+`phase_closure_status=PENDING_RESEARCHER_GPT_REVIEW` because they are immutable
+pre-review snapshots. Researcher/GPT review subsequently closed Phase 2F.1;
+generated history must not be retroactively rewritten.
+
+Claim boundary:
+
+```text
+The seed protocol is pre-specified, machine-readable and locked: supported.
+Ten is a statistically optimal seed count: not supported.
+Power analysis was performed: false.
+Training stability or variance was measured in Phase 2F.1: false.
+Cross-environment bitwise reproducibility is guaranteed: false.
+Model performance or SSL superiority was evaluated: false.
+```
+
+Handoff:
+
+```text
+Phase 2F.1: CLOSED / PASS
+Phase 2E/2F membership: UNCHANGED / LOCKED
+partition_seed: 42 / LOCKED / MUST NOT CHANGE
+training_seed_count: 10 / LOCKED
+training_started: false
+training_authorized: false
+Next planned phase: Phase 3A — Dataset Diagnostics Before Training
+Next-phase status: NOT STARTED / PENDING RESEARCHER OPENING
+```
 
 
 ## 8. Nguyên tắc review bắt buộc
@@ -2086,8 +2288,10 @@ Khi tôi đưa code/log/output, GPT phải kiểm tra:
 ### 9.2 Training / SSL
 
 - Supervised và SSL không cùng labeled split.
-- So sánh SSL vs supervised nhưng không cùng `split_seed`.
-- Khóa nhầm `training_seed` giống nhau cho mọi run làm variance giả thấp.
+- So sánh SSL vs supervised nhưng không cùng `partition_seed`, locked
+  membership hoặc paired `training_seed_index`.
+- Chỉ dùng một `training_seed` cho toàn bộ experiment cell thay vì chạy đủ 10
+  seed; hoặc dùng seed khác nhau giữa supervised và SSL nên mất paired comparison.
 - Chỉ chạy 1 seed rồi kết luận.
 - Checkpoint chọn bằng test set.
 - Threshold tune bằng test set.
@@ -2120,7 +2324,8 @@ Khi tôi đưa code/log/output, GPT phải kiểm tra:
 ## 10. Quy tắc kết luận kết quả
 
 - SSL gain/loss phải tính bằng metric chính `mAP@0.5:0.95`.
-- SSL gain phải so với supervised baseline cùng labeled split và cùng `split_seed`.
+- SSL gain phải so với supervised baseline cùng labeled split, cùng
+  `partition_seed=42` và cùng paired `training_seed_index`.
 - SSL gain phải báo cáo kèm mean ± std theo nhiều `training_seed`.
 - Nếu SSL gain nhỏ hơn hoặc tương đương std giữa các seed, chỉ nói: “chưa đủ bằng chứng ổn định”.
 - Nếu SSL tăng mAP nhưng FP per negative image tăng mạnh, phải thảo luận trade-off y khoa.
@@ -3680,13 +3885,77 @@ Next phase:
 
 ```text
 Phase 2F — Labeled/Unlabeled Construction: CLOSED / PASS
-Phase 2F.1 — Seed Protocol: NOT STARTED / NEXT
+Phase 2F.1 — Seed Protocol: CLOSED / PASS
+Phase 3A — Dataset Diagnostics Before Training:
+NOT STARTED / PENDING RESEARCHER OPENING
 ```
 
 Resolution update: Phase 2F subsequently completed with PASS, locked all four
 nested labeled/unlabeled memberships and achieved deterministic reconstruction
-`MATCH`. The Phase 2D.1C restrictions above remain historical records of that
-phase's execution time; they are not the current project state.
+`MATCH`. Phase 2F.1 subsequently locked the ordered 10-seed protocol and closed
+with PASS without changing any dataset membership. The Phase 2D.1C restrictions
+above remain historical records of that phase's execution time; they are not
+the current project state.
+
+---
+
+### Phase 2E — Fixed Train/Validation/Test Split
+
+Status: **CLOSED / PASS**
+
+```text
+Split unit: image_id
+partition_seed: 42 / PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH
+Train/validation/test: 3,426 / 734 / 734 images
+Image-level overlap: 0
+Annotation-level overlap: 0
+Patient-level leakage: NOT ASSESSABLE
+Independent readback: PASS
+Test-set membership: CHECKSUM-LOCKED
+```
+
+### Phase 2F — Labeled/Unlabeled Construction
+
+Status: **CLOSED / PASS**
+
+```text
+Protocol: 2F-C0-R11 / 2.0.0
+Labeled budgets: 34 / 171 / 343 / 685 images
+Unlabeled budgets: 3,392 / 3,255 / 3,083 / 2,741 images
+Nested labeled and No Finding subsets: PASS
+Validation/test isolation: PASS
+Guardrails: 183 passed; 15 subtests passed
+Deterministic reconstruction: MATCH 4/4
+Interpretation: one-for-one local optimum only
+```
+
+### Phase 2F.1 — Seed Protocol
+
+Status: **CLOSED / PASS**
+
+Date: 2026-08-18
+
+```text
+partition_seed: 42 / LOCKED
+training_seed_count: 10 / FIXED ORDERED LIST / LOCKED
+deterministic_policy: CONTROLLED_BEST_EFFORT
+Builder checks: 22/22 PASS
+Independent guardrails: 20/20 PASS
+Read-only validation: 23/23 PASS
+Seed derivation: MATCH 10/10
+Phase 2F membership checksums: MATCH 4/4
+Local environment provenance: CAPTURED / CHECKSUM-LOCKED
+Google Colab training environment: NOT YET LOCKED
+training_started: false
+training_authorized: false
+```
+
+Next planned phase:
+
+```text
+Phase 3A — Dataset Diagnostics Before Training
+Status: NOT STARTED / PENDING RESEARCHER OPENING
+```
 
 ---
 

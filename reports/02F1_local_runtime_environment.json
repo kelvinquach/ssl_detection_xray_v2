@@ -1,0 +1,18 @@
+{
+  "phase": "2F.1",
+  "environment_role": "LOCAL_DATA_AND_PROTOCOL_PROVENANCE",
+  "captured_at_utc": "2026-08-18T09:15:14Z",
+  "python_version": "3.10.20 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:13:20) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "machine": "AMD64",
+  "packages": {
+    "PyYAML": "6.0.3",
+    "pytest": "9.1.0",
+    "numpy": "2.2.6",
+    "scipy": "1.15.2",
+    "scikit-learn": "1.7.0",
+    "iterative-stratification": "0.1.9"
+  },
+  "seed_protocol_path": "configs/protocol/phase2F1_seed_protocol.yaml",
+  "seed_protocol_sha256": "ba5b1a1adce67c3f1cf9dd46657e3db89c9d29b85cc37a744462c55a617d3234"
+}
