@@ -1,0 +1,13 @@
+metric,value,unit
+max_image_support,2144,count
+min_image_support,66,count
+median_image_support,648.0,count
+mean_image_support,766.2142857142857,count
+max_image_prevalence,0.6258026853473438,fraction
+min_image_prevalence,0.01926444833625219,fraction
+imbalance_ratio_max_over_min,32.484848484848484,ratio
+coefficient_of_variation_image_support,0.8025330318219815,ratio (secondary)
+rare_class_count,2,count
+rare_class_list,Atelectasis; Pneumothorax,class names
+rare_threshold_used,0.05,locked primary
+total_train_images,3426,count

@@ -1,0 +1,1451 @@
+{
+  "phase": "3A",
+  "protocol_version": "1.0.0",
+  "protocol_status": "RESEARCHER_APPROVED_LOCKED",
+  "protocol_sha256": "b03474cce0be773796f9d458e6273b8fd2b955c1b961bcccc4d955eb3bb0dcf5",
+  "mode": "full",
+  "generated_at_utc": "2026-08-19T10:45:36Z",
+  "canonical_identity_pass": true,
+  "train_identity_pass": true,
+  "validation_identity_pass": true,
+  "test_identity_pass": true,
+  "canonical_counts_pass": true,
+  "category_mapping_pass": true,
+  "no_finding_policy_pass": true,
+  "bbox_validity_pass": true,
+  "phase2E_split_identity_pass": true,
+  "phase2F_membership_identity_pass": true,
+  "phase2F_nested_pass": true,
+  "primary_diagnostic_scope_train_only_pass": true,
+  "validation_design_usage": false,
+  "test_design_usage": false,
+  "test_content_diagnostics": false,
+  "unlabeled_hidden_gt_diagnostics": false,
+  "rare_definition_type": "PRE_SPECIFIED_OPERATIONAL_DEFINITION",
+  "rare_primary_threshold": 0.05,
+  "bbox_size_definition_type": "PRE_SPECIFIED_OPERATIONAL_DEFINITION",
+  "bbox_small_primary_threshold": 0.01,
+  "bbox_large_primary_threshold": 0.1,
+  "sensitivity_analysis_enabled": true,
+  "sensitivity_analysis_role": "SECONDARY_NON_GATING",
+  "rare_sensitivity_thresholds": [
+    0.01,
+    0.05,
+    0.1
+  ],
+  "bbox_small_sensitivity_thresholds": [
+    0.005,
+    0.01,
+    0.02
+  ],
+  "bbox_large_sensitivity_thresholds": [
+    0.05,
+    0.1,
+    0.2
+  ],
+  "bbox_sensitivity_one_factor_at_a_time": true,
+  "primary_threshold_changed_after_diagnostics": false,
+  "sensitivity_used_for_threshold_selection": false,
+  "training_seed_used": false,
+  "training_started": false,
+  "checkpoint_created": false,
+  "pseudo_label_created": false,
+  "training_artifact_created": false,
+  "training_artifacts_detected": [],
+  "locked_inputs_modified": false,
+  "mandatory_outputs_exist": true,
+  "machine_readable_outputs_valid": true,
+  "undeclared_hard_fail_codes": [],
+  "detailed_scopes_used": [
+    "labeled_10pct",
+    "labeled_1pct",
+    "labeled_20pct",
+    "labeled_5pct",
+    "train"
+  ],
+  "structural_only_scopes_used": [
+    "canonical",
+    "test",
+    "val"
+  ],
+  "input_sha256": {
+    "coco_master": "36f09d1b1477ea4a63153a04d775c938752e224c26079a0d44881c14b9bb4d75",
+    "coco_master_jpg": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+    "labeled_10pct": "6814b5b9ba8dfcd4af483d97c1a6b7e7ab26914bdd02bbb923502b43ecf2fdf6",
+    "labeled_1pct": "1e267c547a8f535f6a69088da4735bd12c0188fae1b49e9d785b3e1e6883df98",
+    "labeled_20pct": "6a8b5bf9c59baea41eefb0611e15a387257255b6fc59a3de607bfc2e80801a14",
+    "labeled_5pct": "ebb98f32cad612fe48adbbd6b5da8aa5db10bec478d1c7fd9288a9a93bbc3763",
+    "phase2F1_protocol": "ba5b1a1adce67c3f1cf9dd46657e3db89c9d29b85cc37a744462c55a617d3234",
+    "phase2F1_seed_manifest": "fdc9db80fcdbc575f93307edb9c992a7bb778770d7e9ff98e32796cd54f3a40b",
+    "phase2F1_seed_state_manifest": "a19bea7d5b48b52b128d541588b255d06092e94036f9f104b54421ff652bb81e",
+    "phase2F_class_distribution_csv": "c94566ea06607ddaa9d8d25b42b57234e7cf217f01d114c41bc278c206567263",
+    "phase2F_deterministic_reconstruction_check": "674abe36bd582e6836a054a7d7949d8d77ad2de5fe0fb2b8e233988f15fed8a5",
+    "phase2F_leakage_check": "c3d26982c4d63dca6bc817f01d589b5d096ff10cbb2dcaaf8557172d1e0ac9cc",
+    "phase2F_lock_manifest": "d8659d6fe40f9a32de0d32833c22dccc804da15009e3131d2640f7b9fb473c88",
+    "phase2F_negative_distribution_csv": "6924854e30fb52ae54079b395192517c58b74ed7d797c4f5bc146142d163b69f",
+    "phase2F_nested_split_check": "41a6d9f36e44dbeb826b1d95696f9223c3a773957ff1350cbd0c8188ec89640c",
+    "phase2F_protocol": "fb75e389fa1ab6b065206a529d274cbc809ad047ce6c0d519504c672ada49e10",
+    "phase2F_validation_report": "7b541eb09c60321b56d06ef4918a686c14a7c62eaa9965161ff1144f9a7b4467",
+    "split_lock_manifest": "b696ec0382c7520cfd8c7871211018b8ee0ffd98e62c72b1060bc4f7d646012b",
+    "test": "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4",
+    "train": "0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3",
+    "val": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
+  },
+  "hard_error_count": 0,
+  "warning_count": 0,
+  "checks": [
+    {
+      "code": "PF01",
+      "description": "protocol_status is RESEARCHER_APPROVED_LOCKED",
+      "status": "PASS",
+      "expected": "RESEARCHER_APPROVED_LOCKED",
+      "observed": "RESEARCHER_APPROVED_LOCKED",
+      "evidence": "protocol::phase.protocol_status"
+    },
+    {
+      "code": "PF02",
+      "description": "phase id is 3A",
+      "status": "PASS",
+      "expected": "3A",
+      "observed": "3A",
+      "evidence": "protocol::phase.id"
+    },
+    {
+      "code": "PF03",
+      "description": "the script may not self-close the phase",
+      "status": "PASS",
+      "expected": {
+        "script_may_self_close": false,
+        "phase_status_value": "OPEN_REVIEW_REQUIRED"
+      },
+      "observed": {
+        "script_may_self_close": false,
+        "phase_status_value": "OPEN_REVIEW_REQUIRED"
+      },
+      "evidence": "protocol::phase_status_policy"
+    },
+    {
+      "code": "PF13",
+      "description": "every machine-readable YAML lock matches the source constants",
+      "status": "PASS",
+      "expected": "no mismatch",
+      "observed": {
+        "mismatch_count": 0,
+        "mismatches": []
+      },
+      "evidence": "protocol YAML vs scripts/03A_dataset_diagnostics.py constants"
+    },
+    {
+      "code": "PF12",
+      "description": "every declared output target is inside a writable directory",
+      "status": "PASS",
+      "expected": {
+        "writable_directories": [
+          "reports",
+          "plots/dataset"
+        ],
+        "forbidden_directories": [
+          "data/processed/coco",
+          "data/manifests",
+          "configs/protocol",
+          "models",
+          "checkpoints",
+          "pseudo_labels"
+        ],
+        "rejections": []
+      },
+      "observed": {
+        "rejections": [],
+        "resolved_targets": 21
+      },
+      "evidence": "protocol::output_contract resolved through resolve_safe_output_path"
+    },
+    {
+      "code": "HF21",
+      "description": "primary rare threshold is 0.05",
+      "status": "PASS",
+      "expected": 0.05,
+      "observed": 0.05,
+      "evidence": "protocol::rare_class_definition.primary_threshold"
+    },
+    {
+      "code": "HF22",
+      "description": "primary bbox small threshold is 0.01",
+      "status": "PASS",
+      "expected": 0.01,
+      "observed": 0.01,
+      "evidence": "protocol::bbox_size_definition.small_threshold"
+    },
+    {
+      "code": "HF23",
+      "description": "primary bbox large threshold is 0.10",
+      "status": "PASS",
+      "expected": 0.1,
+      "observed": 0.1,
+      "evidence": "protocol::bbox_size_definition.large_threshold"
+    },
+    {
+      "code": "HF24",
+      "description": "rare sensitivity thresholds are [0.01, 0.05, 0.10]",
+      "status": "PASS",
+      "expected": [
+        0.01,
+        0.05,
+        0.1
+      ],
+      "observed": [
+        0.01,
+        0.05,
+        0.1
+      ],
+      "evidence": "protocol::sensitivity_analysis.rare.thresholds"
+    },
+    {
+      "code": "HF25",
+      "description": "small sensitivity thresholds are [0.005, 0.01, 0.02]",
+      "status": "PASS",
+      "expected": [
+        0.005,
+        0.01,
+        0.02
+      ],
+      "observed": [
+        0.005,
+        0.01,
+        0.02
+      ],
+      "evidence": "protocol::sensitivity_analysis.bbox_small.thresholds"
+    },
+    {
+      "code": "HF26",
+      "description": "large sensitivity thresholds are [0.05, 0.10, 0.20]",
+      "status": "PASS",
+      "expected": [
+        0.05,
+        0.1,
+        0.2
+      ],
+      "observed": [
+        0.05,
+        0.1,
+        0.2
+      ],
+      "evidence": "protocol::sensitivity_analysis.bbox_large.thresholds"
+    },
+    {
+      "code": "HF27",
+      "description": "bbox sensitivity is one-factor-at-a-time",
+      "status": "PASS",
+      "expected": {
+        "one_factor_at_a_time": true,
+        "cartesian_grid_allowed": false
+      },
+      "observed": {
+        "one_factor_at_a_time": true,
+        "cartesian_grid_allowed": false
+      },
+      "evidence": "protocol::sensitivity_analysis"
+    },
+    {
+      "code": "PF04",
+      "description": "sensitivity analysis is secondary and non-gating",
+      "status": "PASS",
+      "expected": {
+        "role": "SECONDARY_NON_GATING",
+        "used_for_threshold_selection": false,
+        "primary_threshold_changed_after_diagnostics": false
+      },
+      "observed": {
+        "role": "SECONDARY_NON_GATING",
+        "used_for_threshold_selection": false,
+        "primary_threshold_changed_after_diagnostics": false
+      },
+      "evidence": "protocol::sensitivity_analysis"
+    },
+    {
+      "code": "PF05",
+      "description": "rare and bbox-size definitions are pre-specified",
+      "status": "PASS",
+      "expected": {
+        "rare_definition_type": "PRE_SPECIFIED_OPERATIONAL_DEFINITION",
+        "bbox_size_definition_type": "PRE_SPECIFIED_OPERATIONAL_DEFINITION",
+        "threshold_may_be_chosen_from_histogram": false,
+        "bbox_count_may_define_rarity": false
+      },
+      "observed": {
+        "rare_definition_type": "PRE_SPECIFIED_OPERATIONAL_DEFINITION",
+        "bbox_size_definition_type": "PRE_SPECIFIED_OPERATIONAL_DEFINITION",
+        "threshold_may_be_chosen_from_histogram": false,
+        "bbox_count_may_define_rarity": false
+      },
+      "evidence": "protocol::rare_class_definition, protocol::bbox_size_definition"
+    },
+    {
+      "code": "HF28",
+      "description": "no unlabeled-subset ground truth is reachable",
+      "status": "PASS",
+      "expected": {
+        "forbidden_unlabeled_paths": [],
+        "unlabeled_subsets": {},
+        "usage": "PROHIBITED",
+        "reverse_lookup_into_train_allowed": false
+      },
+      "observed": {
+        "forbidden_unlabeled_paths": [],
+        "unlabeled_subsets": {},
+        "usage": "PROHIBITED",
+        "reverse_lookup_into_train_allowed": false,
+        "detailed_scopes_used": []
+      },
+      "evidence": "protocol::input_artifacts, protocol::scope_policy.unlabeled_hidden_gt"
+    },
+    {
+      "code": "PF06",
+      "description": "every forbidden operation is disabled",
+      "status": "PASS",
+      "expected": "all forbidden_operations are false",
+      "observed": [],
+      "evidence": "protocol::forbidden_operations"
+    },
+    {
+      "code": "HF30",
+      "description": "no training seed is used",
+      "status": "PASS",
+      "expected": {
+        "scope_policy.training_seed_used": false,
+        "determinism.training_seed_used": false,
+        "determinism.rng_used": false,
+        "repeat_over_training_seeds": false
+      },
+      "observed": {
+        "scope_policy.training_seed_used": false,
+        "determinism.training_seed_used": false,
+        "determinism.rng_used": false,
+        "repeat_over_training_seeds": false
+      },
+      "evidence": "protocol::scope_policy, protocol::determinism"
+    },
+    {
+      "code": "PF07",
+      "description": "primary diagnostic scope is the fixed training set",
+      "status": "PASS",
+      "expected": {
+        "primary_diagnostic_scope": "FIXED_TRAIN",
+        "detailed_diagnostics_allowed_on": [
+          "train",
+          "labeled_1pct",
+          "labeled_5pct",
+          "labeled_10pct",
+          "labeled_20pct"
+        ],
+        "validation_usage": "STRUCTURAL_INTEGRITY_ONLY",
+        "test_usage": "STRUCTURAL_INTEGRITY_ONLY"
+      },
+      "observed": {
+        "primary_diagnostic_scope": "FIXED_TRAIN",
+        "detailed_diagnostics_allowed_on": [
+          "train",
+          "labeled_1pct",
+          "labeled_5pct",
+          "labeled_10pct",
+          "labeled_20pct"
+        ],
+        "validation_usage": "STRUCTURAL_INTEGRITY_ONLY",
+        "test_usage": "STRUCTURAL_INTEGRITY_ONLY"
+      },
+      "evidence": "protocol::scope_policy"
+    },
+    {
+      "code": "PF08",
+      "description": "every declared input artifact exists",
+      "status": "PASS",
+      "expected": "no missing input artifact",
+      "observed": [],
+      "evidence": "protocol::input_artifacts"
+    },
+    {
+      "code": "HF01",
+      "description": "coco_master_jpg SHA-256 matches the locked value",
+      "status": "PASS",
+      "expected": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+      "observed": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\coco_master_jpg.json"
+    },
+    {
+      "code": "HF02",
+      "description": "instances_train.json SHA-256 matches the locked value",
+      "status": "PASS",
+      "expected": "0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3",
+      "observed": "0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3",
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_train.json"
+    },
+    {
+      "code": "HF03",
+      "description": "instances_val.json SHA-256 matches the locked value",
+      "status": "PASS",
+      "expected": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+      "observed": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_val.json"
+    },
+    {
+      "code": "HF04",
+      "description": "instances_test.json SHA-256 matches the locked value",
+      "status": "PASS",
+      "expected": "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4",
+      "observed": "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4",
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_test.json"
+    },
+    {
+      "code": "HF17",
+      "description": "every labeled subset JSON SHA-256 matches the locked value",
+      "status": "PASS",
+      "expected": {
+        "1pct": "1e267c547a8f535f6a69088da4735bd12c0188fae1b49e9d785b3e1e6883df98",
+        "5pct": "ebb98f32cad612fe48adbbd6b5da8aa5db10bec478d1c7fd9288a9a93bbc3763",
+        "10pct": "6814b5b9ba8dfcd4af483d97c1a6b7e7ab26914bdd02bbb923502b43ecf2fdf6",
+        "20pct": "6a8b5bf9c59baea41eefb0611e15a387257255b6fc59a3de607bfc2e80801a14"
+      },
+      "observed": {
+        "1pct": "1e267c547a8f535f6a69088da4735bd12c0188fae1b49e9d785b3e1e6883df98",
+        "5pct": "ebb98f32cad612fe48adbbd6b5da8aa5db10bec478d1c7fd9288a9a93bbc3763",
+        "10pct": "6814b5b9ba8dfcd4af483d97c1a6b7e7ab26914bdd02bbb923502b43ecf2fdf6",
+        "20pct": "6a8b5bf9c59baea41eefb0611e15a387257255b6fc59a3de607bfc2e80801a14"
+      },
+      "evidence": "protocol::expected_hashes.labeled"
+    },
+    {
+      "code": "HF05",
+      "description": "canonical image count is 4894",
+      "status": "PASS",
+      "expected": 4894,
+      "observed": 4894,
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\coco_master_jpg.json"
+    },
+    {
+      "code": "HF06",
+      "description": "canonical annotation count is 36096",
+      "status": "PASS",
+      "expected": 36096,
+      "observed": 36096,
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\coco_master_jpg.json"
+    },
+    {
+      "code": "PF09",
+      "description": "canonical No Finding image count is 500",
+      "status": "PASS",
+      "expected": 500,
+      "observed": 500,
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\coco_master_jpg.json"
+    },
+    {
+      "code": "HF07",
+      "description": "the canonical category count is 14",
+      "status": "PASS",
+      "expected": 14,
+      "observed": 14,
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\coco_master_jpg.json"
+    },
+    {
+      "code": "HF08",
+      "description": "category ids are contiguous 1..14",
+      "status": "PASS",
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "observed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\coco_master_jpg.json"
+    },
+    {
+      "code": "HF09",
+      "description": "No Finding does not appear as a detection category",
+      "status": "PASS",
+      "expected": [],
+      "observed": [],
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\coco_master_jpg.json"
+    },
+    {
+      "code": "HF11",
+      "description": "train image count is 3426",
+      "status": "PASS",
+      "expected": 3426,
+      "observed": 3426,
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_train.json"
+    },
+    {
+      "code": "HF12",
+      "description": "train annotation count is 25260",
+      "status": "PASS",
+      "expected": 25260,
+      "observed": 25260,
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_train.json"
+    },
+    {
+      "code": "HF13",
+      "description": "train negative (No Finding) image count is 350",
+      "status": "PASS",
+      "expected": 350,
+      "observed": 350,
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_train.json"
+    },
+    {
+      "code": "PF10",
+      "description": "train categories are identical to the canonical categories",
+      "status": "PASS",
+      "expected": {
+        "1": "Aortic enlargement",
+        "2": "Atelectasis",
+        "3": "Calcification",
+        "4": "Cardiomegaly",
+        "5": "Consolidation",
+        "6": "ILD",
+        "7": "Infiltration",
+        "8": "Lung Opacity",
+        "9": "Nodule/Mass",
+        "10": "Other lesion",
+        "11": "Pleural effusion",
+        "12": "Pleural thickening",
+        "13": "Pneumothorax",
+        "14": "Pulmonary fibrosis"
+      },
+      "observed": {
+        "1": "Aortic enlargement",
+        "2": "Atelectasis",
+        "3": "Calcification",
+        "4": "Cardiomegaly",
+        "5": "Consolidation",
+        "6": "ILD",
+        "7": "Infiltration",
+        "8": "Lung Opacity",
+        "9": "Nodule/Mass",
+        "10": "Other lesion",
+        "11": "Pleural effusion",
+        "12": "Pleural thickening",
+        "13": "Pneumothorax",
+        "14": "Pulmonary fibrosis"
+      },
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_train.json"
+    },
+    {
+      "code": "HF09b",
+      "description": "No Finding does not appear as a train detection category",
+      "status": "PASS",
+      "expected": [],
+      "observed": [],
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_train.json"
+    },
+    {
+      "code": "HF10",
+      "description": "negative images carry zero ground-truth annotations in canonical and fixed train",
+      "status": "PASS",
+      "expected": {
+        "canonical_negative_with_gt": [],
+        "train_negative_with_gt": []
+      },
+      "observed": {
+        "canonical_negative_with_gt_count": 0,
+        "canonical_first_offenders": [],
+        "train_negative_with_gt_count": 0,
+        "train_first_offenders": []
+      },
+      "evidence": "coco_master_jpg.json + instances_train.json"
+    },
+    {
+      "code": "HF16",
+      "description": "every train bounding box satisfies the locked validity rules",
+      "status": "PASS",
+      "expected": 0,
+      "observed": {
+        "invalid_annotation_count": 0,
+        "first_offenders": []
+      },
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_train.json"
+    },
+    {
+      "code": "HF14",
+      "description": "validation structural counts match the locked values",
+      "status": "PASS",
+      "expected": {
+        "images": 734,
+        "annotations": 5399,
+        "no_finding": 75,
+        "category_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "observed": {
+        "images": 734,
+        "annotations": 5399,
+        "no_finding": 75,
+        "category_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_val.json"
+    },
+    {
+      "code": "HF15",
+      "description": "test structural counts match the locked values",
+      "status": "PASS",
+      "expected": {
+        "images": 734,
+        "annotations": 5437,
+        "no_finding": 75,
+        "category_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "observed": {
+        "images": 734,
+        "annotations": 5437,
+        "no_finding": 75,
+        "category_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\processed\\coco\\instances_test.json"
+    },
+    {
+      "code": "HF18",
+      "description": "labeled image and negative counts match the locked values",
+      "status": "PASS",
+      "expected": {
+        "1pct": {
+          "images": 34,
+          "no_finding": 3
+        },
+        "5pct": {
+          "images": 171,
+          "no_finding": 17
+        },
+        "10pct": {
+          "images": 343,
+          "no_finding": 35
+        },
+        "20pct": {
+          "images": 685,
+          "no_finding": 70
+        }
+      },
+      "observed": {},
+      "evidence": "protocol::expected_counts.labeled"
+    },
+    {
+      "code": "HF20",
+      "description": "every labeled image belongs to the fixed training set",
+      "status": "PASS",
+      "expected": {},
+      "observed": {},
+      "evidence": "labeled subsets vs instances_train.json"
+    },
+    {
+      "code": "HF19",
+      "description": "labeled subsets are nested 1pct in 5pct in 10pct in 20pct",
+      "status": "PASS",
+      "expected": "L_1pct subset_of L_5pct subset_of L_10pct subset_of L_20pct",
+      "observed": {
+        "1pct_in_5pct": true,
+        "5pct_in_10pct": true,
+        "10pct_in_20pct": true
+      },
+      "evidence": "labeled subsets"
+    },
+    {
+      "code": "PF11",
+      "description": "Phase 2F.1 seed state confirms training has not started",
+      "status": "PASS",
+      "expected": {
+        "training_started": false,
+        "runs": []
+      },
+      "observed": {
+        "training_started": false,
+        "runs": []
+      },
+      "evidence": "D:\\ssl_detection_xray_v2\\data\\manifests\\seed_state_manifest.json"
+    },
+    {
+      "code": "HF29",
+      "description": "no detailed diagnostics were opened for validation or test",
+      "status": "PASS",
+      "expected": [],
+      "observed": {
+        "detailed_scopes_used": [
+          "labeled_10pct",
+          "labeled_1pct",
+          "labeled_20pct",
+          "labeled_5pct",
+          "train"
+        ],
+        "illegal": []
+      },
+      "evidence": "runtime firewall tripwire"
+    },
+    {
+      "code": "PF14",
+      "description": "every emitted hard-fail code is declared by the protocol",
+      "status": "PASS",
+      "expected": {
+        "declared_hard_fail_codes": [
+          "HF01",
+          "HF02",
+          "HF03",
+          "HF04",
+          "HF05",
+          "HF06",
+          "HF07",
+          "HF08",
+          "HF09",
+          "HF10",
+          "HF11",
+          "HF12",
+          "HF13",
+          "HF14",
+          "HF15",
+          "HF16",
+          "HF17",
+          "HF18",
+          "HF19",
+          "HF20",
+          "HF21",
+          "HF22",
+          "HF23",
+          "HF24",
+          "HF25",
+          "HF26",
+          "HF27",
+          "HF28",
+          "HF29",
+          "HF30",
+          "HF31",
+          "HF32",
+          "HF33",
+          "HF34",
+          "HF35"
+        ],
+        "permitted_subcodes": {
+          "HF09b": "HF09"
+        },
+        "undeclared": []
+      },
+      "observed": {
+        "declared_in_yaml": [
+          "HF01",
+          "HF02",
+          "HF03",
+          "HF04",
+          "HF05",
+          "HF06",
+          "HF07",
+          "HF08",
+          "HF09",
+          "HF10",
+          "HF11",
+          "HF12",
+          "HF13",
+          "HF14",
+          "HF15",
+          "HF16",
+          "HF17",
+          "HF18",
+          "HF19",
+          "HF20",
+          "HF21",
+          "HF22",
+          "HF23",
+          "HF24",
+          "HF25",
+          "HF26",
+          "HF27",
+          "HF28",
+          "HF29",
+          "HF30",
+          "HF31",
+          "HF32",
+          "HF33",
+          "HF34",
+          "HF35"
+        ],
+        "undeclared": [],
+        "emitted_hard_fail_codes": [
+          "HF01",
+          "HF02",
+          "HF03",
+          "HF04",
+          "HF05",
+          "HF06",
+          "HF07",
+          "HF08",
+          "HF09",
+          "HF09b",
+          "HF10",
+          "HF11",
+          "HF12",
+          "HF13",
+          "HF14",
+          "HF15",
+          "HF16",
+          "HF17",
+          "HF18",
+          "HF19",
+          "HF20",
+          "HF21",
+          "HF22",
+          "HF23",
+          "HF24",
+          "HF25",
+          "HF26",
+          "HF27",
+          "HF28",
+          "HF29",
+          "HF30"
+        ]
+      },
+      "evidence": "protocol::guardrails.hard_fail_conditions vs runtime checks"
+    },
+    {
+      "code": "HF34",
+      "description": "no locked input was modified during the run",
+      "status": "PASS",
+      "expected": [],
+      "observed": [],
+      "evidence": "input SHA-256 before vs after"
+    },
+    {
+      "code": "HF31",
+      "description": "no training artifact was created",
+      "status": "PASS",
+      "expected": [],
+      "observed": [],
+      "evidence": "repository scan of models/, checkpoints/, pseudo_labels/"
+    },
+    {
+      "code": "HF32",
+      "description": "no checkpoint was created",
+      "status": "PASS",
+      "expected": [],
+      "observed": [],
+      "evidence": "repository scan"
+    },
+    {
+      "code": "HF33",
+      "description": "no pseudo-label was created",
+      "status": "PASS",
+      "expected": [],
+      "observed": [],
+      "evidence": "repository scan"
+    },
+    {
+      "code": "HF35",
+      "description": "every mandatory output of the contract exists and is structurally valid",
+      "status": "PASS",
+      "expected": {
+        "missing": [],
+        "empty": [],
+        "failed_structural_checks": []
+      },
+      "observed": {
+        "missing": [],
+        "empty": [],
+        "failed_structural_checks": []
+      },
+      "evidence": "final output-contract audit over 18 mandatory artifacts"
+    }
+  ],
+  "warnings": [],
+  "output_contract_audit": {
+    "mandatory_keys": [
+      "csv_bbox_count_per_image",
+      "csv_bbox_distribution",
+      "csv_bbox_summary",
+      "csv_class_cooccurrence",
+      "csv_class_distribution",
+      "csv_class_imbalance",
+      "csv_label_cardinality",
+      "csv_labeled_budget_coverage",
+      "csv_negative_distribution",
+      "csv_split_distribution",
+      "csv_threshold_sensitivity",
+      "plot_class_distribution",
+      "plot_bbox_distribution",
+      "plot_bbox_location_heatmap",
+      "plot_negative_image_distribution",
+      "report",
+      "validation_json",
+      "artifact_manifest"
+    ],
+    "missing": [],
+    "empty": [],
+    "all_present": true
+  },
+  "machine_readable_audit": [
+    {
+      "check": "csv_present::bbox_count_per_image",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_bbox_count_per_image.csv"
+    },
+    {
+      "check": "csv_schema::bbox_count_per_image",
+      "status": "PASS",
+      "expected": [
+        "population",
+        "n",
+        "mean",
+        "sd_ddof1",
+        "median",
+        "p95",
+        "max"
+      ],
+      "observed": [
+        "population",
+        "n",
+        "mean",
+        "sd_ddof1",
+        "median",
+        "p95",
+        "max"
+      ]
+    },
+    {
+      "check": "csv_row_count::bbox_count_per_image",
+      "status": "PASS",
+      "expected": 2,
+      "observed": 2
+    },
+    {
+      "check": "csv_present::bbox_distribution",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_bbox_distribution.csv"
+    },
+    {
+      "check": "csv_schema::bbox_distribution",
+      "status": "PASS",
+      "expected": [
+        "annotation_id",
+        "image_id",
+        "category_id",
+        "class_name",
+        "x",
+        "y",
+        "w",
+        "h",
+        "image_width",
+        "image_height",
+        "raw_area",
+        "normalized_width",
+        "normalized_height",
+        "normalized_area",
+        "aspect_ratio",
+        "center_x_normalized",
+        "center_y_normalized",
+        "primary_size_category"
+      ],
+      "observed": [
+        "annotation_id",
+        "image_id",
+        "category_id",
+        "class_name",
+        "x",
+        "y",
+        "w",
+        "h",
+        "image_width",
+        "image_height",
+        "raw_area",
+        "normalized_width",
+        "normalized_height",
+        "normalized_area",
+        "aspect_ratio",
+        "center_x_normalized",
+        "center_y_normalized",
+        "primary_size_category"
+      ]
+    },
+    {
+      "check": "csv_row_count::bbox_distribution",
+      "status": "PASS",
+      "expected": 25260,
+      "observed": 25260
+    },
+    {
+      "check": "csv_present::bbox_summary",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_bbox_summary.csv"
+    },
+    {
+      "check": "csv_schema::bbox_summary",
+      "status": "PASS",
+      "expected": [
+        "variable",
+        "role",
+        "scope",
+        "n",
+        "mean",
+        "sd",
+        "min",
+        "p05",
+        "p25",
+        "median",
+        "p75",
+        "p95",
+        "max"
+      ],
+      "observed": [
+        "variable",
+        "role",
+        "scope",
+        "n",
+        "mean",
+        "sd",
+        "min",
+        "p05",
+        "p25",
+        "median",
+        "p75",
+        "p95",
+        "max"
+      ]
+    },
+    {
+      "check": "csv_row_count::bbox_summary",
+      "status": "PASS",
+      "expected": 7,
+      "observed": 7
+    },
+    {
+      "check": "csv_present::class_cooccurrence",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_class_cooccurrence.csv"
+    },
+    {
+      "check": "csv_schema::class_cooccurrence",
+      "status": "PASS",
+      "expected": [
+        "category_id_a",
+        "class_name_a",
+        "category_id_b",
+        "class_name_b",
+        "n_a_images",
+        "n_b_images",
+        "n_both_images",
+        "n_union_images",
+        "jaccard"
+      ],
+      "observed": [
+        "category_id_a",
+        "class_name_a",
+        "category_id_b",
+        "class_name_b",
+        "n_a_images",
+        "n_b_images",
+        "n_both_images",
+        "n_union_images",
+        "jaccard"
+      ]
+    },
+    {
+      "check": "csv_row_count::class_cooccurrence",
+      "status": "PASS",
+      "expected": 91,
+      "observed": 91
+    },
+    {
+      "check": "csv_present::class_distribution",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_class_distribution.csv"
+    },
+    {
+      "check": "csv_schema::class_distribution",
+      "status": "PASS",
+      "expected": [
+        "category_id",
+        "class_name",
+        "image_count",
+        "image_prevalence",
+        "bbox_annotation_count",
+        "bbox_annotation_share",
+        "bbox_per_positive_image",
+        "rare_flag"
+      ],
+      "observed": [
+        "category_id",
+        "class_name",
+        "image_count",
+        "image_prevalence",
+        "bbox_annotation_count",
+        "bbox_annotation_share",
+        "bbox_per_positive_image",
+        "rare_flag"
+      ]
+    },
+    {
+      "check": "csv_row_count::class_distribution",
+      "status": "PASS",
+      "expected": 14,
+      "observed": 14
+    },
+    {
+      "check": "csv_present::class_imbalance",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_class_imbalance.csv"
+    },
+    {
+      "check": "csv_schema::class_imbalance",
+      "status": "PASS",
+      "expected": [
+        "metric",
+        "value",
+        "unit"
+      ],
+      "observed": [
+        "metric",
+        "value",
+        "unit"
+      ]
+    },
+    {
+      "check": "csv_row_count::class_imbalance",
+      "status": "PASS",
+      "expected": 12,
+      "observed": 12
+    },
+    {
+      "check": "csv_present::label_cardinality",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_label_cardinality.csv"
+    },
+    {
+      "check": "csv_schema::label_cardinality",
+      "status": "PASS",
+      "expected": [
+        "record_type",
+        "cardinality",
+        "image_count",
+        "percentage",
+        "statistic",
+        "statistic_value"
+      ],
+      "observed": [
+        "record_type",
+        "cardinality",
+        "image_count",
+        "percentage",
+        "statistic",
+        "statistic_value"
+      ]
+    },
+    {
+      "check": "csv_row_count::label_cardinality",
+      "status": "PASS",
+      "expected": "> 0 (data dependent)",
+      "observed": 16
+    },
+    {
+      "check": "csv_present::labeled_budget_coverage",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_labeled_budget_coverage.csv"
+    },
+    {
+      "check": "csv_schema::labeled_budget_coverage",
+      "status": "PASS",
+      "expected": [
+        "budget",
+        "labeled_image_count",
+        "negative_image_count",
+        "negative_prevalence",
+        "class_coverage_out_of_14",
+        "category_id",
+        "class_name",
+        "image_count",
+        "image_prevalence",
+        "train_image_count",
+        "train_image_prevalence",
+        "absolute_deviation_from_train",
+        "train_rare_flag",
+        "rare_class_support",
+        "coverage_present",
+        "budget_max_absolute_deviation",
+        "budget_mean_absolute_deviation"
+      ],
+      "observed": [
+        "budget",
+        "labeled_image_count",
+        "negative_image_count",
+        "negative_prevalence",
+        "class_coverage_out_of_14",
+        "category_id",
+        "class_name",
+        "image_count",
+        "image_prevalence",
+        "train_image_count",
+        "train_image_prevalence",
+        "absolute_deviation_from_train",
+        "train_rare_flag",
+        "rare_class_support",
+        "coverage_present",
+        "budget_max_absolute_deviation",
+        "budget_mean_absolute_deviation"
+      ]
+    },
+    {
+      "check": "csv_row_count::labeled_budget_coverage",
+      "status": "PASS",
+      "expected": 56,
+      "observed": 56
+    },
+    {
+      "check": "csv_present::negative_distribution",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_negative_distribution.csv"
+    },
+    {
+      "check": "csv_schema::negative_distribution",
+      "status": "PASS",
+      "expected": [
+        "scope",
+        "diagnostic_role",
+        "image_count",
+        "positive_image_count",
+        "negative_image_count",
+        "negative_prevalence"
+      ],
+      "observed": [
+        "scope",
+        "diagnostic_role",
+        "image_count",
+        "positive_image_count",
+        "negative_image_count",
+        "negative_prevalence"
+      ]
+    },
+    {
+      "check": "csv_row_count::negative_distribution",
+      "status": "PASS",
+      "expected": 7,
+      "observed": 7
+    },
+    {
+      "check": "csv_present::split_distribution",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_split_distribution.csv"
+    },
+    {
+      "check": "csv_schema::split_distribution",
+      "status": "PASS",
+      "expected": [
+        "split",
+        "image_count",
+        "image_percentage",
+        "annotation_count",
+        "negative_count",
+        "negative_percentage",
+        "official_json_sha256",
+        "image_membership_sha256",
+        "diagnostic_usage"
+      ],
+      "observed": [
+        "split",
+        "image_count",
+        "image_percentage",
+        "annotation_count",
+        "negative_count",
+        "negative_percentage",
+        "official_json_sha256",
+        "image_membership_sha256",
+        "diagnostic_usage"
+      ]
+    },
+    {
+      "check": "csv_row_count::split_distribution",
+      "status": "PASS",
+      "expected": 3,
+      "observed": 3
+    },
+    {
+      "check": "csv_present::threshold_sensitivity",
+      "status": "PASS",
+      "expected": "file exists",
+      "observed": "D:\\ssl_detection_xray_v2\\reports\\03A_threshold_sensitivity.csv"
+    },
+    {
+      "check": "csv_schema::threshold_sensitivity",
+      "status": "PASS",
+      "expected": [
+        "analysis_type",
+        "parameter",
+        "threshold",
+        "is_primary",
+        "category",
+        "count",
+        "percentage",
+        "primary_percentage",
+        "delta_percentage_points",
+        "category_id",
+        "class_name",
+        "image_count",
+        "image_prevalence",
+        "rare_flag",
+        "primary_rare_flag",
+        "status_changed_vs_primary",
+        "stable_rare_flag",
+        "stable_nonrare_flag",
+        "threshold_sensitive_flag"
+      ],
+      "observed": [
+        "analysis_type",
+        "parameter",
+        "threshold",
+        "is_primary",
+        "category",
+        "count",
+        "percentage",
+        "primary_percentage",
+        "delta_percentage_points",
+        "category_id",
+        "class_name",
+        "image_count",
+        "image_prevalence",
+        "rare_flag",
+        "primary_rare_flag",
+        "status_changed_vs_primary",
+        "stable_rare_flag",
+        "stable_nonrare_flag",
+        "threshold_sensitive_flag"
+      ]
+    },
+    {
+      "check": "csv_row_count::threshold_sensitivity",
+      "status": "PASS",
+      "expected": 63,
+      "observed": 63
+    },
+    {
+      "check": "sum_class_bbox_annotation_count",
+      "status": "PASS",
+      "expected": 25260,
+      "observed": 25260
+    },
+    {
+      "check": "sum_primary_size_category_counts",
+      "status": "PASS",
+      "expected": {
+        "total": 25260,
+        "unknown_categories": 0
+      },
+      "observed": {
+        "total": 25260,
+        "unknown_categories": 0,
+        "by_category": {
+          "small": 9372,
+          "medium": 14612,
+          "large": 1276
+        }
+      }
+    },
+    {
+      "check": "json_parses::validation_json",
+      "status": "PASS",
+      "expected": "valid JSON",
+      "observed": "valid JSON"
+    },
+    {
+      "check": "json_parses::artifact_manifest",
+      "status": "PASS",
+      "expected": "valid JSON",
+      "observed": "valid JSON"
+    }
+  ],
+  "provisional": false,
+  "dod_candidate": true,
+  "phase_status": "OPEN_REVIEW_REQUIRED",
+  "phase_status_note": "OPEN_REVIEW_REQUIRED. The script never writes PASS, CLOSED or CLOSED_PASS. dod_candidate is a candidate flag only; the researcher and the GPT review decide the phase outcome."
+}

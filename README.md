@@ -6,47 +6,42 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 **Trọng tâm:** Semi-supervised object detection trên **VinBigData Chest X-ray**.  
 **Framework chính:** [MMDetection](https://github.com/open-mmlab/mmdetection) (OpenMMLab). Detectron2 là *optional fallback*.
 
-> **Trạng thái hiện tại: Phase 2F.1 — Seed Protocol: CLOSED / PASS**
+> **Trạng thái hiện tại: Phase 3A — Dataset Diagnostics Before Training: CLOSED / PASS**
 >
+> - Phase 3A — Dataset Diagnostics Before Training: **CLOSED / PASS**
+> - Protocol: **1.0.0 / RESEARCHER_APPROVED_LOCKED**
+> - Guardrail tests cuối: **53/53 PASS**
+> - Full execution: **PASS**
+> - Hard errors / warnings: **0 / 0**
+> - DoD candidate: **TRUE**
+> - Detailed diagnostics: **fixed train + labeled 1%/5%/10%/20%**
+> - Validation/test usage: **STRUCTURAL_INTEGRITY_ONLY**
+> - Hidden unlabeled GT diagnostics: **PROHIBITED / NOT USED**
+> - Primary rare threshold: **image prevalence < 5% / LOCKED**
+> - Rare classes theo definition đã khóa: **Atelectasis, Pneumothorax**
+> - Image-support imbalance ratio max/min: **32.48**
+> - BBox normalized-area Small/Medium/Large: **37.10% / 57.85% / 5.05%**
+> - Phase 3A sensitivity analysis: **SECONDARY / NON-GATING**
+> - Primary diagnostic thresholds retuned after diagnostics: **FALSE**
+> - Phase 3A Ablation Study performed: **FALSE**
 > - Phase 2F.1 — Seed Protocol: **CLOSED / PASS**
 > - Partition seed: **42 / PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH**
 > - Training seed count: **10 / FIXED ORDERED LIST / LOCKED**
 > - Deterministic policy: **CONTROLLED_BEST_EFFORT / LOCKED**
 > - Supervised–SSL seed pairing: **SAME ORDERED LIST / PASS**
-> - Builder validation: **22/22 PASS / exit 0**
-> - Independent guardrails: **20/20 PASS / exit 0**
-> - Read-only artifact validation: **23/23 PASS / exit 0**
-> - Training-seed derivation: **MATCH 10/10**
-> - Local environment provenance: **CAPTURED / CHECKSUM-LOCKED**
-> - Google Colab training environment: **NOT YET LOCKED**
 > - Phase 2F — Labeled/Unlabeled Construction: **CLOSED / PASS**
-> - Protocol identity: **2F-C0-R11 / 2.0.0**
 > - Labeled budgets: **1% / 5% / 10% / 20% = 34 / 171 / 343 / 685 ảnh**
-> - Nested labeled subsets: **PASS**
-> - Nested No Finding subsets: **PASS**
-> - Labeled/unlabeled disjointness and completeness: **PASS**
-> - Validation/test isolation: **PASS**
-> - Independent readback gates: **PASS**
+> - Nested labeled/No Finding subsets: **PASS**
 > - Deterministic reconstruction: **MATCH (4/4 budgets)**
 > - Phase 2E — Fixed Train/Validation/Test Split: **CLOSED / PASS**
-> - Fixed split created: **TRUE**
-> - Fixed split independently validated: **TRUE**
 > - Split ratio: **70/15/15**
 > - Train/validation/test images: **3,426 / 734 / 734**
-> - Train/validation/test annotations: **25,260 / 5,399 / 5,437**
 > - Train/validation/test No Finding images: **350 / 75 / 75**
 > - Image-level and annotation-level leakage: **0 / PASS**
 > - Phase 2D.1 overall: **CLOSED / PASS**
-> - Phase 2D.1D — Evidence Consolidation, GPT Review & Closure: **CLOSED / PASS**
-> - Phase 2D.1C — MMDetection Dataset / Empty-Image Loading Validation: **CLOSED / PASS**
-> - Phase 2D.1B-Full — Full Controlled-Scope DICOM-to-JPG Conversion & Validation: **CLOSED / PASS**
-> - Full controlled-scope conversion: **COMPLETED**
-> - Final output integrity check: **PASS**
 > - Final JPEG quality: **95 / LOCKED**
-> - Phase 2D.1B-Pilot — Representative DICOM-to-JPG Pilot: **CLOSED / PASS**
-> - Phase 2D.1A — Image Representation Protocol Decision: **CLOSED / PASS**
 > - Phase 2D — COCO Master Conversion & Validation: **CLOSED / PASS**
-> - Phase 2C — Framework & Format Decision / COCO Conversion Planning: **PASS**
+> - Phase 2C — Framework & Format Decision: **PASS**
 > - Phase 2B — Canonical Detection Annotation Schema: **PASS**
 > - Phase 2A — Data Standardization / Image-Boundary Validation: **PASS**
 > - Phase 1D — Label Reliability & Kappa Feasibility: **PASS**
@@ -54,12 +49,241 @@ Semi-supervised object detection for anomaly detection on chest X-rays.
 > - Phase 1B — Annotation Quality: **PASS**
 > - Phase 1A — Dataset Overview: **PASS**
 > - Phase 0 — Setup Environment: **CORE PASS**
-> - Next planned phase: Phase 3A — Dataset Diagnostics Before Training:
->   **NOT STARTED / PENDING RESEARCHER OPENING**
+> - Next implementation phase: **PHASE 4 — Supervised Baseline / NEXT / NOT STARTED**
 >
-> Phase 2F.1 đã khóa seed contract để Phase 4–5 kế thừa mà không thay đổi bất
-> kỳ membership nào của Phase 2E/2F. Dataset **training-ready về mặt kỹ thuật**,
-> nhưng training vẫn **chưa được phép** (`training_authorized=false`).
+> Phase 3A đã hoàn tất toàn bộ pre-training dataset diagnostics mà không mở
+> hidden ground truth của unlabeled subsets và không dùng validation/test cho
+> detailed design/tuning diagnostics. Dataset vẫn **training-ready về mặt kỹ thuật**,
+> nhưng official training vẫn **chưa được phép** (`training_authorized=false`).
+
+
+
+## Trạng thái Phase 3A
+
+Phase 3A là **descriptive pre-training dataset diagnostics**, không phải model
+experiment, hyperparameter search hoặc Ablation Study.
+
+Protocol:
+
+```text
+phase: 3A
+protocol_version: 1.0.0
+protocol_status: RESEARCHER_APPROVED_LOCKED
+protocol_sha256:
+b03474cce0be773796f9d458e6273b8fd2b955c1b961bcccc4d955eb3bb0dcf5
+```
+
+Data-use firewall:
+
+```text
+Detailed diagnostics:
+- train
+- labeled_1pct
+- labeled_5pct
+- labeled_10pct
+- labeled_20pct
+
+Structural/integrity only:
+- canonical
+- validation
+- test
+
+Hidden unlabeled GT:
+PROHIBITED
+
+training_seed_used:
+false
+```
+
+Primary rare-class definition:
+
+```text
+P_c_img = N_c_img / 3426
+Rare nếu P_c_img < 0.05
+
+N_c_img <= 171 => Rare
+N_c_img >= 172 => Non-rare
+```
+
+`Rare` chỉ mang nghĩa dataset-level low support trong fixed train, không phải
+clinical rarity.
+
+Primary bbox-size definition theo normalized area:
+
+```text
+normalized_area = (w*h)/(W*H)
+
+Small:  < 0.01
+Medium: 0.01 <= area < 0.10
+Large:  >= 0.10
+```
+
+Các nhóm này không phải standard COCO pixel-area Small/Medium/Large.
+
+Kết quả execution cuối:
+
+```text
+Guardrail tests: 53/53 PASS
+Full execution: PASS
+hard_error_count: 0
+warning_count: 0
+HF01-HF35: PASS
+dod_candidate: true
+```
+
+Kết quả fixed-train chính:
+
+| Hạng mục | Kết quả |
+|---|---:|
+| Train images | 3,426 |
+| Train bbox annotations | 25,260 |
+| No Finding / zero-GT | 350 |
+| Detection classes | 14 |
+| Rare classes theo `<5%` | 2 / 14 |
+| Rare classes | Atelectasis, Pneumothorax |
+| Image-support imbalance ratio max/min | 32.48 |
+| Small bbox share | 37.10% |
+| Medium bbox share | 57.85% |
+| Large bbox share | 5.05% |
+| Mean label cardinality | 3.131 |
+| BBox-center heatmap | 50 × 50 |
+
+Labeled-budget diagnostics:
+
+```text
+1pct: 34 images; 3 No Finding; 14/14 class coverage
+5pct: 171 images; 17 No Finding; 14/14 class coverage
+10pct: 343 images; 35 No Finding; 14/14 class coverage
+20pct: 685 images; 70 No Finding; 14/14 class coverage
+```
+
+Ở budget 1%, cả Atelectasis và Pneumothorax chỉ có 1 labeled image/class. Đây
+là low-label support risk, không phải model-performance result.
+
+Sensitivity analysis:
+
+```text
+Rare threshold:
+1%  -> 0 rare classes
+5%  -> 2 rare classes [PRIMARY]
+10% -> 5 rare classes
+
+Small boundary:
+0.5% -> Small 23.52%
+1.0% -> Small 37.10% [PRIMARY]
+2.0% -> Small 58.90%
+
+Large boundary:
+5%  -> Large 21.78%
+10% -> Large 5.05% [PRIMARY]
+20% -> Large 0.95%
+```
+
+Sensitivity có vai trò:
+
+```text
+SECONDARY / NON-GATING
+ONE_FACTOR_AT_A_TIME
+primary_threshold_changed_after_diagnostics: false
+sensitivity_used_for_threshold_selection: false
+```
+
+Source và evidence:
+
+```text
+configs/protocol/phase3A_dataset_diagnostics.yaml
+scripts/03A_dataset_diagnostics.py
+tests/test_phase3A_dataset_diagnostics_guardrails.py
+
+reports/dataset_analysis_report.md
+reports/03A_dataset_diagnostics_validation.json
+reports/03A_artifact_manifest.json
+reports/03A_guardrails_junit.xml
+
+reports/03A_class_distribution.csv
+reports/03A_class_imbalance.csv
+reports/03A_bbox_distribution.csv
+reports/03A_bbox_summary.csv
+reports/03A_bbox_count_per_image.csv
+reports/03A_negative_distribution.csv
+reports/03A_split_distribution.csv
+reports/03A_labeled_budget_coverage.csv
+reports/03A_label_cardinality.csv
+reports/03A_class_cooccurrence.csv
+reports/03A_threshold_sensitivity.csv
+
+plots/dataset/class_distribution.png
+plots/dataset/bbox_distribution.png
+plots/dataset/bbox_location_heatmap.png
+plots/dataset/negative_image_distribution.png
+```
+
+Final hashes:
+
+```text
+reports/dataset_analysis_report.md:
+27e6ddfbd92ac2ba2a028e923f3be33f531a3a2a38f40468ccc5f38ef3823a2f
+
+reports/03A_dataset_diagnostics_validation.json:
+c24eff6907d92a23bbe9df39dfeeca9925b940fabbc087a5abd2e74c8732b892
+```
+
+Generated artifacts vẫn ghi `phase_status=OPEN_REVIEW_REQUIRED` vì script bị
+cấm tự close phase. Researcher + GPT review sau execution đã đưa ra quyết định:
+
+```text
+Phase 3A: CLOSED / PASS
+training_started: false
+training_authorized: false
+ablation_study_performed_in_phase3A: false
+```
+
+## Handoff sang Phase 4 — Supervised Baseline
+
+Phase kế tiếp đã được xác định từ roadmap/checklist:
+
+```text
+Phase 4 — Supervised Baseline
+Status: NEXT / NOT STARTED
+```
+
+Phase 4 sẽ xây dựng supervised baseline có kiểm soát để làm mốc so sánh cho
+Phase 5 — SSL Detection.
+
+Việc Phase 4 là phase kế tiếp **không đồng nghĩa training đã được authorize**.
+
+Current gate:
+
+```text
+dataset_training_ready: true
+phase3A_closed_pass: true
+
+phase4_identified_as_next: true
+phase4_started: false
+training_started: false
+training_authorized: false
+```
+
+Trước official supervised training, Phase 4 phải khóa và review tối thiểu:
+
+```text
+Google Colab / GPU training environment
+MMDetection training configuration
+runtime integration của ordered training-seed protocol
+labeled-budget usage cho supervised baseline
+augmentation policy
+optimizer / scheduler / epoch policy
+checkpoint-selection policy
+validation-only model selection
+logging / artifact / retry policy
+per-seed result schema
+guardrails chống test-set leakage
+training authorization gate
+```
+
+Test set tiếp tục chỉ dành cho final evaluation theo protocol đã khóa; không
+được dùng để chọn checkpoint, hyperparameter, threshold, augmentation hoặc
+model configuration.
 
 ## Trạng thái Phase 2F.1
 
@@ -339,6 +563,7 @@ reports/02E_build_fixed_split_log.json
 | Empty-image retention ready | TRUE |
 | Dataset training-ready | TRUE |
 | Training authorized | FALSE |
+| Phase 3A pre-training diagnostics | CLOSED / PASS |
 
 ## Giải thích ngắn gọn các phase
 
@@ -361,7 +586,7 @@ reports/02E_build_fixed_split_log.json
 | Phase 2E — Fixed Train/Validation/Test Split | Tạo split cố định, disjoint và kiểm tra leakage. | Nếu split không khóa, so sánh mô hình không công bằng và test có thể bị rò rỉ. | Phase 2F, 3, 4, 5 và 6. |
 | Phase 2F — Labeled/Unlabeled Split for SSL | Khóa tập labeled/unlabeled và các labeled fractions lồng nhau. | SSL cần biết chính xác mẫu nào có nhãn được phép dùng ở từng mức. | Phase 3, 4, 5 và 6. |
 | Phase 2F.1 — Seed Protocol | Tách `partition_seed` đã khóa khỏi ordered 10-`training_seed` protocol. | Giữ membership bất biến, cho phép đo biến thiên huấn luyện và paired comparison công bằng. | Phase 3, 4, 5 và 6. |
-| Phase 3 — Pre-training Dataset Diagnostics | Kiểm tra phân bố lớp, bbox, split và subset trước training. | Phát hiện lệch dữ liệu hoặc lỗi membership trước khi tiêu tốn tài nguyên huấn luyện. | Phase 4, 5 và 6. |
+| Phase 3A — Dataset Diagnostics Before Training | Phân tích class support, imbalance, bbox geometry/size/location, negatives, labeled budgets, multilabel structure và sensitivity trước training. | Cần mô tả các pre-training dataset risks mà không dùng test/hidden-U GT để tune và không thay đổi protocol sau khi nhìn kết quả. | Phase 4, 5, 6 và phần Methodology/Results. |
 | Phase 4 — Supervised Baseline | Xây dựng mốc supervised có kiểm soát. | Cần baseline để xác định SSL có cải thiện thực sự hay không. | Phase 5, 6 và 7. |
 | Phase 5 — SSL Detection | Huấn luyện và đánh giá teacher–student pseudo-labeling. | Đây là thí nghiệm chính trả lời câu hỏi nghiên cứu bán giám sát. | Phase 6 và 7. |
 | Phase 6 — Threshold Sweep & Error Analysis | Phân tích threshold, lỗi FP/FN và độ nhạy kết quả theo đúng split. | Metric tổng hợp không giải thích mô hình sai ở đâu hoặc nhạy với quyết định nào. | Phase 7. |
@@ -515,8 +740,8 @@ Trình tự phase downstream:
 Phase 2E: Fixed Train/Validation/Test Split — CLOSED / PASS
 Phase 2F: Labeled/Unlabeled Split for SSL — CLOSED / PASS
 Phase 2F.1: Seed Protocol — partition_seed versus training_seed — CLOSED / PASS
-Phase 3A: Dataset Diagnostics Before Training —
-NOT STARTED / PENDING RESEARCHER OPENING
+Phase 3A: Dataset Diagnostics Before Training — CLOSED / PASS
+Phase 4: Supervised Baseline — NEXT / NOT STARTED
 ```
 
 Việc đóng Phase 2D.1D không tự động cấp quyền training.
@@ -602,7 +827,17 @@ Training đã được phép.
   `ddof=1`; technical-failure retry phải giữ nguyên seed và lưu đầy đủ attempt.
 - Snapshot môi trường local của Phase 2F.1 chỉ là provenance evidence; môi
   trường Google Colab cho Phase 4–5 chưa được khóa và phải được snapshot riêng.
-- Training tiếp tục bị khóa sau khi Phase 2F.1 đóng và chỉ được xem xét sau khi
+- Phase 3A đã hoàn tất detailed diagnostics trên fixed train và legitimately
+  labeled subsets; validation/test chỉ được dùng ở structural-integrity scope.
+- Phase 3A không dùng hidden ground truth của unlabeled subsets và không được
+  dùng để đổi primary diagnostic thresholds sau khi nhìn kết quả.
+- Rare classes trong Phase 3A là dataset-level operational low-support classes,
+  không được diễn giải thành clinically rare diseases.
+- Các bbox size categories của Phase 3A dựa trên normalized area và không phải
+  COCO standard Small/Medium/Large.
+- Phase 3A sensitivity analysis là SECONDARY/NON-GATING và không phải Ablation Study.
+- Phase 3A không tạo training artifact, checkpoint hoặc pseudo-label.
+- Training tiếp tục bị khóa sau khi Phase 3A đóng và chỉ được xem xét sau khi
   training configuration, runtime seed integration, Colab environment và các
   authorization gate tiếp theo đã được review.
 - Không chạy lại `--execute-full` nếu không có lý do kỹ thuật được ghi nhận và phê duyệt.
@@ -612,6 +847,39 @@ Training đã được phép.
 - Không tái tạo hoặc thay đổi labeled/unlabeled membership đã khóa nếu không có
   change-control và lý do kỹ thuật được ghi nhận.
 - Không bắt đầu training khi `training_authorized=false`.
+
+## Current project gate
+
+```text
+Current completed phase:
+Phase 3A — Dataset Diagnostics Before Training: CLOSED / PASS
+
+Dataset technical training readiness:
+TRUE
+
+Training started:
+FALSE
+
+Training authorized:
+FALSE
+
+Pseudo-label generated:
+FALSE
+
+Next implementation phase:
+PHASE 4 — Supervised Baseline
+
+Phase 4 status:
+NEXT / NOT STARTED
+```
+
+Phase 3A closure does not authorize training. The next implementation phase is
+**Phase 4 — Supervised Baseline**, but Phase 4 has not started yet. Before
+official supervised training, the Phase 4 training/Colab environment, runtime
+seed integration, model/configuration, checkpoint/evaluation policy and
+experiment-specific authorization gates must be explicitly defined, reviewed
+and approved.
+
 
 ## Vai trò trong dự án
 

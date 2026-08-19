@@ -1,0 +1,17 @@
+record_type,cardinality,image_count,percentage,statistic,statistic_value
+distribution,0,350,10.215995329830706,,
+distribution,1,225,6.567425569176883,,
+distribution,2,839,24.489200233508466,,
+distribution,3,702,20.490367775831874,,
+distribution,4,530,15.469935785172213,,
+distribution,5,372,10.85814360770578,,
+distribution,6,209,6.100408639813193,,
+distribution,7,130,3.794512551079977,,
+distribution,8,51,1.4886164623467601,,
+distribution,9,14,0.40863981319322823,,
+distribution,10,4,0.11675423234092236,,
+summary,,,,mean,3.1310566258026853
+summary,,,,sd_ddof1,1.9319938322591697
+summary,,,,median,3.0
+summary,,,,p95,7.0
+summary,,,,max,10.0

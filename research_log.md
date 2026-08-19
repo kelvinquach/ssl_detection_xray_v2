@@ -8024,3 +8024,1327 @@ Phase tiếp theo phải được xác định từ roadmap/checklist hiện hà
 4–5 được mở, implementation phải tích hợp seed cho Python, NumPy, PyTorch
 CPU/CUDA, DataLoader workers, sampler và augmentation; đồng thời phải tạo
 environment snapshot riêng trên Google Colab trước official training.
+
+---
+
+## 2026-08-19 — PHASE 3A: Dataset Diagnostics Before Training — Protocol, Execution, Review & Closure
+
+### Mục tiêu
+
+Thực hiện **descriptive pre-training dataset diagnostics** trên fixed training
+set đã được khóa từ Phase 2E và bốn legitimately labeled subsets đã được khóa
+từ Phase 2F, trước khi bắt đầu bất kỳ model training nào.
+
+Phase 3A nhằm:
+
+```text
+Phân tích class distribution của 14 detection classes trong fixed train.
+Xác định low-support / rare classes theo operational definition đã khóa.
+Định lượng class imbalance.
+Phân tích bbox annotation count theo class và theo image.
+Phân tích bbox geometry và normalized-area size distribution.
+Phân tích bbox-center spatial distribution.
+Phân tích No Finding / negative-image prevalence.
+Đánh giá representativeness của labeled budgets 1%, 5%, 10%, 20%.
+Phân tích label cardinality và class co-occurrence.
+Thực hiện threshold sensitivity analysis như robustness analysis.
+Ghi nhận pre-training dataset risks mà không tự động thay đổi training method.
+```
+
+Phase 3A **không phải Ablation Study** và không thực hiện:
+
+```text
+Model initialization
+Supervised training
+SSL training
+Inference
+Pseudo-label generation
+Checkpoint creation
+AP/mAP evaluation
+Hyperparameter search
+Confidence-threshold tuning
+Augmentation tuning
+Loss/backbone/model selection
+Detailed validation/test diagnostics để tune methodology
+Hidden-ground-truth diagnostics trên unlabeled subsets
+```
+
+---
+
+### Protocol đã được researcher phê duyệt và khóa trước execution
+
+Protocol status:
+
+```text
+PHASE3A_PROTOCOL = RESEARCHER_APPROVED / LOCKED
+protocol_version = 1.0.0
+protocol_status = RESEARCHER_APPROVED_LOCKED
+```
+
+Protocol SHA-256:
+
+```text
+b03474cce0be773796f9d458e6273b8fd2b955c1b961bcccc4d955eb3bb0dcf5
+```
+
+Primary detailed diagnostic population:
+
+```text
+FIXED_TRAIN
+```
+
+Detailed scopes được phép:
+
+```text
+train
+labeled_1pct
+labeled_5pct
+labeled_10pct
+labeled_20pct
+```
+
+Structural/integrity-only scopes:
+
+```text
+canonical
+validation
+test
+```
+
+Hidden GT của unlabeled subsets:
+
+```text
+PROHIBITED
+```
+
+---
+
+### Rare-class operational definition đã khóa
+
+Primary measure:
+
+```text
+image-level class support / prevalence
+```
+
+Với class `c`:
+
+```text
+N_c_img = số unique fixed-train images có class c
+P_c_img = N_c_img / 3426
+```
+
+Primary threshold:
+
+```text
+rare_primary_threshold = 0.05
+```
+
+Rule:
+
+```text
+P_c_img < 0.05 => Rare
+
+N_c_img <= 171 => Rare
+N_c_img >= 172 => Non-rare
+```
+
+Definition type:
+
+```text
+PRE_SPECIFIED_OPERATIONAL_DEFINITION
+```
+
+Claim boundary:
+
+```text
+"Rare" chỉ có nghĩa low-support / rare trong fixed training dataset.
+Không được diễn giải thành clinically rare disease.
+```
+
+BBox annotation count không được dùng làm primary rarity measure.
+
+---
+
+### BBox geometry và size definition đã khóa
+
+COCO bbox:
+
+```text
+[x, y, w, h]
+```
+
+Normalized geometry:
+
+```text
+normalized_width  = w / W
+normalized_height = h / H
+normalized_area   = (w*h) / (W*H)
+aspect_ratio      = w / h
+```
+
+Primary bbox-scale descriptor:
+
+```text
+normalized_area
+```
+
+Primary normalized-area-based size categories:
+
+```text
+Small:  normalized_area < 0.01
+Medium: 0.01 <= normalized_area < 0.10
+Large:  normalized_area >= 0.10
+```
+
+Definition type:
+
+```text
+PRE_SPECIFIED_OPERATIONAL_DEFINITION
+```
+
+Các nhóm trên không được trình bày như standard COCO pixel-area
+Small/Medium/Large.
+
+---
+
+### Threshold sensitivity protocol đã khóa
+
+Sensitivity role:
+
+```text
+SECONDARY / NON-GATING
+```
+
+Rare threshold sensitivity:
+
+```text
+[0.01, 0.05, 0.10]
+primary = 0.05
+```
+
+Small-boundary sensitivity:
+
+```text
+[0.005, 0.01, 0.02]
+large threshold fixed = 0.10
+primary small threshold = 0.01
+```
+
+Large-boundary sensitivity:
+
+```text
+[0.05, 0.10, 0.20]
+small threshold fixed = 0.01
+primary large threshold = 0.10
+```
+
+BBox sensitivity mode:
+
+```text
+ONE_FACTOR_AT_A_TIME
+```
+
+Guardrails:
+
+```text
+primary_threshold_changed_after_diagnostics = false
+sensitivity_used_for_threshold_selection = false
+```
+
+Sensitivity không phải Ablation Study và không được dùng để chọn lại primary
+thresholds.
+
+---
+
+### Các diagnostics bổ sung đã khóa
+
+Researcher đã phê duyệt:
+
+```text
+Labeled-budget diagnostics: YES
+BBox count per image: YES
+Label cardinality: YES
+Class co-occurrence: YES / SECONDARY_NON_GATING
+BBox-center heatmap: 50 x 50
+```
+
+Label cardinality:
+
+```text
+LC_i = số unique detection classes trong image i
+negative image => LC_i = 0
+```
+
+Class co-occurrence:
+
+```text
+image-level unique class presence
+không tính theo bbox multiplicity
+```
+
+BBox-center heatmap:
+
+```text
+center_x_n = (x + w/2) / W
+center_y_n = (y + h/2) / H
+grid = 50 x 50
+origin = top-left
+weighting = annotation-weighted
+```
+
+---
+
+### Source/config/tests được tạo
+
+```text
+configs/protocol/phase3A_dataset_diagnostics.yaml
+scripts/03A_dataset_diagnostics.py
+tests/test_phase3A_dataset_diagnostics_guardrails.py
+```
+
+Phase 3A implementation được review tĩnh trước khi execution.
+
+---
+
+### Source review và các lỗi implementation đã phát hiện
+
+#### Vòng review đầu
+
+Static review phát hiện các vấn đề implementation/audit sau:
+
+```text
+Importlib + dataclass loader có khả năng lỗi do module chưa được đăng ký
+trong sys.modules.
+
+Terminology test tự mâu thuẫn vì cấm literal
+"number of unique lesions"
+trong khi source dùng chính literal đó trong câu phủ định.
+
+forbidden_write_paths mới tồn tại trong YAML nhưng chưa enforce đầy đủ ở runtime.
+
+Một số validation flags bị hard-code false thay vì derive từ runtime evidence.
+
+HF35 chưa audit toàn bộ mandatory outputs.
+
+Canonical No Finding zero-GT policy chưa có explicit canonical check.
+
+YAML <-> Python lock consistency chưa được kiểm tra đầy đủ.
+```
+
+Claude được yêu cầu sửa chỉ implementation/guardrails, không thay đổi scientific
+protocol.
+
+#### Vòng review thứ hai
+
+Các blocker chính đã được sửa. Static review tiếp tục phát hiện một lỗi audit
+contract nhỏ:
+
+```text
+YAML khai báo đúng HF01..HF35.
+
+Python lại phát sinh thêm HF10a cho canonical No Finding zero-GT
+và HF10 riêng cho fixed train.
+```
+
+Quyết định sửa:
+
+```text
+HF10a bị loại bỏ.
+Canonical và fixed-train No Finding zero-GT được hợp nhất vào đúng một HF10.
+Runtime hard-fail contract giữ 1:1 với machine-readable protocol.
+```
+
+Sau sửa, static source review:
+
+```text
+PASS
+```
+
+---
+
+### Guardrail test execution — lần 1
+
+Researcher chạy:
+
+```cmd
+python -m pytest -q tests\test_phase3A_dataset_diagnostics_guardrails.py --junitxml=reports\03A_guardrails_junit.xml
+```
+
+Kết quả:
+
+```text
+47 passed in 1.60s
+failures: 0
+errors: 0
+skipped: 0
+```
+
+GPT review:
+
+```text
+PHASE3A_GUARDRAIL_TESTS = PASS
+PREFLIGHT_AUTHORIZED = TRUE
+FULL_DIAGNOSTICS_AUTHORIZED = FALSE
+```
+
+---
+
+### Preflight execution
+
+Researcher chạy:
+
+```cmd
+python scripts\03A_dataset_diagnostics.py ^
+  --protocol configs\protocol\phase3A_dataset_diagnostics.yaml ^
+  --mode preflight
+```
+
+Kết quả:
+
+```text
+PF01-PF14: PASS
+HF01-HF30 relevant preflight checks: PASS
+
+hard_error_count: 0
+warning_count: 0
+
+detailed_scopes_used:
+  labeled_10pct
+  labeled_1pct
+  labeled_20pct
+  labeled_5pct
+  train
+
+structural_only_scopes_used:
+  canonical
+  test
+  val
+
+phase_status:
+  OPEN_REVIEW_REQUIRED
+```
+
+Các điểm quan trọng:
+
+```text
+Protocol/YAML locks: PASS
+Output path contract: PASS
+Canonical/train/val/test checksums: PASS
+Canonical counts: PASS
+Train counts: PASS
+No Finding zero-GT policy: PASS
+Train bbox validity: PASS
+Phase 2F labeled hashes/counts/nesting: PASS
+Hidden-U GT firewall: PASS
+Detailed test diagnostics firewall: PASS
+Training seed usage: false
+```
+
+GPT review:
+
+```text
+PHASE3A_PREFLIGHT = PASS
+FULL_DIAGNOSTICS_AUTHORIZED = TRUE
+```
+
+---
+
+### Full execution attempt 1 — implementation bug, abort before diagnostics
+
+Researcher chạy:
+
+```cmd
+python scripts\03A_dataset_diagnostics.py ^
+  --protocol configs\protocol\phase3A_dataset_diagnostics.yaml ^
+  --mode full
+```
+
+Run bị chặn ngay ở output contract:
+
+```text
+[FATAL] output contract: the output-path gate did not resolve these targets:
+['plot_negative_distribution']
+```
+
+Root cause:
+
+```text
+YAML key:
+negative_image_distribution
+
+resolver runtime key:
+plot_negative_image_distribution
+
+run_full()/audit_output_contract() lại dùng:
+plot_negative_distribution
+```
+
+Đây là implementation naming mismatch, không phải:
+
+```text
+data error
+protocol error
+threshold drift
+leakage error
+input corruption
+```
+
+Run bị abort trước scientific diagnostics và trước khi ghi mandatory outputs.
+
+Sửa:
+
+```text
+Giữ nguyên YAML key và output filename.
+Chuẩn hóa Python runtime key thành:
+plot_negative_image_distribution
+
+Giữ nguyên plotting function name:
+plot_negative_distribution(...)
+```
+
+Đồng thời bổ sung regression tests để kiểm tra end-to-end:
+
+```text
+YAML key
+→ resolve_output_contract()
+→ run_full()
+→ audit_output_contract()
+```
+
+---
+
+### Guardrail test execution — sau output-key fix
+
+Researcher chạy lại:
+
+```cmd
+python -m pytest -q tests\test_phase3A_dataset_diagnostics_guardrails.py --junitxml=reports\03A_guardrails_junit.xml
+```
+
+Kết quả:
+
+```text
+50 passed in 1.31s
+failures: 0
+errors: 0
+skipped: 0
+```
+
+Các regression test mới PASS, gồm:
+
+```text
+plot-key consistency end-to-end
+all contract keys resolve for run_full
+run_full does not index unresolved output keys
+```
+
+GPT review:
+
+```text
+PREVIOUS_OUTPUT_KEY_BUG = FIXED
+FULL_DIAGNOSTICS_AUTHORIZED = TRUE
+```
+
+---
+
+### Full execution — thành công
+
+Researcher chạy lại:
+
+```cmd
+python scripts\03A_dataset_diagnostics.py ^
+  --protocol configs\protocol\phase3A_dataset_diagnostics.yaml ^
+  --mode full
+```
+
+Kết quả:
+
+```text
+PF01-PF14: PASS
+HF01-HF35: PASS
+
+hard_error_count: 0
+warning_count: 0
+
+HF34:
+no locked input was modified during the run — PASS
+
+HF31:
+no training artifact was created — PASS
+
+HF32:
+no checkpoint was created — PASS
+
+HF33:
+no pseudo-label was created — PASS
+
+HF35:
+every mandatory output of the contract exists and is structurally valid — PASS
+
+dod_candidate: true
+phase_status: OPEN_REVIEW_REQUIRED
+```
+
+Actual scope usage:
+
+```text
+detailed_scopes_used:
+  labeled_10pct
+  labeled_1pct
+  labeled_20pct
+  labeled_5pct
+  train
+
+structural_only_scopes_used:
+  canonical
+  test
+  val
+```
+
+`exit code 0` không được tự diễn giải là `CLOSED / PASS`; researcher + GPT
+review vẫn bắt buộc.
+
+---
+
+### Scientific findings — class distribution và imbalance
+
+Fixed train:
+
+```text
+images: 3426
+annotations: 25260
+positive images: 3076
+No Finding / zero-GT images: 350
+detection classes: 14
+```
+
+Image-level class support:
+
+```text
+max_image_support: 2144
+min_image_support: 66
+median_image_support: 648
+```
+
+Imbalance ratio:
+
+```text
+R_max_min = 2144 / 66
+          = 32.484848484848484
+```
+
+Image-support coefficient of variation:
+
+```text
+0.8025330318219815
+```
+
+Theo primary rare threshold `<5%`, có đúng 2/14 rare classes:
+
+```text
+Atelectasis:
+  image_count = 130
+  image_prevalence = 0.03794512551079977
+  bbox_annotation_count = 194
+
+Pneumothorax:
+  image_count = 66
+  image_prevalence = 0.01926444833625219
+  bbox_annotation_count = 142
+```
+
+Kết luận được phép:
+
+```text
+Fixed train có class imbalance rõ theo image-level support.
+Atelectasis và Pneumothorax là rare theo locked operational definition.
+```
+
+Không được suy ra trực tiếp:
+
+```text
+Rare classes chắc chắn có AP thấp.
+SSL chắc chắn xử lý được imbalance.
+```
+
+---
+
+### Scientific findings — bbox geometry và size
+
+Trên 25,260 train bbox annotations:
+
+```text
+normalized_area:
+  mean   = 0.030439067292574274
+  median = 0.014892746614044168
+  p95    = 0.10033503078233698
+  max    = 0.9384266703859281
+
+aspect_ratio:
+  mean   = 1.4098767703617139
+  median = 0.9853479853479854
+  p95    = 3.542250573290138
+  max    = 45.0
+```
+
+Primary normalized-area categories:
+
+```text
+Small:
+  9372 / 25260
+  = 37.1021377672209%
+
+Medium:
+  14612 / 25260
+  = 57.84639746634996%
+
+Large:
+  1276 / 25260
+  = 5.051464766429137%
+```
+
+BBox count per image:
+
+```text
+all train images:
+  mean   = 7.373029772329247
+  median = 6
+  p95    = 17
+  max    = 48
+
+positive train images only:
+  mean   = 8.211963589076722
+  median = 7
+  p95    = 18
+  max    = 48
+```
+
+Thuật ngữ được giữ:
+
+```text
+bounding-box annotation count
+```
+
+Không mặc định gọi là số unique clinical lesions.
+
+---
+
+### Scientific findings — bbox spatial distribution
+
+BBox centers được chuẩn hóa:
+
+```text
+center_x_n = (x + w/2) / W
+center_y_n = (y + h/2) / H
+```
+
+Heatmap:
+
+```text
+grid: 50 x 50
+weighting: annotation-weighted
+origin: top-left
+```
+
+Quan sát cho thấy bbox-center distribution không đồng đều trong normalized
+image plane.
+
+Giới hạn:
+
+```text
+Heatmap mô tả annotation-weighted bbox-center density.
+Không tự động chứng minh unique clinical lesion density
+hoặc anatomical causal pattern.
+```
+
+---
+
+### Scientific findings — negative / No Finding
+
+Fixed train:
+
+```text
+Positive / abnormal:
+3076 / 3426 = 89.784%
+
+No Finding / negative:
+350 / 3426 = 10.215995329830706%
+```
+
+Validation/test chỉ dùng structural counts:
+
+```text
+validation:
+734 images
+75 No Finding
+
+test:
+734 images
+75 No Finding
+```
+
+No Finding tiếp tục là:
+
+```text
+zero-GT negative image
+không phải detection class
+```
+
+---
+
+### Scientific findings — labeled-budget diagnostics
+
+Mọi labeled budget giữ:
+
+```text
+14/14 class coverage
+```
+
+Representativeness deviation so với fixed train:
+
+```text
+1pct:
+  labeled_images = 34
+  negative_images = 3
+  max_absolute_deviation = 0.012980323477902539
+  mean_absolute_deviation = 0.006991763430415951
+
+5pct:
+  labeled_images = 171
+  negative_images = 17
+  max_absolute_deviation = 0.0028574062125541547
+  mean_absolute_deviation = 0.0015424580131004736
+
+10pct:
+  labeled_images = 343
+  negative_images = 35
+  max_absolute_deviation = 0.0012781695114874037
+  mean_absolute_deviation = 0.0007462472461732155
+
+20pct:
+  labeled_images = 685
+  negative_images = 70
+  max_absolute_deviation = 0.0006626015740515689
+  mean_absolute_deviation = 0.00033811855241795496
+```
+
+Important low-label risk:
+
+```text
+Ở labeled 1%:
+Atelectasis support = 1 labeled image
+Pneumothorax support = 1 labeled image
+```
+
+Tức là 14/14 class coverage được giữ nhưng absolute support của rare classes ở
+budget nhỏ nhất vẫn rất thấp.
+
+Rare status không được định nghĩa lại theo từng budget; luôn kế thừa từ fixed
+train.
+
+---
+
+### Scientific findings — label cardinality và co-occurrence
+
+Label cardinality:
+
+```text
+mean = 3.1310566258026853
+sample SD = 1.9319938322591697
+median = 3
+p95 = 7
+max = 10
+```
+
+Negative images có cardinality 0.
+
+Class co-occurrence:
+
+```text
+91 unordered class pairs
+unit: unique image-level class presence
+role: SECONDARY / NON-GATING
+```
+
+Một số cặp có Jaccard cao trong fixed train:
+
+```text
+Aortic enlargement + Cardiomegaly:
+J ≈ 0.577
+
+Pleural effusion + Pleural thickening:
+J ≈ 0.381
+
+Pleural thickening + Pulmonary fibrosis:
+J ≈ 0.360
+
+Aortic enlargement + Pleural thickening:
+J ≈ 0.356
+```
+
+Đây chỉ là dataset co-occurrence evidence, không phải quan hệ nhân quả hoặc
+clinical association claim.
+
+---
+
+### Scientific findings — threshold sensitivity
+
+Rare threshold:
+
+```text
+1%  -> 0 rare classes
+5%  -> 2 rare classes [PRIMARY]
+10% -> 5 rare classes
+```
+
+Các class thay đổi rare status trong sensitivity range:
+
+```text
+Atelectasis
+Calcification
+Consolidation
+ILD
+Pneumothorax
+```
+
+Small-boundary sensitivity, large fixed = 10%:
+
+```text
+small < 0.5%:
+Small = 23.519398258115597%
+
+small < 1.0%:
+Small = 37.1021377672209% [PRIMARY]
+
+small < 2.0%:
+Small = 58.9034045922407%
+```
+
+Large-boundary sensitivity, small fixed = 1%:
+
+```text
+large >= 5%:
+Large = 21.78147268408551%
+
+large >= 10%:
+Large = 5.051464766429137% [PRIMARY]
+
+large >= 20%:
+Large = 0.9540775930324624%
+```
+
+Interpretation:
+
+```text
+Operational category proportions are threshold-sensitive.
+
+Sensitivity là robustness finding.
+Không đổi primary rare threshold 5%.
+Không đổi primary bbox thresholds 1% / 10%.
+Không dùng sensitivity để tối ưu threshold.
+```
+
+---
+
+### Mandatory outputs đã tạo
+
+```text
+reports/dataset_analysis_report.md
+
+plots/dataset/class_distribution.png
+plots/dataset/bbox_distribution.png
+plots/dataset/bbox_location_heatmap.png
+plots/dataset/negative_image_distribution.png
+```
+
+Machine-readable outputs:
+
+```text
+reports/03A_dataset_diagnostics_validation.json
+reports/03A_artifact_manifest.json
+reports/03A_guardrails_junit.xml
+
+reports/03A_class_distribution.csv
+reports/03A_class_imbalance.csv
+reports/03A_bbox_distribution.csv
+reports/03A_bbox_summary.csv
+reports/03A_bbox_count_per_image.csv
+reports/03A_negative_distribution.csv
+reports/03A_split_distribution.csv
+reports/03A_labeled_budget_coverage.csv
+reports/03A_label_cardinality.csv
+reports/03A_class_cooccurrence.csv
+reports/03A_threshold_sensitivity.csv
+```
+
+Final artifact manifest:
+
+```text
+artifact_count: 17
+self_hash_excluded: true
+validation_json_hashed_after_final_audit: true
+write_passes: 2
+final mandatory-output audit: 18/18 present and structurally valid
+```
+
+---
+
+### Final report claim review và wording correction
+
+GPT review `reports/dataset_analysis_report.md` phát hiện một câu RESULT ban đầu
+dùng các nhãn định tính chưa được operationally định nghĩa:
+
+```text
+"many rare classes"
+"high small-box share"
+"unusual aspect-ratio distribution"
+"strong spatial concentration"
+"high label cardinality"
+"strong co-occurrence"
+```
+
+Vấn đề:
+
+```text
+Các nhãn này có thể bị hiểu là post-hoc qualitative classification
+dù Phase 3A không khóa operational threshold cho các từ "many/high/strong".
+```
+
+Quyết định:
+
+Không thay đổi calculation hoặc scientific result.
+
+Chỉ sửa report generator thành câu:
+
+```text
+"The descriptive statistics reported above characterize potential
+pre-training dataset risks. Their magnitude is reported directly rather
+than classified using additional post-hoc labels, and none of these
+observations constitutes a Phase 3A protocol failure."
+```
+
+Sau wording fix, guardrail tests được mở rộng.
+
+---
+
+### Guardrail test execution — final
+
+Researcher chạy:
+
+```cmd
+python -m pytest -q tests\test_phase3A_dataset_diagnostics_guardrails.py --junitxml=reports\03A_guardrails_junit.xml
+```
+
+Kết quả cuối:
+
+```text
+53 passed in 1.44s
+failures: 0
+errors: 0
+skipped: 0
+```
+
+Sau đó researcher chạy lại full diagnostics để tái tạo report, validation và
+manifest nhất quán.
+
+Final full execution:
+
+```text
+hard_error_count: 0
+warning_count: 0
+
+HF01-HF35: PASS
+PF01-PF14: PASS
+
+dod_candidate: true
+phase_status: OPEN_REVIEW_REQUIRED
+```
+
+---
+
+### Final evidence hashes
+
+Final report:
+
+```text
+reports/dataset_analysis_report.md
+
+SHA-256:
+27e6ddfbd92ac2ba2a028e923f3be33f531a3a2a38f40468ccc5f38ef3823a2f
+```
+
+Final validation JSON:
+
+```text
+reports/03A_dataset_diagnostics_validation.json
+
+SHA-256:
+c24eff6907d92a23bbe9df39dfeeca9925b940fabbc087a5abd2e74c8732b892
+```
+
+Protocol SHA-256:
+
+```text
+b03474cce0be773796f9d458e6273b8fd2b955c1b961bcccc4d955eb3bb0dcf5
+```
+
+---
+
+### Review GPT và researcher — final closure
+
+Final review xác nhận:
+
+```text
+PHASE3A_GUARDRAIL_TESTS: 53/53 PASS
+PHASE3A_FULL_EXECUTION: PASS
+
+Protocol compliance: PASS
+Leakage firewall: PASS
+Input immutability: PASS
+Machine-readable outputs: PASS
+Scientific diagnostics: PASS
+Final report claim discipline: PASS
+
+hard_error_count: 0
+warning_count: 0
+dod_candidate: true
+```
+
+Generated artifacts vẫn ghi:
+
+```text
+phase_status = OPEN_REVIEW_REQUIRED
+```
+
+Đây là hành vi đúng theo protocol vì script không được tự tuyên bố `PASS` hoặc
+`CLOSED`.
+
+Sau execution, researcher + GPT review đưa ra closure decision bên ngoài
+generated artifacts:
+
+```text
+PHASE_3A_STATUS: CLOSED
+PHASE_3A_GATE: PASS
+```
+
+---
+
+### Quyết định
+
+Phase 3A được khóa với trạng thái:
+
+```text
+CLOSED / PASS
+```
+
+Research decisions:
+
+```text
+Primary rare threshold giữ nguyên 5%.
+
+Primary bbox thresholds giữ nguyên:
+Small <1%
+Medium 1%–<10%
+Large >=10%.
+
+Sensitivity chỉ là SECONDARY / NON-GATING.
+
+Không dùng Phase 3A findings để tự động đổi training method.
+
+Không dùng validation/test để chọn diagnostic thresholds.
+
+Không dùng hidden GT của unlabeled subsets.
+
+Không thực hiện Ablation Study trong Phase 3A.
+
+Không training.
+
+Không tạo pseudo-label.
+
+Không tạo checkpoint.
+
+training_started: false
+training_authorized: false
+```
+
+---
+
+### Vấn đề / rủi ro được chuyển tiếp
+
+```text
+Fixed train có class imbalance đáng kể ở image-level support.
+
+Atelectasis và Pneumothorax là low-support classes dưới locked 5% rule.
+
+Labeled 1% giữ 14/14 class coverage nhưng absolute support của hai rare classes
+chỉ là 1 image/class.
+
+BBox normalized-area operational categories thay đổi đáng kể theo sensitivity
+boundaries; cần báo cáo continuous distributions cùng category percentages.
+
+Các finding trên là pre-training dataset risks, không phải model-performance
+evidence.
+```
+
+Không được suy ra:
+
+```text
+rare class sẽ chắc chắn có AP thấp
+small bbox sẽ chắc chắn gây model failure
+SSL sẽ sửa imbalance
+EMA sẽ giúp
+một confidence threshold hoặc augmentation cụ thể là optimal
+pseudo-label quality
+SSL superiority
+training convergence/stability
+```
+
+Những kết luận này chỉ có thể được kiểm chứng trong downstream model
+experiments.
+
+---
+
+### Trạng thái checklist / handoff
+
+```text
+Phase 3A — Dataset Diagnostics Before Training: CLOSED / PASS
+
+Guardrail tests:
+53/53 PASS
+
+Full execution:
+PASS
+
+hard_error_count:
+0
+
+warning_count:
+0
+
+training_started:
+false
+
+training_authorized:
+false
+
+ablation_study_performed_in_phase3A:
+false
+```
+
+Next implementation phase:
+
+```text
+Phase 4 — Supervised Baseline
+Status: NEXT / NOT STARTED
+```
+
+Required action:
+
+```text
+Mở Phase 4 ở mức protocol/design trước.
+Khóa training environment, runtime seed integration, supervised configuration,
+checkpoint/validation policy và experiment-specific authorization gates.
+
+Không bắt đầu official training khi training_authorized=false.
+```
+
+---
+
+## 2026-08-19 — Roadmap synchronization after Phase 3A closure
+
+### Lý do cập nhật
+
+Sau khi Phase 3A được đóng `CLOSED / PASS`, tài liệu quản trị ban đầu ghi:
+
+```text
+Next implementation phase: NOT OPENED
+```
+
+Dòng này không đúng với roadmap/checklist hiện hành.
+
+Roadmap đã xác định rõ phase kế tiếp là:
+
+```text
+Phase 4 — Supervised Baseline
+```
+
+Đây là **documentation-state correction**, không thay đổi dữ liệu, Phase 3A
+results, split membership, seed protocol hoặc training authorization.
+
+### Trạng thái đã đồng bộ
+
+```text
+Current completed phase:
+Phase 3A — Dataset Diagnostics Before Training: CLOSED / PASS
+
+Next implementation phase:
+Phase 4 — Supervised Baseline
+
+Phase 4 status:
+NEXT / NOT STARTED
+
+phase4_started:
+false
+
+training_started:
+false
+
+training_authorized:
+false
+```
+
+### Phân biệt bắt buộc
+
+```text
+"Phase 4 is next"
+không đồng nghĩa
+"training is authorized".
+```
+
+Phase 4 phải được mở ở mức protocol/design, sau đó review và khóa các gate
+trước official supervised training.
+
+Các gate cần được xác định trước training gồm tối thiểu:
+
+```text
+Google Colab / GPU environment
+MMDetection baseline configuration
+runtime integration của ordered 10 training seeds
+labeled-budget usage
+augmentation policy
+optimizer / scheduler / training duration
+checkpoint-selection and validation policy
+retry/failure policy
+per-seed reporting and aggregation
+artifact/checkpoint provenance
+test-set leakage guardrails
+training authorization
+```
+
+### Quyết định
+
+```text
+ROADMAP_SYNC: PASS
+
+Phase 3A:
+CLOSED / PASS
+
+Phase 4:
+NEXT / NOT STARTED
+
+Training:
+NOT STARTED / NOT AUTHORIZED
+```
+
+Không thay đổi:
+
+```text
+partition_seed = 42
+fixed train/validation/test membership
+labeled/unlabeled memberships
+ordered 10-seed list
+Phase 3A thresholds/findings
+test-set final-evaluation-only policy
+```
+

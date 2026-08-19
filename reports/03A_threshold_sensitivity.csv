@@ -1,0 +1,64 @@
+analysis_type,parameter,threshold,is_primary,category,count,percentage,primary_percentage,delta_percentage_points,category_id,class_name,image_count,image_prevalence,rare_flag,primary_rare_flag,status_changed_vs_primary,stable_rare_flag,stable_nonrare_flag,threshold_sensitive_flag
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,2144,62.58026853473439,62.58026853473439,0.0,1,Aortic enlargement,2144,0.6258026853473438,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,130,3.794512551079977,3.794512551079977,0.0,2,Atelectasis,130,0.03794512551079977,false,true,true,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,314,9.165207238762404,9.165207238762404,0.0,3,Calcification,314,0.09165207238762405,false,false,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,1607,46.90601284296555,46.90601284296555,0.0,4,Cardiomegaly,1607,0.46906012842965555,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,246,7.180385288966725,7.180385288966725,0.0,5,Consolidation,246,0.07180385288966724,false,false,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,268,7.822533566841798,7.822533566841798,0.0,6,ILD,268,0.07822533566841798,false,false,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,428,12.492702860478692,12.492702860478692,0.0,7,Infiltration,428,0.12492702860478692,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,923,26.941039112667838,26.941039112667838,0.0,8,Lung Opacity,923,0.26941039112667836,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,576,16.81260945709282,16.81260945709282,0.0,9,Nodule/Mass,576,0.1681260945709282,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,791,23.088149445417397,23.088149445417397,0.0,10,Other lesion,791,0.23088149445417397,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,720,21.015761821366024,21.015761821366024,0.0,11,Pleural effusion,720,0.21015761821366025,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,1384,40.39696438995913,40.39696438995913,0.0,12,Pleural thickening,1384,0.40396964389959134,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,66,1.926444833625219,1.926444833625219,0.0,13,Pneumothorax,66,0.01926444833625219,false,true,true,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.01,false,non_rare,1130,32.98307063631057,32.98307063631057,0.0,14,Pulmonary fibrosis,1130,0.3298307063631057,false,false,false,false,true,false
+rare_threshold_summary,rare_image_prevalence_threshold,0.01,false,rare_class_count,0,0.0,14.285714285714286,-14.285714285714286,,,,,,,,,,
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,2144,62.58026853473439,62.58026853473439,0.0,1,Aortic enlargement,2144,0.6258026853473438,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,rare,130,3.794512551079977,3.794512551079977,0.0,2,Atelectasis,130,0.03794512551079977,true,true,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,314,9.165207238762404,9.165207238762404,0.0,3,Calcification,314,0.09165207238762405,false,false,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,1607,46.90601284296555,46.90601284296555,0.0,4,Cardiomegaly,1607,0.46906012842965555,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,246,7.180385288966725,7.180385288966725,0.0,5,Consolidation,246,0.07180385288966724,false,false,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,268,7.822533566841798,7.822533566841798,0.0,6,ILD,268,0.07822533566841798,false,false,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,428,12.492702860478692,12.492702860478692,0.0,7,Infiltration,428,0.12492702860478692,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,923,26.941039112667838,26.941039112667838,0.0,8,Lung Opacity,923,0.26941039112667836,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,576,16.81260945709282,16.81260945709282,0.0,9,Nodule/Mass,576,0.1681260945709282,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,791,23.088149445417397,23.088149445417397,0.0,10,Other lesion,791,0.23088149445417397,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,720,21.015761821366024,21.015761821366024,0.0,11,Pleural effusion,720,0.21015761821366025,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,1384,40.39696438995913,40.39696438995913,0.0,12,Pleural thickening,1384,0.40396964389959134,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,rare,66,1.926444833625219,1.926444833625219,0.0,13,Pneumothorax,66,0.01926444833625219,true,true,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.05,true,non_rare,1130,32.98307063631057,32.98307063631057,0.0,14,Pulmonary fibrosis,1130,0.3298307063631057,false,false,false,false,true,false
+rare_threshold_summary,rare_image_prevalence_threshold,0.05,true,rare_class_count,2,14.285714285714286,14.285714285714286,0.0,,,,,,,,,,
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,non_rare,2144,62.58026853473439,62.58026853473439,0.0,1,Aortic enlargement,2144,0.6258026853473438,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,rare,130,3.794512551079977,3.794512551079977,0.0,2,Atelectasis,130,0.03794512551079977,true,true,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,rare,314,9.165207238762404,9.165207238762404,0.0,3,Calcification,314,0.09165207238762405,true,false,true,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,non_rare,1607,46.90601284296555,46.90601284296555,0.0,4,Cardiomegaly,1607,0.46906012842965555,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,rare,246,7.180385288966725,7.180385288966725,0.0,5,Consolidation,246,0.07180385288966724,true,false,true,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,rare,268,7.822533566841798,7.822533566841798,0.0,6,ILD,268,0.07822533566841798,true,false,true,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,non_rare,428,12.492702860478692,12.492702860478692,0.0,7,Infiltration,428,0.12492702860478692,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,non_rare,923,26.941039112667838,26.941039112667838,0.0,8,Lung Opacity,923,0.26941039112667836,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,non_rare,576,16.81260945709282,16.81260945709282,0.0,9,Nodule/Mass,576,0.1681260945709282,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,non_rare,791,23.088149445417397,23.088149445417397,0.0,10,Other lesion,791,0.23088149445417397,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,non_rare,720,21.015761821366024,21.015761821366024,0.0,11,Pleural effusion,720,0.21015761821366025,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,non_rare,1384,40.39696438995913,40.39696438995913,0.0,12,Pleural thickening,1384,0.40396964389959134,false,false,false,false,true,false
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,rare,66,1.926444833625219,1.926444833625219,0.0,13,Pneumothorax,66,0.01926444833625219,true,true,false,false,false,true
+rare_threshold_per_class,rare_image_prevalence_threshold,0.1,false,non_rare,1130,32.98307063631057,32.98307063631057,0.0,14,Pulmonary fibrosis,1130,0.3298307063631057,false,false,false,false,true,false
+rare_threshold_summary,rare_image_prevalence_threshold,0.1,false,rare_class_count,5,35.714285714285715,14.285714285714286,21.428571428571427,,,,,,,,,,
+bbox_small_boundary_sensitivity,bbox_small_threshold,0.005,false,small,5941,23.519398258115597,37.1021377672209,-13.582739509105306,,,,,,,,,,
+bbox_small_boundary_sensitivity,bbox_small_threshold,0.005,false,medium,18043,71.42913697545526,57.84639746634996,13.582739509105302,,,,,,,,,,
+bbox_small_boundary_sensitivity,bbox_small_threshold,0.005,false,large,1276,5.051464766429137,5.051464766429137,0.0,,,,,,,,,,
+bbox_small_boundary_sensitivity,bbox_small_threshold,0.01,true,small,9372,37.1021377672209,37.1021377672209,0.0,,,,,,,,,,
+bbox_small_boundary_sensitivity,bbox_small_threshold,0.01,true,medium,14612,57.84639746634996,57.84639746634996,0.0,,,,,,,,,,
+bbox_small_boundary_sensitivity,bbox_small_threshold,0.01,true,large,1276,5.051464766429137,5.051464766429137,0.0,,,,,,,,,,
+bbox_small_boundary_sensitivity,bbox_small_threshold,0.02,false,small,14879,58.9034045922407,37.1021377672209,21.801266825019795,,,,,,,,,,
+bbox_small_boundary_sensitivity,bbox_small_threshold,0.02,false,medium,9105,36.04513064133017,57.84639746634996,-21.801266825019795,,,,,,,,,,
+bbox_small_boundary_sensitivity,bbox_small_threshold,0.02,false,large,1276,5.051464766429137,5.051464766429137,0.0,,,,,,,,,,
+bbox_large_boundary_sensitivity,bbox_large_threshold,0.05,false,small,9372,37.1021377672209,37.1021377672209,0.0,,,,,,,,,,
+bbox_large_boundary_sensitivity,bbox_large_threshold,0.05,false,medium,10386,41.11638954869359,57.84639746634996,-16.730007917656373,,,,,,,,,,
+bbox_large_boundary_sensitivity,bbox_large_threshold,0.05,false,large,5502,21.78147268408551,5.051464766429137,16.730007917656373,,,,,,,,,,
+bbox_large_boundary_sensitivity,bbox_large_threshold,0.1,true,small,9372,37.1021377672209,37.1021377672209,0.0,,,,,,,,,,
+bbox_large_boundary_sensitivity,bbox_large_threshold,0.1,true,medium,14612,57.84639746634996,57.84639746634996,0.0,,,,,,,,,,
+bbox_large_boundary_sensitivity,bbox_large_threshold,0.1,true,large,1276,5.051464766429137,5.051464766429137,0.0,,,,,,,,,,
+bbox_large_boundary_sensitivity,bbox_large_threshold,0.2,false,small,9372,37.1021377672209,37.1021377672209,0.0,,,,,,,,,,
+bbox_large_boundary_sensitivity,bbox_large_threshold,0.2,false,medium,15647,61.94378463974663,57.84639746634996,4.097387173396669,,,,,,,,,,
+bbox_large_boundary_sensitivity,bbox_large_threshold,0.2,false,large,241,0.9540775930324624,5.051464766429137,-4.097387173396675,,,,,,,,,,

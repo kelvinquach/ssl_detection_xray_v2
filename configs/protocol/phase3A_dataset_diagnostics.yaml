@@ -1,0 +1,833 @@
+# =====================================================================
+# PHASE 3A - DATASET DIAGNOSTICS BEFORE TRAINING
+# Repository : ssl_detection_xray_v2
+#
+# PHASE3A_PROTOCOL = RESEARCHER_APPROVED / LOCKED
+#
+# This file is the machine-readable protocol consumed by
+#   scripts/03A_dataset_diagnostics.py
+#   tests/test_phase3A_dataset_diagnostics_guardrails.py
+#
+# Phase 3A is DESCRIPTIVE PRE-TRAINING DATASET DIAGNOSTICS.
+# It is NOT training, NOT evaluation, NOT hyperparameter search,
+# NOT pseudo-label generation, NOT an ablation study,
+# NOT threshold optimization.
+#
+# ---------------------------------------------------------------------
+# COMMENT CONVENTION (mandated by protocol section 42)
+#   [LOCKED SCIENTIFIC DECISION]  - a scientific definition. Changing it
+#                                   changes the meaning of the results.
+#                                   Must never be altered by an
+#                                   implementation concern.
+#   [IMPLEMENTATION DETAIL]       - engineering choice, no scientific
+#                                   meaning.
+#   [VISUALIZATION DETAIL]        - affects rendering only. Must never
+#                                   feed back into any threshold, flag,
+#                                   category or statistic.
+# ---------------------------------------------------------------------
+#
+# This file MUST NOT contain any Phase 3A result. It contains only
+# definitions, locked input identities inherited from Phase 2D/2E/2F,
+# and output contracts.
+# =====================================================================
+
+# ---------------------------------------------------------------------
+# phase
+# ---------------------------------------------------------------------
+phase:
+  id: "3A"                                    # [LOCKED SCIENTIFIC DECISION]
+  name: "Dataset Diagnostics Before Training"
+  protocol_version: "1.0.0"
+  protocol_status: "RESEARCHER_APPROVED_LOCKED"   # [LOCKED SCIENTIFIC DECISION]
+  analysis_type: "DESCRIPTIVE_PRE_TRAINING_DATASET_DIAGNOSTICS"
+  approval_authority: "RESEARCHER_AND_GPT_REVIEW"
+  self_declared_closure_allowed: false
+  is_not:
+    - model_training
+    - model_evaluation
+    - hyperparameter_search
+    - pseudo_label_generation
+    - pseudo_label_filtering_experiment
+    - ablation_study
+    - test_set_exploration_for_tuning
+    - threshold_optimization
+
+# ---------------------------------------------------------------------
+# input_artifacts
+# All paths are repository-relative POSIX paths and are resolved against
+# the repository root (the parent directory of scripts/).
+# [IMPLEMENTATION DETAIL] path style; [LOCKED] the artifact identities.
+# ---------------------------------------------------------------------
+input_artifacts:
+  canonical:
+    coco_master: "data/processed/coco/coco_master.json"
+    coco_master_jpg: "data/processed/coco/coco_master_jpg.json"
+  fixed_split:
+    train: "data/processed/coco/instances_train.json"
+    val: "data/processed/coco/instances_val.json"
+    test: "data/processed/coco/instances_test.json"
+    split_lock_manifest: "data/manifests/split_lock_manifest.json"
+  labeled_subsets:
+    "1pct": "data/processed/coco/labeled_splits/instances_labeled_1pct.json"
+    "5pct": "data/processed/coco/labeled_splits/instances_labeled_5pct.json"
+    "10pct": "data/processed/coco/labeled_splits/instances_labeled_10pct.json"
+    "20pct": "data/processed/coco/labeled_splits/instances_labeled_20pct.json"
+  phase2F_evidence:
+    protocol: "configs/protocol/phase2F_labeled_unlabeled.yaml"
+    lock_manifest: "data/manifests/phase2F_lock_manifest.json"
+    nested_split_check: "data/manifests/phase2F_nested_split_check.json"
+    leakage_check: "data/manifests/phase2F_leakage_check.json"
+    class_distribution_csv: "reports/02F_class_distribution.csv"
+    negative_distribution_csv: "reports/02F_negative_distribution.csv"
+    validation_report: "reports/02F_labeled_unlabeled_validation_report.json"
+    deterministic_reconstruction_check: "reports/02F_deterministic_reconstruction_check.json"
+  phase2F1_seed_evidence:
+    protocol: "configs/protocol/phase2F1_seed_protocol.yaml"
+    seed_manifest: "data/manifests/seed_manifest.json"
+    seed_state_manifest: "data/manifests/seed_state_manifest.json"
+  # No unlabeled-subset COCO file is listed anywhere in this protocol,
+  # by design. See scope_policy.unlabeled_hidden_gt.
+  unlabeled_subsets: {}
+
+# ---------------------------------------------------------------------
+# expected_hashes  [LOCKED SCIENTIFIC DECISION - input identity]
+# SHA-256 of the exact bytes of each locked input JSON.
+# A null value means the protocol does not lock that artifact's hash;
+# the observed hash is then recorded as evidence only and never gates.
+# ---------------------------------------------------------------------
+expected_hashes:
+  algorithm: "SHA-256"
+  coco_master: null
+  coco_master_jpg: "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0"
+  train: "0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3"
+  val: "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
+  test: "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4"
+  labeled:
+    "1pct": "1e267c547a8f535f6a69088da4735bd12c0188fae1b49e9d785b3e1e6883df98"
+    "5pct": "ebb98f32cad612fe48adbbd6b5da8aa5db10bec478d1c7fd9288a9a93bbc3763"
+    "10pct": "6814b5b9ba8dfcd4af483d97c1a6b7e7ab26914bdd02bbb923502b43ecf2fdf6"
+    "20pct": "6a8b5bf9c59baea41eefb0611e15a387257255b6fc59a3de607bfc2e80801a14"
+
+# ---------------------------------------------------------------------
+# expected_counts  [LOCKED SCIENTIFIC DECISION - inherited from 2D/2E/2F]
+# ---------------------------------------------------------------------
+expected_counts:
+  canonical:
+    images: 4894
+    annotations: 36096
+    categories: 14
+    no_finding_images: 500
+  train:
+    images: 3426
+    annotations: 25260
+    no_finding_images: 350
+  val:
+    images: 734
+    annotations: 5399
+    no_finding_images: 75
+  test:
+    images: 734
+    annotations: 5437
+    no_finding_images: 75
+  labeled:
+    "1pct": {images: 34, no_finding_images: 3}
+    "5pct": {images: 171, no_finding_images: 17}
+    "10pct": {images: 343, no_finding_images: 35}
+    "20pct": {images: 685, no_finding_images: 70}
+  # Labeled annotation counts are NOT locked by the protocol. They are
+  # recorded as observed evidence only and never gate.
+  labeled_annotation_counts_locked: false
+
+# ---------------------------------------------------------------------
+# category_contract  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+category_contract:
+  detection_category_count: 14
+  category_ids_contiguous_from: 1
+  category_ids_contiguous_to: 14
+  no_finding_is_detection_category: false
+  no_finding_forbidden_as_category_name: true
+  no_finding_name_variants_forbidden:
+    - "no finding"
+    - "no_finding"
+    - "nofinding"
+    - "no-finding"
+  negative_image_must_have_zero_annotations: true
+  # Image-record fields that mark a zero-GT negative image.
+  # [IMPLEMENTATION DETAIL] field names; [LOCKED] the policy itself.
+  negative_image_flag_field: "is_negative"
+  negative_image_scope_label_field: "scope_label"
+  negative_image_scope_label_value: "no_finding"
+
+# ---------------------------------------------------------------------
+# scope_policy - DATA-USE FIREWALL, HARD LOCK
+# [LOCKED SCIENTIFIC DECISION] every entry in this block
+# ---------------------------------------------------------------------
+scope_policy:
+  primary_diagnostic_scope: "FIXED_TRAIN"
+  detailed_diagnostics_allowed_on:
+    - "train"
+    - "labeled_1pct"
+    - "labeled_5pct"
+    - "labeled_10pct"
+    - "labeled_20pct"
+  canonical_usage: "INTEGRITY_REFERENCE_ONLY"
+  validation_usage: "STRUCTURAL_INTEGRITY_ONLY"
+  test_usage: "STRUCTURAL_INTEGRITY_ONLY"
+  test_role: "FINAL_EVALUATION_ONLY"
+  # The only quantities that may ever be computed from val/test.
+  structural_only_fields:
+    - file_identity
+    - checksum
+    - image_count
+    - annotation_count
+    - category_consistency
+    - negative_image_structural_count
+    - membership_integrity_evidence
+  # Detailed diagnostics that are FORBIDDEN on validation and test.
+  forbidden_on_validation_and_test:
+    - per_class_distribution
+    - bbox_geometry
+    - bbox_size_categories
+    - bbox_location_heatmap
+    - class_cooccurrence
+    - label_cardinality
+    - rare_class_analysis
+  unlabeled_hidden_gt:
+    usage: "PROHIBITED"
+    # Reverse-mapping unlabeled image IDs back into instances_train.json
+    # to recover their ground truth is a HARD FAIL.
+    reverse_lookup_into_train_allowed: false
+    forbidden_derivations:
+      - class_distribution
+      - bbox_distribution
+      - bbox_size
+      - bbox_location
+      - rare_class_occurrence
+      - label_cardinality
+      - class_cooccurrence
+  training_seed_used: false
+  repeat_over_training_seeds: false
+
+# ---------------------------------------------------------------------
+# rare_class_definition  [LOCKED SCIENTIFIC DECISION]
+# Rare = LOW SUPPORT WITHIN THE FIXED TRAINING DATASET.
+# It must never be interpreted as "clinically rare disease".
+# ---------------------------------------------------------------------
+rare_class_definition:
+  definition_type: "PRE_SPECIFIED_OPERATIONAL_DEFINITION"
+  primary_measure: "IMAGE_LEVEL_SUPPORT_PREVALENCE"
+  # N_c_img = number of UNIQUE train images with >= 1 annotation of class c
+  support_unit: "unique_image"
+  count_image_once_per_class: true
+  denominator: 3426
+  # P_c_img = N_c_img / 3426 ; Rare(c) <=> P_c_img < 0.05
+  primary_threshold: 0.05
+  comparison: "strictly_less_than"
+  # Derived boundary, stated for auditability only:
+  # N_c_img <= 171 => rare ; N_c_img >= 172 => non-rare
+  boundary_max_rare_image_count: 171
+  boundary_min_nonrare_image_count: 172
+  bbox_count_may_define_rarity: false
+  bbox_count_role: "SECONDARY_STATISTIC"
+  threshold_may_be_chosen_from_histogram: false
+  interpretation: "DATASET_LEVEL_LOW_SUPPORT"
+  clinical_rarity_claim_allowed: false
+
+# ---------------------------------------------------------------------
+# bbox_geometry  [LOCKED SCIENTIFIC DECISION]
+# COCO bbox = [x, y, w, h]; image dimensions W, H.
+# ---------------------------------------------------------------------
+bbox_geometry:
+  bbox_format: "coco_xywh_absolute"
+  formulas:
+    raw_width: "w"
+    raw_height: "h"
+    raw_area: "w * h"
+    normalized_width: "w / W"
+    normalized_height: "h / H"
+    normalized_area: "(w * h) / (W * H)"
+    aspect_ratio: "w / h"
+  primary_scale_descriptor: "normalized_area"
+  validity_rules:
+    - "w > 0"
+    - "h > 0"
+    - "x >= 0"
+    - "y >= 0"
+    - "x + w <= W"
+    - "y + h <= H"
+    - "0 < normalized_area <= 1"
+  violation_policy: "HARD_FAIL"
+  # No repair of any kind is permitted in Phase 3A.
+  repair_allowed:
+    clamp: false
+    repair: false
+    delete: false
+    move: false
+    resize: false
+  validity_tolerance: 0.0        # [LOCKED SCIENTIFIC DECISION] exact comparison
+  continuous_statistics:
+    variables:
+      - normalized_area
+      - normalized_width
+      - normalized_height
+      - aspect_ratio
+    secondary_variables:
+      - raw_width
+      - raw_height
+      - raw_area
+    statistics: [n, mean, sd, min, p05, p25, median, p75, p95, max]
+    sd_ddof: 1                                  # [LOCKED] sample SD
+    percentile_method: "linear"                 # [LOCKED] numpy linear interpolation
+    percentile_library: "numpy.percentile"      # [IMPLEMENTATION DETAIL]
+
+# ---------------------------------------------------------------------
+# bbox_size_definition  [LOCKED SCIENTIFIC DECISION]
+# These are NORMALIZED-AREA-BASED operational categories.
+# They are NOT the COCO 32^2 / 96^2 pixel-area categories.
+# ---------------------------------------------------------------------
+bbox_size_definition:
+  definition_type: "PRE_SPECIFIED_OPERATIONAL_DEFINITION"
+  basis: "normalized_area"
+  terminology: "normalized-area-based bbox size categories"
+  coco_pixel_area_rule_used_as_primary: false
+  forbidden_terminology:
+    - "COCO Small"
+    - "COCO Medium"
+    - "COCO Large"
+  small_threshold: 0.01     # a_n <  0.01              => small
+  large_threshold: 0.10     # a_n >= 0.10              => large
+  # 0.01 <= a_n < 0.10 => medium
+  # Boundary semantics are exact: a_n == 0.01 is MEDIUM, a_n == 0.10 is LARGE.
+  small_comparison: "strictly_less_than"
+  large_comparison: "greater_than_or_equal"
+  category_order: [small, medium, large]
+
+# ---------------------------------------------------------------------
+# bbox_count_per_image  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+bbox_count_per_image:
+  populations:
+    - all_train_images
+    - positive_train_images_only
+  statistics: [n, mean, sd, median, p95, max]
+  sd_ddof: 1
+  mandatory_plot: false
+
+# ---------------------------------------------------------------------
+# bbox_location  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+bbox_location:
+  center_x_formula: "(x + w / 2) / W"
+  center_y_formula: "(y + h / 2) / H"
+  coordinate_origin: "top_left"
+  x_direction: "left_to_right"
+  y_direction: "top_to_bottom"
+  center_range_min: 0.0
+  center_range_max: 1.0
+  heatmap_bins_x: 50                            # [LOCKED SCIENTIFIC DECISION]
+  heatmap_bins_y: 50                            # [LOCKED SCIENTIFIC DECISION]
+  heatmap_weighting: "annotation_weighted_bbox_center_density"
+  heatmap_is_unique_lesion_density: false
+  required_caption_note: >-
+    The heatmap describes bounding-box annotations. It is not by itself a
+    density of unique clinical lesions.
+
+# ---------------------------------------------------------------------
+# negative_policy  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+negative_policy:
+  no_finding_meaning: "ZERO_GT_NEGATIVE_IMAGE"
+  no_finding_is_detection_class: false
+  train_primary_metrics:
+    - positive_image_count
+    - negative_image_count
+    - negative_prevalence
+  expected_train_negative: 350
+  val_test_structural_reuse_only: true
+  expected_val_negative: 75
+  expected_test_negative: 75
+  detailed_val_test_negative_diagnostics: false
+
+# ---------------------------------------------------------------------
+# labeled_budget_diagnostics  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+labeled_budget_diagnostics:
+  budgets: ["1pct", "5pct", "10pct", "20pct"]
+  nested_requirement: "L_1pct subset_of L_5pct subset_of L_10pct subset_of L_20pct subset_of Train"
+  per_budget_fields:
+    - budget
+    - labeled_image_count
+    - negative_image_count
+    - negative_prevalence
+    - class_coverage_out_of_14
+  per_budget_per_class_fields:
+    - image_count
+    - image_prevalence
+    - train_image_prevalence
+    - absolute_deviation_from_train
+    - train_rare_flag
+    - rare_class_support
+    - coverage_present
+  # Rare status is NEVER recomputed inside a budget.
+  rare_flag_source: "FIXED_TRAIN_ONLY"
+  recompute_rare_within_budget: false
+  representativeness:
+    deviation_formula: "abs(P_budget_class_img - P_train_class_img)"
+    aggregate_metrics: [max_absolute_deviation, mean_absolute_deviation]
+    role: "DESCRIPTIVE_ONLY"
+    may_trigger_rebuild_of_labeled_subsets: false
+  cross_check_source: "reports/02F_class_distribution.csv"
+  cross_check_is_gating: false
+  independent_recomputation_required: true
+  uses_unlabeled_hidden_gt: false
+
+# ---------------------------------------------------------------------
+# multilabel_diagnostics  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+multilabel_diagnostics:
+  label_cardinality:
+    definition: "number of UNIQUE detection classes present in a train image"
+    negative_image_cardinality: 0
+    uses_bbox_count: false
+    distribution_fields: [cardinality, image_count, percentage]
+    summary_statistics: [mean, sd, median, p95, max]
+    sd_ddof: 1
+  class_cooccurrence:
+    role: "SECONDARY_NON_GATING"
+    basis: "unique_image_level_class_presence"
+    uses_bbox_count: false
+    pair_type: "unordered"
+    expected_pair_count: 91            # 14 choose 2
+    jaccard_formula: "N_cd / (N_c + N_d - N_cd)"
+    sort_keys: [category_id_a, category_id_b]
+    may_change_training_design: false
+
+# ---------------------------------------------------------------------
+# sensitivity_analysis  [LOCKED SCIENTIFIC DECISION]
+# Robustness check of descriptive conclusions ONLY.
+# It can never reselect a primary threshold.
+# ---------------------------------------------------------------------
+sensitivity_analysis:
+  enabled: true
+  role: "SECONDARY_NON_GATING"
+  used_for_threshold_selection: false
+  primary_threshold_changed_after_diagnostics: false
+  rare:
+    thresholds: [0.01, 0.05, 0.10]
+    primary: 0.05
+    per_row_fields:
+      - class_name
+      - image_count
+      - image_prevalence
+      - threshold
+      - rare_flag
+      - primary_rare_flag
+      - status_changed_vs_primary
+    stability_flags:
+      stable_rare: "rare at 0.01, 0.05 and 0.10"
+      stable_nonrare: "non-rare at 0.01, 0.05 and 0.10"
+      threshold_sensitive: "status not identical across all three thresholds"
+  bbox_small:
+    thresholds: [0.005, 0.01, 0.02]
+    primary: 0.01
+    large_threshold_fixed_at: 0.10
+  bbox_large:
+    thresholds: [0.05, 0.10, 0.20]
+    primary: 0.10
+    small_threshold_fixed_at: 0.01
+  one_factor_at_a_time: true
+  cartesian_grid_allowed: false
+
+# ---------------------------------------------------------------------
+# split_structural_summary  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+split_structural_summary:
+  splits: [train, val, test]
+  fields:
+    - split
+    - image_count
+    - image_percentage
+    - annotation_count
+    - negative_count
+    - negative_percentage
+    - official_json_sha256
+    - image_membership_sha256
+  image_membership_sha256_source: "data/manifests/split_lock_manifest.json::image_id_sha256"
+  forbidden_content_diagnostics_on_val_test:
+    - class_distribution
+    - bbox_size
+    - label_cardinality
+    - cooccurrence
+    - heatmap
+
+# ---------------------------------------------------------------------
+# output_contract
+# Nothing here is produced by the code-generation task. These files are
+# produced only when the researcher runs the script.
+# ---------------------------------------------------------------------
+output_contract:
+  reports_dir: "reports"
+  plots_dir: "plots/dataset"
+  mandatory_csv:
+    class_distribution: "reports/03A_class_distribution.csv"
+    class_imbalance: "reports/03A_class_imbalance.csv"
+    bbox_distribution: "reports/03A_bbox_distribution.csv"
+    bbox_summary: "reports/03A_bbox_summary.csv"
+    bbox_count_per_image: "reports/03A_bbox_count_per_image.csv"
+    negative_distribution: "reports/03A_negative_distribution.csv"
+    label_cardinality: "reports/03A_label_cardinality.csv"
+    class_cooccurrence: "reports/03A_class_cooccurrence.csv"
+    labeled_budget_coverage: "reports/03A_labeled_budget_coverage.csv"
+    threshold_sensitivity: "reports/03A_threshold_sensitivity.csv"
+    split_distribution: "reports/03A_split_distribution.csv"
+  mandatory_report: "reports/dataset_analysis_report.md"
+  mandatory_validation_json: "reports/03A_dataset_diagnostics_validation.json"
+  mandatory_artifact_manifest: "reports/03A_artifact_manifest.json"
+  guardrail_junit: "reports/03A_guardrails_junit.xml"
+  mandatory_plots:
+    class_distribution: "plots/dataset/class_distribution.png"
+    bbox_distribution: "plots/dataset/bbox_distribution.png"
+    bbox_location_heatmap: "plots/dataset/bbox_location_heatmap.png"
+    negative_image_distribution: "plots/dataset/negative_image_distribution.png"
+  bbox_distribution_columns:
+    - annotation_id
+    - image_id
+    - category_id
+    - class_name
+    - x
+    - y
+    - w
+    - h
+    - image_width
+    - image_height
+    - raw_area
+    - normalized_width
+    - normalized_height
+    - normalized_area
+    - aspect_ratio
+    - center_x_normalized
+    - center_y_normalized
+    - primary_size_category
+  patient_identifiers_allowed_in_outputs: false
+  writable_directories:
+    - "reports"
+    - "plots/dataset"
+  forbidden_write_paths:
+    - "data/processed/coco"
+    - "data/manifests"
+    - "configs/protocol"
+    - "models"
+    - "checkpoints"
+    - "pseudo_labels"
+
+  # -------------------------------------------------------------------
+  # csv_schemas  [IMPLEMENTATION DETAIL]
+  # Machine-readable copy of MANDATORY_CSV_SCHEMAS in
+  # scripts/03A_dataset_diagnostics.py. The Python declaration is
+  # authoritative; preflight check PF13 fails if the two ever disagree.
+  # -------------------------------------------------------------------
+  csv_schemas:
+    class_distribution:
+      [category_id, class_name, image_count, image_prevalence,
+       bbox_annotation_count, bbox_annotation_share, bbox_per_positive_image,
+       rare_flag]
+    class_imbalance: [metric, value, unit]
+    bbox_distribution:
+      [annotation_id, image_id, category_id, class_name, x, y, w, h,
+       image_width, image_height, raw_area, normalized_width,
+       normalized_height, normalized_area, aspect_ratio, center_x_normalized,
+       center_y_normalized, primary_size_category]
+    bbox_summary:
+      [variable, role, scope, n, mean, sd, min, p05, p25, median, p75, p95,
+       max]
+    bbox_count_per_image: [population, n, mean, sd_ddof1, median, p95, max]
+    negative_distribution:
+      [scope, diagnostic_role, image_count, positive_image_count,
+       negative_image_count, negative_prevalence]
+    label_cardinality:
+      [record_type, cardinality, image_count, percentage, statistic,
+       statistic_value]
+    class_cooccurrence:
+      [category_id_a, class_name_a, category_id_b, class_name_b, n_a_images,
+       n_b_images, n_both_images, n_union_images, jaccard]
+    labeled_budget_coverage:
+      [budget, labeled_image_count, negative_image_count, negative_prevalence,
+       class_coverage_out_of_14, category_id, class_name, image_count,
+       image_prevalence, train_image_count, train_image_prevalence,
+       absolute_deviation_from_train, train_rare_flag, rare_class_support,
+       coverage_present, budget_max_absolute_deviation,
+       budget_mean_absolute_deviation]
+    threshold_sensitivity:
+      [analysis_type, parameter, threshold, is_primary, category, count,
+       percentage, primary_percentage, delta_percentage_points, category_id,
+       class_name, image_count, image_prevalence, rare_flag,
+       primary_rare_flag, status_changed_vs_primary, stable_rare_flag,
+       stable_nonrare_flag, threshold_sensitive_flag]
+    split_distribution:
+      [split, image_count, image_percentage, annotation_count, negative_count,
+       negative_percentage, official_json_sha256, image_membership_sha256,
+       diagnostic_usage]
+
+  # -------------------------------------------------------------------
+  # expected_row_counts  [IMPLEMENTATION DETAIL - structural only]
+  # These are STRUCTURAL row counts, derived from the locked input
+  # contract. They are never a judgement about any observed scientific
+  # distribution. null means the row count is data dependent and is
+  # therefore never asserted.
+  # -------------------------------------------------------------------
+  expected_row_counts:
+    class_distribution: 14          # one row per detection category
+    class_imbalance: 12             # fixed metric list
+    bbox_distribution: 25260        # one row per train annotation
+    bbox_summary: 7                 # 4 primary + 3 secondary variables
+    bbox_count_per_image: 2         # all images, positive images
+    negative_distribution: 7        # train + val + test + 4 budgets
+    label_cardinality: null         # data dependent
+    class_cooccurrence: 91          # 14 choose 2
+    labeled_budget_coverage: 56     # 4 budgets x 14 classes
+    threshold_sensitivity: 63       # 3x14 + 3 + 3x3 + 3x3
+    split_distribution: 3           # train, val, test
+
+  # -------------------------------------------------------------------
+  # output_path_safety  [LOCKED SCIENTIFIC DECISION: the policy]
+  # Enforced at PREFLIGHT (check PF12) by resolve_safe_output_path,
+  # before FULL mode may create any directory or file. The gate never
+  # relies on the post-write HF34 immutability check alone.
+  # -------------------------------------------------------------------
+  output_path_safety:
+    enforced_at: "PREFLIGHT"
+    enforced_by: "resolve_safe_output_path"
+    preflight_check_id: "PF12"
+    absolute_paths_allowed: false
+    parent_traversal_allowed: false
+    home_relative_paths_allowed: false
+    must_resolve_within_repo_root: true
+    must_be_inside_writable_directory: true
+    must_not_be_inside_forbidden_directory: true
+    unregistered_write_allowed: false
+
+# ---------------------------------------------------------------------
+# plotting  [VISUALIZATION DETAIL - never feeds back into any threshold]
+# ---------------------------------------------------------------------
+plotting:
+  backend: "Agg"
+  library: "matplotlib"
+  seaborn_allowed: false
+  dpi: 200
+  figure_format: "png"
+  # Sequential single-hue ramp, light -> dark, for the density heatmap.
+  # Colour choice carries no scientific meaning.
+  heatmap_cmap: "Blues"
+  bar_color: "#4269A4"
+  bar_color_secondary: "#9EBCDA"
+  grid_alpha: 0.3
+  class_sort: "image_count_desc_then_category_id_asc"
+  # Histogram binning for the continuous normalized-area panel.
+  # Freedman-Diaconis is VISUALIZATION ONLY and can never alter the
+  # locked 0.01 / 0.10 size thresholds.
+  histogram_binning: "freedman_diaconis"
+  histogram_binning_is_visualization_only: true
+  histogram_binning_may_alter_thresholds: false
+  histogram_max_bins: 200
+  histogram_min_bins: 10
+
+# ---------------------------------------------------------------------
+# guardrails - the 35 hard-fail conditions of protocol section 25
+# [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+guardrails:
+  hard_fail_conditions:
+    HF01: "coco_master_jpg SHA-256 mismatch"
+    HF02: "train SHA-256 mismatch"
+    HF03: "validation SHA-256 mismatch"
+    HF04: "test SHA-256 mismatch"
+    HF05: "canonical image count mismatch"
+    HF06: "canonical annotation count mismatch"
+    HF07: "category count != 14"
+    HF08: "category IDs not contiguous 1..14"
+    HF09: "No Finding present as a detection category"
+    HF10: "negative image carries ground-truth annotations"
+    HF11: "train images != 3426"
+    HF12: "train annotations != 25260"
+    HF13: "train negative images != 350"
+    HF14: "validation structural counts mismatch"
+    HF15: "test structural counts mismatch"
+    HF16: "invalid train bbox"
+    HF17: "labeled JSON checksum mismatch"
+    HF18: "labeled counts mismatch"
+    HF19: "labeled nested membership mismatch"
+    HF20: "labeled subset contains an image outside Train"
+    HF21: "primary rare threshold != 0.05"
+    HF22: "primary bbox small threshold != 0.01"
+    HF23: "primary bbox large threshold != 0.10"
+    HF24: "rare sensitivity thresholds != [0.01, 0.05, 0.10]"
+    HF25: "small sensitivity thresholds != [0.005, 0.01, 0.02]"
+    HF26: "large sensitivity thresholds != [0.05, 0.10, 0.20]"
+    HF27: "bbox sensitivity is not one-factor-at-a-time"
+    HF28: "hidden unlabeled ground truth is used"
+    HF29: "detailed test diagnostics were produced"
+    HF30: "a training seed is used"
+    HF31: "a training artifact was created"
+    HF32: "a checkpoint was created"
+    HF33: "a pseudo-label was created"
+    HF34: "a locked input was modified during the run"
+    HF35: "a mandatory output of the output contract is missing"
+  scientific_findings_are_not_failures:
+    - severe_class_imbalance
+    - many_rare_classes
+    - high_small_bbox_proportion
+    - unusual_aspect_ratio_distribution
+    - strong_spatial_concentration
+    - high_label_cardinality
+    - strong_class_cooccurrence
+    - low_rare_class_support_in_1pct
+
+# ---------------------------------------------------------------------
+# forbidden_operations  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+forbidden_operations:
+  training: false
+  inference: false
+  pseudo_label_generation: false
+  checkpoint_creation: false
+  ablation_study: false
+  model_experiment_matrix: false
+  hyperparameter_search: false
+  threshold_optimization: false
+  detailed_test_diagnostics: false
+  detailed_validation_diagnostics: false
+  unlabeled_hidden_gt_usage: false
+  modification_of_locked_inputs: false
+  use_of_training_seed: false
+  # Every key above is a capability that must remain DISABLED (false).
+  # The preflight verifies that none of them has been switched on.
+  all_must_be_false: true
+
+# ---------------------------------------------------------------------
+# input_immutability  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+input_immutability:
+  hash_inputs_before_run: true
+  hash_inputs_after_run: true
+  mismatch_policy: "HARD_FAIL"
+  locked_inputs_modified_expected: false
+
+# ---------------------------------------------------------------------
+# determinism  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+determinism:
+  rng_used: false
+  training_seed_used: false
+  explicit_sorting_required: true
+  csv_row_order_deterministic: true
+  json_key_order_stable: true
+  timestamp_in_scientific_computation: false
+  timestamp_allowed_in_metadata_only: true
+
+# ---------------------------------------------------------------------
+# exit_codes  [IMPLEMENTATION DETAIL]
+# ---------------------------------------------------------------------
+exit_codes:
+  ok_review_required: 0
+  hard_protocol_or_integrity_failure: 2
+  runtime_or_output_generation_failure: 3
+  note: "Exit code 0 never means Phase 3A is PASS or CLOSED."
+
+# ---------------------------------------------------------------------
+# phase_status_policy  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+phase_status_policy:
+  phase_status_value: "OPEN_REVIEW_REQUIRED"
+  forbidden_status_values: ["PASS", "CLOSED", "CLOSED_PASS"]
+  script_may_self_close: false
+  closure_decision_authority: "RESEARCHER_AND_GPT_REVIEW"
+
+# ---------------------------------------------------------------------
+# claim_boundaries  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+claim_boundaries:
+  allowed_claims:
+    - class_rarity_under_locked_definition
+    - class_imbalance_magnitude
+    - bbox_size_category_percentages
+    - spatial_concentration_of_bbox_centers
+    - negative_image_prevalence
+    - labeled_budget_class_coverage
+    - descriptive_robustness_under_sensitivity
+  forbidden_claims:
+    - low_ap_for_a_class
+    - small_bbox_causes_detection_failure
+    - ssl_helps_rare_classes
+    - ema_helps
+    - optimal_augmentation
+    - optimal_confidence_threshold
+    - pseudo_label_quality
+    - ssl_superiority
+    - convergence
+    - training_stability
+
+# ---------------------------------------------------------------------
+# report_statements - mandatory verbatim statements
+# [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+report_statements:
+  leakage_statement: >-
+    Detailed diagnostics were restricted to the fixed training set and
+    legitimately labeled subsets. Validation and test were not used for
+    diagnostic threshold selection or methodological tuning. The hidden
+    original ground truth of the unlabeled subsets was not used in Phase 3A
+    diagnostics.
+  threshold_statement_pre_specification: >-
+    Primary diagnostic definitions were specified before Phase 3A execution
+    and were not selected or modified based on the observed diagnostic
+    distributions.
+  threshold_statement_sensitivity: >-
+    Threshold sensitivity analysis was used only to assess robustness of
+    descriptive conclusions and was not used to reselect primary thresholds.
+  rare_class_interpretation_statement: >-
+    In this report a rare class is a dataset-level low-support operational
+    category defined on the fixed training set. It is not a claim that the
+    abnormality is clinically rare; no separate clinical evidence is used here.
+  bbox_size_interpretation_statement: >-
+    Small, Medium and Large are normalized-area-based operational categories
+    defined by the locked thresholds 0.01 and 0.10 on normalized bounding-box
+    area. They are not the standard COCO pixel-area categories.
+  report_sections:
+    - "Scope and leakage policy"
+    - "Dataset lineage and integrity"
+    - "Fixed training-set overview"
+    - "Class distribution"
+    - "Class-imbalance assessment"
+    - "Rare-class analysis"
+    - "Bounding-box annotation distribution"
+    - "Bounding-box count per image"
+    - "Bounding-box geometry"
+    - "Normalized-area Small/Medium/Large analysis"
+    - "Bounding-box location analysis"
+    - "Negative / No Finding analysis"
+    - "Labeled-budget diagnostics"
+    - "Label-cardinality analysis"
+    - "Class co-occurrence"
+    - "Threshold sensitivity analysis"
+    - "Fixed split structural summary"
+    - "Pre-training dataset risks"
+    - "Limitations"
+    - "Leakage statement"
+    - "Conclusions before training"
+  method_and_result_must_be_separated: true
+
+# ---------------------------------------------------------------------
+# terminology  [LOCKED SCIENTIFIC DECISION]
+# ---------------------------------------------------------------------
+terminology:
+  required:
+    bbox_count: "bounding-box annotation count"
+    bbox_size: "normalized-area-based bbox size categories"
+    rare_class: "low-support class within the fixed training dataset"
+  forbidden:
+    - "number of unique lesions"
+    - "COCO Small"
+    - "COCO Medium"
+    - "COCO Large"
+    - "clinically rare"
