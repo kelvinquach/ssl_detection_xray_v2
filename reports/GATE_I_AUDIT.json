@@ -1,0 +1,2651 @@
+{
+  "schema_version": "1.0.0",
+  "timestamp_utc": "2026-08-28T15:06:09.383410+00:00",
+  "repository": {
+    "path": "D:\\ssl_detection_xray_v2",
+    "branch": "main",
+    "head": "9bc225070c3cc837d8a0d516e99b30454a50bfe2",
+    "status": "M CHECKLIST_TRIEN_KHAI_FULL.xlsx\n D plots/dataset/class_distribution.png\n?? EVIDENCE_02F1_SEED_PROTOCOL.sha256.json\n?? EVIDENCE_02F1_SEED_PROTOCOL.zip\n?? EVIDENCE_3_4_4_LABELED_UNLABELED_CONSTRUCTION.zip\n?? GATE_I_REVIEW.md\n?? MASTER_D1_D7_FINAL_IMPLEMENTATION_CONTRACT_VI.md\n?? METHOD_3_3_DATA_STANDARDIZATION_COCO_EVIDENCE.zip\n?? PHASE3A_EVIDENCE_CLOSED_PASS_20260819.zip\n?? PHASE3A_INPUT_EVIDENCE.zip\n?? PHASE3A_THEORY_DEFINITIONS_LOCKED_DECISIONS.md\n?? configs/protocol/canonical_protocol_index.yaml\n?? configs/protocol/d4_ssl_protocol.yaml\n?? configs/protocol/d4_training_protocol.yaml\n?? configs/protocol/experimental_design.yaml\n?? configs/protocol/gateI_environment_baseline.yaml\n?? configs/protocol/gateI_freeze_manifest.yaml\n?? docs/thesis/\n?? installed_packages.txt\n?? phase2D1C_colab_input.zip\n?? phase2D1C_prompt_input.zip\n?? pipeline-research.png\n?? pipeline-research1.png\n?? plots/dataset/class_distribution_training_set.png\n?? reports/02F_two_for_two_operational_benchmark.json\n?? reports/02F_two_for_two_operational_benchmark_R8.json\n?? reports/02F_two_for_two_operational_benchmark_R9.json\n?? reports/GATE_I_AUDIT.json\n?? reports/GATE_I_REVIEW_FINAL.md\n?? reports/environment/gateI_gpu_runtime.txt\n?? reports/environment/gateI_official_gpu_pip_freeze.txt\n?? reports/environment/gateI_system_packages.txt\n?? scripts/04I_gate1_freeze_inputs.py\n?? tests/test_gateI_canonical_layer.py\n?? vietluanvan.md"
+  },
+  "authority": {
+    "MASTER_D1_D7_FINAL_IMPLEMENTATION_CONTRACT_VI.md": true,
+    "vietluanvan.md": true,
+    "PHASE_HANDOFF.md": true,
+    "PROJECT_CONTEXT.md": true,
+    "README.md": true,
+    "research_log.md": true,
+    "CHECKLIST_TRIEN_KHAI_FULL.xlsx": true
+  },
+  "representation_protocol_sha256": "c9918ee237b1f20401a07694864e79fbedf59357d8505ff6ba2f4b86662cd165",
+  "environment": {
+    "local_audit": {
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.12.13"
+    },
+    "official_gpu": {
+      "provider": "Vast.ai",
+      "gpu": "NVIDIA A800 80GB PCIe",
+      "pytorch_cuda_runtime": "11.8",
+      "nvidia_smi_cuda_max_supported": "12.4",
+      "provenance_sha256": {
+        "gpu_runtime": "4d7cf6f88d6701afa09f794787468f50f1743c60d0dbf574d3f1f607786ecab1",
+        "pip_freeze": "20b315ee7d3a706cdf707728e8909dce214f630e423c13a9a9f92e8c1a55b0dd",
+        "system_packages": "5c31110e579fef3c7210dbda55e0e43703abd6f2e2e07440bf8e2e5957169721"
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "authority:MASTER_D1_D7_FINAL_IMPLEMENTATION_CONTRACT_VI.md",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "MASTER_D1_D7_FINAL_IMPLEMENTATION_CONTRACT_VI.md"
+    },
+    {
+      "id": "authority:vietluanvan.md",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "vietluanvan.md"
+    },
+    {
+      "id": "authority:PHASE_HANDOFF.md",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "PHASE_HANDOFF.md"
+    },
+    {
+      "id": "authority:PROJECT_CONTEXT.md",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "PROJECT_CONTEXT.md"
+    },
+    {
+      "id": "authority:README.md",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "README.md"
+    },
+    {
+      "id": "authority:research_log.md",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "research_log.md"
+    },
+    {
+      "id": "authority:CHECKLIST_TRIEN_KHAI_FULL.xlsx",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "CHECKLIST_TRIEN_KHAI_FULL.xlsx"
+    },
+    {
+      "id": "split:train:count",
+      "status": "PASS",
+      "expected": 3426,
+      "actual": 3426,
+      "evidence": "data/processed/coco/instances_train.json"
+    },
+    {
+      "id": "split:train:zero_gt",
+      "status": "PASS",
+      "expected": 350,
+      "actual": 350,
+      "evidence": "data/processed/coco/instances_train.json"
+    },
+    {
+      "id": "split:train:file_sha",
+      "status": "PASS",
+      "expected": "0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3",
+      "actual": "0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3",
+      "evidence": "split_lock_manifest.json"
+    },
+    {
+      "id": "split:train:membership",
+      "status": "PASS",
+      "expected": "628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a",
+      "actual": "628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a",
+      "evidence": "split_lock_manifest.json"
+    },
+    {
+      "id": "split:val:count",
+      "status": "PASS",
+      "expected": 734,
+      "actual": 734,
+      "evidence": "data/processed/coco/instances_val.json"
+    },
+    {
+      "id": "split:val:zero_gt",
+      "status": "PASS",
+      "expected": 75,
+      "actual": 75,
+      "evidence": "data/processed/coco/instances_val.json"
+    },
+    {
+      "id": "split:val:file_sha",
+      "status": "PASS",
+      "expected": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+      "actual": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+      "evidence": "split_lock_manifest.json"
+    },
+    {
+      "id": "split:val:membership",
+      "status": "PASS",
+      "expected": "87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6",
+      "actual": "87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6",
+      "evidence": "split_lock_manifest.json"
+    },
+    {
+      "id": "split:test:count",
+      "status": "PASS",
+      "expected": 734,
+      "actual": 734,
+      "evidence": "data/processed/coco/instances_test.json"
+    },
+    {
+      "id": "split:test:zero_gt",
+      "status": "PASS",
+      "expected": 75,
+      "actual": 75,
+      "evidence": "data/processed/coco/instances_test.json"
+    },
+    {
+      "id": "split:test:file_sha",
+      "status": "PASS",
+      "expected": "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4",
+      "actual": "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4",
+      "evidence": "split_lock_manifest.json"
+    },
+    {
+      "id": "split:test:membership",
+      "status": "PASS",
+      "expected": "1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37",
+      "actual": "1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37",
+      "evidence": "split_lock_manifest.json"
+    },
+    {
+      "id": "split:pairwise_overlap",
+      "status": "PASS",
+      "expected": 0,
+      "actual": [
+        0,
+        0,
+        0
+      ],
+      "evidence": "actual COCO membership"
+    },
+    {
+      "id": "split:union",
+      "status": "PASS",
+      "expected": 4894,
+      "actual": 4894,
+      "evidence": "coco_master_jpg.json"
+    },
+    {
+      "id": "categories:master",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/coco_master_jpg.json"
+    },
+    {
+      "id": "categories:train",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/instances_train.json"
+    },
+    {
+      "id": "categories:val",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/instances_val.json"
+    },
+    {
+      "id": "categories:test",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/instances_test.json"
+    },
+    {
+      "id": "lu:1pct:sizes",
+      "status": "PASS",
+      "expected": [
+        34,
+        3392,
+        3
+      ],
+      "actual": [
+        34,
+        3392,
+        3
+      ],
+      "evidence": "actual L/U JSON"
+    },
+    {
+      "id": "lu:1pct:partition",
+      "status": "PASS",
+      "expected": "disjoint exact train partition",
+      "actual": [
+        0,
+        3426
+      ],
+      "evidence": "actual membership"
+    },
+    {
+      "id": "lu:1pct:hidden_gt",
+      "status": "PASS",
+      "expected": 0,
+      "actual": 0,
+      "evidence": "data/processed/coco/unlabeled_splits/instances_unlabeled_1pct.json"
+    },
+    {
+      "id": "lu:1pct:membership",
+      "status": "PASS",
+      "expected": "c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071",
+      "actual": "c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071",
+      "evidence": "phase2F_lock_manifest.json"
+    },
+    {
+      "id": "lu:1pct:file_sha",
+      "status": "PASS",
+      "expected": "locked hashes",
+      "actual": [
+        "1e267c547a8f535f6a69088da4735bd12c0188fae1b49e9d785b3e1e6883df98",
+        "d2e1d0923f97ced05c1c4e319312d82d42e615defb55412d3c5e83e97486e3f5"
+      ],
+      "evidence": "phase2F_lock_manifest.json"
+    },
+    {
+      "id": "categories:labeled:1pct",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/labeled_splits/instances_labeled_1pct.json"
+    },
+    {
+      "id": "categories:unlabeled:1pct",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/unlabeled_splits/instances_unlabeled_1pct.json"
+    },
+    {
+      "id": "lu:5pct:sizes",
+      "status": "PASS",
+      "expected": [
+        171,
+        3255,
+        17
+      ],
+      "actual": [
+        171,
+        3255,
+        17
+      ],
+      "evidence": "actual L/U JSON"
+    },
+    {
+      "id": "lu:5pct:partition",
+      "status": "PASS",
+      "expected": "disjoint exact train partition",
+      "actual": [
+        0,
+        3426
+      ],
+      "evidence": "actual membership"
+    },
+    {
+      "id": "lu:5pct:hidden_gt",
+      "status": "PASS",
+      "expected": 0,
+      "actual": 0,
+      "evidence": "data/processed/coco/unlabeled_splits/instances_unlabeled_5pct.json"
+    },
+    {
+      "id": "lu:5pct:membership",
+      "status": "PASS",
+      "expected": "c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b",
+      "actual": "c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b",
+      "evidence": "phase2F_lock_manifest.json"
+    },
+    {
+      "id": "lu:5pct:file_sha",
+      "status": "PASS",
+      "expected": "locked hashes",
+      "actual": [
+        "ebb98f32cad612fe48adbbd6b5da8aa5db10bec478d1c7fd9288a9a93bbc3763",
+        "9b2c128a751a70db4c4680c0fd584cc34907bcda569567c3f9fb96af0722e387"
+      ],
+      "evidence": "phase2F_lock_manifest.json"
+    },
+    {
+      "id": "categories:labeled:5pct",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/labeled_splits/instances_labeled_5pct.json"
+    },
+    {
+      "id": "categories:unlabeled:5pct",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/unlabeled_splits/instances_unlabeled_5pct.json"
+    },
+    {
+      "id": "lu:10pct:sizes",
+      "status": "PASS",
+      "expected": [
+        343,
+        3083,
+        35
+      ],
+      "actual": [
+        343,
+        3083,
+        35
+      ],
+      "evidence": "actual L/U JSON"
+    },
+    {
+      "id": "lu:10pct:partition",
+      "status": "PASS",
+      "expected": "disjoint exact train partition",
+      "actual": [
+        0,
+        3426
+      ],
+      "evidence": "actual membership"
+    },
+    {
+      "id": "lu:10pct:hidden_gt",
+      "status": "PASS",
+      "expected": 0,
+      "actual": 0,
+      "evidence": "data/processed/coco/unlabeled_splits/instances_unlabeled_10pct.json"
+    },
+    {
+      "id": "lu:10pct:membership",
+      "status": "PASS",
+      "expected": "fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6",
+      "actual": "fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6",
+      "evidence": "phase2F_lock_manifest.json"
+    },
+    {
+      "id": "lu:10pct:file_sha",
+      "status": "PASS",
+      "expected": "locked hashes",
+      "actual": [
+        "6814b5b9ba8dfcd4af483d97c1a6b7e7ab26914bdd02bbb923502b43ecf2fdf6",
+        "894c2de257cd5a33b60e00d782a5322a288f3d9a2b7c637ab29ad3419cce9260"
+      ],
+      "evidence": "phase2F_lock_manifest.json"
+    },
+    {
+      "id": "categories:labeled:10pct",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/labeled_splits/instances_labeled_10pct.json"
+    },
+    {
+      "id": "categories:unlabeled:10pct",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/unlabeled_splits/instances_unlabeled_10pct.json"
+    },
+    {
+      "id": "lu:20pct:sizes",
+      "status": "PASS",
+      "expected": [
+        685,
+        2741,
+        70
+      ],
+      "actual": [
+        685,
+        2741,
+        70
+      ],
+      "evidence": "actual L/U JSON"
+    },
+    {
+      "id": "lu:20pct:partition",
+      "status": "PASS",
+      "expected": "disjoint exact train partition",
+      "actual": [
+        0,
+        3426
+      ],
+      "evidence": "actual membership"
+    },
+    {
+      "id": "lu:20pct:hidden_gt",
+      "status": "PASS",
+      "expected": 0,
+      "actual": 0,
+      "evidence": "data/processed/coco/unlabeled_splits/instances_unlabeled_20pct.json"
+    },
+    {
+      "id": "lu:20pct:membership",
+      "status": "PASS",
+      "expected": "6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e",
+      "actual": "6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e",
+      "evidence": "phase2F_lock_manifest.json"
+    },
+    {
+      "id": "lu:20pct:file_sha",
+      "status": "PASS",
+      "expected": "locked hashes",
+      "actual": [
+        "6a8b5bf9c59baea41eefb0611e15a387257255b6fc59a3de607bfc2e80801a14",
+        "60699d361d86b61b66ad9c9553be555a23808adb53746cead0b190064df4d5bb"
+      ],
+      "evidence": "phase2F_lock_manifest.json"
+    },
+    {
+      "id": "categories:labeled:20pct",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/labeled_splits/instances_labeled_20pct.json"
+    },
+    {
+      "id": "categories:unlabeled:20pct",
+      "status": "PASS",
+      "expected": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "actual": [
+        {
+          "id": 1,
+          "name": "Aortic enlargement",
+          "canonical_class_id": 0
+        },
+        {
+          "id": 2,
+          "name": "Atelectasis",
+          "canonical_class_id": 1
+        },
+        {
+          "id": 3,
+          "name": "Calcification",
+          "canonical_class_id": 2
+        },
+        {
+          "id": 4,
+          "name": "Cardiomegaly",
+          "canonical_class_id": 3
+        },
+        {
+          "id": 5,
+          "name": "Consolidation",
+          "canonical_class_id": 4
+        },
+        {
+          "id": 6,
+          "name": "ILD",
+          "canonical_class_id": 5
+        },
+        {
+          "id": 7,
+          "name": "Infiltration",
+          "canonical_class_id": 6
+        },
+        {
+          "id": 8,
+          "name": "Lung Opacity",
+          "canonical_class_id": 7
+        },
+        {
+          "id": 9,
+          "name": "Nodule/Mass",
+          "canonical_class_id": 8
+        },
+        {
+          "id": 10,
+          "name": "Other lesion",
+          "canonical_class_id": 9
+        },
+        {
+          "id": 11,
+          "name": "Pleural effusion",
+          "canonical_class_id": 10
+        },
+        {
+          "id": 12,
+          "name": "Pleural thickening",
+          "canonical_class_id": 11
+        },
+        {
+          "id": 13,
+          "name": "Pneumothorax",
+          "canonical_class_id": 12
+        },
+        {
+          "id": 14,
+          "name": "Pulmonary fibrosis",
+          "canonical_class_id": 13
+        }
+      ],
+      "evidence": "data/processed/coco/unlabeled_splits/instances_unlabeled_20pct.json"
+    },
+    {
+      "id": "lu:nested",
+      "status": "PASS",
+      "expected": true,
+      "actual": [
+        34,
+        171,
+        343,
+        685
+      ],
+      "evidence": "actual labeled membership"
+    },
+    {
+      "id": "seed:ordered_derivation",
+      "status": "PASS",
+      "expected": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "actual": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "evidence": "phase2F1_seed_protocol.yaml"
+    },
+    {
+      "id": "seed:policies",
+      "status": "PASS",
+      "expected": true,
+      "actual": "tokens scanned",
+      "evidence": "phase2F1_seed_protocol.yaml"
+    },
+    {
+      "id": "representation:active_protocol",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "configs\\protocol\\phase2D1_jpg_representation.yaml"
+    },
+    {
+      "id": "representation:inventory",
+      "status": "PASS",
+      "expected": 4894,
+      "actual": 4894,
+      "evidence": "data\\processed\\images_jpg\\train"
+    },
+    {
+      "id": "representation:semantics",
+      "status": "PASS",
+      "expected": true,
+      "actual": "tokens scanned",
+      "evidence": "configs\\protocol\\phase2D1_jpg_representation.yaml"
+    },
+    {
+      "id": "canonical:canonical_protocol_index.yaml",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "configs/protocol"
+    },
+    {
+      "id": "canonical:experimental_design.yaml",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "configs/protocol"
+    },
+    {
+      "id": "canonical:d4_training_protocol.yaml",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "configs/protocol"
+    },
+    {
+      "id": "canonical:d4_ssl_protocol.yaml",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "configs/protocol"
+    },
+    {
+      "id": "canonical:gateI_freeze_manifest.yaml",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "configs/protocol"
+    },
+    {
+      "id": "canonical:gateI_environment_baseline.yaml",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "configs/protocol"
+    },
+    {
+      "id": "environment:evidence:gpu_runtime:exists",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:evidence:gpu_runtime:sha256",
+      "status": "PASS",
+      "expected": "4d7cf6f88d6701afa09f794787468f50f1743c60d0dbf574d3f1f607786ecab1",
+      "actual": "4d7cf6f88d6701afa09f794787468f50f1743c60d0dbf574d3f1f607786ecab1",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:evidence:pip_freeze:exists",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "reports\\environment\\gateI_official_gpu_pip_freeze.txt"
+    },
+    {
+      "id": "environment:evidence:pip_freeze:sha256",
+      "status": "PASS",
+      "expected": "20b315ee7d3a706cdf707728e8909dce214f630e423c13a9a9f92e8c1a55b0dd",
+      "actual": "20b315ee7d3a706cdf707728e8909dce214f630e423c13a9a9f92e8c1a55b0dd",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:evidence:system_packages:exists",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "evidence": "reports\\environment\\gateI_system_packages.txt"
+    },
+    {
+      "id": "environment:evidence:system_packages:sha256",
+      "status": "PASS",
+      "expected": "5c31110e579fef3c7210dbda55e0e43703abd6f2e2e07440bf8e2e5957169721",
+      "actual": "5c31110e579fef3c7210dbda55e0e43703abd6f2e2e07440bf8e2e5957169721",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:runtime:GPU",
+      "status": "PASS",
+      "expected": "NVIDIA A800 80GB PCIe",
+      "actual": "NVIDIA A800 80GB PCIe",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:GPU_COUNT",
+      "status": "PASS",
+      "expected": "1",
+      "actual": "1",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:NVIDIA_DRIVER",
+      "status": "PASS",
+      "expected": "550.90.07",
+      "actual": "550.90.07",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:PYTHON",
+      "status": "PASS",
+      "expected": "3.10.13",
+      "actual": "3.10.13",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:PYTORCH",
+      "status": "PASS",
+      "expected": "2.1.0",
+      "actual": "2.1.0",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:TORCHVISION",
+      "status": "PASS",
+      "expected": "0.16.0",
+      "actual": "0.16.0",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:PYTORCH_CUDA_RUNTIME",
+      "status": "PASS",
+      "expected": "11.8",
+      "actual": "11.8",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:CUDNN",
+      "status": "PASS",
+      "expected": "8.7.0",
+      "actual": "8.7.0",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:NUMPY",
+      "status": "PASS",
+      "expected": "1.26.4",
+      "actual": "1.26.4",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:OPENCV_RUNTIME",
+      "status": "PASS",
+      "expected": "4.10.0",
+      "actual": "4.10.0",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:MMCV",
+      "status": "PASS",
+      "expected": "2.1.0",
+      "actual": "2.1.0",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:MMENGINE",
+      "status": "PASS",
+      "expected": "0.10.7",
+      "actual": "0.10.7",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:MMDETECTION",
+      "status": "PASS",
+      "expected": "3.3.0",
+      "actual": "3.3.0",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:DOCKER_IMAGE",
+      "status": "PASS",
+      "expected": "pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime",
+      "actual": "pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:CUDA_AVAILABLE",
+      "status": "PASS",
+      "expected": "true",
+      "actual": "true",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:CUDA_TENSOR_SMOKE_TEST",
+      "status": "PASS",
+      "expected": "PASS",
+      "actual": "PASS",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:MMCV_CUDA_NMS",
+      "status": "PASS",
+      "expected": "PASS",
+      "actual": "PASS",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:PIP_CHECK",
+      "status": "PASS",
+      "expected": "PASS",
+      "actual": "PASS",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:OFFICIAL_TRAINING_EXECUTED",
+      "status": "PASS",
+      "expected": "false",
+      "actual": "false",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:TEST_PERFORMANCE_READ",
+      "status": "PASS",
+      "expected": "false",
+      "actual": "false",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:runtime:NVIDIA_SMI_CUDA_MAX_SUPPORTED",
+      "status": "PASS",
+      "expected": "12.4",
+      "actual": "12.4",
+      "evidence": "reports\\environment\\gateI_gpu_runtime.txt"
+    },
+    {
+      "id": "environment:pip:torch",
+      "status": "PASS",
+      "expected": "2.1.0",
+      "actual": "present",
+      "evidence": "reports\\environment\\gateI_official_gpu_pip_freeze.txt"
+    },
+    {
+      "id": "environment:pip:torchvision",
+      "status": "PASS",
+      "expected": "0.16.0",
+      "actual": "present",
+      "evidence": "reports\\environment\\gateI_official_gpu_pip_freeze.txt"
+    },
+    {
+      "id": "environment:pip:numpy",
+      "status": "PASS",
+      "expected": "1.26.4",
+      "actual": "present",
+      "evidence": "reports\\environment\\gateI_official_gpu_pip_freeze.txt"
+    },
+    {
+      "id": "environment:pip:opencv-python",
+      "status": "PASS",
+      "expected": "4.10.0.84",
+      "actual": "present",
+      "evidence": "reports\\environment\\gateI_official_gpu_pip_freeze.txt"
+    },
+    {
+      "id": "environment:pip:mmcv",
+      "status": "PASS",
+      "expected": "2.1.0",
+      "actual": "present",
+      "evidence": "reports\\environment\\gateI_official_gpu_pip_freeze.txt"
+    },
+    {
+      "id": "environment:pip:mmengine",
+      "status": "PASS",
+      "expected": "0.10.7",
+      "actual": "present",
+      "evidence": "reports\\environment\\gateI_official_gpu_pip_freeze.txt"
+    },
+    {
+      "id": "environment:pip:mmdet",
+      "status": "PASS",
+      "expected": "3.3.0",
+      "actual": "present",
+      "evidence": "reports\\environment\\gateI_official_gpu_pip_freeze.txt"
+    },
+    {
+      "id": "environment:yaml:status",
+      "status": "PASS",
+      "expected": "FROZEN",
+      "actual": "FROZEN",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:provider",
+      "status": "PASS",
+      "expected": "Vast.ai",
+      "actual": "Vast.ai",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:model",
+      "status": "PASS",
+      "expected": "NVIDIA A800 80GB PCIe",
+      "actual": "NVIDIA A800 80GB PCIe",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:device_count",
+      "status": "PASS",
+      "expected": "1",
+      "actual": "1",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:driver_version",
+      "status": "PASS",
+      "expected": "550.90.07",
+      "actual": "550.90.07",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:nvidia_smi_cuda_max_supported",
+      "status": "PASS",
+      "expected": "12.4",
+      "actual": "12.4",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:cuda_runtime",
+      "status": "PASS",
+      "expected": "11.8",
+      "actual": "11.8",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:cudnn",
+      "status": "PASS",
+      "expected": "8.7.0",
+      "actual": "8.7.0",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:opencv_python",
+      "status": "PASS",
+      "expected": "4.10.0.84",
+      "actual": "4.10.0.84",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:image",
+      "status": "PASS",
+      "expected": "pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime",
+      "actual": "pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:cuda_available",
+      "status": "PASS",
+      "expected": "true",
+      "actual": "true",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:official_training_executed",
+      "status": "PASS",
+      "expected": "false",
+      "actual": "false",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:test_performance_read",
+      "status": "PASS",
+      "expected": "false",
+      "actual": "false",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:training_authorized",
+      "status": "PASS",
+      "expected": "false",
+      "actual": "false",
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    },
+    {
+      "id": "environment:yaml:complete_profile",
+      "status": "PASS",
+      "expected": [
+        "python:\n    version: \"3.10.13\"",
+        "pytorch:\n    version: \"2.1.0\"",
+        "torchvision: \"0.16.0\"",
+        "numpy: \"1.26.4\"",
+        "mmcv: \"2.1.0\"",
+        "mmengine: \"0.10.7\"",
+        "mmdetection: \"3.3.0\"",
+        "cuda_tensor_smoke_test: PASS",
+        "mmcv_cuda_nms: PASS",
+        "pip_check: PASS"
+      ],
+      "actual": [],
+      "evidence": "configs\\protocol\\gateI_environment_baseline.yaml"
+    }
+  ],
+  "summary": {
+    "passed": 114,
+    "failed": 0,
+    "total": 114
+  },
+  "blockers": [],
+  "gate_i_status": "CLOSED / PASS",
+  "gate_ii_authorized": true,
+  "official_training_authorized": false,
+  "test_status": "CLOSED / STRUCTURAL-INTEGRITY-ONLY",
+  "test_performance_was_read": false,
+  "official_training_was_executed": false
+}

@@ -1,0 +1,22 @@
+schema_version: 1.0.0
+status: NOT_YET_EXECUTED
+freeze_status: RESEARCHER_APPROVED_LOCKED
+authority: MASTER_D1_D7_FINAL_IMPLEMENTATION_CONTRACT_VI.md::D4-C
+inherits:
+  seed_protocol: configs/protocol/phase2F1_seed_protocol.yaml
+  labeled_unlabeled_protocol: configs/protocol/phase2F_labeled_unlabeled.yaml
+method: SoftTeacher_style_teacher_student_pseudo_labeling
+teacher_student: {teacher: EMA, same_architecture: true, initialization: teacher_equals_student_t0, supervised_burn_in: false, resume_restores_teacher: true, resume_resync_forbidden: true}
+ema: {mean_teacher_hook_momentum: 0.001, teacher_old_weight: 0.999, student_weight: 0.001, skip_buffers: true, cadence: once_per_actual_optimizer_update, skip_on_amp_skipped_step: true}
+views:
+  weak: [Resize, standard_preprocessing, padding]
+  strong: [Resize, grayscale_brightness_uniform_0.90_1.10, grayscale_contrast_uniform_0.90_1.10]
+  rgb_identical_preserved: true
+pseudo_labels: {source: online_teacher_rcnn_detections, detector_score_floor: 0.05, initial_score_threshold: 0.50, rpn_threshold: 0.90, classification_threshold: 0.90}
+proposals: {rpn_nms_iou: 0.70, rpn_max: 1000, rcnn_nms_iou: 0.50, rcnn_max: 100}
+regression_filter: {jitter_times: 10, jitter_scale: 0.06, uncertainty_threshold: 0.02, min_bbox_wh: [0.01, 0.01], requires_cls_above_0_90: false}
+loss: {supervised_weight: 1, unsupervised_weight: 4, burn_in: 0, ramp_up: false}
+effective_batch: {labeled: 4, unlabeled: 4, ratio: '1:1'}
+evaluation: {official_model: EMA_Teacher, student: SECONDARY, best_selection_split: validation, best_selection_metric: teacher_bbox_mAP_50_95, qpseudo_checkpoint: LAST_EMA_Teacher, qpseudo_split: validation}
+implementation_preflight: NOT_YET_EXECUTED
+training_authorized: false

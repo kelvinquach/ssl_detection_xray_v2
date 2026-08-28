@@ -1,0 +1,69 @@
+schema_version: 1.0.0
+capture_date: '2026-08-28'
+local_gate_i_audit_environment:
+  role: STRUCTURAL_AND_INTEGRITY_AUDIT_ONLY
+  os: "Windows 11 10.0.26200"
+  timezone: Asia/Saigon
+  python: "3.12.13"
+  numpy: "2.3.5"
+  pytorch: NOT_INSTALLED
+  mmdetection: NOT_INSTALLED
+  official_training_environment: false
+official_gpu_training_environment:
+  status: FROZEN
+  provider: Vast.ai
+
+  platform:
+    os: Linux
+    kernel: "5.15.0-122-generic"
+    architecture: x86_64
+
+  gpu:
+    model: "NVIDIA A800 80GB PCIe"
+    device_count: 1
+    vram_mib: 81920
+
+  nvidia:
+    driver_version: "550.90.07"
+    nvidia_smi_cuda_max_supported: "12.4"
+
+  python:
+    version: "3.10.13"
+
+  pytorch:
+    version: "2.1.0"
+    torchvision: "0.16.0"
+    cuda_runtime: "11.8"
+    cudnn: "8.7.0"
+
+  packages:
+    numpy: "1.26.4"
+    opencv_python: "4.10.0.84"
+    mmcv: "2.1.0"
+    mmengine: "0.10.7"
+    mmdetection: "3.3.0"
+
+  runtime_checks:
+    cuda_available: true
+    cuda_tensor_smoke_test: PASS
+    mmcv_cuda_nms: PASS
+    pip_check: PASS
+
+  docker:
+    image: "pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime"
+
+  provenance:
+    gpu_runtime:
+      path: "reports/environment/gateI_gpu_runtime.txt"
+      sha256: "4d7cf6f88d6701afa09f794787468f50f1743c60d0dbf574d3f1f607786ecab1"
+
+    pip_freeze:
+      path: "reports/environment/gateI_official_gpu_pip_freeze.txt"
+      sha256: "20b315ee7d3a706cdf707728e8909dce214f630e423c13a9a9f92e8c1a55b0dd"
+
+    system_packages:
+      path: "reports/environment/gateI_system_packages.txt"
+      sha256: "5c31110e579fef3c7210dbda55e0e43703abd6f2e2e07440bf8e2e5957169721"
+  official_training_executed: false
+  test_performance_read: false
+training_authorized: false

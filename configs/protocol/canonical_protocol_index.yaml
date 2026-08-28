@@ -1,0 +1,21 @@
+schema_version: 1.0.0
+status: ACTIVE_GATE_I_CANONICAL_REGISTRY
+purpose: Canonical Gate-I protocol registry; scientific constants remain in their owning locked protocol.
+authority_hierarchy:
+  - vietluanvan.md
+  - MASTER_D1_D7_FINAL_IMPLEMENTATION_CONTRACT_VI.md
+  - locked_protocols_and_closed_pass_evidence
+protocols:
+  input_representation: configs/protocol/phase2D1_jpg_representation.yaml
+  fixed_split_lock: data/manifests/split_lock_manifest.json
+  labeled_unlabeled: configs/protocol/phase2F_labeled_unlabeled.yaml
+  seed_protocol: configs/protocol/phase2F1_seed_protocol.yaml
+  experimental_design: configs/protocol/experimental_design.yaml
+  d4_training: configs/protocol/d4_training_protocol.yaml
+  d4_ssl: configs/protocol/d4_ssl_protocol.yaml
+gate_i:
+  freeze_manifest: configs/protocol/gateI_freeze_manifest.yaml
+  environment_baseline: configs/protocol/gateI_environment_baseline.yaml
+  guardrail: scripts/04I_gate1_freeze_inputs.py
+  tests: tests/test_gateI_canonical_layer.py
+  report: reports/GATE_I_REVIEW_FINAL.md

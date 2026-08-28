@@ -1,0 +1,16 @@
+schema_version: 1.0.0
+gate: I
+status: CLOSED_PASS
+active_representation_protocol:
+  path: configs/protocol/phase2D1_jpg_representation.yaml
+  sha256: c9918ee237b1f20401a07694864e79fbedf59357d8505ff6ba2f4b86662cd165
+  provenance: Phase 2D.1 CLOSED/PASS references in PHASE_HANDOFF.md, PROJECT_CONTEXT.md, README.md and Phase 2D.1 evidence
+immutable_inputs:
+  fixed_split_lock: data/manifests/split_lock_manifest.json
+  labeled_unlabeled_lock: data/manifests/phase2F_lock_manifest.json
+  seed_protocol: configs/protocol/phase2F1_seed_protocol.yaml
+blockers: []
+test_performance_read: false
+official_training_executed: false
+gate_ii_authorized: true
+official_training_authorized: false

@@ -1,0 +1,15 @@
+schema_version: 1.0.0
+status: RESEARCHER_APPROVED_LOCKED
+authority: [vietluanvan.md, MASTER_D1_D7_FINAL_IMPLEMENTATION_CONTRACT_VI.md]
+architectures:
+  - faster_rcnn_r50_fpn
+  - faster_rcnn_swint_fpn
+methods: [SUP, SSL]
+inherited_without_duplication:
+  budgets: configs/protocol/phase2F_labeled_unlabeled.yaml
+  ordered_training_seeds: configs/protocol/phase2F1_seed_protocol.yaml
+  partition_seed: configs/protocol/phase2F1_seed_protocol.yaml
+test_firewall:
+  gate_i_allowed_use: [existence, checksum, membership, overlap, union, annotation_category_integrity, structural_consistency]
+  performance_read_allowed: false
+training_authorized: false

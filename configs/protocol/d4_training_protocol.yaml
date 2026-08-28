@@ -1,0 +1,21 @@
+schema_version: 1.0.0
+status: RESEARCHER_APPROVED_LOCKED
+authority: MASTER_D1_D7_FINAL_IMPLEMENTATION_CONTRACT_VI.md::D4-A,D4-B
+inherits:
+  input_representation: configs/protocol/phase2D1_jpg_representation.yaml
+  seed_protocol: configs/protocol/phase2F1_seed_protocol.yaml
+  checkpoint_policy: configs/protocol/checkpoint_policy.yaml
+architectures:
+  r50: {family: Faster R-CNN, backbone: ResNet-50, neck: FPN, pretraining: ImageNet-1K, optimizer: {type: SGD, lr: 0.005, momentum: 0.9, weight_decay: 0.0001}}
+  swint: {family: Faster R-CNN, backbone: Swin-T, neck: FPN, pretraining: ImageNet-1K, optimizer: {type: AdamW, lr: 0.000025, betas: [0.9, 0.999], weight_decay: 0.05, native_no_decay_rules: true}}
+input: {stored_channels: 1, model_channels: 3_identical, scale: [1333, 800], keep_ratio: true, pad_size_divisor: 32}
+labeled_augmentation: [Load, Resize, Pack]
+effective_labeled_batch: 4
+optimizer_update_budget: {1pct: 1032, 5pct: 2064, 10pct: 2064, 20pct: 2064, 100pct_sup: 10284}
+scheduler_2064: {drop_updates: [1376, 1892], one_pct: proportional_positions}
+validation_interval_optimizer_updates: 172
+checkpoint: {selection_split: validation, selection_metric: bbox_mAP_50_95, retain: [BEST, LAST]}
+numerical: {amp: true, gradient_clipping: false, all_backbone_stages_trainable: true, native_normalization: true}
+empty_gt:
+  filter_empty_gt: false
+training_authorized: false
