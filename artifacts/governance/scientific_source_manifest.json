@@ -1,0 +1,8 @@
+﻿{
+    "schema_version":  "1.1",
+    "artifact_type":  "SCIENTIFIC_SOURCE_MANIFEST",
+    "scientific_source_name":  "sn-article.tex",
+    "scientific_source_sha256":  "a5f63ff018ee28a37ad2daa3fff337daf6b30faf34d9f12c6ff5c0fa92fe5237",
+    "role":  "SCIENTIFIC_SOURCE_OF_TRUTH",
+    "status":  "RESEARCHER_APPROVED / LOCKED"
+}

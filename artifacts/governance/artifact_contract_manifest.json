@@ -1,0 +1,17 @@
+﻿{
+    "schema_version":  "1.1",
+    "artifact_contract_version":  "1.1.0",
+    "artifact_type":  "ARTIFACT_EVIDENCE_CONTRACT_MANIFEST",
+    "artifact_contract_name":  "ARTIFACT_AND_EVIDENCE_CONTRACT.md",
+    "artifact_contract_sha256":  "6f59fe4c097173fe0114763762dd191a6f3590caa57b28199b8bcf5100563639",
+    "scientific_source_name":  "sn-article.tex",
+    "scientific_source_sha256":  "a5f63ff018ee28a37ad2daa3fff337daf6b30faf34d9f12c6ff5c0fa92fe5237",
+    "implementation_contract_name":  "IMPLEMENTATION_HANDOFF.md",
+    "implementation_contract_sha256":  "d70e556d45f4a54a5e0498842b4932deef7991de0d986095ec85e546dcc2d026",
+    "priority_order":  [
+                           "sn-article.tex",
+                           "IMPLEMENTATION_HANDOFF.md",
+                           "ARTIFACT_AND_EVIDENCE_CONTRACT.md"
+                       ],
+    "status":  "RESEARCHER_APPROVED / LOCKED"
+}
