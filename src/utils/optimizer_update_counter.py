@@ -78,6 +78,39 @@ class ActualOptimizerUpdateCounter:
         self._optimizer = optimizer
         self._handle = register_hook(_after_optimizer_step)
 
+    def state_dict(self) -> dict[str, int]:
+        """Return serializable actual-update counter state."""
+        return {"actual_optimizer_updates": self._count}
+
+    def load_state_dict(self, state_dict: dict[str, int]) -> None:
+        """Restore actual-update counter state from a checkpoint.
+
+        Args:
+            state_dict: Mapping containing ``actual_optimizer_updates``.
+
+        Raises:
+            TypeError: If ``state_dict`` is not a dictionary.
+            KeyError: If the required key is missing.
+            ValueError: If the restored count is not a non-negative integer.
+        """
+        if not isinstance(state_dict, dict):
+            raise TypeError("Counter state_dict must be a dict.")
+
+        if "actual_optimizer_updates" not in state_dict:
+            raise KeyError(
+                "Counter state_dict is missing "
+                "'actual_optimizer_updates'."
+            )
+
+        count = state_dict["actual_optimizer_updates"]
+
+        if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+            raise ValueError(
+                "actual_optimizer_updates must be a non-negative integer."
+            )
+
+        self._count = count
+
     def detach(self) -> None:
         """Remove the optimizer hook if attached."""
         if self._handle is not None:

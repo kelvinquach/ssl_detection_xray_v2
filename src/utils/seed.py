@@ -101,6 +101,103 @@ def set_global_seed(seed: int, deterministic: bool = True) -> Dict[str, Any]:
     return config
 
 
+def get_full_rng_state() -> Dict[str, Any]:
+    """Capture full RNG states required for checkpoint/resume equivalence.
+
+    Unlike ``get_rng_state_summary()``, this function returns the complete
+    native RNG states so they can be serialized by ``torch.save`` and later
+    restored exactly.
+
+    Returns:
+        Dictionary containing Python, NumPy, PyTorch CPU, and PyTorch CUDA
+        RNG states when the corresponding libraries/devices are available.
+    """
+    state: Dict[str, Any] = {
+        "python_random": random.getstate(),
+        "numpy": None,
+        "torch_cpu": None,
+        "torch_cuda_all": None,
+    }
+
+    if np is not None:
+        state["numpy"] = np.random.get_state()
+
+    if torch is not None:
+        state["torch_cpu"] = torch.get_rng_state()
+
+        cuda_available = bool(
+            getattr(torch, "cuda", None) and torch.cuda.is_available()
+        )
+        if cuda_available:
+            state["torch_cuda_all"] = torch.cuda.get_rng_state_all()
+
+    return state
+
+
+def restore_full_rng_state(state: Dict[str, Any]) -> None:
+    """Restore full RNG states captured by ``get_full_rng_state()``.
+
+    Args:
+        state: Full RNG-state mapping captured at checkpoint save time.
+
+    Raises:
+        TypeError: If ``state`` is not a dictionary.
+        KeyError: If required Python RNG state is absent.
+        RuntimeError: If a saved library/device RNG state cannot be restored
+            in the current runtime.
+    """
+    if not isinstance(state, dict):
+        raise TypeError("Full RNG state must be a dict.")
+
+    if "python_random" not in state:
+        raise KeyError("Full RNG state is missing 'python_random'.")
+
+    random.setstate(state["python_random"])
+
+    numpy_state = state.get("numpy")
+    if numpy_state is not None:
+        if np is None:
+            raise RuntimeError(
+                "Checkpoint contains NumPy RNG state but NumPy is unavailable."
+            )
+        np.random.set_state(numpy_state)
+
+    torch_cpu_state = state.get("torch_cpu")
+    if torch_cpu_state is not None:
+        if torch is None:
+            raise RuntimeError(
+                "Checkpoint contains PyTorch CPU RNG state but PyTorch "
+                "is unavailable."
+            )
+        if hasattr(torch_cpu_state, "cpu"):
+            torch_cpu_state = torch_cpu_state.cpu()
+        torch.set_rng_state(torch_cpu_state)
+
+    torch_cuda_states = state.get("torch_cuda_all")
+    if torch_cuda_states is not None:
+        if torch is None or not torch.cuda.is_available():
+            raise RuntimeError(
+                "Checkpoint contains CUDA RNG state but CUDA is unavailable."
+            )
+
+        current_device_count = int(torch.cuda.device_count())
+        saved_device_count = len(torch_cuda_states)
+
+        if saved_device_count != current_device_count:
+            raise RuntimeError(
+                "CUDA RNG device-count mismatch: "
+                f"checkpoint={saved_device_count}, "
+                f"runtime={current_device_count}."
+            )
+
+        normalized_cuda_states = [
+            rng_state.cpu() if hasattr(rng_state, "cpu") else rng_state
+            for rng_state in torch_cuda_states
+        ]
+        torch.cuda.set_rng_state_all(normalized_cuda_states)
+
+
+
 def get_rng_state_summary() -> Dict[str, Any]:
     """Return a JSON-serializable summary of current RNG state.
 
