@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "stage": "S2.13",
+  "test": "checkpoint_resume_equivalence",
+  "training_seed": 204886845,
+  "reference_total_raw_iterations": 6,
+  "interrupt_raw_iterations": 3,
+  "resume_checkpoint": "/workspace/ssod/artifacts/preflight/resume/s2_13_fixture/interrupted/latest_resume.pth",
+  "ssl_resume_checkpoint": "/workspace/ssod/artifacts/preflight/resume/s2_13_fixture/ssl_teacher_student/latest_resume.pth",
+  "checks": {
+    "checkpoint_exists": true,
+    "final_raw_iteration_match": true,
+    "actual_optimizer_update_counter_match": true,
+    "model_state_match": true,
+    "optimizer_and_amp_scaler_state_match": true,
+    "scheduler_state_match": true,
+    "rng_state_match_at_run_end": true,
+    "rng_next_draw_match": true,
+    "seed_mismatch_blocked": true,
+    "ssl_checkpoint_exists": true,
+    "ssl_checkpoint_contains_student_state": true,
+    "ssl_checkpoint_contains_teacher_state": true,
+    "ssl_student_checkpoint_differs_from_fresh_init": true,
+    "ssl_teacher_checkpoint_differs_from_fresh_init": true,
+    "ssl_student_state_restored": true,
+    "ssl_teacher_state_restored": true,
+    "ssl_teacher_not_resynced_from_student": true
+  },
+  "all_checks_pass": true,
+  "scope_note": "Synthetic MMEngine checkpoint/resume fixtures only; not official training. Core trajectory equivalence is tested together with separate SSL Student/Teacher state preservation and no-resync checks. EMA update behavior is outside S2.13 and is not tested here."
+}

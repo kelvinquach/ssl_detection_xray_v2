@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "stage": "S2.14",
+  "scope": "fail_fast_source_config_data_seed_checks",
+  "official_training_authorized": false,
+  "source_integrity_checks": {
+    "scientific_source_name_canonical": true,
+    "scientific_source_exists": true,
+    "implementation_contract_exists": true,
+    "artifact_contract_exists": true,
+    "scientific_source_hash_matches_lock": true,
+    "implementation_contract_hash_matches_lock": true,
+    "artifact_contract_hash_matches_lock": true,
+    "implementation_manifest_scientific_hash_consistent": true,
+    "artifact_manifest_scientific_hash_consistent": true,
+    "artifact_manifest_implementation_hash_consistent": true
+  },
+  "seed_identity": {
+    "partition_seed": 42,
+    "training_seed_count": 10,
+    "seed_index_1_training_seed": 204886845
+  },
+  "positive_case": {
+    "schema_version": "1.0",
+    "stage": "S2.14",
+    "guardrail_scope": "source_config_data_seed_pre_run_foundation",
+    "launch_status": "PASS",
+    "training_authorized_by_s2_14": false,
+    "all_checks_pass": true,
+    "missing_fields": [],
+    "mismatches": [],
+    "error": null
+  },
+  "failure_injection_cases": {
+    "scientific_source_mismatch": {
+      "launch_status": "BLOCKED",
+      "all_checks_pass": false,
+      "mismatch_fields": [
+        "scientific_source_sha256"
+      ],
+      "blocked_by_assert": true,
+      "expected_field_detected": true
+    },
+    "config_mismatch": {
+      "launch_status": "BLOCKED",
+      "all_checks_pass": false,
+      "mismatch_fields": [
+        "optimizer_recipe_sha256"
+      ],
+      "blocked_by_assert": true,
+      "expected_field_detected": true
+    },
+    "data_mismatch": {
+      "launch_status": "BLOCKED",
+      "all_checks_pass": false,
+      "mismatch_fields": [
+        "train_split_sha256"
+      ],
+      "blocked_by_assert": true,
+      "expected_field_detected": true
+    },
+    "seed_mismatch": {
+      "launch_status": "BLOCKED",
+      "all_checks_pass": false,
+      "mismatch_fields": [
+        "training_seed"
+      ],
+      "blocked_by_assert": true,
+      "expected_field_detected": true
+    },
+    "missing_required_identity_field": {
+      "launch_status": "BLOCKED",
+      "all_checks_pass": false,
+      "missing_fields": [
+        "dataset_manifest_sha256"
+      ],
+      "blocked_by_assert": true,
+      "expected_field_detected": true
+    }
+  },
+  "checks": {
+    "locked_source_integrity_all_pass": true,
+    "locked_partition_seed_is_42": true,
+    "locked_training_seed_count_is_10": true,
+    "seed_index_1_mapping_correct": true,
+    "positive_identity_passes": true,
+    "s2_14_does_not_authorize_training": true,
+    "scientific_source_mismatch_blocked": true,
+    "config_mismatch_blocked": true,
+    "data_mismatch_blocked": true,
+    "seed_mismatch_blocked": true,
+    "missing_identity_field_blocked": true
+  },
+  "check_count": 11,
+  "failed_checks": [],
+  "all_checks_pass": true
+}
