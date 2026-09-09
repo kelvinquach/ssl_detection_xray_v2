@@ -32,7 +32,7 @@ CLASSES = (
 )
 
 PIPELINE = [
-    dict(type="LoadImageFromFile"),
+    dict(type="LoadImageFromFile", color_type="color"),
     dict(type="LoadAnnotations", with_bbox=True),
     dict(type="PackDetInputs"),
 ]
