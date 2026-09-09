@@ -1,0 +1,38 @@
+torch = 2.1.0
+mmengine = 0.10.7
+cuda_available = True
+
+=== TEST 1: DIRECT OPTIMIZER STEP ===
+count_before = 0
+count_after = 1
+direct_optimizer_step_counted_once = True
+
+=== TEST 2: GRADIENT ACCUMULATION ===
+count_after_raw_iter_1 = 0
+count_after_raw_iter_2 = 1
+raw_iteration_not_counted_as_optimizer_update = True
+accumulation_boundary_counted_once = True
+
+=== TEST 3: AMP FINITE + SKIPPED STEP ===
+count_after_finite = 1
+finite_amp_step_counted_once = True
+count_after_amp_skip = 1
+amp_skipped_step_not_counted = True
+
+=== TEST 4: ADAMW AMP FINITE + SKIPPED STEP ===
+adamw_count_after_finite = 1
+adamw_finite_step_counted_once = True
+adamw_count_after_amp_skip = 1
+adamw_amp_skipped_step_not_counted = True
+
+=== CHECKS ===
+direct_optimizer_step_counted_once = True
+raw_iteration_not_counted_as_optimizer_update = True
+accumulation_boundary_counted_once = True
+amp_runtime_available = True
+finite_amp_step_counted_once = True
+amp_skipped_step_not_counted = True
+adamw_amp_runtime_available = True
+adamw_finite_step_counted_once = True
+adamw_amp_skipped_step_not_counted = True
+S2_10_ACTUAL_OPTIMIZER_UPDATE_COUNTER=PASS
