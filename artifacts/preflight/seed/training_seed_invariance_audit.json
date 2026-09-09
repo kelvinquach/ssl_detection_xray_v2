@@ -1,0 +1,330 @@
+{
+  "schema_version": "1.0",
+  "artifact_type": "TRAINING_SEED_INVARIANCE_AUDIT",
+  "stage": "S2.09",
+  "status": "PASS",
+  "training_authorized": false,
+  "captured_at_utc": "2026-09-09T14:52:00.453492+00:00",
+  "partition_seed": 42,
+  "partition_seed_policy": "PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH",
+  "training_seed_deterministic_policy": "CONTROLLED_BEST_EFFORT",
+  "training_seed_ordering": "FIXED_ORDERED_LIST",
+  "training_seed_count": 10,
+  "training_seeds": [
+    {
+      "seed_index": 1,
+      "training_seed": 204886845
+    },
+    {
+      "seed_index": 2,
+      "training_seed": 1480646854
+    },
+    {
+      "seed_index": 3,
+      "training_seed": 1798418854
+    },
+    {
+      "seed_index": 4,
+      "training_seed": 2045683682
+    },
+    {
+      "seed_index": 5,
+      "training_seed": 1814859839
+    },
+    {
+      "seed_index": 6,
+      "training_seed": 1603952859
+    },
+    {
+      "seed_index": 7,
+      "training_seed": 1878351743
+    },
+    {
+      "seed_index": 8,
+      "training_seed": 875651179
+    },
+    {
+      "seed_index": 9,
+      "training_seed": 477581743
+    },
+    {
+      "seed_index": 10,
+      "training_seed": 869675675
+    }
+  ],
+  "data_root": "/workspace/ssod/data/coco",
+  "membership_definition": "SHA-256 of sorted images[].id values only; annotations are not read for membership hashing",
+  "baseline": {
+    "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+    "datasets": {
+      "train": {
+        "count": 3426,
+        "unique_count": 3426,
+        "membership_sha256": "43560a971ddfefaaf95e890665025d8337a6b2d1667906ea2ad0bd5d718a0f29"
+      },
+      "val": {
+        "count": 734,
+        "unique_count": 734,
+        "membership_sha256": "0945aa1277c8b1f30bc36be75184ae4ee851484d40840c87837233dca420299a"
+      },
+      "test": {
+        "count": 734,
+        "unique_count": 734,
+        "membership_sha256": "5b30798e0cc0c994fe3be71e3f556907fb790f33721041a1d43fb17d3399d61a"
+      },
+      "L_1pct": {
+        "count": 34,
+        "unique_count": 34,
+        "membership_sha256": "c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071"
+      },
+      "L_5pct": {
+        "count": 171,
+        "unique_count": 171,
+        "membership_sha256": "c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b"
+      },
+      "L_10pct": {
+        "count": 343,
+        "unique_count": 343,
+        "membership_sha256": "fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6"
+      },
+      "L_20pct": {
+        "count": 685,
+        "unique_count": 685,
+        "membership_sha256": "6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e"
+      },
+      "U_1pct": {
+        "count": 3392,
+        "unique_count": 3392,
+        "membership_sha256": "535f470b0b2ed504dfd388de3fd3053c60ebdcc0649e8ceac6d6f252c16df521"
+      },
+      "U_5pct": {
+        "count": 3255,
+        "unique_count": 3255,
+        "membership_sha256": "233a2761039e8ec88fc435e07b574dc41a7c9623cf28acaf6058c7ef12a844c1"
+      },
+      "U_10pct": {
+        "count": 3083,
+        "unique_count": 3083,
+        "membership_sha256": "a27b0489d2898edd74bb8683e8db206d77b8fa6ba804aeb637137aa7efd7c0d1"
+      },
+      "U_20pct": {
+        "count": 2741,
+        "unique_count": 2741,
+        "membership_sha256": "e5267dfdccf523eecca7392ff5040f20f14445dccdd89998cd92204d475ca8c3"
+      }
+    }
+  },
+  "per_training_seed": [
+    {
+      "seed_index": 1,
+      "training_seed": 204886845,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    },
+    {
+      "seed_index": 2,
+      "training_seed": 1480646854,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    },
+    {
+      "seed_index": 3,
+      "training_seed": 1798418854,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    },
+    {
+      "seed_index": 4,
+      "training_seed": 2045683682,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    },
+    {
+      "seed_index": 5,
+      "training_seed": 1814859839,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    },
+    {
+      "seed_index": 6,
+      "training_seed": 1603952859,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    },
+    {
+      "seed_index": 7,
+      "training_seed": 1878351743,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    },
+    {
+      "seed_index": 8,
+      "training_seed": 875651179,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    },
+    {
+      "seed_index": 9,
+      "training_seed": 477581743,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    },
+    {
+      "seed_index": 10,
+      "training_seed": 869675675,
+      "combined_membership_sha256": "992f25cb8688fea329e9d32de13fd1d015a4d572ab8d3c2bb19ff53e808c0326",
+      "combined_hash_matches_baseline": true,
+      "per_dataset_hash_match": {
+        "train": true,
+        "val": true,
+        "test": true,
+        "L_1pct": true,
+        "L_5pct": true,
+        "L_10pct": true,
+        "L_20pct": true,
+        "U_1pct": true,
+        "U_5pct": true,
+        "U_10pct": true,
+        "U_20pct": true
+      },
+      "status": "PASS"
+    }
+  ],
+  "checks": {
+    "locked_training_seed_count_is_10": true,
+    "all_membership_files_present": true,
+    "all_counts_match_locked_values": true,
+    "all_memberships_have_unique_image_ids": true,
+    "all_10_training_seeds_preserve_train_val_test_membership": true,
+    "all_10_training_seeds_preserve_labeled_membership": true,
+    "all_10_training_seeds_preserve_unlabeled_membership": true,
+    "all_combined_membership_hashes_match_baseline": true,
+    "all_seed_runs_pass": true
+  }
+}
