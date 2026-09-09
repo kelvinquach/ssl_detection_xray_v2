@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "stage": "S2",
+  "task": "S2.16",
+  "gate": "Close S2",
+  "status": "CLOSED / PASS",
+  "exact_git_commit": "c74a01e4a51438168387c76fcaf87b05be8f02ed",
+  "working_tree_clean": true,
+  "official_training_authorized": false,
+  "final_test_authorized": false,
+  "global_preflight_closed": false,
+  "verification": {
+    "S2.01_COCO_DATASET_LOADING": "PASS",
+    "S2.05_ZERO_GT_TEST": "PASS",
+    "S2.06_SEED_PROPAGATION": "PASS",
+    "S2.07_DATALOADER_WORKER_SEED": "PASS",
+    "S2.08_SAMPLER_SEED": "PASS",
+    "S2.09_TRAINING_SEED_INVARIANCE": "PASS",
+    "S2.10_ACTUAL_OPTIMIZER_UPDATE_COUNTER": "PASS",
+    "S2.11_RUN_MANIFEST_SCHEMA": "PASS",
+    "S2.12_TRAINING_LOG_CONTRACT": "PASS",
+    "S2.13_RESUME_EQUIVALENCE": "PASS",
+    "S2.14_FAIL_FAST_GUARDRAILS": "PASS",
+    "S2.15_HIDDEN_U_GT_FIREWALL": "PASS"
+  },
+  "seed_data_firewall_summary": {
+    "partition_seed": 42,
+    "training_seed_count": 10,
+    "train_val_test_membership_invariant": true,
+    "labeled_membership_invariant": true,
+    "unlabeled_membership_invariant": true,
+    "hidden_u_annotations_present_in_training_object": false,
+    "contaminated_unlabeled_source_blocked": true,
+    "unlabeled_LoadAnnotations_blocked": true
+  },
+  "closure_scope": {
+    "shared_infrastructure_verified": true,
+    "does_not_close_global_preflight": true,
+    "does_not_authorize_official_training": true,
+    "does_not_authorize_final_test": true
+  },
+  "acceptance": "S2=CLOSED / PASS"
+}
