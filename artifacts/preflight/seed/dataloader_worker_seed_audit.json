@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.1",
+  "artifact_type": "DATALOADER_WORKER_SEED_AUDIT",
+  "stage": "S2.07",
+  "status": "PASS",
+  "generated_at_utc": "2026-09-09T14:01:19.223805+00:00",
+  "training_authorized": false,
+  "seed_source": "/workspace/ssod/project/configs/protocol/phase2F1_seed_protocol.yaml",
+  "seed_index": 1,
+  "base_training_seed": 204886845,
+  "worker_seed_strategy": {
+    "framework": "MMEngine",
+    "framework_version_observed": "0.10.7",
+    "implementation": "mmengine.dataset.utils.worker_init_fn",
+    "derivation": "worker_seed = num_workers * rank + worker_id + base_training_seed",
+    "rngs_seeded_per_worker": [
+      "Python random",
+      "NumPy RNG",
+      "PyTorch CPU RNG"
+    ]
+  },
+  "audit_configuration": {
+    "purpose": "controlled_preflight_only",
+    "official_training_num_workers": "NOT_SPECIFIED_BY_CANONICAL_SOURCES",
+    "audit_num_workers": 2,
+    "batch_size": 1,
+    "rank": 0,
+    "diff_rank_seed": false,
+    "sampler": "None; sampler seeding intentionally outside S2.07 scope"
+  },
+  "worker_seed_examples": [
+    {
+      "worker_id": 0,
+      "rank": 0,
+      "expected_worker_seed": 204886845,
+      "observed_torch_initial_seed": 204886845,
+      "observed_draws": {
+        "python": 0.9992869015929696,
+        "numpy": 0.12267057657811276,
+        "torch": 0.40366804599761963
+      },
+      "expected_draws": {
+        "python": 0.9992869015929696,
+        "numpy": 0.12267057657811276,
+        "torch": 0.40366804599761963
+      },
+      "checks": {
+        "torch_initial_seed_matches": true,
+        "python_rng_matches": true,
+        "numpy_rng_matches": true,
+        "torch_rng_matches": true
+      }
+    },
+    {
+      "worker_id": 1,
+      "rank": 0,
+      "expected_worker_seed": 204886846,
+      "observed_torch_initial_seed": 204886846,
+      "observed_draws": {
+        "python": 0.08920180723105442,
+        "numpy": 0.9862566930516475,
+        "torch": 0.4817134141921997
+      },
+      "expected_draws": {
+        "python": 0.08920180723105442,
+        "numpy": 0.9862566930516475,
+        "torch": 0.4817134141921997
+      },
+      "checks": {
+        "torch_initial_seed_matches": true,
+        "python_rng_matches": true,
+        "numpy_rng_matches": true,
+        "torch_rng_matches": true
+      }
+    }
+  ],
+  "checks": {
+    "locked_training_seed_count_is_10": true,
+    "selected_seed_in_locked_mapping": true,
+    "audit_num_workers_is_multiworker": true,
+    "observed_expected_worker_count": true,
+    "observed_worker_ids_match": true,
+    "all_worker_seed_checks_pass": true
+  }
+}
