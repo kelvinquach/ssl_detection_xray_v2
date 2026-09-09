@@ -35,6 +35,7 @@ PIPELINE = [
     dict(type="LoadImageFromFile", color_type="color"),
     dict(type="LoadAnnotations", with_bbox=True),
     dict(type="Resize", scale=(1333, 800), keep_ratio=True),
+    dict(type="Pad", size_divisor=32),
     dict(type="PackDetInputs"),
 ]
 
