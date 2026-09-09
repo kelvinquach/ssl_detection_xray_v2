@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.0",
+  "stage": "S2.15",
+  "scope": "hidden_u_gt_isolation_foundation",
+  "official_training_authorized": false,
+  "hidden_u_annotations_present_in_training_object": false,
+  "unlabeled_source_reports": {
+    "U_1pct": {
+      "path": "/workspace/ssod/data/coco/instances_unlabeled_1pct.json",
+      "image_count": 3392,
+      "annotation_count": 0,
+      "category_count": 14,
+      "observed_image_keys": [
+        "canonical_image_id",
+        "file_name",
+        "height",
+        "id",
+        "original_image_id",
+        "width"
+      ],
+      "forbidden_image_keys": [],
+      "unexpected_image_keys": [],
+      "checks": {
+        "annotations_empty": true,
+        "no_forbidden_image_level_gt_keys": true,
+        "no_unexpected_image_keys": true,
+        "all_images_are_objects": true,
+        "all_images_have_id": true,
+        "image_ids_unique": true
+      },
+      "all_checks_pass": true
+    },
+    "U_5pct": {
+      "path": "/workspace/ssod/data/coco/instances_unlabeled_5pct.json",
+      "image_count": 3255,
+      "annotation_count": 0,
+      "category_count": 14,
+      "observed_image_keys": [
+        "canonical_image_id",
+        "file_name",
+        "height",
+        "id",
+        "original_image_id",
+        "width"
+      ],
+      "forbidden_image_keys": [],
+      "unexpected_image_keys": [],
+      "checks": {
+        "annotations_empty": true,
+        "no_forbidden_image_level_gt_keys": true,
+        "no_unexpected_image_keys": true,
+        "all_images_are_objects": true,
+        "all_images_have_id": true,
+        "image_ids_unique": true
+      },
+      "all_checks_pass": true
+    },
+    "U_10pct": {
+      "path": "/workspace/ssod/data/coco/instances_unlabeled_10pct.json",
+      "image_count": 3083,
+      "annotation_count": 0,
+      "category_count": 14,
+      "observed_image_keys": [
+        "canonical_image_id",
+        "file_name",
+        "height",
+        "id",
+        "original_image_id",
+        "width"
+      ],
+      "forbidden_image_keys": [],
+      "unexpected_image_keys": [],
+      "checks": {
+        "annotations_empty": true,
+        "no_forbidden_image_level_gt_keys": true,
+        "no_unexpected_image_keys": true,
+        "all_images_are_objects": true,
+        "all_images_have_id": true,
+        "image_ids_unique": true
+      },
+      "all_checks_pass": true
+    },
+    "U_20pct": {
+      "path": "/workspace/ssod/data/coco/instances_unlabeled_20pct.json",
+      "image_count": 2741,
+      "annotation_count": 0,
+      "category_count": 14,
+      "observed_image_keys": [
+        "canonical_image_id",
+        "file_name",
+        "height",
+        "id",
+        "original_image_id",
+        "width"
+      ],
+      "forbidden_image_keys": [],
+      "unexpected_image_keys": [],
+      "checks": {
+        "annotations_empty": true,
+        "no_forbidden_image_level_gt_keys": true,
+        "no_unexpected_image_keys": true,
+        "all_images_are_objects": true,
+        "all_images_have_id": true,
+        "image_ids_unique": true
+      },
+      "all_checks_pass": true
+    }
+  },
+  "runtime_dataset_reports": {
+    "U_1pct": {
+      "image_count": 3392,
+      "expected_image_count": 3392,
+      "all_data_info_instances_empty": true,
+      "sample_0_loaded": true,
+      "sample_0_hidden_gt_present": false
+    },
+    "U_5pct": {
+      "image_count": 3255,
+      "expected_image_count": 3255,
+      "all_data_info_instances_empty": true,
+      "sample_0_loaded": true,
+      "sample_0_hidden_gt_present": false
+    },
+    "U_10pct": {
+      "image_count": 3083,
+      "expected_image_count": 3083,
+      "all_data_info_instances_empty": true,
+      "sample_0_loaded": true,
+      "sample_0_hidden_gt_present": false
+    },
+    "U_20pct": {
+      "image_count": 2741,
+      "expected_image_count": 2741,
+      "all_data_info_instances_empty": true,
+      "sample_0_loaded": true,
+      "sample_0_hidden_gt_present": false
+    }
+  },
+  "negative_fixture_results": {
+    "contaminated_unlabeled_source_blocked": true,
+    "LoadAnnotations_in_unlabeled_pipeline_blocked": true
+  },
+  "checks": {
+    "unlabeled_pipeline_has_no_LoadAnnotations": true,
+    "labeled_pipeline_still_has_LoadAnnotations": true,
+    "U_1pct_source_annotations_empty": true,
+    "U_1pct_config_pipeline_isolated": true,
+    "U_1pct_runtime_length_correct": true,
+    "U_1pct_runtime_instances_empty": true,
+    "U_1pct_sample_loads": true,
+    "U_1pct_sample_hidden_gt_absent": true,
+    "U_5pct_source_annotations_empty": true,
+    "U_5pct_config_pipeline_isolated": true,
+    "U_5pct_runtime_length_correct": true,
+    "U_5pct_runtime_instances_empty": true,
+    "U_5pct_sample_loads": true,
+    "U_5pct_sample_hidden_gt_absent": true,
+    "U_10pct_source_annotations_empty": true,
+    "U_10pct_config_pipeline_isolated": true,
+    "U_10pct_runtime_length_correct": true,
+    "U_10pct_runtime_instances_empty": true,
+    "U_10pct_sample_loads": true,
+    "U_10pct_sample_hidden_gt_absent": true,
+    "U_20pct_source_annotations_empty": true,
+    "U_20pct_config_pipeline_isolated": true,
+    "U_20pct_runtime_length_correct": true,
+    "U_20pct_runtime_instances_empty": true,
+    "U_20pct_sample_loads": true,
+    "U_20pct_sample_hidden_gt_absent": true,
+    "contaminated_unlabeled_source_blocked": true,
+    "LoadAnnotations_in_unlabeled_pipeline_blocked": true
+  },
+  "check_count": 28,
+  "failed_checks": [],
+  "all_checks_pass": true
+}

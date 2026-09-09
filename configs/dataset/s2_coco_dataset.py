@@ -39,8 +39,20 @@ PIPELINE = [
     dict(type="PackDetInputs"),
 ]
 
+UNLABELED_PIPELINE = [
+    dict(type="LoadImageFromFile", color_type="color"),
+    dict(type="Resize", scale=(1333, 800), keep_ratio=True),
+    dict(type="Pad", size_divisor=32),
+    dict(type="PackDetInputs"),
+]
 
-def coco_dataset(ann_file: str, *, test_mode: bool = False) -> dict:
+
+def coco_dataset(
+    ann_file: str,
+    *,
+    test_mode: bool = False,
+    unlabeled: bool = False,
+) -> dict:
     return dict(
         type="CocoDataset",
         ann_file=str(COCO_ROOT / ann_file),
@@ -48,7 +60,7 @@ def coco_dataset(ann_file: str, *, test_mode: bool = False) -> dict:
         metainfo=dict(classes=CLASSES),
         filter_cfg=dict(filter_empty_gt=False),
         test_mode=test_mode,
-        pipeline=PIPELINE,
+        pipeline=UNLABELED_PIPELINE if unlabeled else PIPELINE,
     )
 
 
@@ -62,10 +74,10 @@ DATASETS = {
     "L_10pct": coco_dataset("instances_labeled_10pct.json"),
     "L_20pct": coco_dataset("instances_labeled_20pct.json"),
 
-    "U_1pct": coco_dataset("instances_unlabeled_1pct.json"),
-    "U_5pct": coco_dataset("instances_unlabeled_5pct.json"),
-    "U_10pct": coco_dataset("instances_unlabeled_10pct.json"),
-    "U_20pct": coco_dataset("instances_unlabeled_20pct.json"),
+    "U_1pct": coco_dataset("instances_unlabeled_1pct.json", unlabeled=True),
+    "U_5pct": coco_dataset("instances_unlabeled_5pct.json", unlabeled=True),
+    "U_10pct": coco_dataset("instances_unlabeled_10pct.json", unlabeled=True),
+    "U_20pct": coco_dataset("instances_unlabeled_20pct.json", unlabeled=True),
 }
 
 training_authorized = False
