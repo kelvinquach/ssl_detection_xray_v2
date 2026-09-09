@@ -1,0 +1,59 @@
+﻿schema_version: 1.0.0
+status: SCIENTIFIC_PROTOCOL_LOCKED
+purpose: Canonical evaluator configuration identity for SUP/SSL validation and evaluation.
+
+provenance:
+  scientific_source: sn-article.tex
+  scientific_section: Evaluation Metrics
+  implementation_contract: IMPLEMENTATION_HANDOFF.md
+  artifact_contract: ARTIFACT_AND_EVIDENCE_CONTRACT.md
+
+coco_bbox_evaluation:
+  primary_metric: bbox_mAP_50_95
+  iou_thresholds:
+    - 0.50
+    - 0.55
+    - 0.60
+    - 0.65
+    - 0.70
+    - 0.75
+    - 0.80
+    - 0.85
+    - 0.90
+    - 0.95
+  recall_threshold_grid:
+    start: 0.00
+    stop: 1.00
+    step: 0.01
+  use_cats: 1
+  max_dets: 100
+  area: all
+  extra_fixed_score_threshold_before_ap: false
+  secondary_metrics:
+    - AP50
+    - AP75
+    - AR_50_95_max100
+    - classwise_AP_50_95
+  classwise_detection_classes: 14
+  official_size_specific_coco_ap:
+    AP_S: false
+    AP_M: false
+    AP_L: false
+
+operating_point_evaluation:
+  score_threshold: 0.50
+  iou_match_threshold: 0.50
+  matching: CATEGORY_AWARE_ONE_TO_ONE
+  after_detector_native_nms: true
+  max_dets_per_image: 100
+  metrics:
+    - Recall_tau_eval
+    - FP_per_image
+    - FP_per_negative
+    - negative_image_FAR
+
+invariants:
+  same_evaluator_for_sup_and_ssl: true
+  no_method_specific_threshold_tuning: true
+  no_class_specific_checkpoint_selection: true
+  fixed_score_threshold_not_applied_before_coco_ap: true
