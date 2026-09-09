@@ -218,6 +218,45 @@ def main() -> int:
 
     output_path = Path(args.output).resolve()
     output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # S2.06 and S2.08 intentionally share seed_propagation_audit.json.
+    # If S2.08 sampler evidence already exists, rerunning S2.06 must
+    # preserve it rather than silently deleting downstream evidence.
+    if output_path.exists():
+        existing = json.loads(output_path.read_text(encoding="utf-8"))
+
+        if existing.get("artifact_type") != "SEED_PROPAGATION_AUDIT":
+            raise SystemExit(
+                "Refusing to overwrite unexpected artifact_type at output path"
+            )
+
+        for key in (
+            "sampler_seed_observed",
+            "sampler_seed_strategy",
+            "sampler_seed_examples",
+            "sampler_seed_audit",
+            "evidence_stages",
+            "last_updated_at_utc",
+        ):
+            if key in existing:
+                report[key] = existing[key]
+
+        sampler_audit = report.get("sampler_seed_audit")
+        if sampler_audit is not None:
+            # S2.08 extends this shared artifact to schema v1.2.
+            # Rerunning S2.06 must not downgrade the cumulative schema.
+            report["schema_version"] = "1.2"
+
+            sampler_pass = sampler_audit.get("status") == "PASS"
+            report["checks"]["sampler_seed_controlled_by_training_seed"] = (
+                sampler_pass
+            )
+            report["status"] = (
+                "PASS"
+                if all(report["checks"].values())
+                else "FAIL"
+            )
+
     output_path.write_text(
         json.dumps(report, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",

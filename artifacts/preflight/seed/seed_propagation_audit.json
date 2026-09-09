@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "artifact_type": "SEED_PROPAGATION_AUDIT",
   "stage": "S2.06",
   "status": "PASS",
@@ -72,6 +72,217 @@
     "python_same_seed_replay_match": true,
     "numpy_same_seed_replay_match": true,
     "torch_cpu_same_seed_replay_match": true,
-    "torch_cuda_same_seed_replay_match": true
+    "torch_cuda_same_seed_replay_match": true,
+    "sampler_seed_controlled_by_training_seed": true
+  },
+  "evidence_stages": [
+    "S2.06",
+    "S2.08"
+  ],
+  "last_updated_at_utc": "2026-09-09T14:31:48.910700+00:00",
+  "sampler_seed_observed": 204886845,
+  "sampler_seed_strategy": {
+    "framework": "MMEngine",
+    "framework_version_observed": "0.10.7",
+    "implementation": "mmengine.dataset.DefaultSampler",
+    "construction_path": "Runner.build_dataloader -> DATA_SAMPLERS.build(DefaultSampler)",
+    "runner_seed_argument": "training_seed",
+    "diff_rank_seed": false,
+    "shuffle": true,
+    "derivation": "DefaultSampler.seed = training_seed; shuffle generator seed = sampler.seed + epoch"
+  },
+  "sampler_seed_examples": [
+    {
+      "seed_index": 1,
+      "training_seed": 204886845,
+      "observed_sampler_seed": 204886845,
+      "epoch0_effective_seed": 204886845,
+      "epoch1_effective_seed": 204886846
+    },
+    {
+      "seed_index": 2,
+      "training_seed": 1480646854,
+      "observed_sampler_seed": 1480646854,
+      "epoch0_effective_seed": 1480646854,
+      "epoch1_effective_seed": 1480646855
+    }
+  ],
+  "sampler_seed_audit": {
+    "stage": "S2.08",
+    "status": "PASS",
+    "training_authorized": false,
+    "purpose": "controlled_preflight_only",
+    "probe_configuration": {
+      "dataset_size": 12,
+      "batch_size": 1,
+      "num_workers": 0,
+      "sampler": "DefaultSampler",
+      "shuffle": true,
+      "round_up": false,
+      "diff_rank_seed": false,
+      "note": "num_workers=0 isolates sampler behavior; worker seeding is separately covered by S2.07"
+    },
+    "epoch0": {
+      "seed_a_run1_order": [
+        2,
+        8,
+        10,
+        6,
+        9,
+        0,
+        1,
+        5,
+        4,
+        11,
+        7,
+        3
+      ],
+      "seed_a_run2_order": [
+        2,
+        8,
+        10,
+        6,
+        9,
+        0,
+        1,
+        5,
+        4,
+        11,
+        7,
+        3
+      ],
+      "seed_b_order": [
+        11,
+        6,
+        1,
+        9,
+        2,
+        10,
+        4,
+        0,
+        5,
+        7,
+        8,
+        3
+      ],
+      "seed_a_expected_order": [
+        2,
+        8,
+        10,
+        6,
+        9,
+        0,
+        1,
+        5,
+        4,
+        11,
+        7,
+        3
+      ],
+      "seed_b_expected_order": [
+        11,
+        6,
+        1,
+        9,
+        2,
+        10,
+        4,
+        0,
+        5,
+        7,
+        8,
+        3
+      ]
+    },
+    "epoch1": {
+      "seed_a_run1_order": [
+        2,
+        7,
+        5,
+        0,
+        4,
+        1,
+        8,
+        6,
+        9,
+        11,
+        3,
+        10
+      ],
+      "seed_a_run2_order": [
+        2,
+        7,
+        5,
+        0,
+        4,
+        1,
+        8,
+        6,
+        9,
+        11,
+        3,
+        10
+      ],
+      "seed_b_order": [
+        3,
+        4,
+        0,
+        2,
+        9,
+        10,
+        5,
+        1,
+        8,
+        6,
+        11,
+        7
+      ],
+      "seed_a_expected_order": [
+        2,
+        7,
+        5,
+        0,
+        4,
+        1,
+        8,
+        6,
+        9,
+        11,
+        3,
+        10
+      ],
+      "seed_b_expected_order": [
+        3,
+        4,
+        0,
+        2,
+        9,
+        10,
+        5,
+        1,
+        8,
+        6,
+        11,
+        7
+      ]
+    },
+    "checks": {
+      "locked_training_seed_count_is_10": true,
+      "selected_seed_a_in_locked_mapping": true,
+      "selected_seed_b_in_locked_mapping": true,
+      "sampler_type_is_DefaultSampler": true,
+      "shuffle_enabled": true,
+      "sampler_seed_a_matches_training_seed": true,
+      "sampler_seed_b_matches_training_seed": true,
+      "same_seed_same_order_epoch0": true,
+      "different_seed_different_order_epoch0": true,
+      "same_seed_same_order_epoch1": true,
+      "different_seed_different_order_epoch1": true,
+      "same_seed_epoch_changes_order": true,
+      "epoch0_seed_a_matches_expected_derivation": true,
+      "epoch0_seed_b_matches_expected_derivation": true,
+      "epoch1_seed_a_matches_expected_derivation": true,
+      "epoch1_seed_b_matches_expected_derivation": true
+    }
   }
 }
