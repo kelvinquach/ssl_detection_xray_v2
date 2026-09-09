@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.1",
+  "artifact_type": "SEED_PROPAGATION_AUDIT",
+  "stage": "S2.06",
+  "status": "PASS",
+  "generated_at_utc": "2026-09-09T13:39:31.515266+00:00",
+  "training_authorized": false,
+  "seed_source": "/workspace/ssod/project/configs/protocol/phase2F1_seed_protocol.yaml",
+  "seed_index": 1,
+  "base_training_seed": 204886845,
+  "deterministic_policy": "CONTROLLED_BEST_EFFORT",
+  "python_seed_observed": 204886845,
+  "python_seed_observation_method": "set_global_seed application record plus same-seed replay",
+  "numpy_seed_observed": 204886845,
+  "torch_initial_seed_observed": 204886845,
+  "cuda_seed_policy": "set_global_seed applies torch.manual_seed(seed), torch.cuda.manual_seed(seed), and torch.cuda.manual_seed_all(seed) when CUDA is available",
+  "cuda_available": true,
+  "cuda_device_count": 1,
+  "cuda_initial_seeds_observed": [
+    {
+      "device_index": 0,
+      "initial_seed": 204886845
+    }
+  ],
+  "same_seed_replay": {
+    "python": true,
+    "numpy": true,
+    "torch_cpu": true,
+    "torch_cuda": true
+  },
+  "applied_first": {
+    "seed": 204886845,
+    "deterministic": true,
+    "applied": {
+      "PYTHONHASHSEED": "204886845",
+      "python_random": true,
+      "numpy": true,
+      "torch_cpu": true,
+      "torch_cuda": true,
+      "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+      "use_deterministic_algorithms": true,
+      "cudnn_deterministic": true,
+      "cudnn_benchmark": false
+    }
+  },
+  "applied_second": {
+    "seed": 204886845,
+    "deterministic": true,
+    "applied": {
+      "PYTHONHASHSEED": "204886845",
+      "python_random": true,
+      "numpy": true,
+      "torch_cpu": true,
+      "torch_cuda": true,
+      "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+      "use_deterministic_algorithms": true,
+      "cudnn_deterministic": true,
+      "cudnn_benchmark": false
+    }
+  },
+  "checks": {
+    "locked_training_seed_count_is_10": true,
+    "selected_seed_in_locked_mapping": true,
+    "python_rng_applied": true,
+    "numpy_rng_applied": true,
+    "torch_cpu_rng_applied": true,
+    "torch_cuda_rng_applied": true,
+    "numpy_seed_observed_matches": true,
+    "torch_initial_seed_observed_matches": true,
+    "cuda_available": true,
+    "cuda_initial_seeds_match": true,
+    "python_same_seed_replay_match": true,
+    "numpy_same_seed_replay_match": true,
+    "torch_cpu_same_seed_replay_match": true,
+    "torch_cuda_same_seed_replay_match": true
+  }
+}
