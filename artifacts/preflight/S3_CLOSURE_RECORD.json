@@ -1,0 +1,109 @@
+{
+    "schema_version":  "1.0",
+    "stage":  "S3",
+    "task":  "S3.14",
+    "gate":  "Close S3",
+    "status":  "CLOSED / PASS",
+    "exact_git_commit":  "d88d97d9f6be0ac310339fb58205b93f656d411e",
+    "working_tree_clean":  true,
+    "official_training_authorized":  false,
+    "final_test_authorized":  false,
+    "global_preflight_closed":  false,
+    "verification":  {
+                         "S3.01_SUP_R50_EXECUTION_PATH":  "PASS",
+                         "S3.02_SUP_SWIN_T_EXECUTION_PATH":  "PASS",
+                         "S3.03_R50_SGD_RECIPE":  "PASS",
+                         "S3.04_SWIN_T_ADAMW_RECIPE":  "PASS",
+                         "S3.05_AMP_NUMERICS_NO_GRAD_CLIP":  "PASS",
+                         "S3.06_SUP_AUGMENTATION_PIPELINE":  "PASS",
+                         "S3.07_EFFECTIVE_LABELED_BATCH_4":  "PASS",
+                         "S3.08_1PCT_1032_UPDATE_PATH":  "PASS",
+                         "S3.09_STANDARD_2064_UPDATE_PATH":  "PASS",
+                         "S3.10_100PCT_SUP_10284_UPDATE_PATH":  "PASS",
+                         "S3.11_VALIDATION_EVERY_172_ACTUAL_UPDATES":  "PASS",
+                         "S3.12_SUP_BEST_LAST_CHECKPOINT_LOGIC":  "PASS",
+                         "S3.13_SUP_RESUME_EQUIVALENCE":  "PASS"
+                     },
+    "closure_groups":  {
+                           "03_SUP_R50":  "PASS",
+                           "04_SUP_SWIN_T":  "PASS",
+                           "07_1PCT_SCHEDULER_UPDATE_PATH":  "PASS",
+                           "08_2064_AND_100PCT_10284_PATHS":  "PASS",
+                           "17_BEST_LAST_CHECKPOINT_LOGIC":  "PASS",
+                           "21_RESUME_PATH_IF_ENABLED":  "PASS"
+                       },
+    "optimizer_recipes":  {
+                              "R50":  {
+                                          "type":  "SGD",
+                                          "lr":  0.005,
+                                          "momentum":  0.9,
+                                          "weight_decay":  0.0001
+                                      },
+                              "SWIN_T":  {
+                                             "type":  "AdamW",
+                                             "lr":  2.5E-05,
+                                             "betas":  [
+                                                           0.9,
+                                                           0.999
+                                                       ],
+                                             "weight_decay":  0.05
+                                         }
+                          },
+    "training_protocol":  {
+                              "effective_labeled_batch":  4,
+                              "actual_optimizer_update_budgets":  {
+                                                                      "1pct":  1032,
+                                                                      "5pct":  2064,
+                                                                      "10pct":  2064,
+                                                                      "20pct":  2064,
+                                                                      "100pct_sup":  10284
+                                                                  },
+                              "scheduler_milestones":  {
+                                                           "1pct":  [
+                                                                        688,
+                                                                        946
+                                                                    ],
+                                                           "5_10_20pct":  [
+                                                                              1376,
+                                                                              1892
+                                                                          ],
+                                                           "100pct_sup":  [
+                                                                              6856,
+                                                                              9427
+                                                                          ]
+                                                       },
+                              "validation_interval_actual_optimizer_updates":  172,
+                              "supervised_best_metric":  "bbox_mAP@[0.50:0.95]",
+                              "supervised_best_tie_break":  "STRICT_GREATER_KEEP_EARLIEST_MAX",
+                              "checkpoint_roles":  [
+                                                       "BEST",
+                                                       "LAST",
+                                                       "LATEST_RESUME"
+                                                   ],
+                              "latest_resume_cadence":  "UPDATE_0_PLUS_EVERY_172_ACTUAL_OPTIMIZER_UPDATES",
+                              "resume_scope":  "SAME_ATTEMPT_CONTINUATION",
+                              "technical_retry_scope":  "NEW_ATTEMPT_SAME_LOGICAL_RUN_SAME_EXACT_TRAINING_SEED"
+                          },
+    "evidence":  {
+                     "S3.01":  "artifacts/preflight/sup/sup_r50_preflight.json",
+                     "S3.02":  "artifacts/preflight/sup/sup_swin_preflight.json",
+                     "S3.03":  "resolved config: configs/supervised/s3_03_faster_rcnn_r50_fpn_sup_optimizer.py",
+                     "S3.04":  "resolved config: configs/supervised/s3_04_faster_rcnn_swin_t_fpn_sup_optimizer.py",
+                     "S3.05":  "artifacts/preflight/sup/sup_amp_numerics_preflight.json",
+                     "S3.06":  "artifacts/preflight/sup/supervised_augmentation_manifest.json",
+                     "S3.07":  "artifacts/preflight/sup/supervised_effective_batch_manifest.json",
+                     "S3.08":  "artifacts/preflight/sup/schedule_1pct_preflight.json",
+                     "S3.09":  "artifacts/preflight/sup/schedule_2064_preflight.json",
+                     "S3.10":  "artifacts/preflight/sup/schedule_100pct_10284_preflight.json",
+                     "S3.11":  "artifacts/preflight/sup/validation_172_actual_update_preflight.json",
+                     "S3.12":  "artifacts/preflight/sup/sup_best_last_checkpoint_preflight.json",
+                     "S3.13":  "artifacts/preflight/resume/resume_equivalence_test.json"
+                 },
+    "closure_scope":  {
+                          "all_supervised_official_execution_paths_verified":  true,
+                          "does_not_close_global_preflight":  true,
+                          "does_not_authorize_official_training":  true,
+                          "does_not_authorize_final_test":  true
+                      },
+    "acceptance":  "S3=CLOSED / PASS"
+}
