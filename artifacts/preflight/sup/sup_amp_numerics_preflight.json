@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "stage": "S3.05",
+  "scope": "supervised_amp_gradient_clipping_numerics_preflight",
+  "official_training_authorized": false,
+  "scientific_contract": {
+    "amp": true,
+    "gradient_clipping": false
+  },
+  "implementation_choice": {
+    "loss_scale": "dynamic",
+    "basis": "MMEngine 0.10.7 canonical/default AMP behavior"
+  },
+  "architectures": {
+    "R50": {
+      "config_path": "configs/supervised/s3_05_faster_rcnn_r50_fpn_sup_amp.py",
+      "config_sha256": "d3d68045630e8a2eaa8fec6118619312b33b7d2f7df683d5af0a486d9e002e5a",
+      "wrapper_class": "AmpOptimWrapper",
+      "scaler_class": "GradScaler",
+      "loss_scale": "dynamic",
+      "clip_grad_kwargs": null,
+      "optimizer_class": "SGD",
+      "optimizer_defaults": {
+        "lr": 0.005,
+        "momentum": 0.9,
+        "dampening": 0,
+        "weight_decay": 0.0001,
+        "nesterov": false,
+        "maximize": false,
+        "foreach": null,
+        "differentiable": false
+      }
+    },
+    "Swin-T": {
+      "config_path": "configs/supervised/s3_05_faster_rcnn_swin_t_fpn_sup_amp.py",
+      "config_sha256": "49efb3d3f18dd9eccb47e20e171d9d9e55d9fa7c54e8276355eef88d3008521c",
+      "wrapper_class": "AmpOptimWrapper",
+      "scaler_class": "GradScaler",
+      "loss_scale": "dynamic",
+      "clip_grad_kwargs": null,
+      "optimizer_class": "AdamW",
+      "optimizer_defaults": {
+        "lr": 2.5e-05,
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "eps": 1e-08,
+        "weight_decay": 0.05,
+        "amsgrad": false,
+        "foreach": null,
+        "maximize": false,
+        "capturable": false,
+        "differentiable": false,
+        "fused": null
+      }
+    }
+  },
+  "amp_runtime": {
+    "finite_counter_before": 0,
+    "finite_counter_after": 1,
+    "finite_scale_before": 65536.0,
+    "finite_scale_after": 65536.0,
+    "skip_counter_before": 1,
+    "skip_counter_after": 1,
+    "skip_scale_before": 65536.0,
+    "skip_scale_after": 32768.0
+  },
+  "checks": {
+    "R50_config_sha256_match": true,
+    "R50_amp_wrapper": true,
+    "R50_grad_scaler": true,
+    "R50_dynamic_loss_scale": true,
+    "R50_gradient_clipping_off": true,
+    "R50_optimizer_recipe_preserved": true,
+    "Swin-T_config_sha256_match": true,
+    "Swin-T_amp_wrapper": true,
+    "Swin-T_grad_scaler": true,
+    "Swin-T_dynamic_loss_scale": true,
+    "Swin-T_gradient_clipping_off": true,
+    "Swin_T_optimizer_recipe_preserved": true,
+    "Swin_T_native_no_decay_rules_preserved": true,
+    "finite_amp_actual_optimizer_update": true,
+    "non_finite_amp_step_skipped": true,
+    "grad_scaler_backoff_observed_on_skip": true
+  },
+  "check_count": 16,
+  "failed_checks": [],
+  "all_checks_pass": true
+}
