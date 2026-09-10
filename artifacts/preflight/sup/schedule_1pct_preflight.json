@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "stage": "S3.08",
+  "scope": "supervised_1pct_actual_update_scheduler_preflight",
+  "official_training_authorized": false,
+  "scientific_contract": {
+    "optimizer_updates": 1032,
+    "milestones": [
+      688,
+      946
+    ]
+  },
+  "architectures": {
+    "R50": {
+      "config": "configs/supervised/s3_08_faster_rcnn_r50_fpn_sup_1pct.py",
+      "checks": {
+        "max_iters_is_1032": true,
+        "target_updates_is_1032": true,
+        "milestones_are_688_946": true,
+        "scheduler_end_is_1033": true,
+        "scheduler_is_update_based": true,
+        "default_scheduler_disabled": true,
+        "default_checkpoint_disabled": true,
+        "required_custom_hooks_present": true
+      }
+    },
+    "SWIN_T": {
+      "config": "configs/supervised/s3_08_faster_rcnn_swin_t_fpn_sup_1pct.py",
+      "checks": {
+        "max_iters_is_1032": true,
+        "target_updates_is_1032": true,
+        "milestones_are_688_946": true,
+        "scheduler_end_is_1033": true,
+        "scheduler_is_update_based": true,
+        "default_scheduler_disabled": true,
+        "default_checkpoint_disabled": true,
+        "required_custom_hooks_present": true
+      }
+    }
+  },
+  "runtime_fixture": {
+    "raw_iterations": 1033,
+    "actual_optimizer_updates": 1032,
+    "scheduler_last_step": 1032,
+    "final_max_iters": 1033
+  },
+  "checks": {
+    "r50_max_iters_is_1032": true,
+    "r50_target_updates_is_1032": true,
+    "r50_milestones_are_688_946": true,
+    "r50_scheduler_end_is_1033": true,
+    "r50_scheduler_is_update_based": true,
+    "r50_default_scheduler_disabled": true,
+    "r50_default_checkpoint_disabled": true,
+    "r50_required_custom_hooks_present": true,
+    "swin_t_max_iters_is_1032": true,
+    "swin_t_target_updates_is_1032": true,
+    "swin_t_milestones_are_688_946": true,
+    "swin_t_scheduler_end_is_1033": true,
+    "swin_t_scheduler_is_update_based": true,
+    "swin_t_default_scheduler_disabled": true,
+    "swin_t_default_checkpoint_disabled": true,
+    "swin_t_required_custom_hooks_present": true,
+    "skip_does_not_count_as_update": true,
+    "actual_update_target_reached": true,
+    "scheduler_tracks_actual_updates": true,
+    "raw_ceiling_extended_after_skip": true,
+    "second_milestone_applied": true,
+    "official_training_remains_unauthorized": true
+  },
+  "check_count": 22,
+  "failed_checks": [],
+  "all_checks_pass": true
+}
