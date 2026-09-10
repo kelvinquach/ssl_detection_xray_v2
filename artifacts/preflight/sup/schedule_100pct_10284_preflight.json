@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "stage": "S3.10",
+  "scope": "supervised_100pct_10284_actual_update_scheduler_preflight",
+  "official_training_authorized": false,
+  "scientific_contract": {
+    "budgets": [
+      "100pct"
+    ],
+    "optimizer_updates": 10284,
+    "milestones": [
+      6856,
+      9427
+    ],
+    "effective_labeled_batch": 4
+  },
+  "architectures": {
+    "R50": {
+      "100pct": {
+        "config": "configs/supervised/s3_10_faster_rcnn_r50_fpn_sup_100pct.py",
+        "ann_file": "/workspace/ssod/data/coco/instances_train.json",
+        "checks": {
+          "dataset_matches_budget": true,
+          "max_iters_is_10284": true,
+          "target_updates_is_10284": true,
+          "milestones_are_6856_9427": true,
+          "scheduler_end_is_10285": true,
+          "scheduler_is_update_based": true,
+          "effective_batch_components_preserved": true,
+          "default_scheduler_disabled": true,
+          "default_checkpoint_disabled": true,
+          "required_custom_hooks_present": true
+        },
+        "structural_signature": {
+          "train_loop_type": "ResumeAwareIterBasedTrainLoop",
+          "max_iters": 10284,
+          "val_interval": 10284,
+          "batch_size": 4,
+          "accumulative_counts": 1,
+          "scheduler_type": "MultiStepLR",
+          "scheduler_by_epoch": false,
+          "scheduler_end": 10285,
+          "scheduler_milestones": [
+            6856,
+            9427
+          ],
+          "scheduler_gamma": 0.1,
+          "default_param_scheduler": null,
+          "default_checkpoint": null,
+          "custom_hook_types": [
+            "ProtocolResumeCheckpointHook",
+            "ActualUpdateBudgetSchedulerHook"
+          ],
+          "target_updates": 10284
+        }
+      }
+    },
+    "SWIN_T": {
+      "100pct": {
+        "config": "configs/supervised/s3_10_faster_rcnn_swin_t_fpn_sup_100pct.py",
+        "ann_file": "/workspace/ssod/data/coco/instances_train.json",
+        "checks": {
+          "dataset_matches_budget": true,
+          "max_iters_is_10284": true,
+          "target_updates_is_10284": true,
+          "milestones_are_6856_9427": true,
+          "scheduler_end_is_10285": true,
+          "scheduler_is_update_based": true,
+          "effective_batch_components_preserved": true,
+          "default_scheduler_disabled": true,
+          "default_checkpoint_disabled": true,
+          "required_custom_hooks_present": true
+        },
+        "structural_signature": {
+          "train_loop_type": "ResumeAwareIterBasedTrainLoop",
+          "max_iters": 10284,
+          "val_interval": 10284,
+          "batch_size": 4,
+          "accumulative_counts": 1,
+          "scheduler_type": "MultiStepLR",
+          "scheduler_by_epoch": false,
+          "scheduler_end": 10285,
+          "scheduler_milestones": [
+            6856,
+            9427
+          ],
+          "scheduler_gamma": 0.1,
+          "default_param_scheduler": null,
+          "default_checkpoint": null,
+          "custom_hook_types": [
+            "ProtocolResumeCheckpointHook",
+            "ActualUpdateBudgetSchedulerHook"
+          ],
+          "target_updates": 10284
+        }
+      }
+    }
+  },
+  "runtime_fixture": {
+    "raw_iterations": 10285,
+    "actual_optimizer_updates": 10284,
+    "scheduler_last_step": 10284,
+    "final_max_iters": 10285,
+    "final_lr": 0.0010000000000000002
+  },
+  "checks": {
+    "r50_100pct_dataset_matches_budget": true,
+    "r50_100pct_max_iters_is_10284": true,
+    "r50_100pct_target_updates_is_10284": true,
+    "r50_100pct_milestones_are_6856_9427": true,
+    "r50_100pct_scheduler_end_is_10285": true,
+    "r50_100pct_scheduler_is_update_based": true,
+    "r50_100pct_effective_batch_components_preserved": true,
+    "r50_100pct_default_scheduler_disabled": true,
+    "r50_100pct_default_checkpoint_disabled": true,
+    "r50_100pct_required_custom_hooks_present": true,
+    "swin_t_100pct_dataset_matches_budget": true,
+    "swin_t_100pct_max_iters_is_10284": true,
+    "swin_t_100pct_target_updates_is_10284": true,
+    "swin_t_100pct_milestones_are_6856_9427": true,
+    "swin_t_100pct_scheduler_end_is_10285": true,
+    "swin_t_100pct_scheduler_is_update_based": true,
+    "swin_t_100pct_effective_batch_components_preserved": true,
+    "swin_t_100pct_default_scheduler_disabled": true,
+    "swin_t_100pct_default_checkpoint_disabled": true,
+    "swin_t_100pct_required_custom_hooks_present": true,
+    "r50_swint_share_same_100pct_schedule_structure": true,
+    "skip_does_not_count_as_update": true,
+    "actual_update_target_reached": true,
+    "scheduler_tracks_actual_updates": true,
+    "raw_ceiling_extended_after_skip": true,
+    "second_milestone_applied": true,
+    "official_training_remains_unauthorized": true
+  },
+  "check_count": 27,
+  "failed_checks": [],
+  "all_checks_pass": true
+}

@@ -12,7 +12,10 @@ input: {stored_channels: 1, model_channels: 3_identical, scale: [1333, 800], kee
 labeled_augmentation: [Load, Resize, Pack]
 effective_labeled_batch: 4
 optimizer_update_budget: {1pct: 1032, 5pct: 2064, 10pct: 2064, 20pct: 2064, 100pct_sup: 10284}
-scheduler_2064: {drop_updates: [1376, 1892], one_pct: proportional_positions}
+scheduler_rule: {basis: actual_optimizer_update, relative_drop_positions: ['2/3', '11/12']}
+scheduler_1pct: {updates: 1032, drop_updates: [688, 946]}
+scheduler_2064: {updates: 2064, drop_updates: [1376, 1892], budgets: [5pct, 10pct, 20pct]}
+scheduler_100pct_sup: {updates: 10284, drop_updates: [6856, 9427]}
 validation_interval_optimizer_updates: 172
 checkpoint: {selection_split: validation, selection_metric: bbox_mAP_50_95, retain: [BEST, LAST]}
 numerical: {amp: true, gradient_clipping: false, all_backbone_stages_trainable: true, native_normalization: true}
