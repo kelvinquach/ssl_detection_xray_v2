@@ -1,0 +1,506 @@
+{
+  "schema_version": "1.0",
+  "stage": "S3.12",
+  "scope": "verify_sup_best_last_checkpoint_logic",
+  "official_training_authorized": false,
+  "scientific_contract": {
+    "selection_split": "validation",
+    "selection_metric": "bbox_mAP_50_95",
+    "runtime_metric_key": "coco/bbox_mAP",
+    "rule": "ARGMAX_VALIDATION_BBOX_MAP_50_95",
+    "tie_break": "STRICT_GREATER_KEEP_EARLIEST_MAX",
+    "retain": [
+      "BEST",
+      "LAST"
+    ],
+    "official_supervised_evaluation_model": "BEST",
+    "test_usage": "final_evaluation_only"
+  },
+  "configs": {
+    "R50": {
+      "1pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_r50_fpn_sup_1pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 1032,
+        "val_interval": 172
+      },
+      "5pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_r50_fpn_sup_5pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 2064,
+        "val_interval": 172
+      },
+      "10pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_r50_fpn_sup_10pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 2064,
+        "val_interval": 172
+      },
+      "20pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_r50_fpn_sup_20pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 2064,
+        "val_interval": 172
+      },
+      "100pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_r50_fpn_sup_100pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 10284,
+        "val_interval": 172
+      }
+    },
+    "SWIN_T": {
+      "1pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_swin_t_fpn_sup_1pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 1032,
+        "val_interval": 172
+      },
+      "5pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_swin_t_fpn_sup_5pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 2064,
+        "val_interval": 172
+      },
+      "10pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_swin_t_fpn_sup_10pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 2064,
+        "val_interval": 172
+      },
+      "20pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_swin_t_fpn_sup_20pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 2064,
+        "val_interval": 172
+      },
+      "100pct": {
+        "config": "configs/supervised/s3_12_faster_rcnn_swin_t_fpn_sup_100pct.py",
+        "checks": {
+          "validation_loop_preserved": true,
+          "validation_interval_preserved": true,
+          "max_iters_preserved": true,
+          "hook_order_exact": true,
+          "one_budget_hook": true,
+          "one_sup_checkpoint_hook": true,
+          "target_updates_preserved": true,
+          "runtime_metric_key_exact": true,
+          "native_default_checkpoint_disabled": true
+        },
+        "hook_types": [
+          "ProtocolResumeCheckpointHook",
+          "ActualUpdateBudgetSchedulerHook",
+          "SupervisedBestLastCheckpointHook"
+        ],
+        "target_updates": 10284,
+        "val_interval": 172
+      }
+    }
+  },
+  "runtime_fixture": {
+    "target_actual_optimizer_updates": 516,
+    "skipped_raw_calls": [
+      2,
+      174,
+      346
+    ],
+    "raw_iterations": 519,
+    "actual_optimizer_updates": 516,
+    "validation_calls": [
+      {
+        "actual_optimizer_updates": 172,
+        "raw_iterations_at_val_call": 173,
+        "metrics": {
+          "coco/bbox_mAP": 0.4,
+          "coco/bbox_mAP_50": 0.5,
+          "coco/bbox_mAP_75": 0.35000000000000003,
+          "coco/AR_50_95_max100": 0.45
+        }
+      },
+      {
+        "actual_optimizer_updates": 344,
+        "raw_iterations_at_val_call": 347,
+        "metrics": {
+          "coco/bbox_mAP": 0.55,
+          "coco/bbox_mAP_50": 0.65,
+          "coco/bbox_mAP_75": 0.5,
+          "coco/AR_50_95_max100": 0.6000000000000001
+        }
+      },
+      {
+        "actual_optimizer_updates": 516,
+        "raw_iterations_at_val_call": 519,
+        "metrics": {
+          "coco/bbox_mAP": 0.55,
+          "coco/bbox_mAP_50": 0.65,
+          "coco/bbox_mAP_75": 0.5,
+          "coco/AR_50_95_max100": 0.6000000000000001
+        }
+      }
+    ],
+    "validation_best": {
+      "checkpoint_path": "checkpoints/best_model.pth",
+      "checkpoint_sha256": "03008cd3e4eb8b97d5f3759310442ef44457d7f4fb9cc78dfe61e0ca7cef4582",
+      "rule": "ARGMAX_VALIDATION_BBOX_MAP_50_95",
+      "selected_metric_value": 0.55,
+      "selected_update": 344,
+      "selection_metric": "bbox_mAP_50_95",
+      "selection_split": "validation",
+      "tie_break": "STRICT_GREATER_KEEP_EARLIEST_MAX"
+    },
+    "validation_history": [
+      {
+        "optimizer_update": "172",
+        "bbox_mAP_50_95": "0.4",
+        "AP50": "0.5",
+        "AP75": "0.35000000000000003",
+        "AR_50_95_max100": "0.45",
+        "checkpoint_candidate": "True",
+        "best_so_far": "0.4",
+        "checkpoint_path": "checkpoints/best_model.pth"
+      },
+      {
+        "optimizer_update": "344",
+        "bbox_mAP_50_95": "0.55",
+        "AP50": "0.65",
+        "AP75": "0.5",
+        "AR_50_95_max100": "0.6000000000000001",
+        "checkpoint_candidate": "True",
+        "best_so_far": "0.55",
+        "checkpoint_path": "checkpoints/best_model.pth"
+      },
+      {
+        "optimizer_update": "516",
+        "bbox_mAP_50_95": "0.55",
+        "AP50": "0.65",
+        "AP75": "0.5",
+        "AR_50_95_max100": "0.6000000000000001",
+        "checkpoint_candidate": "False",
+        "best_so_far": "0.55",
+        "checkpoint_path": "checkpoints/best_model.pth"
+      }
+    ],
+    "checkpoint_index": {
+      "checkpoint_policy": "LOCKED",
+      "entries": [
+        {
+          "optimizer_update": 344,
+          "path": "best_model.pth",
+          "retained": true,
+          "role": "BEST",
+          "sha256": "03008cd3e4eb8b97d5f3759310442ef44457d7f4fb9cc78dfe61e0ca7cef4582",
+          "validation_bbox_mAP_50_95": 0.55
+        },
+        {
+          "optimizer_update": 516,
+          "path": "last_model.pth",
+          "retained": true,
+          "role": "LAST",
+          "sha256": "ffe35fae747c3f6b3a04f3651ab39d80fb54340d5067970daad15acf52c13429"
+        }
+      ]
+    },
+    "best_checkpoint_sha256": "03008cd3e4eb8b97d5f3759310442ef44457d7f4fb9cc78dfe61e0ca7cef4582",
+    "last_checkpoint_sha256": "ffe35fae747c3f6b3a04f3651ab39d80fb54340d5067970daad15acf52c13429",
+    "best_checkpoint_update_events": [
+      {
+        "timestamp_utc": "2026-09-10T21:18:02.728Z",
+        "event": "BEST_CHECKPOINT_UPDATED",
+        "optimizer_update": 172,
+        "selection_split": "validation",
+        "selection_metric": "bbox_mAP_50_95",
+        "validation_bbox_mAP_50_95": 0.4,
+        "checkpoint_path": "checkpoints/best_model.pth",
+        "checkpoint_sha256": "a75eda595d040204b2fa137c0259ded6a3e4a880e285762840f4bed3fe8cbc69"
+      },
+      {
+        "timestamp_utc": "2026-09-10T21:18:02.860Z",
+        "event": "BEST_CHECKPOINT_UPDATED",
+        "optimizer_update": 344,
+        "selection_split": "validation",
+        "selection_metric": "bbox_mAP_50_95",
+        "validation_bbox_mAP_50_95": 0.55,
+        "checkpoint_path": "checkpoints/best_model.pth",
+        "checkpoint_sha256": "03008cd3e4eb8b97d5f3759310442ef44457d7f4fb9cc78dfe61e0ca7cef4582"
+      }
+    ]
+  },
+  "checks": {
+    "r50_1pct_validation_loop_preserved": true,
+    "r50_1pct_validation_interval_preserved": true,
+    "r50_1pct_max_iters_preserved": true,
+    "r50_1pct_hook_order_exact": true,
+    "r50_1pct_one_budget_hook": true,
+    "r50_1pct_one_sup_checkpoint_hook": true,
+    "r50_1pct_target_updates_preserved": true,
+    "r50_1pct_runtime_metric_key_exact": true,
+    "r50_1pct_native_default_checkpoint_disabled": true,
+    "r50_5pct_validation_loop_preserved": true,
+    "r50_5pct_validation_interval_preserved": true,
+    "r50_5pct_max_iters_preserved": true,
+    "r50_5pct_hook_order_exact": true,
+    "r50_5pct_one_budget_hook": true,
+    "r50_5pct_one_sup_checkpoint_hook": true,
+    "r50_5pct_target_updates_preserved": true,
+    "r50_5pct_runtime_metric_key_exact": true,
+    "r50_5pct_native_default_checkpoint_disabled": true,
+    "r50_10pct_validation_loop_preserved": true,
+    "r50_10pct_validation_interval_preserved": true,
+    "r50_10pct_max_iters_preserved": true,
+    "r50_10pct_hook_order_exact": true,
+    "r50_10pct_one_budget_hook": true,
+    "r50_10pct_one_sup_checkpoint_hook": true,
+    "r50_10pct_target_updates_preserved": true,
+    "r50_10pct_runtime_metric_key_exact": true,
+    "r50_10pct_native_default_checkpoint_disabled": true,
+    "r50_20pct_validation_loop_preserved": true,
+    "r50_20pct_validation_interval_preserved": true,
+    "r50_20pct_max_iters_preserved": true,
+    "r50_20pct_hook_order_exact": true,
+    "r50_20pct_one_budget_hook": true,
+    "r50_20pct_one_sup_checkpoint_hook": true,
+    "r50_20pct_target_updates_preserved": true,
+    "r50_20pct_runtime_metric_key_exact": true,
+    "r50_20pct_native_default_checkpoint_disabled": true,
+    "r50_100pct_validation_loop_preserved": true,
+    "r50_100pct_validation_interval_preserved": true,
+    "r50_100pct_max_iters_preserved": true,
+    "r50_100pct_hook_order_exact": true,
+    "r50_100pct_one_budget_hook": true,
+    "r50_100pct_one_sup_checkpoint_hook": true,
+    "r50_100pct_target_updates_preserved": true,
+    "r50_100pct_runtime_metric_key_exact": true,
+    "r50_100pct_native_default_checkpoint_disabled": true,
+    "swin_t_1pct_validation_loop_preserved": true,
+    "swin_t_1pct_validation_interval_preserved": true,
+    "swin_t_1pct_max_iters_preserved": true,
+    "swin_t_1pct_hook_order_exact": true,
+    "swin_t_1pct_one_budget_hook": true,
+    "swin_t_1pct_one_sup_checkpoint_hook": true,
+    "swin_t_1pct_target_updates_preserved": true,
+    "swin_t_1pct_runtime_metric_key_exact": true,
+    "swin_t_1pct_native_default_checkpoint_disabled": true,
+    "swin_t_5pct_validation_loop_preserved": true,
+    "swin_t_5pct_validation_interval_preserved": true,
+    "swin_t_5pct_max_iters_preserved": true,
+    "swin_t_5pct_hook_order_exact": true,
+    "swin_t_5pct_one_budget_hook": true,
+    "swin_t_5pct_one_sup_checkpoint_hook": true,
+    "swin_t_5pct_target_updates_preserved": true,
+    "swin_t_5pct_runtime_metric_key_exact": true,
+    "swin_t_5pct_native_default_checkpoint_disabled": true,
+    "swin_t_10pct_validation_loop_preserved": true,
+    "swin_t_10pct_validation_interval_preserved": true,
+    "swin_t_10pct_max_iters_preserved": true,
+    "swin_t_10pct_hook_order_exact": true,
+    "swin_t_10pct_one_budget_hook": true,
+    "swin_t_10pct_one_sup_checkpoint_hook": true,
+    "swin_t_10pct_target_updates_preserved": true,
+    "swin_t_10pct_runtime_metric_key_exact": true,
+    "swin_t_10pct_native_default_checkpoint_disabled": true,
+    "swin_t_20pct_validation_loop_preserved": true,
+    "swin_t_20pct_validation_interval_preserved": true,
+    "swin_t_20pct_max_iters_preserved": true,
+    "swin_t_20pct_hook_order_exact": true,
+    "swin_t_20pct_one_budget_hook": true,
+    "swin_t_20pct_one_sup_checkpoint_hook": true,
+    "swin_t_20pct_target_updates_preserved": true,
+    "swin_t_20pct_runtime_metric_key_exact": true,
+    "swin_t_20pct_native_default_checkpoint_disabled": true,
+    "swin_t_100pct_validation_loop_preserved": true,
+    "swin_t_100pct_validation_interval_preserved": true,
+    "swin_t_100pct_max_iters_preserved": true,
+    "swin_t_100pct_hook_order_exact": true,
+    "swin_t_100pct_one_budget_hook": true,
+    "swin_t_100pct_one_sup_checkpoint_hook": true,
+    "swin_t_100pct_target_updates_preserved": true,
+    "swin_t_100pct_runtime_metric_key_exact": true,
+    "swin_t_100pct_native_default_checkpoint_disabled": true,
+    "all_10_configs_checked": true,
+    "runtime_actual_update_target_reached": true,
+    "runtime_raw_iterations_include_skips": true,
+    "runtime_validation_updates_exact": true,
+    "runtime_validation_raw_iterations_shifted": true,
+    "best_model_exists": true,
+    "last_model_exists": true,
+    "validation_best_exists": true,
+    "validation_history_exists": true,
+    "checkpoint_index_exists": true,
+    "runtime_events_exists": true,
+    "validation_best_selection_split": true,
+    "validation_best_metric_semantic_name": true,
+    "validation_best_rule_exact": true,
+    "validation_best_tie_break_exact": true,
+    "best_selected_at_update_344": true,
+    "best_selected_metric_is_055": true,
+    "tie_at_516_does_not_replace_best": true,
+    "validation_best_path_exact": true,
+    "validation_best_sha_matches_file": true,
+    "history_header_exact": true,
+    "history_has_three_validation_rows": true,
+    "history_updates_exact": true,
+    "history_scores_exact": true,
+    "history_candidate_sequence_exact": true,
+    "history_best_so_far_sequence_exact": true,
+    "best_update_events_only_on_strict_improvement": true,
+    "tie_does_not_emit_best_update_event": true,
+    "checkpoint_policy_locked": true,
+    "checkpoint_index_roles_exact": true,
+    "sup_checkpoint_index_has_no_ssl_model_role": true,
+    "best_index_update_is_344": true,
+    "best_index_metric_is_055": true,
+    "best_index_path_exact": true,
+    "best_index_sha_matches_file": true,
+    "best_index_retained": true,
+    "last_index_update_is_terminal_516": true,
+    "last_index_path_exact": true,
+    "last_index_sha_matches_file": true,
+    "last_index_retained": true,
+    "best_checkpoint_has_state_dict": true,
+    "last_checkpoint_has_state_dict": true,
+    "best_and_last_are_distinct_materializations": true,
+    "persisted_best_state_restores_score": true,
+    "persisted_best_state_restores_update": true,
+    "official_training_remains_unauthorized": true,
+    "test_split_not_used_for_checkpoint_selection": true,
+    "ssl_ema_checkpoint_logic_not_in_s3_12_fixture": true
+  },
+  "check_count": 138,
+  "failed_checks": [],
+  "all_checks_pass": true
+}

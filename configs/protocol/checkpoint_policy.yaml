@@ -4,6 +4,10 @@
 
 primary_metric: "mAP@0.5:0.95"
 checkpoint_selection_split: "val"
+
+supervised_best_selection:
+  rule: "ARGMAX_VALIDATION_BBOX_MAP_50_95"
+  tie_break: "STRICT_GREATER_KEEP_EARLIEST_MAX"
 test_usage: "final_evaluation_only"
 
 # Hard rules. Violating any of these invalidates reported results.

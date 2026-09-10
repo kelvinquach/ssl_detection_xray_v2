@@ -944,6 +944,7 @@ Hidden U GT chỉ có thể tồn tại trong offline construction/audit artifac
 
 ```text
 BEST = argmax validation bbox mAP@[0.50:0.95]
+SUP BEST tie-break = STRICT >; equal metric keeps existing BEST (earliest maximum)
 retain BEST + LAST
 ```
 
