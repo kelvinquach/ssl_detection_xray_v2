@@ -946,6 +946,11 @@ Hidden U GT chỉ có thể tồn tại trong offline construction/audit artifac
 BEST = argmax validation bbox mAP@[0.50:0.95]
 SUP BEST tie-break = STRICT >; equal metric keeps existing BEST (earliest maximum)
 retain BEST + LAST
+LATEST_RESUME = operational only
+SUP LATEST_RESUME cadence = update 0 + every 172 actual optimizer updates
+LATEST_RESUME must remain independent from BEST/LAST
+SUP resume continuation = SAME attempt_id from checkpoints/latest_resume.pth
+Technical retry = NEW attempt_id, same logical run_id, same exact training_seed
 ```
 
 Official supervised evaluation model = BEST checkpoint.

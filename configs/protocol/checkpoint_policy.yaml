@@ -8,6 +8,16 @@ checkpoint_selection_split: "val"
 supervised_best_selection:
   rule: "ARGMAX_VALIDATION_BBOX_MAP_50_95"
   tie_break: "STRICT_GREATER_KEEP_EARLIEST_MAX"
+
+supervised_latest_resume:
+  role: "OPERATIONAL_ONLY"
+  filename: "latest_resume.pth"
+  initial_optimizer_update: 0
+  refresh_interval_actual_optimizer_updates: 172
+  rolling: true
+  independent_from_best_last: true
+  resume_scope: "SAME_ATTEMPT_CONTINUATION"
+  technical_retry_scope: "NEW_ATTEMPT_SAME_LOGICAL_RUN_SAME_EXACT_TRAINING_SEED"
 test_usage: "final_evaluation_only"
 
 # Hard rules. Violating any of these invalidates reported results.

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Optional
 
 from mmengine.logging import print_log
@@ -16,6 +17,7 @@ from src.utils.resume_checkpoint_hook import (
     RUNNER_PENDING_RNG_RESTORE_ATTR,
 )
 from src.utils.seed import restore_full_rng_state
+from src.utils.training_event_logger import TrainingEventLogger
 
 
 RUNNER_VALIDATION_HISTORY_ATTR = "_s3_actual_update_validation_history"
@@ -136,6 +138,20 @@ class ActualUpdateValidationIterBasedTrainLoop(ResumeAwareIterBasedTrainLoop):
                 )
 
             restore_full_rng_state(rng_state)
+
+            TrainingEventLogger(
+                train_log_path=Path(self.runner.work_dir) / "train.jsonl",
+                runtime_events_path=(
+                    Path(self.runner.work_dir) / "runtime_events.jsonl"
+                ),
+            ).log_runtime_event(
+                "RESUME_RESTORE",
+                optimizer_update=self._counter().count,
+                raw_iteration=int(self.runner.iter),
+                training_seed=int(self.runner.seed),
+                checkpoint_path="checkpoints/latest_resume.pth",
+            )
+
             setattr(
                 self.runner,
                 RUNNER_PENDING_RNG_RESTORE_ATTR,
