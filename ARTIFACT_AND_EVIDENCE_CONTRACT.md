@@ -11,6 +11,7 @@
 **Scientific source SHA-256 at lock:** `a5f63ff018ee28a37ad2daa3fff337daf6b30faf34d9f12c6ff5c0fa92fe5237`  
 **Implementation handoff SHA-256 at lock:** `d70e556d45f4a54a5e0498842b4932deef7991de0d986095ec85e546dcc2d026`  
 **Final cross-check:** `PASS — 88/88 audited criteria`  
+**Controlled revision note (2026-09-11):** Researcher-approved scheduler clarification synchronizes the rule `LR drop 1 = 2/3 × U_opt` and `LR drop 2 = 11/12 × U_opt`; 100%-SUP (`U_opt=10284`) therefore uses milestones `[6856,9427]`. Existing `at lock` SHA-256 values below refer to the previous governance lock and must be recomputed when the updated canonical `sn-article.tex`, implementation handoff, and artifact contract are re-locked.
 **Priority rule:** Nếu tài liệu này xung đột với Methodology trong `sn-article.tex`, `sn-article.tex` thắng. Nếu implementation không đáp ứng được scientific protocol, phải dừng và xử lý như controlled revision; không được âm thầm sửa thiết kế nghiên cứu.
 
 ---
@@ -618,10 +619,24 @@ artifacts/preflight/
 
 ### 6.1. 100%-SUP reference path
 
-100%-SUP có `10284` optimizer updates. Nếu implementation sử dụng path/scheduler
-khác với low-label schedules thì path đó phải được pilot trực tiếp.
+100%-SUP có `10284` **actual optimizer updates**. Scheduler phải dùng cùng
+relative-position rule đã khóa trong scientific/implementation protocol:
 
-Nếu dùng cùng structural scheduler code, vẫn phải có automated evidence:
+```text
+LR drop 1 = 2/3 × U_opt
+LR drop 2 = 11/12 × U_opt
+```
+
+Do đó đối với 100%-SUP:
+
+```text
+expected_updates = 10284
+scheduler milestones = [6856, 9427]
+```
+
+Nếu implementation sử dụng path/scheduler khác với low-label schedules thì path đó
+phải được pilot trực tiếp. Nếu dùng cùng structural scheduler code, vẫn phải có
+automated evidence:
 
 ```text
 schedule_100pct_10284_preflight.json
@@ -632,10 +647,16 @@ chứng minh:
 ```text
 expected_updates = 10284
 actual-update accounting = PASS
+scheduler_rule = RELATIVE_POSITIONS_2_3_AND_11_12
+scheduler_milestones = [6856, 9427]
 scheduler milestones/rule = MATCH FROZEN CONFIG
 validation interval = 172 actual optimizer updates
 checkpoint path = SAME VERIFIED IMPLEMENTATION FAMILY
 ```
+
+Automated evidence cũng phải chứng minh scheduler tiến theo **actual optimizer
+updates**; raw iteration/microbatch hoặc AMP-skipped optimizer step không được làm
+dịch scheduler progress.
 
 Không được suy diễn 100%-SUP là PASS chỉ vì 2064-update path đã PASS.
 
@@ -816,7 +837,7 @@ Tối thiểu:
 05 SSL R50
 06 SSL Swin-T
 07 1% scheduler/update path
-08 standard 2064-update path + explicit 100%-SUP/10284 reference-path evidence
+08 standard 2064-update path + explicit 100%-SUP/10284 path `[6856,9427]` reference-path evidence
 09 image–GT bbox geometry
 10 image–pseudo-box geometry
 11 Teacher initialization
@@ -1827,6 +1848,22 @@ training_seed_list:
 
 Không ghi provenance của exact 10 integer values là `sn-article.tex` nếu canonical
 scientific source chỉ khóa policy 10 seeds chứ không liệt kê chính các integer đó.
+
+Scheduler fields trong frozen configuration phải ghi rõ:
+
+```yaml
+scheduler_relative_drop_positions:
+  value: [2/3, 11/12]
+  basis: ACTUAL_OPTIMIZER_UPDATE
+  change_permission: PROHIBITED
+
+scheduler_milestones:
+  1pct: [688, 946]
+  5pct: [1376, 1892]
+  10pct: [1376, 1892]
+  20pct: [1376, 1892]
+  100pct_sup: [6856, 9427]
+```
 
 Mỗi frozen executable config phải có SHA-256.
 
@@ -3103,6 +3140,7 @@ condition_role mismatch
 wrong class mapping
 unexpected augmentation
 wrong optimizer/update budget
+wrong scheduler relative-position rule or milestones
 wrong effective batch
 hidden-U annotations detected
 wrong EMA settings

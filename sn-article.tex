@@ -4231,10 +4231,17 @@ Phương trình~\eqref{eq:supervised_full_label_update_budget} là các quyết 
 được xác định trước của nghiên cứu, không phải các giá trị bắt buộc được kế
 thừa từ một paper bên ngoài.
 
-Đối với lịch huấn luyện 2064 optimizer updates, các mốc giảm learning rate được
-đặt xấp xỉ tại update 1376 và 1892. Với ngân sách \(1\%\), các vị trí tương ứng
-được điều chỉnh theo tỷ lệ để giữ cấu trúc scheduler tương thích với tổng ngân
-sách huấn luyện.
+Để duy trì cùng cấu trúc scheduler giữa các điều kiện có ngân sách huấn luyện
+khác nhau, nghiên cứu xác định hai mốc giảm learning rate tại các vị trí tương
+đối bằng \(2/3\) và \(11/12\) của tổng ngân sách actual optimizer updates.
+Theo quy tắc này, đối với các điều kiện \(5\%\), \(10\%\) và \(20\%\), mỗi điều
+kiện có 2064 optimizer updates và các mốc giảm learning rate lần lượt là update
+1376 và 1892. Với ngân sách \(1\%\) gồm 1032 optimizer updates, các mốc tương
+ứng là update 688 và 946. Đối với điều kiện supervised tham chiếu sử dụng
+\(100\%\) dữ liệu có nhãn với ngân sách 10284 optimizer updates, các mốc tương
+ứng được đặt tại update 6856 và 9427. Quy tắc này được xác định theo vị trí
+tương đối trong tổng ngân sách cập nhật nhằm giữ nhất quán cấu trúc scheduler
+giữa các điều kiện huấn luyện có độ dài khác nhau.
 
 Validation được thực hiện sau mỗi 172 optimizer updates. Khoảng cách này được
 giữ như một quy tắc thống nhất để theo dõi tiến trình huấn luyện và hỗ trợ lựa

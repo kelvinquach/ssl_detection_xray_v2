@@ -4,6 +4,7 @@
 **Mục đích:** Bàn giao cho co-worker để bắt đầu implementation theo đúng Methodology đã được giảng viên chốt.  
 **Scientific source of truth:** `sn-article.tex`.  
 **Trạng thái:** `FINAL IMPLEMENTATION HANDOFF / PRE-IMPLEMENTATION`.  
+**Controlled revision note (2026-09-11):** Researcher-approved scheduler clarification: LR drops are fixed at relative positions `2/3` and `11/12` of total actual optimizer updates, yielding milestones `[688,946]`, `[1376,1892]`, and `[6856,9427]` for the locked 1%, 5/10/20%, and 100%-SUP budgets respectively. Canonical source/contract hashes must be recomputed at the next governance re-lock after the updated `sn-article.tex` is saved.
 **Nguyên tắc ưu tiên:** Nếu bất kỳ code/config nào xung đột với Methodology, phải sửa implementation để khớp Methodology. Không được tự thay đổi thiết kế nghiên cứu cho phù hợp với code. Mọi thay đổi khoa học sau bàn giao phải được xử lý như một controlled revision và báo lại researcher.
 
 ---
@@ -697,14 +698,35 @@ Official optimizer-update budgets:
 | 20% | 2.064 |
 | 100%-SUP | 10.284 |
 
-Đối với 2.064-update schedule:
+Scheduler dùng cùng cấu trúc tương đối theo **actual optimizer updates** cho
+mọi ngân sách huấn luyện đã khóa. Hai mốc giảm learning rate được đặt tại:
 
 ```text
-LR drop 1 ≈ update 1376
-LR drop 2 ≈ update 1892
+LR drop 1 = 2/3 × U_opt
+LR drop 2 = 11/12 × U_opt
 ```
 
-1% dùng proportional locations theo cùng scheduler structure.
+Các mốc cụ thể:
+
+| Budget | U_opt | LR drop 1 | LR drop 2 |
+|---|---:|---:|---:|
+| 1% | 1.032 | 688 | 946 |
+| 5% | 2.064 | 1.376 | 1.892 |
+| 10% | 2.064 | 1.376 | 1.892 |
+| 20% | 2.064 | 1.376 | 1.892 |
+| 100%-SUP | 10.284 | 6.856 | 9.427 |
+
+Tương đương:
+
+```text
+1%        → milestones = [688, 946]
+5/10/20%  → milestones = [1376, 1892]
+100%-SUP  → milestones = [6856, 9427]
+```
+
+Không được tự thay đổi các vị trí tương đối hoặc milestones này dựa trên kết quả
+pilot/validation. Mọi scheduler phải tiến theo **actual optimizer update**, không
+theo raw iteration/microbatch.
 
 Validation:
 
@@ -1563,9 +1585,14 @@ sẽ xuất hiện trong official runs phải được kiểm tra bằng test/pi
 
 Đặc biệt:
 
-- schedule 1% phải được kiểm tra riêng vì update budget khác;
+- schedule 1% phải được kiểm tra riêng vì update budget khác và phải khớp
+  `milestones = [688, 946]`;
 - schedule 5%/10%/20% có thể dùng cùng structural path nếu config equivalence được
-  chứng minh bằng automated config diff/assertion;
+  chứng minh bằng automated config diff/assertion; scheduler milestones phải khớp
+  `[1376, 1892]`;
+- 100%-SUP reference phải có explicit preflight evidence cho `10284` actual optimizer
+  updates và `milestones = [6856, 9427]`; không được suy diễn PASS chỉ từ
+  2064-update path;
 - R50 và Swin-T phải đều được smoke/pilot vì optimizer/backbone implementation khác;
 - SUP và SSL phải đều được kiểm tra vì data flow và model state khác;
 - SSL phải kiểm tra cả normal pseudo-label batch và empty pseudo-label batch;
@@ -1776,7 +1803,7 @@ khi **đồng thời** thỏa tất cả điều kiện sau:
 5. SSL R50 execution path = PASS
 6. SSL Swin-T execution path = PASS
 7. 1% scheduler/update path = PASS
-8. standard 2064-update scheduler path = PASS
+8. standard 2064-update scheduler path + explicit 100%-SUP/10284 reference-path evidence = PASS
 9. image–GT bbox geometry alignment = PASS
 10. image–pseudo-box geometry alignment = PASS
 11. Teacher initialization = PASS
@@ -2020,6 +2047,7 @@ Nguồn ưu tiên tuyệt đối: `sn-article.tex`.
 | R50/Swin architectures | MATCH | Faster R-CNN + FPN; ImageNet-1K backbone pretraining |
 | SUP optimizer/training config | MATCH | architecture-specific recipe preserved |
 | Optimizer-update budgets | MATCH | 1032/2064/2064/2064; 100%-SUP 10284 |
+| Scheduler milestones | MATCH | relative positions `2/3` and `11/12` of `U_opt`; 1% `[688,946]`; 5/10/20% `[1376,1892]`; 100%-SUP `[6856,9427]` |
 | Validation/checkpoint | MATCH | interval 172; BEST by val bbox mAP@[.50:.95]; retain BEST/LAST |
 | SSL Teacher/Student | MATCH | same architecture; Teacher initialized from Student; no burn-in |
 | EMA | MATCH | momentum=.001; skip_buffers=True; actual optimizer-step timing |
