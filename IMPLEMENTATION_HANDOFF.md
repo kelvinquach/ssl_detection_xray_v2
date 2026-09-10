@@ -675,6 +675,9 @@ native Swin no-decay rules retained
 AMP = ON
 gradient clipping = OFF
 all backbone stages = trainable
+R50 BatchNorm mode during training = eval (norm_eval=True)
+R50 BatchNorm running mean/variance = not updated during training
+R50 BatchNorm affine parameters remain trainable
 ```
 
 ---

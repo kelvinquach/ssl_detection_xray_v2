@@ -7,7 +7,7 @@
     "scientific_source_name":  "sn-article.tex",
     "scientific_source_sha256":  "a5f63ff018ee28a37ad2daa3fff337daf6b30faf34d9f12c6ff5c0fa92fe5237",
     "implementation_contract_name":  "IMPLEMENTATION_HANDOFF.md",
-    "implementation_contract_sha256":  "d70e556d45f4a54a5e0498842b4932deef7991de0d986095ec85e546dcc2d026",
+    "implementation_contract_sha256":  "aeeae922add482ffee3ca304dddce8b772ca737c56865853adb4b3e4fbb28aa1",
     "priority_order":  [
                            "sn-article.tex",
                            "IMPLEMENTATION_HANDOFF.md",
