@@ -601,6 +601,9 @@ Pretraining:
 ```text
 R50 backbone   = ImageNet-1K pretrained
 Swin-T backbone = ImageNet-1K pretrained
+Swin-T checkpoint source = https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth
+Swin-T checkpoint SHA-256 = 9f71c168d837d1b99dd1dc29e14990a7a9e8bdc5f673d46b04fe36fe15590ad3
+Swin-T loading rule = verify SHA-256 before model construction; load as backbone-only Pretrained init_cfg with convert_weights=True
 COCO detector-level initialization = PROHIBITED
 ```
 

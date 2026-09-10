@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "stage": "S3.02",
+  "scope": "supervised_swin_t_execution_path_preflight",
+  "official_training_authorized": false,
+  "config": {
+    "path": "configs/supervised/s3_02_faster_rcnn_swin_t_fpn_sup.py",
+    "sha256": "cceed1f65333d80df5be2fdec25fbcec6d9c307638b1c690a3151c7c49f9cbe6",
+    "expected_sha256": "cceed1f65333d80df5be2fdec25fbcec6d9c307638b1c690a3151c7c49f9cbe6"
+  },
+  "checkpoint": {
+    "path": "/workspace/ssod/cache/pretrained/swin_tiny_patch4_window7_224.pth",
+    "exists": true,
+    "sha256": "9f71c168d837d1b99dd1dc29e14990a7a9e8bdc5f673d46b04fe36fe15590ad3",
+    "expected_sha256": "9f71c168d837d1b99dd1dc29e14990a7a9e8bdc5f673d46b04fe36fe15590ad3"
+  },
+  "dataset": {
+    "key": "L_1pct",
+    "length": 34,
+    "image_id": 267,
+    "gt_instance_count": 4,
+    "input_shape_before_preprocessor": [
+      3,
+      800,
+      800
+    ],
+    "input_batch_shape_after_preprocessor": [
+      1,
+      3,
+      800,
+      800
+    ]
+  },
+  "model": {
+    "type": "FasterRCNN",
+    "backbone_type": "SwinTransformer",
+    "embed_dims": 96,
+    "depths": [
+      2,
+      2,
+      6,
+      2
+    ],
+    "num_heads": [
+      3,
+      6,
+      12,
+      24
+    ],
+    "window_size": 7,
+    "out_indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "convert_weights": true,
+    "frozen_stages": -1,
+    "backbone_init": {
+      "type": "Pretrained",
+      "checkpoint": "/workspace/ssod/cache/pretrained/swin_tiny_patch4_window7_224.pth"
+    },
+    "neck_type": "FPN",
+    "neck_in_channels": [
+      96,
+      192,
+      384,
+      768
+    ],
+    "num_classes": 14,
+    "load_from": null,
+    "frozen_backbone_param_count": 0
+  },
+  "runtime": {
+    "device": "cuda:0",
+    "torch_version": "2.1.0",
+    "cuda_runtime": "11.8"
+  },
+  "smoke_test": {
+    "loss_terms": {
+      "loss_rpn_cls": 0.7413589954376221,
+      "loss_rpn_bbox": 0.019554683938622475,
+      "loss_cls": 2.89530348777771,
+      "acc": 0.0,
+      "loss_bbox": 0.0007397833978757262
+    },
+    "total_loss": 3.656956911087036,
+    "grad_param_count": 207
+  },
+  "checks": {
+    "config_sha256_matches_preflight_identity": true,
+    "model_type_is_faster_rcnn": true,
+    "backbone_is_swin_t": true,
+    "swin_t_architecture_matches_canonical": true,
+    "neck_is_fpn": true,
+    "fpn_in_channels_match_swin_t": true,
+    "imagenet_backbone_initialization": true,
+    "checkpoint_sha256_matches_lock": true,
+    "no_detector_level_checkpoint": true,
+    "detection_class_count_is_14": true,
+    "all_backbone_parameters_trainable": true,
+    "swin_frozen_stages_locked_minus1": true,
+    "labeled_dataset_is_1pct_34_images": true,
+    "input_has_three_identical_channels": true,
+    "loss_forward_succeeded": true,
+    "backward_produced_gradients": true,
+    "cuda_execution": true
+  },
+  "check_count": 17,
+  "failed_checks": [],
+  "all_checks_pass": true
+}

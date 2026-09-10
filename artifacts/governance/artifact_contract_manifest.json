@@ -1,4 +1,4 @@
-﻿{
+{
     "schema_version":  "1.1",
     "artifact_contract_version":  "1.1.0",
     "artifact_type":  "ARTIFACT_EVIDENCE_CONTRACT_MANIFEST",
@@ -7,7 +7,7 @@
     "scientific_source_name":  "sn-article.tex",
     "scientific_source_sha256":  "a5f63ff018ee28a37ad2daa3fff337daf6b30faf34d9f12c6ff5c0fa92fe5237",
     "implementation_contract_name":  "IMPLEMENTATION_HANDOFF.md",
-    "implementation_contract_sha256":  "aeeae922add482ffee3ca304dddce8b772ca737c56865853adb4b3e4fbb28aa1",
+    "implementation_contract_sha256":  "0cf1d023ad3c01c6ca2f4f11d45ab6421bc8847b553a9fc8086bd3da5fd4a053",
     "priority_order":  [
                            "sn-article.tex",
                            "IMPLEMENTATION_HANDOFF.md",
