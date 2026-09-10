@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "stage": "S3.06",
+  "scope": "supervised_augmentation_pipeline_manifest",
+  "official_training_authorized": false,
+  "scientific_contract": {
+    "pipeline": "Load -> Resize -> Pack",
+    "load_annotations_is_supervised_detection_plumbing": true,
+    "resize": {
+      "scale": [
+        1333,
+        800
+      ],
+      "keep_ratio": true
+    },
+    "pad": {
+      "size_divisor": 32
+    },
+    "default_flip": false,
+    "default_crop": false,
+    "default_rotation": false,
+    "default_mosaic": false,
+    "default_aggressive_photometric_augmentation": false
+  },
+  "pipeline_identity": {
+    "source": "configs/dataset/s2_coco_dataset.py::PIPELINE",
+    "labeled_pipeline_sha256": "1a3a61907a17c60df390c1add85e42a1f024708b9941bfd80d22f94226db8de4",
+    "expected_labeled_pipeline_sha256": "1a3a61907a17c60df390c1add85e42a1f024708b9941bfd80d22f94226db8de4",
+    "pipeline": [
+      {
+        "type": "LoadImageFromFile",
+        "color_type": "color"
+      },
+      {
+        "type": "LoadAnnotations",
+        "with_bbox": true
+      },
+      {
+        "type": "Resize",
+        "scale": [
+          1333,
+          800
+        ],
+        "keep_ratio": true
+      },
+      {
+        "type": "Pad",
+        "size_divisor": 32
+      },
+      {
+        "type": "PackDetInputs"
+      }
+    ]
+  },
+  "augmentation_rng_strategy": "DETERMINISTIC_SUP_PIPELINE_NO_STOCHASTIC_AUGMENTATION",
+  "runtime_pipeline": {
+    "dataset_key": "L_1pct",
+    "compose_class": "Compose",
+    "transform_count": 5,
+    "transform_names": [
+      "LoadImageFromFile",
+      "LoadAnnotations",
+      "Resize",
+      "Pad",
+      "PackDetInputs"
+    ],
+    "transform_repr": [
+      "LoadImageFromFile(ignore_empty=False, to_float32=False, color_type='color', imdecode_backend='cv2', backend_args=None)",
+      "LoadAnnotations(with_bbox=True, with_label=True, with_mask=False, with_seg=False, poly2mask=True, imdecode_backend='cv2', backend_args=None)",
+      "Resize(scale=(1333, 800), scale_factor=None, keep_ratio=True, clip_object_border=True), backend=cv2), interpolation=bilinear)",
+      "Pad(size=None, size_divisor=32, pad_to_square=False, pad_val={'img': 0, 'seg': 255}), padding_mode=constant)",
+      "PackDetInputs(meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape', 'scale_factor', 'flip', 'flip_direction'))"
+    ],
+    "prohibited_transforms_present": []
+  },
+  "checks": {
+    "labeled_pipeline_sha256_match": true,
+    "pipeline_exact_definition_match": true,
+    "runtime_transform_count_is_5": true,
+    "runtime_transform_order_match": true,
+    "resize_scale_is_1333_800": true,
+    "resize_keep_ratio_true": true,
+    "pad_size_divisor_is_32": true,
+    "prohibited_augmentation_absent": true,
+    "supervised_pipeline_has_no_stochastic_augmentation": true,
+    "official_training_remains_unauthorized": true
+  },
+  "check_count": 10,
+  "failed_checks": [],
+  "all_checks_pass": true
+}
