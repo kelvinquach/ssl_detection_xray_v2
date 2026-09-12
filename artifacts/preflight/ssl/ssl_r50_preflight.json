@@ -1,0 +1,623 @@
+{
+  "schema_version": "1.0",
+  "stage": "S4.18",
+  "scope": "ssl_r50_execution_path_preflight",
+  "official_training_authorized": false,
+  "final_test_authorized": false,
+  "config_matrix": {
+    "1pct": {
+      "path": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_1pct.py",
+      "sha256": "8d5d54b45c58835d825ad4e3bc2f7dcb10d9364ba28edf0a3871e824edfdd454",
+      "expected_sha256": "8d5d54b45c58835d825ad4e3bc2f7dcb10d9364ba28edf0a3871e824edfdd454",
+      "expected_optimizer_updates": 1032,
+      "hook_types": [
+        "TeacherInitializationHook",
+        "ProtocolResumeCheckpointHook",
+        "ActualUpdateMeanTeacherHook",
+        "ActualUpdateBudgetSchedulerHook",
+        "SSLLatestResumeCheckpointHook",
+        "SSLTrainingSummaryHook"
+      ],
+      "checks": {
+        "config_sha256_matches": true,
+        "model_is_empty_pseudo_safe_softteacher": true,
+        "detector_is_faster_rcnn": true,
+        "backbone_is_resnet50": true,
+        "neck_is_fpn": true,
+        "imagenet_backbone_only": true,
+        "num_classes_is_14": true,
+        "all_backbone_stages_trainable": true,
+        "r50_norm_eval_true": true,
+        "amp_enabled": true,
+        "gradient_clipping_off": true,
+        "optimizer_is_locked_sgd": true,
+        "sup_weight_is_1": true,
+        "unsup_weight_is_4": true,
+        "initial_pseudo_threshold_is_0_5": true,
+        "rpn_pseudo_threshold_is_0_9": true,
+        "cls_pseudo_threshold_is_0_9": true,
+        "reg_pseudo_threshold_is_0_02": true,
+        "batch_size_is_8": true,
+        "sampler_is_multisource": true,
+        "source_ratio_is_1_to_1": true,
+        "actual_update_validation_loop": true,
+        "max_updates_match_budget": true,
+        "validation_interval_is_172": true,
+        "required_hooks_present_once": true,
+        "actual_update_budget_hook_matches": true
+      },
+      "all_checks_pass": true
+    },
+    "5pct": {
+      "path": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_5pct.py",
+      "sha256": "fe738a87a7743b712d49fe05932d1d2a85f842e76f392e390936f905d264ad22",
+      "expected_sha256": "fe738a87a7743b712d49fe05932d1d2a85f842e76f392e390936f905d264ad22",
+      "expected_optimizer_updates": 2064,
+      "hook_types": [
+        "TeacherInitializationHook",
+        "ProtocolResumeCheckpointHook",
+        "ActualUpdateMeanTeacherHook",
+        "ActualUpdateBudgetSchedulerHook",
+        "SSLLatestResumeCheckpointHook",
+        "SSLTrainingSummaryHook"
+      ],
+      "checks": {
+        "config_sha256_matches": true,
+        "model_is_empty_pseudo_safe_softteacher": true,
+        "detector_is_faster_rcnn": true,
+        "backbone_is_resnet50": true,
+        "neck_is_fpn": true,
+        "imagenet_backbone_only": true,
+        "num_classes_is_14": true,
+        "all_backbone_stages_trainable": true,
+        "r50_norm_eval_true": true,
+        "amp_enabled": true,
+        "gradient_clipping_off": true,
+        "optimizer_is_locked_sgd": true,
+        "sup_weight_is_1": true,
+        "unsup_weight_is_4": true,
+        "initial_pseudo_threshold_is_0_5": true,
+        "rpn_pseudo_threshold_is_0_9": true,
+        "cls_pseudo_threshold_is_0_9": true,
+        "reg_pseudo_threshold_is_0_02": true,
+        "batch_size_is_8": true,
+        "sampler_is_multisource": true,
+        "source_ratio_is_1_to_1": true,
+        "actual_update_validation_loop": true,
+        "max_updates_match_budget": true,
+        "validation_interval_is_172": true,
+        "required_hooks_present_once": true,
+        "actual_update_budget_hook_matches": true
+      },
+      "all_checks_pass": true
+    },
+    "10pct": {
+      "path": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_10pct.py",
+      "sha256": "8dcfd50cc14345ddf3e6386dac3b376e2afe7d1114a5512b0964f03b412a9462",
+      "expected_sha256": "8dcfd50cc14345ddf3e6386dac3b376e2afe7d1114a5512b0964f03b412a9462",
+      "expected_optimizer_updates": 2064,
+      "hook_types": [
+        "TeacherInitializationHook",
+        "ProtocolResumeCheckpointHook",
+        "ActualUpdateMeanTeacherHook",
+        "ActualUpdateBudgetSchedulerHook",
+        "SSLLatestResumeCheckpointHook",
+        "SSLTrainingSummaryHook"
+      ],
+      "checks": {
+        "config_sha256_matches": true,
+        "model_is_empty_pseudo_safe_softteacher": true,
+        "detector_is_faster_rcnn": true,
+        "backbone_is_resnet50": true,
+        "neck_is_fpn": true,
+        "imagenet_backbone_only": true,
+        "num_classes_is_14": true,
+        "all_backbone_stages_trainable": true,
+        "r50_norm_eval_true": true,
+        "amp_enabled": true,
+        "gradient_clipping_off": true,
+        "optimizer_is_locked_sgd": true,
+        "sup_weight_is_1": true,
+        "unsup_weight_is_4": true,
+        "initial_pseudo_threshold_is_0_5": true,
+        "rpn_pseudo_threshold_is_0_9": true,
+        "cls_pseudo_threshold_is_0_9": true,
+        "reg_pseudo_threshold_is_0_02": true,
+        "batch_size_is_8": true,
+        "sampler_is_multisource": true,
+        "source_ratio_is_1_to_1": true,
+        "actual_update_validation_loop": true,
+        "max_updates_match_budget": true,
+        "validation_interval_is_172": true,
+        "required_hooks_present_once": true,
+        "actual_update_budget_hook_matches": true
+      },
+      "all_checks_pass": true
+    },
+    "20pct": {
+      "path": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_20pct.py",
+      "sha256": "c84b535aaeece55d871ee90c0329dd894739c6b9a444fe2f56a36403f2b13040",
+      "expected_sha256": "c84b535aaeece55d871ee90c0329dd894739c6b9a444fe2f56a36403f2b13040",
+      "expected_optimizer_updates": 2064,
+      "hook_types": [
+        "TeacherInitializationHook",
+        "ProtocolResumeCheckpointHook",
+        "ActualUpdateMeanTeacherHook",
+        "ActualUpdateBudgetSchedulerHook",
+        "SSLLatestResumeCheckpointHook",
+        "SSLTrainingSummaryHook"
+      ],
+      "checks": {
+        "config_sha256_matches": true,
+        "model_is_empty_pseudo_safe_softteacher": true,
+        "detector_is_faster_rcnn": true,
+        "backbone_is_resnet50": true,
+        "neck_is_fpn": true,
+        "imagenet_backbone_only": true,
+        "num_classes_is_14": true,
+        "all_backbone_stages_trainable": true,
+        "r50_norm_eval_true": true,
+        "amp_enabled": true,
+        "gradient_clipping_off": true,
+        "optimizer_is_locked_sgd": true,
+        "sup_weight_is_1": true,
+        "unsup_weight_is_4": true,
+        "initial_pseudo_threshold_is_0_5": true,
+        "rpn_pseudo_threshold_is_0_9": true,
+        "cls_pseudo_threshold_is_0_9": true,
+        "reg_pseudo_threshold_is_0_02": true,
+        "batch_size_is_8": true,
+        "sampler_is_multisource": true,
+        "source_ratio_is_1_to_1": true,
+        "actual_update_validation_loop": true,
+        "max_updates_match_budget": true,
+        "validation_interval_is_172": true,
+        "required_hooks_present_once": true,
+        "actual_update_budget_hook_matches": true
+      },
+      "all_checks_pass": true
+    }
+  },
+  "prerequisite_evidence": {
+    "teacher_initialization": {
+      "path": "artifacts/preflight/ssl/teacher_initialization_test.json",
+      "exists": true,
+      "sha256": "c110dac233775e71e06e08868d2198abbcb358e1bbfc066b02bcb453c309b358",
+      "expected_sha256": "c110dac233775e71e06e08868d2198abbcb358e1bbfc066b02bcb453c309b358",
+      "content_pass": true,
+      "pass": true
+    },
+    "ema_timing": {
+      "path": "artifacts/preflight/ssl/ema_timing_test.json",
+      "exists": true,
+      "sha256": "2fa821dbe18baea43486bfa163ba578ca15ae71eecf54a2352e208b9cfc0eda0",
+      "expected_sha256": "2fa821dbe18baea43486bfa163ba578ca15ae71eecf54a2352e208b9cfc0eda0",
+      "content_pass": true,
+      "pass": true
+    },
+    "amp_ema_skip": {
+      "path": "artifacts/preflight/ssl/amp_ema_skip_test.json",
+      "exists": true,
+      "sha256": "d8974bf9127407eb227a239e84fa5c59a4e5c6ef16744b58071ca17e0a13d49d",
+      "expected_sha256": "d8974bf9127407eb227a239e84fa5c59a4e5c6ef16744b58071ca17e0a13d49d",
+      "content_pass": true,
+      "pass": true
+    },
+    "empty_pseudo_batch": {
+      "path": "artifacts/preflight/ssl/empty_pseudo_batch_test.json",
+      "exists": true,
+      "sha256": "6ef438c3958444bbd1f4dd7dd69fbefea35af956f2015e38403290e9a4045b99",
+      "expected_sha256": "6ef438c3958444bbd1f4dd7dd69fbefea35af956f2015e38403290e9a4045b99",
+      "content_pass": true,
+      "pass": true
+    },
+    "zero_gt": {
+      "path": "artifacts/preflight/ssl/zero_gt_test.json",
+      "exists": true,
+      "sha256": "24524729a4a7ed7a88639c5d0ab847226a7e2750d20bc3b37085188fc789ecab",
+      "expected_sha256": "24524729a4a7ed7a88639c5d0ab847226a7e2750d20bc3b37085188fc789ecab",
+      "content_pass": true,
+      "pass": true
+    },
+    "ssl_augmentation": {
+      "path": "artifacts/preflight/ssl/ssl_augmentation_manifest.json",
+      "exists": true,
+      "sha256": "6e6fb0d680edd8f4a0da0a765cc9539c0b1a176257b910f67cea0907e8762ebb",
+      "expected_sha256": "6e6fb0d680edd8f4a0da0a765cc9539c0b1a176257b910f67cea0907e8762ebb",
+      "content_pass": true,
+      "pass": true
+    },
+    "pseudo_bbox_alignment": {
+      "path": "artifacts/preflight/ssl/pseudo_bbox_alignment_report.json",
+      "exists": true,
+      "sha256": "27b69568818301ef21a1896fdca290ea4be2fca2ea348d3248e874e4ccc6142c",
+      "expected_sha256": "27b69568818301ef21a1896fdca290ea4be2fca2ea348d3248e874e4ccc6142c",
+      "content_pass": true,
+      "pass": true
+    },
+    "hidden_u_firewall": {
+      "path": "artifacts/preflight/firewall/hidden_u_gt_firewall_report.json",
+      "exists": true,
+      "sha256": "f52fd896ea38b59fd353f191fae74a8303053eea184572973ffa18219432ac01",
+      "expected_sha256": "f52fd896ea38b59fd353f191fae74a8303053eea184572973ffa18219432ac01",
+      "content_pass": true,
+      "pass": true
+    },
+    "ssl_resume_equivalence": {
+      "path": "artifacts/preflight/resume/resume_equivalence_test.json",
+      "exists": true,
+      "sha256": "f92db6919196d9f2f3098053017af57a115896c4544ef5ecc249c097a0ad5e80",
+      "expected_sha256": "f92db6919196d9f2f3098053017af57a115896c4544ef5ecc249c097a0ad5e80",
+      "content_pass": true,
+      "pass": true
+    },
+    "s4_13_real_detector_one_update": {
+      "path": "artifacts/preflight/ssl/s4_13_real_detector_one_update/training_summary.json",
+      "exists": true,
+      "sha256": "fa2a42d10ea2bbe5119da71124e2c305bf255db819158ce7580ca4b09803289f",
+      "expected_sha256": "fa2a42d10ea2bbe5119da71124e2c305bf255db819158ce7580ca4b09803289f",
+      "content_pass": true,
+      "pass": true
+    }
+  },
+  "runtime": {
+    "device": "cuda:0",
+    "torch_version": "2.1.0",
+    "cuda_runtime": "11.8",
+    "raw_branch_counts": {
+      "sup": {
+        "inputs": 4,
+        "data_samples": 4
+      },
+      "unsup_teacher": {
+        "inputs": 4,
+        "data_samples": 4
+      },
+      "unsup_student": {
+        "inputs": 4,
+        "data_samples": 4
+      }
+    },
+    "raw_branch_indices": {
+      "sup": {
+        "inputs": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "data_samples": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "unsup_teacher": {
+        "inputs": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "data_samples": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "unsup_student": {
+        "inputs": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "data_samples": [
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    },
+    "raw_branch_image_ids": {
+      "sup": [
+        4307,
+        267,
+        281,
+        2269
+      ],
+      "unsup_teacher": [
+        2748,
+        594,
+        1973,
+        3214
+      ],
+      "unsup_student": [
+        2748,
+        594,
+        1973,
+        3214
+      ]
+    },
+    "raw_three_identical_channel_checks": {
+      "sup": true,
+      "unsup_teacher": true,
+      "unsup_student": true
+    },
+    "processed_input_shapes": {
+      "sup": [
+        4,
+        3,
+        992,
+        800
+      ],
+      "unsup_teacher": [
+        4,
+        3,
+        1120,
+        832
+      ],
+      "unsup_student": [
+        4,
+        3,
+        1120,
+        832
+      ]
+    },
+    "processed_sample_counts": {
+      "sup": 4,
+      "unsup_teacher": 4,
+      "unsup_student": 4
+    },
+    "teacher_t0_equals_student_t0": true,
+    "student_frozen_backbone_param_count": 0,
+    "teacher_trainable_param_count": 0
+  },
+  "official_ssl_smoke": {
+    "loss_terms": {
+      "sup_loss_rpn_cls": 0.7015706300735474,
+      "sup_loss_rpn_bbox": 0.04263661801815033,
+      "sup_loss_cls": 2.5206856727600098,
+      "sup_acc": 3.857421875,
+      "sup_loss_bbox": 0.01174883171916008,
+      "unsup_loss_rpn_cls": 0.0,
+      "unsup_loss_rpn_bbox": 0.0,
+      "unsup_loss_cls": -0.0,
+      "unsup_loss_bbox": -0.0
+    },
+    "total_loss": 3.276641845703125,
+    "total_loss_finite": true,
+    "student_grad_seen": true,
+    "student_grad_abs_sum": 54523.315683890134,
+    "student_grad_param_count": 189,
+    "teacher_grad_seen": false,
+    "teacher_grad_abs_sum": 0.0,
+    "teacher_grad_param_count": 0
+  },
+  "official_threshold_pseudo_probe": {
+    "canonical_thresholds": {
+      "pseudo_label_initial_score_thr": 0.5,
+      "rpn_pseudo_thr": 0.9,
+      "cls_pseudo_thr": 0.9,
+      "reg_pseudo_thr": 0.02,
+      "unsup_weight": 4.0
+    },
+    "teacher_pseudo_counts": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "total_teacher_pseudo": 0,
+    "projected_pseudo_counts": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "total_projected_pseudo": 0,
+    "normal_pseudo_available_at_t0": false,
+    "canonical_thresholds_modified": false
+  },
+  "controlled_normal_pseudo_smoke": {
+    "test_only_synthetic_pseudo": true,
+    "synthetic_pseudo_counts": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "total_synthetic_pseudo": 4,
+    "loss_terms": {
+      "unsup_loss_rpn_cls": 2.8156914710998535,
+      "unsup_loss_rpn_bbox": 0.031205058097839355,
+      "unsup_loss_cls": 10.049141883850098,
+      "unsup_acc": 4.248046875,
+      "unsup_loss_bbox": 0.010971915908157825
+    },
+    "total_loss": 12.907010078430176,
+    "total_loss_finite": true,
+    "student_grad_seen": true,
+    "student_grad_abs_sum": 202667.7669328004,
+    "student_grad_param_count": 189,
+    "teacher_grad_seen": false,
+    "teacher_grad_abs_sum": 0.0,
+    "teacher_grad_param_count": 0,
+    "canonical_thresholds_before": {
+      "pseudo_label_initial_score_thr": 0.5,
+      "rpn_pseudo_thr": 0.9,
+      "cls_pseudo_thr": 0.9,
+      "reg_pseudo_thr": 0.02,
+      "unsup_weight": 4.0
+    },
+    "canonical_thresholds_after": {
+      "pseudo_label_initial_score_thr": 0.5,
+      "rpn_pseudo_thr": 0.9,
+      "cls_pseudo_thr": 0.9,
+      "reg_pseudo_thr": 0.02,
+      "unsup_weight": 4.0
+    },
+    "optimizer_step_executed": false,
+    "ema_update_executed": false
+  },
+  "deferred_preofficial_requirements": {
+    "ssl_entrypoint_manifest": "Required by artifact contract before official training; not owned by S4.18.",
+    "ssl_swin_preflight": "Owned by S4.19.",
+    "global_preflight_report": "Not closed by S4.18."
+  },
+  "checks": {
+    "1pct_config_sha256_matches": true,
+    "1pct_model_is_empty_pseudo_safe_softteacher": true,
+    "1pct_detector_is_faster_rcnn": true,
+    "1pct_backbone_is_resnet50": true,
+    "1pct_neck_is_fpn": true,
+    "1pct_imagenet_backbone_only": true,
+    "1pct_num_classes_is_14": true,
+    "1pct_all_backbone_stages_trainable": true,
+    "1pct_r50_norm_eval_true": true,
+    "1pct_amp_enabled": true,
+    "1pct_gradient_clipping_off": true,
+    "1pct_optimizer_is_locked_sgd": true,
+    "1pct_sup_weight_is_1": true,
+    "1pct_unsup_weight_is_4": true,
+    "1pct_initial_pseudo_threshold_is_0_5": true,
+    "1pct_rpn_pseudo_threshold_is_0_9": true,
+    "1pct_cls_pseudo_threshold_is_0_9": true,
+    "1pct_reg_pseudo_threshold_is_0_02": true,
+    "1pct_batch_size_is_8": true,
+    "1pct_sampler_is_multisource": true,
+    "1pct_source_ratio_is_1_to_1": true,
+    "1pct_actual_update_validation_loop": true,
+    "1pct_max_updates_match_budget": true,
+    "1pct_validation_interval_is_172": true,
+    "1pct_required_hooks_present_once": true,
+    "1pct_actual_update_budget_hook_matches": true,
+    "5pct_config_sha256_matches": true,
+    "5pct_model_is_empty_pseudo_safe_softteacher": true,
+    "5pct_detector_is_faster_rcnn": true,
+    "5pct_backbone_is_resnet50": true,
+    "5pct_neck_is_fpn": true,
+    "5pct_imagenet_backbone_only": true,
+    "5pct_num_classes_is_14": true,
+    "5pct_all_backbone_stages_trainable": true,
+    "5pct_r50_norm_eval_true": true,
+    "5pct_amp_enabled": true,
+    "5pct_gradient_clipping_off": true,
+    "5pct_optimizer_is_locked_sgd": true,
+    "5pct_sup_weight_is_1": true,
+    "5pct_unsup_weight_is_4": true,
+    "5pct_initial_pseudo_threshold_is_0_5": true,
+    "5pct_rpn_pseudo_threshold_is_0_9": true,
+    "5pct_cls_pseudo_threshold_is_0_9": true,
+    "5pct_reg_pseudo_threshold_is_0_02": true,
+    "5pct_batch_size_is_8": true,
+    "5pct_sampler_is_multisource": true,
+    "5pct_source_ratio_is_1_to_1": true,
+    "5pct_actual_update_validation_loop": true,
+    "5pct_max_updates_match_budget": true,
+    "5pct_validation_interval_is_172": true,
+    "5pct_required_hooks_present_once": true,
+    "5pct_actual_update_budget_hook_matches": true,
+    "10pct_config_sha256_matches": true,
+    "10pct_model_is_empty_pseudo_safe_softteacher": true,
+    "10pct_detector_is_faster_rcnn": true,
+    "10pct_backbone_is_resnet50": true,
+    "10pct_neck_is_fpn": true,
+    "10pct_imagenet_backbone_only": true,
+    "10pct_num_classes_is_14": true,
+    "10pct_all_backbone_stages_trainable": true,
+    "10pct_r50_norm_eval_true": true,
+    "10pct_amp_enabled": true,
+    "10pct_gradient_clipping_off": true,
+    "10pct_optimizer_is_locked_sgd": true,
+    "10pct_sup_weight_is_1": true,
+    "10pct_unsup_weight_is_4": true,
+    "10pct_initial_pseudo_threshold_is_0_5": true,
+    "10pct_rpn_pseudo_threshold_is_0_9": true,
+    "10pct_cls_pseudo_threshold_is_0_9": true,
+    "10pct_reg_pseudo_threshold_is_0_02": true,
+    "10pct_batch_size_is_8": true,
+    "10pct_sampler_is_multisource": true,
+    "10pct_source_ratio_is_1_to_1": true,
+    "10pct_actual_update_validation_loop": true,
+    "10pct_max_updates_match_budget": true,
+    "10pct_validation_interval_is_172": true,
+    "10pct_required_hooks_present_once": true,
+    "10pct_actual_update_budget_hook_matches": true,
+    "20pct_config_sha256_matches": true,
+    "20pct_model_is_empty_pseudo_safe_softteacher": true,
+    "20pct_detector_is_faster_rcnn": true,
+    "20pct_backbone_is_resnet50": true,
+    "20pct_neck_is_fpn": true,
+    "20pct_imagenet_backbone_only": true,
+    "20pct_num_classes_is_14": true,
+    "20pct_all_backbone_stages_trainable": true,
+    "20pct_r50_norm_eval_true": true,
+    "20pct_amp_enabled": true,
+    "20pct_gradient_clipping_off": true,
+    "20pct_optimizer_is_locked_sgd": true,
+    "20pct_sup_weight_is_1": true,
+    "20pct_unsup_weight_is_4": true,
+    "20pct_initial_pseudo_threshold_is_0_5": true,
+    "20pct_rpn_pseudo_threshold_is_0_9": true,
+    "20pct_cls_pseudo_threshold_is_0_9": true,
+    "20pct_reg_pseudo_threshold_is_0_02": true,
+    "20pct_batch_size_is_8": true,
+    "20pct_sampler_is_multisource": true,
+    "20pct_source_ratio_is_1_to_1": true,
+    "20pct_actual_update_validation_loop": true,
+    "20pct_max_updates_match_budget": true,
+    "20pct_validation_interval_is_172": true,
+    "20pct_required_hooks_present_once": true,
+    "20pct_actual_update_budget_hook_matches": true,
+    "all_4_r50_budget_configs_resolve_pass": true,
+    "prerequisite_teacher_initialization_pass": true,
+    "prerequisite_ema_timing_pass": true,
+    "prerequisite_amp_ema_skip_pass": true,
+    "prerequisite_empty_pseudo_batch_pass": true,
+    "prerequisite_zero_gt_pass": true,
+    "prerequisite_ssl_augmentation_pass": true,
+    "prerequisite_pseudo_bbox_alignment_pass": true,
+    "prerequisite_hidden_u_firewall_pass": true,
+    "prerequisite_ssl_resume_equivalence_pass": true,
+    "prerequisite_s4_13_real_detector_one_update_pass": true,
+    "runtime_effective_labeled_batch_is_4": true,
+    "runtime_effective_unlabeled_teacher_batch_is_4": true,
+    "runtime_effective_unlabeled_student_batch_is_4": true,
+    "runtime_l_to_u_ratio_is_1_to_1": true,
+    "teacher_student_unlabeled_image_ids_match": true,
+    "all_raw_branches_three_identical_channels": true,
+    "runtime_model_is_empty_pseudo_safe_softteacher": true,
+    "runtime_student_is_faster_rcnn": true,
+    "runtime_teacher_is_faster_rcnn": true,
+    "runtime_student_backbone_is_resnet": true,
+    "runtime_teacher_backbone_is_resnet": true,
+    "runtime_student_backbone_all_trainable": true,
+    "runtime_teacher_parameters_frozen": true,
+    "runtime_cuda_execution": true,
+    "runtime_teacher_t0_equals_student_t0": true,
+    "preprocessor_preserves_4_4_branch_counts": true,
+    "official_ssl_loss_forward_finite": true,
+    "official_ssl_backward_student_gradient_positive": true,
+    "official_ssl_teacher_has_no_gradient": true,
+    "official_threshold_pseudo_path_executes": true,
+    "controlled_nonempty_pseudo_count_is_4": true,
+    "controlled_normal_pseudo_required_loss_keys_present": true,
+    "controlled_normal_pseudo_loss_finite": true,
+    "controlled_normal_pseudo_loss_requires_grad": true,
+    "controlled_normal_pseudo_student_gradient_positive": true,
+    "controlled_normal_pseudo_teacher_has_no_gradient": true,
+    "canonical_thresholds_not_modified_by_runtime_fixture": true,
+    "empty_pseudo_branch_has_prior_canonical_pass": true,
+    "hidden_u_gt_firewall_has_prior_canonical_pass": true,
+    "resume_equivalence_has_prior_canonical_pass": true,
+    "amp_ema_skip_has_prior_canonical_pass": true
+  },
+  "check_count": 146,
+  "failed_checks": [],
+  "all_checks_pass": true,
+  "overall_pass": true
+}
