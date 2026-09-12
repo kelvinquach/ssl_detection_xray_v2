@@ -1,0 +1,213 @@
+{
+  "all_8_configs_resolve_pass": true,
+  "canonical_thresholds_modified": false,
+  "config_results": [
+    {
+      "batch_size": 8,
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_1pct.py",
+      "model_type": "EmptyPseudoSafeSoftTeacher",
+      "pass": true,
+      "sampler_type": "MultiSourceSampler",
+      "source_ratio": [
+        1,
+        1
+      ],
+      "sup_weight": 1.0,
+      "unsup_weight": 4.0
+    },
+    {
+      "batch_size": 8,
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_5pct.py",
+      "model_type": "EmptyPseudoSafeSoftTeacher",
+      "pass": true,
+      "sampler_type": "MultiSourceSampler",
+      "source_ratio": [
+        1,
+        1
+      ],
+      "sup_weight": 1.0,
+      "unsup_weight": 4.0
+    },
+    {
+      "batch_size": 8,
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_10pct.py",
+      "model_type": "EmptyPseudoSafeSoftTeacher",
+      "pass": true,
+      "sampler_type": "MultiSourceSampler",
+      "source_ratio": [
+        1,
+        1
+      ],
+      "sup_weight": 1.0,
+      "unsup_weight": 4.0
+    },
+    {
+      "batch_size": 8,
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_20pct.py",
+      "model_type": "EmptyPseudoSafeSoftTeacher",
+      "pass": true,
+      "sampler_type": "MultiSourceSampler",
+      "source_ratio": [
+        1,
+        1
+      ],
+      "sup_weight": 1.0,
+      "unsup_weight": 4.0
+    },
+    {
+      "batch_size": 8,
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_1pct.py",
+      "model_type": "EmptyPseudoSafeSoftTeacher",
+      "pass": true,
+      "sampler_type": "MultiSourceSampler",
+      "source_ratio": [
+        1,
+        1
+      ],
+      "sup_weight": 1.0,
+      "unsup_weight": 4.0
+    },
+    {
+      "batch_size": 8,
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_5pct.py",
+      "model_type": "EmptyPseudoSafeSoftTeacher",
+      "pass": true,
+      "sampler_type": "MultiSourceSampler",
+      "source_ratio": [
+        1,
+        1
+      ],
+      "sup_weight": 1.0,
+      "unsup_weight": 4.0
+    },
+    {
+      "batch_size": 8,
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_10pct.py",
+      "model_type": "EmptyPseudoSafeSoftTeacher",
+      "pass": true,
+      "sampler_type": "MultiSourceSampler",
+      "source_ratio": [
+        1,
+        1
+      ],
+      "sup_weight": 1.0,
+      "unsup_weight": 4.0
+    },
+    {
+      "batch_size": 8,
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_20pct.py",
+      "model_type": "EmptyPseudoSafeSoftTeacher",
+      "pass": true,
+      "sampler_type": "MultiSourceSampler",
+      "source_ratio": [
+        1,
+        1
+      ],
+      "sup_weight": 1.0,
+      "unsup_weight": 4.0
+    }
+  ],
+  "expected_contract": {
+    "empty_pseudo_batch_no_crash": true,
+    "empty_pseudo_batch_no_fake_supervision": true
+  },
+  "official_training": false,
+  "optimizer_step_executed": false,
+  "overall_pass": true,
+  "runtime_results": [
+    {
+      "all_losses_finite": true,
+      "all_unsup_losses_zero": true,
+      "architecture": "R50",
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_1pct.py",
+      "forced_initial_pseudo_threshold_test_only": 1.1,
+      "loss_keys": [
+        "unsup_loss_bbox",
+        "unsup_loss_cls",
+        "unsup_loss_rpn_bbox",
+        "unsup_loss_rpn_cls"
+      ],
+      "loss_values": {
+        "unsup_loss_bbox": -0.0,
+        "unsup_loss_cls": -0.0,
+        "unsup_loss_rpn_bbox": 0.0,
+        "unsup_loss_rpn_cls": 0.0
+      },
+      "model_class": "EmptyPseudoSafeSoftTeacher",
+      "no_crash": true,
+      "no_fake_supervision": true,
+      "parsed_loss": 0.0,
+      "parsed_loss_requires_grad": true,
+      "pass": true,
+      "projected_pseudo_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "rpn_bbox_list_length": 5,
+      "rpn_cls_list_length": 5,
+      "student_grad_abs_sum": 0.0,
+      "student_grad_seen": true,
+      "sup_batch": 4,
+      "teacher_pseudo_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "total_projected_pseudo": 0,
+      "total_teacher_pseudo": 0,
+      "unsup_student_batch": 4,
+      "unsup_teacher_batch": 4
+    },
+    {
+      "all_losses_finite": true,
+      "all_unsup_losses_zero": true,
+      "architecture": "SWIN_T",
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_1pct.py",
+      "forced_initial_pseudo_threshold_test_only": 1.1,
+      "loss_keys": [
+        "unsup_loss_bbox",
+        "unsup_loss_cls",
+        "unsup_loss_rpn_bbox",
+        "unsup_loss_rpn_cls"
+      ],
+      "loss_values": {
+        "unsup_loss_bbox": 0.0,
+        "unsup_loss_cls": 0.0,
+        "unsup_loss_rpn_bbox": 0.0,
+        "unsup_loss_rpn_cls": 0.0
+      },
+      "model_class": "EmptyPseudoSafeSoftTeacher",
+      "no_crash": true,
+      "no_fake_supervision": true,
+      "parsed_loss": 0.0,
+      "parsed_loss_requires_grad": true,
+      "pass": true,
+      "projected_pseudo_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "rpn_bbox_list_length": 5,
+      "rpn_cls_list_length": 5,
+      "student_grad_abs_sum": 0.0,
+      "student_grad_seen": true,
+      "sup_batch": 4,
+      "teacher_pseudo_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "total_projected_pseudo": 0,
+      "total_teacher_pseudo": 0,
+      "unsup_student_batch": 4,
+      "unsup_teacher_batch": 4
+    }
+  ],
+  "task": "S4.14",
+  "test": "empty_pseudo_batch"
+}
