@@ -1,0 +1,16 @@
+{
+  "amp_skipped_step_count": 3,
+  "effective_labeled_batch": 4,
+  "effective_unlabeled_batch": 4,
+  "ema_update_count": 1,
+  "ema_updates_match_optimizer_updates": true,
+  "expected_optimizer_updates": 1,
+  "expected_update_budget_reached": true,
+  "l_u_ratio": "1:1",
+  "labeled_exposure_matches_update_count": true,
+  "labeled_images_consumed_total": 4,
+  "observed_optimizer_updates": 1,
+  "unlabeled_exposure_matches_update_count": true,
+  "unlabeled_images_consumed_total": 4,
+  "validation_events_observed": 0
+}

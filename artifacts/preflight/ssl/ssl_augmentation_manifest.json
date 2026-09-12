@@ -1,0 +1,984 @@
+{
+  "schema_version": "1.1",
+  "stage": "S4",
+  "task": "S4.07",
+  "scope": "unlabeled_weak_teacher_and_strong_student_views",
+  "official_training_authorized": false,
+  "tracker_contract": {
+    "category": "Unlabeled strong",
+    "action": "Strong view -> Student",
+    "constraint": "brightness/contrast U(.90,1.10), grayscale R=G=B.",
+    "expected_result": "MATCH"
+  },
+  "weak_augmentation_id": "7f5343daba335b50d0168b9f52ba771b0eccf4eea3360f9b75705ba811ebabe0",
+  "weak_view_destination": "EMA_TEACHER",
+  "weak_branch_key": "unsup_teacher",
+  "strong_augmentation_id": "15fa1478c634e352782f0f3f3212821b6f82a7e63962f509fdef7b366492a796",
+  "strong_view_status": "VALIDATED_S4_07",
+  "scientific_contract": {
+    "resize_scale": [
+      1333,
+      800
+    ],
+    "keep_ratio": true,
+    "pad_size_divisor": 32,
+    "flip": false,
+    "crop": false,
+    "rotation": false,
+    "photometric_augmentation": false,
+    "hidden_u_ground_truth_used": false
+  },
+  "configs": {
+    "r50": {
+      "config": "configs/ssl/s4_06_soft_teacher_r50_fpn_weak.py",
+      "weak_augmentation_id": "7f5343daba335b50d0168b9f52ba771b0eccf4eea3360f9b75705ba811ebabe0",
+      "branch_field": [
+        "sup",
+        "unsup_teacher",
+        "unsup_student"
+      ],
+      "weak_pipeline": [
+        {
+          "type": "Resize",
+          "scale": [
+            1333,
+            800
+          ],
+          "keep_ratio": true
+        },
+        {
+          "type": "Pad",
+          "size_divisor": 32
+        },
+        {
+          "type": "PackDetInputs",
+          "meta_keys": [
+            "img_id",
+            "img_path",
+            "ori_shape",
+            "img_shape",
+            "scale_factor",
+            "flip",
+            "flip_direction",
+            "homography_matrix"
+          ]
+        }
+      ],
+      "unlabeled_weak_pipeline": [
+        {
+          "type": "LoadImageFromFile",
+          "color_type": "color"
+        },
+        {
+          "type": "LoadEmptyAnnotations"
+        },
+        {
+          "type": "MultiBranch",
+          "branch_field": [
+            "sup",
+            "unsup_teacher",
+            "unsup_student"
+          ],
+          "unsup_teacher": [
+            {
+              "type": "Resize",
+              "scale": [
+                1333,
+                800
+              ],
+              "keep_ratio": true
+            },
+            {
+              "type": "Pad",
+              "size_divisor": 32
+            },
+            {
+              "type": "PackDetInputs",
+              "meta_keys": [
+                "img_id",
+                "img_path",
+                "ori_shape",
+                "img_shape",
+                "scale_factor",
+                "flip",
+                "flip_direction",
+                "homography_matrix"
+              ]
+            }
+          ]
+        }
+      ],
+      "standard_preprocessing": {
+        "type": "DetDataPreprocessor",
+        "mean": [
+          123.675,
+          116.28,
+          103.53
+        ],
+        "std": [
+          58.395,
+          57.12,
+          57.375
+        ],
+        "bgr_to_rgb": true,
+        "pad_size_divisor": 32
+      },
+      "checks": {
+        "model_is_softteacher": true,
+        "multi_branch_preprocessor": true,
+        "inner_standard_preprocessor": true,
+        "branch_field_exact": true,
+        "weak_transform_order_exact": true,
+        "resize_scale_1333_800": true,
+        "resize_keep_ratio": true,
+        "pad_size_divisor_32": true,
+        "homography_retained": true,
+        "no_prohibited_weak_transform": true,
+        "weak_routed_to_unsup_teacher": true,
+        "strong_not_implemented_in_s4_06": true
+      }
+    },
+    "swin": {
+      "config": "configs/ssl/s4_06_soft_teacher_swin_t_fpn_weak.py",
+      "weak_augmentation_id": "7f5343daba335b50d0168b9f52ba771b0eccf4eea3360f9b75705ba811ebabe0",
+      "branch_field": [
+        "sup",
+        "unsup_teacher",
+        "unsup_student"
+      ],
+      "weak_pipeline": [
+        {
+          "type": "Resize",
+          "scale": [
+            1333,
+            800
+          ],
+          "keep_ratio": true
+        },
+        {
+          "type": "Pad",
+          "size_divisor": 32
+        },
+        {
+          "type": "PackDetInputs",
+          "meta_keys": [
+            "img_id",
+            "img_path",
+            "ori_shape",
+            "img_shape",
+            "scale_factor",
+            "flip",
+            "flip_direction",
+            "homography_matrix"
+          ]
+        }
+      ],
+      "unlabeled_weak_pipeline": [
+        {
+          "type": "LoadImageFromFile",
+          "color_type": "color"
+        },
+        {
+          "type": "LoadEmptyAnnotations"
+        },
+        {
+          "type": "MultiBranch",
+          "branch_field": [
+            "sup",
+            "unsup_teacher",
+            "unsup_student"
+          ],
+          "unsup_teacher": [
+            {
+              "type": "Resize",
+              "scale": [
+                1333,
+                800
+              ],
+              "keep_ratio": true
+            },
+            {
+              "type": "Pad",
+              "size_divisor": 32
+            },
+            {
+              "type": "PackDetInputs",
+              "meta_keys": [
+                "img_id",
+                "img_path",
+                "ori_shape",
+                "img_shape",
+                "scale_factor",
+                "flip",
+                "flip_direction",
+                "homography_matrix"
+              ]
+            }
+          ]
+        }
+      ],
+      "standard_preprocessing": {
+        "type": "DetDataPreprocessor",
+        "mean": [
+          123.675,
+          116.28,
+          103.53
+        ],
+        "std": [
+          58.395,
+          57.12,
+          57.375
+        ],
+        "bgr_to_rgb": true,
+        "pad_size_divisor": 32
+      },
+      "checks": {
+        "model_is_softteacher": true,
+        "multi_branch_preprocessor": true,
+        "inner_standard_preprocessor": true,
+        "branch_field_exact": true,
+        "weak_transform_order_exact": true,
+        "resize_scale_1333_800": true,
+        "resize_keep_ratio": true,
+        "pad_size_divisor_32": true,
+        "homography_retained": true,
+        "no_prohibited_weak_transform": true,
+        "weak_routed_to_unsup_teacher": true,
+        "strong_not_implemented_in_s4_06": true
+      }
+    }
+  },
+  "runtime": {
+    "dataset_key": "U_1pct",
+    "image_id": 1,
+    "teacher_branch": "unsup_teacher",
+    "teacher_input_shape_chw": [
+      3,
+      800,
+      800
+    ],
+    "ori_shape": [
+      3072,
+      3072
+    ],
+    "img_shape": [
+      800,
+      800
+    ],
+    "scale_factor": [
+      0.2604166666666667,
+      0.2604166666666667
+    ],
+    "homography_matrix": [
+      [
+        0.2604166567325592,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.2604166567325592,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gt_bbox_count": 0,
+    "sup_branch_is_none": true,
+    "unsup_student_branch_is_none": true
+  },
+  "checks": {
+    "s4_06_r50_model_is_softteacher": true,
+    "s4_06_r50_multi_branch_preprocessor": true,
+    "s4_06_r50_inner_standard_preprocessor": true,
+    "s4_06_r50_branch_field_exact": true,
+    "s4_06_r50_weak_transform_order_exact": true,
+    "s4_06_r50_resize_scale_1333_800": true,
+    "s4_06_r50_resize_keep_ratio": true,
+    "s4_06_r50_pad_size_divisor_32": true,
+    "s4_06_r50_homography_retained": true,
+    "s4_06_r50_no_prohibited_weak_transform": true,
+    "s4_06_r50_weak_routed_to_unsup_teacher": true,
+    "s4_06_r50_strong_not_implemented_in_s4_06": true,
+    "s4_06_swin_model_is_softteacher": true,
+    "s4_06_swin_multi_branch_preprocessor": true,
+    "s4_06_swin_inner_standard_preprocessor": true,
+    "s4_06_swin_branch_field_exact": true,
+    "s4_06_swin_weak_transform_order_exact": true,
+    "s4_06_swin_resize_scale_1333_800": true,
+    "s4_06_swin_resize_keep_ratio": true,
+    "s4_06_swin_pad_size_divisor_32": true,
+    "s4_06_swin_homography_retained": true,
+    "s4_06_swin_no_prohibited_weak_transform": true,
+    "s4_06_swin_weak_routed_to_unsup_teacher": true,
+    "s4_06_swin_strong_not_implemented_in_s4_06": true,
+    "s4_06_architecture_weak_ids_match": true,
+    "s4_06_runtime_unsup_teacher_tensor_exists": true,
+    "s4_06_runtime_homography_present": true,
+    "s4_06_runtime_hidden_u_gt_not_loaded": true,
+    "s4_06_runtime_sup_branch_none": true,
+    "s4_06_runtime_unsup_student_branch_none_in_s4_06": true,
+    "s4_07_s4_06_prior_task": true,
+    "s4_07_s4_06_prior_scope": true,
+    "s4_07_s4_06_prior_all_checks_pass": true,
+    "s4_07_s4_06_prior_failed_checks_empty": true,
+    "s4_07_s4_06_prior_teacher_branch": true,
+    "s4_07_s4_06_prior_teacher_destination": true,
+    "s4_07_s4_06_prior_hidden_u_gt_unused": true,
+    "s4_07_s4_06_prior_weak_id_present": true,
+    "s4_07_r50_custom_imports_exact": true,
+    "s4_07_r50_model_is_softteacher": true,
+    "s4_07_r50_multi_branch_preprocessor": true,
+    "s4_07_r50_branch_field_exact": true,
+    "s4_07_r50_weak_pipeline_preserved": true,
+    "s4_07_r50_strong_transform_order_exact": true,
+    "s4_07_r50_weak_resize_exact": true,
+    "s4_07_r50_strong_resize_exact": true,
+    "s4_07_r50_weak_strong_geometry_config_match": true,
+    "s4_07_r50_brightness_range_exact": true,
+    "s4_07_r50_contrast_range_exact": true,
+    "s4_07_r50_no_prohibited_strong_transform": true,
+    "s4_07_r50_weak_homography_retained": true,
+    "s4_07_r50_strong_homography_retained": true,
+    "s4_07_r50_teacher_branch_present": true,
+    "s4_07_r50_student_branch_present": true,
+    "s4_07_r50_amp_preserved": true,
+    "s4_07_r50_one_ema_hook": true,
+    "s4_07_r50_ema_momentum_preserved": true,
+    "s4_07_r50_ema_skip_buffers_preserved": true,
+    "s4_07_swin_custom_imports_exact": true,
+    "s4_07_swin_model_is_softteacher": true,
+    "s4_07_swin_multi_branch_preprocessor": true,
+    "s4_07_swin_branch_field_exact": true,
+    "s4_07_swin_weak_pipeline_preserved": true,
+    "s4_07_swin_strong_transform_order_exact": true,
+    "s4_07_swin_weak_resize_exact": true,
+    "s4_07_swin_strong_resize_exact": true,
+    "s4_07_swin_weak_strong_geometry_config_match": true,
+    "s4_07_swin_brightness_range_exact": true,
+    "s4_07_swin_contrast_range_exact": true,
+    "s4_07_swin_no_prohibited_strong_transform": true,
+    "s4_07_swin_weak_homography_retained": true,
+    "s4_07_swin_strong_homography_retained": true,
+    "s4_07_swin_teacher_branch_present": true,
+    "s4_07_swin_student_branch_present": true,
+    "s4_07_swin_amp_preserved": true,
+    "s4_07_swin_one_ema_hook": true,
+    "s4_07_swin_ema_momentum_preserved": true,
+    "s4_07_swin_ema_skip_buffers_preserved": true,
+    "s4_07_architectures_share_one_weak_id": true,
+    "s4_07_architectures_share_one_strong_id": true,
+    "s4_07_s4_06_weak_id_unchanged": true,
+    "s4_07_brightness_all_in_range": true,
+    "s4_07_contrast_all_in_range": true,
+    "s4_07_brightness_continuous_not_three_level": true,
+    "s4_07_contrast_continuous_not_three_level": true,
+    "s4_07_runtime_teacher_branch_exists": true,
+    "s4_07_runtime_student_branch_exists": true,
+    "s4_07_runtime_same_u_image": true,
+    "s4_07_runtime_same_shape": true,
+    "s4_07_runtime_weak_rgb_equal": true,
+    "s4_07_runtime_strong_rgb_equal": true,
+    "s4_07_runtime_strong_differs_photometrically": true,
+    "s4_07_runtime_img_shape_equal": true,
+    "s4_07_runtime_scale_factor_equal": true,
+    "s4_07_runtime_homography_equal": true,
+    "s4_07_runtime_hidden_u_gt_not_used": true,
+    "s4_07_runtime_sup_branch_none": true
+  },
+  "check_count": 97,
+  "failed_checks": [],
+  "all_checks_pass": true,
+  "completed_tasks": [
+    "S4.06",
+    "S4.07"
+  ],
+  "s4_06_evidence_snapshot": {
+    "prior_manifest_sha256": "e3b84b2a481fe802e222bea4350d88aeb81039ebbf5fcff452948dd6c432816c",
+    "task": "S4.06",
+    "scope": "unlabeled_weak_view_to_teacher",
+    "weak_augmentation_id": "7f5343daba335b50d0168b9f52ba771b0eccf4eea3360f9b75705ba811ebabe0",
+    "weak_view_destination": "EMA_TEACHER",
+    "weak_branch_key": "unsup_teacher",
+    "check_count": 30,
+    "failed_checks": [],
+    "all_checks_pass": true
+  },
+  "strong_view_destination": "STUDENT",
+  "strong_branch_key": "unsup_student",
+  "strong_scientific_contract": {
+    "resize_scale": [
+      1333,
+      800
+    ],
+    "keep_ratio": true,
+    "brightness_distribution": "Uniform(0.90,1.10)",
+    "contrast_distribution": "Uniform(0.90,1.10)",
+    "grayscale_constraint": "R=G=B",
+    "pad_size_divisor": 32,
+    "geometric_augmentation": false,
+    "random_erasing": false,
+    "mosaic": false,
+    "hidden_u_ground_truth_used": false
+  },
+  "strong_configs": {
+    "r50": {
+      "config": "configs/ssl/s4_07_soft_teacher_r50_fpn_strong.py",
+      "weak_augmentation_id": "7f5343daba335b50d0168b9f52ba771b0eccf4eea3360f9b75705ba811ebabe0",
+      "strong_augmentation_id": "15fa1478c634e352782f0f3f3212821b6f82a7e63962f509fdef7b366492a796",
+      "branch_field": [
+        "sup",
+        "unsup_teacher",
+        "unsup_student"
+      ],
+      "weak_pipeline": [
+        {
+          "type": "Resize",
+          "scale": [
+            1333,
+            800
+          ],
+          "keep_ratio": true
+        },
+        {
+          "type": "Pad",
+          "size_divisor": 32
+        },
+        {
+          "type": "PackDetInputs",
+          "meta_keys": [
+            "img_id",
+            "img_path",
+            "ori_shape",
+            "img_shape",
+            "scale_factor",
+            "flip",
+            "flip_direction",
+            "homography_matrix"
+          ]
+        }
+      ],
+      "strong_pipeline": [
+        {
+          "type": "Resize",
+          "scale": [
+            1333,
+            800
+          ],
+          "keep_ratio": true
+        },
+        {
+          "type": "GrayscaleBrightnessContrast",
+          "brightness_range": [
+            0.9,
+            1.1
+          ],
+          "contrast_range": [
+            0.9,
+            1.1
+          ]
+        },
+        {
+          "type": "Pad",
+          "size_divisor": 32
+        },
+        {
+          "type": "PackDetInputs",
+          "meta_keys": [
+            "img_id",
+            "img_path",
+            "ori_shape",
+            "img_shape",
+            "scale_factor",
+            "flip",
+            "flip_direction",
+            "homography_matrix"
+          ]
+        }
+      ],
+      "unlabeled_pipeline": [
+        {
+          "type": "LoadImageFromFile",
+          "color_type": "color"
+        },
+        {
+          "type": "LoadEmptyAnnotations"
+        },
+        {
+          "type": "MultiBranch",
+          "branch_field": [
+            "sup",
+            "unsup_teacher",
+            "unsup_student"
+          ],
+          "unsup_teacher": [
+            {
+              "type": "Resize",
+              "scale": [
+                1333,
+                800
+              ],
+              "keep_ratio": true
+            },
+            {
+              "type": "Pad",
+              "size_divisor": 32
+            },
+            {
+              "type": "PackDetInputs",
+              "meta_keys": [
+                "img_id",
+                "img_path",
+                "ori_shape",
+                "img_shape",
+                "scale_factor",
+                "flip",
+                "flip_direction",
+                "homography_matrix"
+              ]
+            }
+          ],
+          "unsup_student": [
+            {
+              "type": "Resize",
+              "scale": [
+                1333,
+                800
+              ],
+              "keep_ratio": true
+            },
+            {
+              "type": "GrayscaleBrightnessContrast",
+              "brightness_range": [
+                0.9,
+                1.1
+              ],
+              "contrast_range": [
+                0.9,
+                1.1
+              ]
+            },
+            {
+              "type": "Pad",
+              "size_divisor": 32
+            },
+            {
+              "type": "PackDetInputs",
+              "meta_keys": [
+                "img_id",
+                "img_path",
+                "ori_shape",
+                "img_shape",
+                "scale_factor",
+                "flip",
+                "flip_direction",
+                "homography_matrix"
+              ]
+            }
+          ]
+        }
+      ],
+      "checks": {
+        "custom_imports_exact": true,
+        "model_is_softteacher": true,
+        "multi_branch_preprocessor": true,
+        "branch_field_exact": true,
+        "weak_pipeline_preserved": true,
+        "strong_transform_order_exact": true,
+        "weak_resize_exact": true,
+        "strong_resize_exact": true,
+        "weak_strong_geometry_config_match": true,
+        "brightness_range_exact": true,
+        "contrast_range_exact": true,
+        "no_prohibited_strong_transform": true,
+        "weak_homography_retained": true,
+        "strong_homography_retained": true,
+        "teacher_branch_present": true,
+        "student_branch_present": true,
+        "amp_preserved": true,
+        "one_ema_hook": true,
+        "ema_momentum_preserved": true,
+        "ema_skip_buffers_preserved": true
+      }
+    },
+    "swin": {
+      "config": "configs/ssl/s4_07_soft_teacher_swin_t_fpn_strong.py",
+      "weak_augmentation_id": "7f5343daba335b50d0168b9f52ba771b0eccf4eea3360f9b75705ba811ebabe0",
+      "strong_augmentation_id": "15fa1478c634e352782f0f3f3212821b6f82a7e63962f509fdef7b366492a796",
+      "branch_field": [
+        "sup",
+        "unsup_teacher",
+        "unsup_student"
+      ],
+      "weak_pipeline": [
+        {
+          "type": "Resize",
+          "scale": [
+            1333,
+            800
+          ],
+          "keep_ratio": true
+        },
+        {
+          "type": "Pad",
+          "size_divisor": 32
+        },
+        {
+          "type": "PackDetInputs",
+          "meta_keys": [
+            "img_id",
+            "img_path",
+            "ori_shape",
+            "img_shape",
+            "scale_factor",
+            "flip",
+            "flip_direction",
+            "homography_matrix"
+          ]
+        }
+      ],
+      "strong_pipeline": [
+        {
+          "type": "Resize",
+          "scale": [
+            1333,
+            800
+          ],
+          "keep_ratio": true
+        },
+        {
+          "type": "GrayscaleBrightnessContrast",
+          "brightness_range": [
+            0.9,
+            1.1
+          ],
+          "contrast_range": [
+            0.9,
+            1.1
+          ]
+        },
+        {
+          "type": "Pad",
+          "size_divisor": 32
+        },
+        {
+          "type": "PackDetInputs",
+          "meta_keys": [
+            "img_id",
+            "img_path",
+            "ori_shape",
+            "img_shape",
+            "scale_factor",
+            "flip",
+            "flip_direction",
+            "homography_matrix"
+          ]
+        }
+      ],
+      "unlabeled_pipeline": [
+        {
+          "type": "LoadImageFromFile",
+          "color_type": "color"
+        },
+        {
+          "type": "LoadEmptyAnnotations"
+        },
+        {
+          "type": "MultiBranch",
+          "branch_field": [
+            "sup",
+            "unsup_teacher",
+            "unsup_student"
+          ],
+          "unsup_teacher": [
+            {
+              "type": "Resize",
+              "scale": [
+                1333,
+                800
+              ],
+              "keep_ratio": true
+            },
+            {
+              "type": "Pad",
+              "size_divisor": 32
+            },
+            {
+              "type": "PackDetInputs",
+              "meta_keys": [
+                "img_id",
+                "img_path",
+                "ori_shape",
+                "img_shape",
+                "scale_factor",
+                "flip",
+                "flip_direction",
+                "homography_matrix"
+              ]
+            }
+          ],
+          "unsup_student": [
+            {
+              "type": "Resize",
+              "scale": [
+                1333,
+                800
+              ],
+              "keep_ratio": true
+            },
+            {
+              "type": "GrayscaleBrightnessContrast",
+              "brightness_range": [
+                0.9,
+                1.1
+              ],
+              "contrast_range": [
+                0.9,
+                1.1
+              ]
+            },
+            {
+              "type": "Pad",
+              "size_divisor": 32
+            },
+            {
+              "type": "PackDetInputs",
+              "meta_keys": [
+                "img_id",
+                "img_path",
+                "ori_shape",
+                "img_shape",
+                "scale_factor",
+                "flip",
+                "flip_direction",
+                "homography_matrix"
+              ]
+            }
+          ]
+        }
+      ],
+      "checks": {
+        "custom_imports_exact": true,
+        "model_is_softteacher": true,
+        "multi_branch_preprocessor": true,
+        "branch_field_exact": true,
+        "weak_pipeline_preserved": true,
+        "strong_transform_order_exact": true,
+        "weak_resize_exact": true,
+        "strong_resize_exact": true,
+        "weak_strong_geometry_config_match": true,
+        "brightness_range_exact": true,
+        "contrast_range_exact": true,
+        "no_prohibited_strong_transform": true,
+        "weak_homography_retained": true,
+        "strong_homography_retained": true,
+        "teacher_branch_present": true,
+        "student_branch_present": true,
+        "amp_preserved": true,
+        "one_ema_hook": true,
+        "ema_momentum_preserved": true,
+        "ema_skip_buffers_preserved": true
+      }
+    }
+  },
+  "strong_sampling_validation": {
+    "sample_size": 1000,
+    "validation_seed": 2026,
+    "brightness_min": 0.9001153318886042,
+    "brightness_max": 1.099966325605464,
+    "brightness_unique_count": 1000,
+    "contrast_min": 0.9001736693541268,
+    "contrast_max": 1.099906120601288,
+    "contrast_unique_count": 1000
+  },
+  "strong_runtime": {
+    "dataset_key": "U_1pct",
+    "image_id": 1,
+    "teacher_branch": "unsup_teacher",
+    "student_branch": "unsup_student",
+    "same_image_id": true,
+    "same_image_path": true,
+    "weak_input_shape_chw": [
+      3,
+      800,
+      800
+    ],
+    "strong_input_shape_chw": [
+      3,
+      800,
+      800
+    ],
+    "weak_rgb_equal": true,
+    "strong_rgb_equal": true,
+    "strong_differs_from_weak": true,
+    "weak_ori_shape": [
+      3072,
+      3072
+    ],
+    "strong_ori_shape": [
+      3072,
+      3072
+    ],
+    "weak_img_shape": [
+      800,
+      800
+    ],
+    "strong_img_shape": [
+      800,
+      800
+    ],
+    "weak_scale_factor": [
+      0.2604166666666667,
+      0.2604166666666667
+    ],
+    "strong_scale_factor": [
+      0.2604166666666667,
+      0.2604166666666667
+    ],
+    "weak_homography_matrix": [
+      [
+        0.2604166567325592,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.2604166567325592,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "strong_homography_matrix": [
+      [
+        0.2604166567325592,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.2604166567325592,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "homography_equal": true,
+    "weak_gt_bbox_count": 0,
+    "strong_gt_bbox_count": 0,
+    "hidden_u_ground_truth_used": false,
+    "sup_branch_is_none": true
+  },
+  "weak_checks": {
+    "r50_model_is_softteacher": true,
+    "r50_multi_branch_preprocessor": true,
+    "r50_inner_standard_preprocessor": true,
+    "r50_branch_field_exact": true,
+    "r50_weak_transform_order_exact": true,
+    "r50_resize_scale_1333_800": true,
+    "r50_resize_keep_ratio": true,
+    "r50_pad_size_divisor_32": true,
+    "r50_homography_retained": true,
+    "r50_no_prohibited_weak_transform": true,
+    "r50_weak_routed_to_unsup_teacher": true,
+    "r50_strong_not_implemented_in_s4_06": true,
+    "swin_model_is_softteacher": true,
+    "swin_multi_branch_preprocessor": true,
+    "swin_inner_standard_preprocessor": true,
+    "swin_branch_field_exact": true,
+    "swin_weak_transform_order_exact": true,
+    "swin_resize_scale_1333_800": true,
+    "swin_resize_keep_ratio": true,
+    "swin_pad_size_divisor_32": true,
+    "swin_homography_retained": true,
+    "swin_no_prohibited_weak_transform": true,
+    "swin_weak_routed_to_unsup_teacher": true,
+    "swin_strong_not_implemented_in_s4_06": true,
+    "architecture_weak_ids_match": true,
+    "runtime_unsup_teacher_tensor_exists": true,
+    "runtime_homography_present": true,
+    "runtime_hidden_u_gt_not_loaded": true,
+    "runtime_sup_branch_none": true,
+    "runtime_unsup_student_branch_none_in_s4_06": true
+  },
+  "weak_check_count": 30,
+  "strong_checks": {
+    "s4_06_prior_task": true,
+    "s4_06_prior_scope": true,
+    "s4_06_prior_all_checks_pass": true,
+    "s4_06_prior_failed_checks_empty": true,
+    "s4_06_prior_teacher_branch": true,
+    "s4_06_prior_teacher_destination": true,
+    "s4_06_prior_hidden_u_gt_unused": true,
+    "s4_06_prior_weak_id_present": true,
+    "r50_custom_imports_exact": true,
+    "r50_model_is_softteacher": true,
+    "r50_multi_branch_preprocessor": true,
+    "r50_branch_field_exact": true,
+    "r50_weak_pipeline_preserved": true,
+    "r50_strong_transform_order_exact": true,
+    "r50_weak_resize_exact": true,
+    "r50_strong_resize_exact": true,
+    "r50_weak_strong_geometry_config_match": true,
+    "r50_brightness_range_exact": true,
+    "r50_contrast_range_exact": true,
+    "r50_no_prohibited_strong_transform": true,
+    "r50_weak_homography_retained": true,
+    "r50_strong_homography_retained": true,
+    "r50_teacher_branch_present": true,
+    "r50_student_branch_present": true,
+    "r50_amp_preserved": true,
+    "r50_one_ema_hook": true,
+    "r50_ema_momentum_preserved": true,
+    "r50_ema_skip_buffers_preserved": true,
+    "swin_custom_imports_exact": true,
+    "swin_model_is_softteacher": true,
+    "swin_multi_branch_preprocessor": true,
+    "swin_branch_field_exact": true,
+    "swin_weak_pipeline_preserved": true,
+    "swin_strong_transform_order_exact": true,
+    "swin_weak_resize_exact": true,
+    "swin_strong_resize_exact": true,
+    "swin_weak_strong_geometry_config_match": true,
+    "swin_brightness_range_exact": true,
+    "swin_contrast_range_exact": true,
+    "swin_no_prohibited_strong_transform": true,
+    "swin_weak_homography_retained": true,
+    "swin_strong_homography_retained": true,
+    "swin_teacher_branch_present": true,
+    "swin_student_branch_present": true,
+    "swin_amp_preserved": true,
+    "swin_one_ema_hook": true,
+    "swin_ema_momentum_preserved": true,
+    "swin_ema_skip_buffers_preserved": true,
+    "architectures_share_one_weak_id": true,
+    "architectures_share_one_strong_id": true,
+    "s4_06_weak_id_unchanged": true,
+    "brightness_all_in_range": true,
+    "contrast_all_in_range": true,
+    "brightness_continuous_not_three_level": true,
+    "contrast_continuous_not_three_level": true,
+    "runtime_teacher_branch_exists": true,
+    "runtime_student_branch_exists": true,
+    "runtime_same_u_image": true,
+    "runtime_same_shape": true,
+    "runtime_weak_rgb_equal": true,
+    "runtime_strong_rgb_equal": true,
+    "runtime_strong_differs_photometrically": true,
+    "runtime_img_shape_equal": true,
+    "runtime_scale_factor_equal": true,
+    "runtime_homography_equal": true,
+    "runtime_hidden_u_gt_not_used": true,
+    "runtime_sup_branch_none": true
+  },
+  "strong_check_count": 67
+}

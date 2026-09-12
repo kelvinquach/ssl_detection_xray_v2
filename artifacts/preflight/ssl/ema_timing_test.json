@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "S4",
+  "task": "S4.02",
+  "scope": "MeanTeacher EMA timing",
+  "official_training_authorized": false,
+  "contract": {
+    "momentum": 0.001,
+    "teacher_old_weight": 0.999,
+    "student_new_weight": 0.001,
+    "skip_buffers": true,
+    "update_basis": "ACTUAL_OPTIMIZER_UPDATE",
+    "raw_iteration_is_not_ema_authority": true,
+    "teacher_initialization_owned_by_s4_01": true,
+    "amp_skip_formal_validation_in_this_task": false
+  },
+  "configs": {
+    "R50": "configs/ssl/s4_02_soft_teacher_r50_fpn.py",
+    "SWIN": "configs/ssl/s4_02_soft_teacher_swin_t_fpn.py"
+  },
+  "config_checks": {
+    "R50": {
+      "model_is_softteacher": true,
+      "one_teacher_initialization_hook": true,
+      "one_protocol_resume_hook": true,
+      "one_actual_update_ema_hook": true,
+      "ema_momentum_is_0_001": true,
+      "ema_skip_buffers_true": true,
+      "ema_priority_high": true,
+      "initialization_priority_very_high": true
+    },
+    "SWIN": {
+      "model_is_softteacher": true,
+      "one_teacher_initialization_hook": true,
+      "one_protocol_resume_hook": true,
+      "one_actual_update_ema_hook": true,
+      "ema_momentum_is_0_001": true,
+      "ema_skip_buffers_true": true,
+      "ema_priority_high": true,
+      "initialization_priority_very_high": true
+    }
+  },
+  "runtime_values": {
+    "counter": 1,
+    "teacher_before": 1.0,
+    "teacher_after_no_step": 1.0,
+    "teacher_after_one_step": 1.0019999742507935,
+    "expected_teacher_after_one_step": 1.002,
+    "teacher_buffer": 11.0,
+    "student_buffer": 22.0
+  },
+  "checks": {
+    "R50_model_is_softteacher": true,
+    "R50_one_teacher_initialization_hook": true,
+    "R50_one_protocol_resume_hook": true,
+    "R50_one_actual_update_ema_hook": true,
+    "R50_ema_momentum_is_0_001": true,
+    "R50_ema_skip_buffers_true": true,
+    "R50_ema_priority_high": true,
+    "R50_initialization_priority_very_high": true,
+    "SWIN_model_is_softteacher": true,
+    "SWIN_one_teacher_initialization_hook": true,
+    "SWIN_one_protocol_resume_hook": true,
+    "SWIN_one_actual_update_ema_hook": true,
+    "SWIN_ema_momentum_is_0_001": true,
+    "SWIN_ema_skip_buffers_true": true,
+    "SWIN_ema_priority_high": true,
+    "SWIN_initialization_priority_very_high": true,
+    "counter_zero_before_optimizer_step": true,
+    "no_ema_without_actual_optimizer_update": true,
+    "counter_one_after_optimizer_step": true,
+    "ema_once_after_actual_optimizer_update": true,
+    "teacher_old_weight_is_0_999": true,
+    "student_new_weight_is_0_001": true,
+    "no_duplicate_ema_without_new_update": true,
+    "skip_buffers_preserves_teacher_buffer": true
+  },
+  "check_count": 24,
+  "failed_checks": [],
+  "all_checks_pass": true
+}

@@ -1,0 +1,146 @@
+{
+    "schema_version":  "1.0",
+    "stage":  "S4",
+    "task":  "S4.20",
+    "gate":  "Close S4",
+    "status":  "CLOSED / PASS",
+    "exact_git_commit":  "60c4b8d68f6d9d80715c48a071b2b715964300b0",
+    "working_tree_clean":  true,
+    "official_training_authorized":  false,
+    "final_test_authorized":  false,
+    "global_preflight_closed":  false,
+    "verification":  {
+                         "S4.01_STUDENT_TEACHER_INITIALIZATION":  "PASS",
+                         "S4.02_ACTUAL_UPDATE_MEAN_TEACHER_EMA":  "PASS",
+                         "S4.03_SKIP_BUFFERS_FROZEN_BEHAVIOR":  "PASS",
+                         "S4.04_EMA_ONLY_AFTER_ACTUAL_OPTIMIZER_UPDATE":  "PASS",
+                         "S4.05_AMP_SKIPPED_STEP_IMPLIES_EMA_SKIP":  "PASS",
+                         "S4.06_WEAK_VIEW_TO_TEACHER":  "PASS",
+                         "S4.07_STRONG_VIEW_TO_STUDENT":  "PASS",
+                         "S4.08_PSEUDO_BBOX_GEOMETRY_ALIGNMENT":  "PASS",
+                         "S4.09_PSEUDO_THRESHOLDS":  "PASS",
+                         "S4.10_NMS_MAX_SETTINGS":  "PASS",
+                         "S4.11_REGRESSION_RELIABILITY_FILTERING":  "PASS",
+                         "S4.12_SSL_LOSS_WEIGHTING":  "PASS",
+                         "S4.13_LABELED_UNLABELED_BATCH_AND_EXPOSURE":  "PASS",
+                         "S4.14_EMPTY_PSEUDO_LABEL_BEHAVIOR":  "PASS",
+                         "S4.15_ZERO_GT_LABELED_NEGATIVE_BEHAVIOR":  "PASS",
+                         "S4.16_HIDDEN_U_GT_FIREWALL":  "PASS",
+                         "S4.17_SSL_RESUME_EQUIVALENCE":  "PASS",
+                         "S4.18_SSL_R50_EXECUTION_PATH":  "PASS",
+                         "S4.19_SSL_SWIN_T_EXECUTION_PATH":  "PASS"
+                     },
+    "closure_groups":  {
+                           "05_SSL_R50":  "PASS",
+                           "06_SSL_SWIN_T":  "PASS",
+                           "10_IMAGE_PSEUDO_BOX_GEOMETRY":  "PASS",
+                           "11_TEACHER_INITIALIZATION":  "PASS",
+                           "12_EMA_TIMING":  "PASS",
+                           "13_AMP_SKIPPED_STEP_EMA_SKIP":  "PASS",
+                           "14_EMPTY_PSEUDO_LABEL_BATCH":  "PASS",
+                           "15_ZERO_GT_HANDLING":  "PASS",
+                           "16_HIDDEN_U_GT_FIREWALL":  "PASS",
+                           "17_BEST_LAST_CHECKPOINT_LOGIC":  "PASS",
+                           "21_RESUME_PATH_IF_ENABLED":  "PASS"
+                       },
+    "optimizer_recipes":  {
+                              "R50":  {
+                                          "type":  "SGD",
+                                          "lr":  0.005,
+                                          "momentum":  0.9,
+                                          "weight_decay":  0.0001
+                                      },
+                              "SWIN_T":  {
+                                             "type":  "AdamW",
+                                             "lr":  2.5E-05,
+                                             "betas":  [
+                                                           0.9,
+                                                           0.999
+                                                       ],
+                                             "weight_decay":  0.05,
+                                             "native_no_decay_rules_preserved":  true
+                                         }
+                          },
+    "training_protocol":  {
+                              "effective_labeled_batch":  4,
+                              "effective_unlabeled_batch":  4,
+                              "labeled_unlabeled_ratio":  "1:1",
+                              "actual_optimizer_update_budgets":  {
+                                                                      "1pct":  1032,
+                                                                      "5pct":  2064,
+                                                                      "10pct":  2064,
+                                                                      "20pct":  2064
+                                                                  },
+                              "scheduler_milestones":  {
+                                                           "1pct":  [
+                                                                        688,
+                                                                        946
+                                                                    ],
+                                                           "5_10_20pct":  [
+                                                                              1376,
+                                                                              1892
+                                                                          ]
+                                                       },
+                              "validation_interval_actual_optimizer_updates":  172,
+                              "ssl_best_metric":  "bbox_mAP@[0.50:0.95]",
+                              "ssl_official_evaluation_model":  "BEST_EMA_TEACHER",
+                              "qpseudo_checkpoint_role":  "LAST_EMA_TEACHER",
+                              "qpseudo_dataset":  "FIXED_VALIDATION",
+                              "ema_momentum":  0.001,
+                              "ema_skip_buffers":  true,
+                              "ema_update_basis":  "ACTUAL_OPTIMIZER_UPDATE",
+                              "amp":  true,
+                              "gradient_clipping":  false,
+                              "weak_view_destination":  "EMA_TEACHER",
+                              "strong_view_destination":  "STUDENT",
+                              "unsupervised_loss_weight":  4,
+                              "supervised_loss_weight":  1,
+                              "loss_ramp_up":  false,
+                              "supervised_burn_in":  false,
+                              "detector_score_floor":  0.05,
+                              "initial_pseudo_score":  0.5,
+                              "rpn_pseudo_threshold":  0.9,
+                              "rcnn_classification_threshold":  0.9,
+                              "rpn_nms_iou":  0.7,
+                              "rpn_max":  1000,
+                              "rcnn_nms_iou":  0.5,
+                              "rcnn_max":  100,
+                              "regression_jitter_times":  10,
+                              "regression_jitter_scale":  0.06,
+                              "regression_uncertainty_threshold":  0.02,
+                              "min_pseudo_bbox_wh":  [
+                                                         0.01,
+                                                         0.01
+                                                     ],
+                              "regression_requires_cls_gt_0_90":  false,
+                              "empty_pseudo_fake_supervision":  false,
+                              "hidden_u_gt_used":  false
+                          },
+    "evidence":  {
+                     "S4.01":  "artifacts/preflight/ssl/teacher_initialization_test.json",
+                     "S4.02/S4.04":  "artifacts/preflight/ssl/ema_timing_test.json",
+                     "S4.03":  "resolved SSL config + artifacts/preflight/ssl/ema_timing_test.json",
+                     "S4.05":  "artifacts/preflight/ssl/amp_ema_skip_test.json",
+                     "S4.06/S4.07":  "artifacts/preflight/ssl/ssl_augmentation_manifest.json",
+                     "S4.08":  "artifacts/preflight/ssl/pseudo_bbox_alignment_report.json",
+                     "S4.09":  "resolved SSL config: configs/ssl/s4_09_soft_teacher_*_pseudo_thresholds.py",
+                     "S4.10":  "resolved SSL config inherited detector NMS/max settings",
+                     "S4.11":  "resolved SSL config: configs/ssl/s4_11_soft_teacher_*_regression_reliability.py",
+                     "S4.12":  "preflight logs + configs/ssl/s4_12_soft_teacher_*_loss_weight.py",
+                     "S4.13":  "artifacts/preflight/ssl/s4_13_real_detector_one_update/training_summary.json",
+                     "S4.14":  "artifacts/preflight/ssl/empty_pseudo_batch_test.json",
+                     "S4.15":  "artifacts/preflight/ssl/zero_gt_test.json",
+                     "S4.16":  "artifacts/preflight/firewall/hidden_u_gt_firewall_report.json",
+                     "S4.17":  "artifacts/preflight/resume/resume_equivalence_test.json",
+                     "S4.18":  "artifacts/preflight/ssl/ssl_r50_preflight.json",
+                     "S4.19":  "artifacts/preflight/ssl/ssl_swin_preflight.json"
+                 },
+    "closure_scope":  {
+                          "all_ssl_official_execution_paths_verified":  true,
+                          "ema_amp_geometry_firewall_verified":  true,
+                          "does_not_close_global_preflight":  true,
+                          "does_not_authorize_official_training":  true,
+                          "does_not_authorize_final_test":  true
+                      },
+    "acceptance":  "S4=CLOSED / PASS"
+}

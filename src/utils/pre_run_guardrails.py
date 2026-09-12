@@ -17,6 +17,9 @@ from src.utils.run_manifest import (
     preprocessing_identity,
     semantic_sha256,
 )
+from src.utils.unlabeled_firewall import (
+    assert_current_ssl_execution_firewall,
+)
 
 
 SUPPORTED_METHODS = {"SUP", "SSL"}
@@ -397,6 +400,15 @@ def build_expected_pre_run_identity(
         )
         expected["effective_unlabeled_batch"] = (
             ssl["effective_batch"]["unlabeled"]
+        )
+
+        # S4.16 hidden-U firewall is part of the active SSL
+        # fail-fast pre-run path. Only the stripped unlabeled COCO
+        # is inspected; U_b is never reverse-mapped to master GT.
+        assert_current_ssl_execution_firewall(
+            repo_root,
+            architecture=architecture,
+            budget=budget,
         )
 
     return expected
