@@ -1,0 +1,328 @@
+{
+  "schema_version": "1.0",
+  "stage": "S4",
+  "task": "S4.06",
+  "scope": "unlabeled_weak_view_to_teacher",
+  "official_training_authorized": false,
+  "tracker_contract": {
+    "category": "Unlabeled weak",
+    "action": "Weak view -> Teacher",
+    "constraint": "Resize + standard preprocessing + padding; no extra augmentation.",
+    "expected_result": "MATCH"
+  },
+  "weak_augmentation_id": "7f5343daba335b50d0168b9f52ba771b0eccf4eea3360f9b75705ba811ebabe0",
+  "weak_view_destination": "EMA_TEACHER",
+  "weak_branch_key": "unsup_teacher",
+  "strong_augmentation_id": null,
+  "strong_view_status": "NOT_IN_S4_06_SCOPE",
+  "scientific_contract": {
+    "resize_scale": [
+      1333,
+      800
+    ],
+    "keep_ratio": true,
+    "pad_size_divisor": 32,
+    "flip": false,
+    "crop": false,
+    "rotation": false,
+    "photometric_augmentation": false,
+    "hidden_u_ground_truth_used": false
+  },
+  "configs": {
+    "r50": {
+      "config": "configs/ssl/s4_06_soft_teacher_r50_fpn_weak.py",
+      "weak_augmentation_id": "7f5343daba335b50d0168b9f52ba771b0eccf4eea3360f9b75705ba811ebabe0",
+      "branch_field": [
+        "sup",
+        "unsup_teacher",
+        "unsup_student"
+      ],
+      "weak_pipeline": [
+        {
+          "type": "Resize",
+          "scale": [
+            1333,
+            800
+          ],
+          "keep_ratio": true
+        },
+        {
+          "type": "Pad",
+          "size_divisor": 32
+        },
+        {
+          "type": "PackDetInputs",
+          "meta_keys": [
+            "img_id",
+            "img_path",
+            "ori_shape",
+            "img_shape",
+            "scale_factor",
+            "flip",
+            "flip_direction",
+            "homography_matrix"
+          ]
+        }
+      ],
+      "unlabeled_weak_pipeline": [
+        {
+          "type": "LoadImageFromFile",
+          "color_type": "color"
+        },
+        {
+          "type": "LoadEmptyAnnotations"
+        },
+        {
+          "type": "MultiBranch",
+          "branch_field": [
+            "sup",
+            "unsup_teacher",
+            "unsup_student"
+          ],
+          "unsup_teacher": [
+            {
+              "type": "Resize",
+              "scale": [
+                1333,
+                800
+              ],
+              "keep_ratio": true
+            },
+            {
+              "type": "Pad",
+              "size_divisor": 32
+            },
+            {
+              "type": "PackDetInputs",
+              "meta_keys": [
+                "img_id",
+                "img_path",
+                "ori_shape",
+                "img_shape",
+                "scale_factor",
+                "flip",
+                "flip_direction",
+                "homography_matrix"
+              ]
+            }
+          ]
+        }
+      ],
+      "standard_preprocessing": {
+        "type": "DetDataPreprocessor",
+        "mean": [
+          123.675,
+          116.28,
+          103.53
+        ],
+        "std": [
+          58.395,
+          57.12,
+          57.375
+        ],
+        "bgr_to_rgb": true,
+        "pad_size_divisor": 32
+      },
+      "checks": {
+        "model_is_softteacher": true,
+        "multi_branch_preprocessor": true,
+        "inner_standard_preprocessor": true,
+        "branch_field_exact": true,
+        "weak_transform_order_exact": true,
+        "resize_scale_1333_800": true,
+        "resize_keep_ratio": true,
+        "pad_size_divisor_32": true,
+        "homography_retained": true,
+        "no_prohibited_weak_transform": true,
+        "weak_routed_to_unsup_teacher": true,
+        "strong_not_implemented_in_s4_06": true
+      }
+    },
+    "swin": {
+      "config": "configs/ssl/s4_06_soft_teacher_swin_t_fpn_weak.py",
+      "weak_augmentation_id": "7f5343daba335b50d0168b9f52ba771b0eccf4eea3360f9b75705ba811ebabe0",
+      "branch_field": [
+        "sup",
+        "unsup_teacher",
+        "unsup_student"
+      ],
+      "weak_pipeline": [
+        {
+          "type": "Resize",
+          "scale": [
+            1333,
+            800
+          ],
+          "keep_ratio": true
+        },
+        {
+          "type": "Pad",
+          "size_divisor": 32
+        },
+        {
+          "type": "PackDetInputs",
+          "meta_keys": [
+            "img_id",
+            "img_path",
+            "ori_shape",
+            "img_shape",
+            "scale_factor",
+            "flip",
+            "flip_direction",
+            "homography_matrix"
+          ]
+        }
+      ],
+      "unlabeled_weak_pipeline": [
+        {
+          "type": "LoadImageFromFile",
+          "color_type": "color"
+        },
+        {
+          "type": "LoadEmptyAnnotations"
+        },
+        {
+          "type": "MultiBranch",
+          "branch_field": [
+            "sup",
+            "unsup_teacher",
+            "unsup_student"
+          ],
+          "unsup_teacher": [
+            {
+              "type": "Resize",
+              "scale": [
+                1333,
+                800
+              ],
+              "keep_ratio": true
+            },
+            {
+              "type": "Pad",
+              "size_divisor": 32
+            },
+            {
+              "type": "PackDetInputs",
+              "meta_keys": [
+                "img_id",
+                "img_path",
+                "ori_shape",
+                "img_shape",
+                "scale_factor",
+                "flip",
+                "flip_direction",
+                "homography_matrix"
+              ]
+            }
+          ]
+        }
+      ],
+      "standard_preprocessing": {
+        "type": "DetDataPreprocessor",
+        "mean": [
+          123.675,
+          116.28,
+          103.53
+        ],
+        "std": [
+          58.395,
+          57.12,
+          57.375
+        ],
+        "bgr_to_rgb": true,
+        "pad_size_divisor": 32
+      },
+      "checks": {
+        "model_is_softteacher": true,
+        "multi_branch_preprocessor": true,
+        "inner_standard_preprocessor": true,
+        "branch_field_exact": true,
+        "weak_transform_order_exact": true,
+        "resize_scale_1333_800": true,
+        "resize_keep_ratio": true,
+        "pad_size_divisor_32": true,
+        "homography_retained": true,
+        "no_prohibited_weak_transform": true,
+        "weak_routed_to_unsup_teacher": true,
+        "strong_not_implemented_in_s4_06": true
+      }
+    }
+  },
+  "runtime": {
+    "dataset_key": "U_1pct",
+    "image_id": 1,
+    "teacher_branch": "unsup_teacher",
+    "teacher_input_shape_chw": [
+      3,
+      800,
+      800
+    ],
+    "ori_shape": [
+      3072,
+      3072
+    ],
+    "img_shape": [
+      800,
+      800
+    ],
+    "scale_factor": [
+      0.2604166666666667,
+      0.2604166666666667
+    ],
+    "homography_matrix": [
+      [
+        0.2604166567325592,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.2604166567325592,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "gt_bbox_count": 0,
+    "sup_branch_is_none": true,
+    "unsup_student_branch_is_none": true
+  },
+  "checks": {
+    "r50_model_is_softteacher": true,
+    "r50_multi_branch_preprocessor": true,
+    "r50_inner_standard_preprocessor": true,
+    "r50_branch_field_exact": true,
+    "r50_weak_transform_order_exact": true,
+    "r50_resize_scale_1333_800": true,
+    "r50_resize_keep_ratio": true,
+    "r50_pad_size_divisor_32": true,
+    "r50_homography_retained": true,
+    "r50_no_prohibited_weak_transform": true,
+    "r50_weak_routed_to_unsup_teacher": true,
+    "r50_strong_not_implemented_in_s4_06": true,
+    "swin_model_is_softteacher": true,
+    "swin_multi_branch_preprocessor": true,
+    "swin_inner_standard_preprocessor": true,
+    "swin_branch_field_exact": true,
+    "swin_weak_transform_order_exact": true,
+    "swin_resize_scale_1333_800": true,
+    "swin_resize_keep_ratio": true,
+    "swin_pad_size_divisor_32": true,
+    "swin_homography_retained": true,
+    "swin_no_prohibited_weak_transform": true,
+    "swin_weak_routed_to_unsup_teacher": true,
+    "swin_strong_not_implemented_in_s4_06": true,
+    "architecture_weak_ids_match": true,
+    "runtime_unsup_teacher_tensor_exists": true,
+    "runtime_homography_present": true,
+    "runtime_hidden_u_gt_not_loaded": true,
+    "runtime_sup_branch_none": true,
+    "runtime_unsup_student_branch_none_in_s4_06": true
+  },
+  "check_count": 30,
+  "failed_checks": [],
+  "all_checks_pass": true
+}
