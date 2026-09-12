@@ -1,40 +1,450 @@
 {
-  "schema_version": "1.1",
-  "artifact_type": "ZERO_GT_TEST",
-  "stage": "S2.05",
-  "status": "PASS",
-  "generated_at_utc": "2026-09-09T13:17:34.579929+00:00",
-  "training_authorized": false,
-  "config": {
-    "dataset_type": "CocoDataset",
-    "ann_file": "/workspace/ssod/data/coco/instances_train.json",
-    "filter_empty_gt": false
+  "task": "S4.15",
+  "test": "zero_gt_handling",
+  "generated_at_utc": "2026-09-12T14:04:58.909643+00:00",
+  "expected_contract": {
+    "no_finding_is_zero_gt_negative": true,
+    "no_finding_is_detection_class_15": false,
+    "zero_gt_labeled_images_retained_in_training": true,
+    "filter_empty_gt": false,
+    "zero_gt_labeled_negative_provides_background_classification_supervision": true,
+    "hidden_u_gt_must_not_be_used": true
   },
-  "expected": {
-    "train_images": 3426,
-    "train_zero_gt": 350
+  "canonical_expected_labeled_zero_gt_counts": {
+    "1%": 3,
+    "5%": 17,
+    "10%": 35,
+    "20%": 70
   },
-  "observed": {
-    "dataset_length": 3426,
-    "zero_gt_count": 350,
-    "zero_gt_retained_count": 350
+  "canonical_expected_labeled_image_counts": {
+    "1%": 34,
+    "5%": 171,
+    "10%": 343,
+    "20%": 685
   },
-  "sample_evidence": {
-    "image_id": 8,
-    "bbox_shape": [
-      0,
-      4
-    ],
-    "label_shape": [
-      0
-    ]
-  },
-  "checks": {
-    "filter_empty_gt_is_false": true,
-    "train_image_count_match": true,
-    "zero_gt_count_match": true,
-    "all_zero_gt_ids_retained": true,
-    "zero_gt_bbox_shape_empty": true,
-    "zero_gt_label_shape_empty": true
-  }
+  "all_8_config_membership_pass": true,
+  "config_results": [
+    {
+      "architecture": "R50",
+      "budget": "1%",
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_1pct.py",
+      "labeled_ann_file": "/workspace/ssod/data/coco/instances_labeled_1pct.json",
+      "labeled_image_count": 34,
+      "expected_labeled_image_count": 34,
+      "zero_gt_count": 3,
+      "expected_zero_gt_count": 3,
+      "zero_gt_sample_ids": [
+        1090,
+        2127,
+        4603
+      ],
+      "filter_empty_gt": false,
+      "category_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "checks": {
+        "image_count_match": true,
+        "zero_gt_count_match": true,
+        "filter_empty_gt_false": true,
+        "load_annotations_present": true,
+        "category_count_14": true,
+        "category_ids_1_to_14": true,
+        "zero_gt_have_no_annotations": true
+      },
+      "pass": true
+    },
+    {
+      "architecture": "R50",
+      "budget": "5%",
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_5pct.py",
+      "labeled_ann_file": "/workspace/ssod/data/coco/instances_labeled_5pct.json",
+      "labeled_image_count": 171,
+      "expected_labeled_image_count": 171,
+      "zero_gt_count": 17,
+      "expected_zero_gt_count": 17,
+      "zero_gt_sample_ids": [
+        288,
+        550,
+        936,
+        1090,
+        1465
+      ],
+      "filter_empty_gt": false,
+      "category_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "checks": {
+        "image_count_match": true,
+        "zero_gt_count_match": true,
+        "filter_empty_gt_false": true,
+        "load_annotations_present": true,
+        "category_count_14": true,
+        "category_ids_1_to_14": true,
+        "zero_gt_have_no_annotations": true
+      },
+      "pass": true
+    },
+    {
+      "architecture": "R50",
+      "budget": "10%",
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_10pct.py",
+      "labeled_ann_file": "/workspace/ssod/data/coco/instances_labeled_10pct.json",
+      "labeled_image_count": 343,
+      "expected_labeled_image_count": 343,
+      "zero_gt_count": 35,
+      "expected_zero_gt_count": 35,
+      "zero_gt_sample_ids": [
+        288,
+        550,
+        719,
+        833,
+        936
+      ],
+      "filter_empty_gt": false,
+      "category_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "checks": {
+        "image_count_match": true,
+        "zero_gt_count_match": true,
+        "filter_empty_gt_false": true,
+        "load_annotations_present": true,
+        "category_count_14": true,
+        "category_ids_1_to_14": true,
+        "zero_gt_have_no_annotations": true
+      },
+      "pass": true
+    },
+    {
+      "architecture": "R50",
+      "budget": "20%",
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_20pct.py",
+      "labeled_ann_file": "/workspace/ssod/data/coco/instances_labeled_20pct.json",
+      "labeled_image_count": 685,
+      "expected_labeled_image_count": 685,
+      "zero_gt_count": 70,
+      "expected_zero_gt_count": 70,
+      "zero_gt_sample_ids": [
+        17,
+        288,
+        517,
+        550,
+        719
+      ],
+      "filter_empty_gt": false,
+      "category_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "checks": {
+        "image_count_match": true,
+        "zero_gt_count_match": true,
+        "filter_empty_gt_false": true,
+        "load_annotations_present": true,
+        "category_count_14": true,
+        "category_ids_1_to_14": true,
+        "zero_gt_have_no_annotations": true
+      },
+      "pass": true
+    },
+    {
+      "architecture": "SWIN_T",
+      "budget": "1%",
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_1pct.py",
+      "labeled_ann_file": "/workspace/ssod/data/coco/instances_labeled_1pct.json",
+      "labeled_image_count": 34,
+      "expected_labeled_image_count": 34,
+      "zero_gt_count": 3,
+      "expected_zero_gt_count": 3,
+      "zero_gt_sample_ids": [
+        1090,
+        2127,
+        4603
+      ],
+      "filter_empty_gt": false,
+      "category_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "checks": {
+        "image_count_match": true,
+        "zero_gt_count_match": true,
+        "filter_empty_gt_false": true,
+        "load_annotations_present": true,
+        "category_count_14": true,
+        "category_ids_1_to_14": true,
+        "zero_gt_have_no_annotations": true
+      },
+      "pass": true
+    },
+    {
+      "architecture": "SWIN_T",
+      "budget": "5%",
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_5pct.py",
+      "labeled_ann_file": "/workspace/ssod/data/coco/instances_labeled_5pct.json",
+      "labeled_image_count": 171,
+      "expected_labeled_image_count": 171,
+      "zero_gt_count": 17,
+      "expected_zero_gt_count": 17,
+      "zero_gt_sample_ids": [
+        288,
+        550,
+        936,
+        1090,
+        1465
+      ],
+      "filter_empty_gt": false,
+      "category_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "checks": {
+        "image_count_match": true,
+        "zero_gt_count_match": true,
+        "filter_empty_gt_false": true,
+        "load_annotations_present": true,
+        "category_count_14": true,
+        "category_ids_1_to_14": true,
+        "zero_gt_have_no_annotations": true
+      },
+      "pass": true
+    },
+    {
+      "architecture": "SWIN_T",
+      "budget": "10%",
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_10pct.py",
+      "labeled_ann_file": "/workspace/ssod/data/coco/instances_labeled_10pct.json",
+      "labeled_image_count": 343,
+      "expected_labeled_image_count": 343,
+      "zero_gt_count": 35,
+      "expected_zero_gt_count": 35,
+      "zero_gt_sample_ids": [
+        288,
+        550,
+        719,
+        833,
+        936
+      ],
+      "filter_empty_gt": false,
+      "category_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "checks": {
+        "image_count_match": true,
+        "zero_gt_count_match": true,
+        "filter_empty_gt_false": true,
+        "load_annotations_present": true,
+        "category_count_14": true,
+        "category_ids_1_to_14": true,
+        "zero_gt_have_no_annotations": true
+      },
+      "pass": true
+    },
+    {
+      "architecture": "SWIN_T",
+      "budget": "20%",
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_20pct.py",
+      "labeled_ann_file": "/workspace/ssod/data/coco/instances_labeled_20pct.json",
+      "labeled_image_count": 685,
+      "expected_labeled_image_count": 685,
+      "zero_gt_count": 70,
+      "expected_zero_gt_count": 70,
+      "zero_gt_sample_ids": [
+        17,
+        288,
+        517,
+        550,
+        719
+      ],
+      "filter_empty_gt": false,
+      "category_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "checks": {
+        "image_count_match": true,
+        "zero_gt_count_match": true,
+        "filter_empty_gt_false": true,
+        "load_annotations_present": true,
+        "category_count_14": true,
+        "category_ids_1_to_14": true,
+        "zero_gt_have_no_annotations": true
+      },
+      "pass": true
+    }
+  ],
+  "r50_and_swin_runtime_pass": true,
+  "runtime_results": [
+    {
+      "architecture": "R50",
+      "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_1pct.py",
+      "model_class": "EmptyPseudoSafeSoftTeacher",
+      "target_batch_index": 1,
+      "raw_zero_gt_sup_positions": [
+        1
+      ],
+      "raw_zero_gt_sup_image_ids": [
+        1090
+      ],
+      "processed_zero_gt_image_ids": [
+        1090
+      ],
+      "raw_zero_gt_preserved": true,
+      "loss_values": {
+        "sup_loss_rpn_cls": 0.6878553000278771,
+        "sup_loss_rpn_bbox": 0.09885746473446488,
+        "sup_loss_cls": 2.695784568786621,
+        "sup_loss_bbox": 0.002307140501216054,
+        "unsup_loss_rpn_cls": 0.0,
+        "unsup_loss_rpn_bbox": 0.0,
+        "unsup_loss_cls": -0.0,
+        "unsup_loss_bbox": -0.0
+      },
+      "all_losses_finite": true,
+      "sup_classification_signal_present": true,
+      "parsed_loss": 3.484804391860962,
+      "parsed_loss_requires_grad": true,
+      "student_grad_seen": true,
+      "student_grad_abs_sum": 23546.79776849691,
+      "pass": true
+    },
+    {
+      "architecture": "SWIN_T",
+      "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_1pct.py",
+      "model_class": "EmptyPseudoSafeSoftTeacher",
+      "target_batch_index": 1,
+      "raw_zero_gt_sup_positions": [
+        1
+      ],
+      "raw_zero_gt_sup_image_ids": [
+        1090
+      ],
+      "processed_zero_gt_image_ids": [
+        1090
+      ],
+      "raw_zero_gt_preserved": true,
+      "loss_values": {
+        "sup_loss_rpn_cls": 0.9199870647862554,
+        "sup_loss_rpn_bbox": 0.392991307657212,
+        "sup_loss_cls": 2.895280599594116,
+        "sup_loss_bbox": 0.025923047214746475,
+        "unsup_loss_rpn_cls": 0.0,
+        "unsup_loss_rpn_bbox": 0.0,
+        "unsup_loss_cls": -0.0,
+        "unsup_loss_bbox": -0.0
+      },
+      "all_losses_finite": true,
+      "sup_classification_signal_present": true,
+      "parsed_loss": 4.234181880950928,
+      "parsed_loss_requires_grad": true,
+      "student_grad_seen": true,
+      "student_grad_abs_sum": 166612.81265262654,
+      "pass": true
+    }
+  ],
+  "hidden_u_gt_opened": false,
+  "optimizer_step_executed": false,
+  "implementation_modified": false,
+  "official_training": false,
+  "overall_pass": true
 }
