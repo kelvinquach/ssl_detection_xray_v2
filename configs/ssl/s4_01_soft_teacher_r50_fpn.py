@@ -4,6 +4,8 @@ _base_ = [
     "../supervised/s3_01_faster_rcnn_r50_fpn_sup.py",
 ]
 
+default_scope = "mmdet"
+
 _supervised_detector = {{_base_.model}}
 custom_imports = dict(
     imports=["src.hooks.teacher_initialization_hook"],
@@ -19,6 +21,7 @@ custom_hooks = [
 
 model = dict(
     _delete_=True,
+    _scope_="mmdet",
     type="SoftTeacher",
     detector=_supervised_detector,
     semi_train_cfg=dict(
