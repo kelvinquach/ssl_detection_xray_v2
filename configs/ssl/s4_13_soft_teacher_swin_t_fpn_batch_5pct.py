@@ -172,6 +172,10 @@ custom_hooks = [
         target_updates=2064,
     ),
     dict(
+        type='SSLLatestResumeCheckpointHook',
+        refresh_interval=172,
+    ),
+    dict(
         type='SSLTrainingSummaryHook',
         expected_optimizer_updates=2064,
         effective_labeled_batch=4,

@@ -1,15 +1,14 @@
 {
-  "schema_version": "1.1",
-  "stage": "S3.13",
-  "test": "sup_same_attempt_resume_equivalence",
-  "scope": "verify_sup_resume_if_enabled",
+  "schema_version": "1.0",
+  "stage": "S4.17",
+  "test": "ssl_same_attempt_resume_equivalence",
+  "scope": "restore_student_teacher_without_resync",
   "official_training_authorized": false,
   "training_seed": 204886845,
   "resume_policy": {
     "role": "LATEST_RESUME",
     "operational_only": true,
     "resume_scope": "SAME_ATTEMPT_CONTINUATION",
-    "technical_retry_scope": "NEW_ATTEMPT_SAME_LOGICAL_RUN_SAME_EXACT_TRAINING_SEED",
     "initial_optimizer_update": 0,
     "refresh_interval_actual_optimizer_updates": 172,
     "checkpoint_path": "checkpoints/latest_resume.pth"
@@ -17,216 +16,198 @@
   "configs": {
     "R50": {
       "1pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_1pct.py",
+        "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_1pct.py",
         "checks": {
+          "ssl_model_preserved": true,
           "validation_loop_preserved": true,
           "validation_interval_preserved": true,
           "max_iters_preserved": true,
           "hook_order_exact": true,
           "target_updates_preserved": true,
-          "best_metric_preserved": true,
+          "ema_momentum_exact": true,
+          "ema_skip_buffers_true": true,
           "latest_resume_interval_exact": true,
           "native_default_checkpoint_disabled": true
         },
         "hook_types": [
+          "TeacherInitializationHook",
           "ProtocolResumeCheckpointHook",
+          "ActualUpdateMeanTeacherHook",
           "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
+          "SSLLatestResumeCheckpointHook",
+          "SSLTrainingSummaryHook"
         ],
-        "target_updates": 1032,
-        "val_interval": 172
+        "target_updates": 1032
       },
       "5pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_5pct.py",
+        "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_5pct.py",
         "checks": {
+          "ssl_model_preserved": true,
           "validation_loop_preserved": true,
           "validation_interval_preserved": true,
           "max_iters_preserved": true,
           "hook_order_exact": true,
           "target_updates_preserved": true,
-          "best_metric_preserved": true,
+          "ema_momentum_exact": true,
+          "ema_skip_buffers_true": true,
           "latest_resume_interval_exact": true,
           "native_default_checkpoint_disabled": true
         },
         "hook_types": [
+          "TeacherInitializationHook",
           "ProtocolResumeCheckpointHook",
+          "ActualUpdateMeanTeacherHook",
           "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
+          "SSLLatestResumeCheckpointHook",
+          "SSLTrainingSummaryHook"
         ],
-        "target_updates": 2064,
-        "val_interval": 172
+        "target_updates": 2064
       },
       "10pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_10pct.py",
+        "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_10pct.py",
         "checks": {
+          "ssl_model_preserved": true,
           "validation_loop_preserved": true,
           "validation_interval_preserved": true,
           "max_iters_preserved": true,
           "hook_order_exact": true,
           "target_updates_preserved": true,
-          "best_metric_preserved": true,
+          "ema_momentum_exact": true,
+          "ema_skip_buffers_true": true,
           "latest_resume_interval_exact": true,
           "native_default_checkpoint_disabled": true
         },
         "hook_types": [
+          "TeacherInitializationHook",
           "ProtocolResumeCheckpointHook",
+          "ActualUpdateMeanTeacherHook",
           "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
+          "SSLLatestResumeCheckpointHook",
+          "SSLTrainingSummaryHook"
         ],
-        "target_updates": 2064,
-        "val_interval": 172
+        "target_updates": 2064
       },
       "20pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_20pct.py",
+        "config": "configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_20pct.py",
         "checks": {
+          "ssl_model_preserved": true,
           "validation_loop_preserved": true,
           "validation_interval_preserved": true,
           "max_iters_preserved": true,
           "hook_order_exact": true,
           "target_updates_preserved": true,
-          "best_metric_preserved": true,
+          "ema_momentum_exact": true,
+          "ema_skip_buffers_true": true,
           "latest_resume_interval_exact": true,
           "native_default_checkpoint_disabled": true
         },
         "hook_types": [
+          "TeacherInitializationHook",
           "ProtocolResumeCheckpointHook",
+          "ActualUpdateMeanTeacherHook",
           "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
+          "SSLLatestResumeCheckpointHook",
+          "SSLTrainingSummaryHook"
         ],
-        "target_updates": 2064,
-        "val_interval": 172
-      },
-      "100pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_100pct.py",
-        "checks": {
-          "validation_loop_preserved": true,
-          "validation_interval_preserved": true,
-          "max_iters_preserved": true,
-          "hook_order_exact": true,
-          "target_updates_preserved": true,
-          "best_metric_preserved": true,
-          "latest_resume_interval_exact": true,
-          "native_default_checkpoint_disabled": true
-        },
-        "hook_types": [
-          "ProtocolResumeCheckpointHook",
-          "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
-        ],
-        "target_updates": 10284,
-        "val_interval": 172
+        "target_updates": 2064
       }
     },
     "SWIN_T": {
       "1pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_1pct.py",
+        "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_1pct.py",
         "checks": {
+          "ssl_model_preserved": true,
           "validation_loop_preserved": true,
           "validation_interval_preserved": true,
           "max_iters_preserved": true,
           "hook_order_exact": true,
           "target_updates_preserved": true,
-          "best_metric_preserved": true,
+          "ema_momentum_exact": true,
+          "ema_skip_buffers_true": true,
           "latest_resume_interval_exact": true,
           "native_default_checkpoint_disabled": true
         },
         "hook_types": [
+          "TeacherInitializationHook",
           "ProtocolResumeCheckpointHook",
+          "ActualUpdateMeanTeacherHook",
           "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
+          "SSLLatestResumeCheckpointHook",
+          "SSLTrainingSummaryHook"
         ],
-        "target_updates": 1032,
-        "val_interval": 172
+        "target_updates": 1032
       },
       "5pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_5pct.py",
+        "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_5pct.py",
         "checks": {
+          "ssl_model_preserved": true,
           "validation_loop_preserved": true,
           "validation_interval_preserved": true,
           "max_iters_preserved": true,
           "hook_order_exact": true,
           "target_updates_preserved": true,
-          "best_metric_preserved": true,
+          "ema_momentum_exact": true,
+          "ema_skip_buffers_true": true,
           "latest_resume_interval_exact": true,
           "native_default_checkpoint_disabled": true
         },
         "hook_types": [
+          "TeacherInitializationHook",
           "ProtocolResumeCheckpointHook",
+          "ActualUpdateMeanTeacherHook",
           "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
+          "SSLLatestResumeCheckpointHook",
+          "SSLTrainingSummaryHook"
         ],
-        "target_updates": 2064,
-        "val_interval": 172
+        "target_updates": 2064
       },
       "10pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_10pct.py",
+        "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_10pct.py",
         "checks": {
+          "ssl_model_preserved": true,
           "validation_loop_preserved": true,
           "validation_interval_preserved": true,
           "max_iters_preserved": true,
           "hook_order_exact": true,
           "target_updates_preserved": true,
-          "best_metric_preserved": true,
+          "ema_momentum_exact": true,
+          "ema_skip_buffers_true": true,
           "latest_resume_interval_exact": true,
           "native_default_checkpoint_disabled": true
         },
         "hook_types": [
+          "TeacherInitializationHook",
           "ProtocolResumeCheckpointHook",
+          "ActualUpdateMeanTeacherHook",
           "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
+          "SSLLatestResumeCheckpointHook",
+          "SSLTrainingSummaryHook"
         ],
-        "target_updates": 2064,
-        "val_interval": 172
+        "target_updates": 2064
       },
       "20pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_20pct.py",
+        "config": "configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_20pct.py",
         "checks": {
+          "ssl_model_preserved": true,
           "validation_loop_preserved": true,
           "validation_interval_preserved": true,
           "max_iters_preserved": true,
           "hook_order_exact": true,
           "target_updates_preserved": true,
-          "best_metric_preserved": true,
+          "ema_momentum_exact": true,
+          "ema_skip_buffers_true": true,
           "latest_resume_interval_exact": true,
           "native_default_checkpoint_disabled": true
         },
         "hook_types": [
+          "TeacherInitializationHook",
           "ProtocolResumeCheckpointHook",
+          "ActualUpdateMeanTeacherHook",
           "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
+          "SSLLatestResumeCheckpointHook",
+          "SSLTrainingSummaryHook"
         ],
-        "target_updates": 2064,
-        "val_interval": 172
-      },
-      "100pct": {
-        "config": "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_100pct.py",
-        "checks": {
-          "validation_loop_preserved": true,
-          "validation_interval_preserved": true,
-          "max_iters_preserved": true,
-          "hook_order_exact": true,
-          "target_updates_preserved": true,
-          "best_metric_preserved": true,
-          "latest_resume_interval_exact": true,
-          "native_default_checkpoint_disabled": true
-        },
-        "hook_types": [
-          "ProtocolResumeCheckpointHook",
-          "ActualUpdateBudgetSchedulerHook",
-          "SupervisedBestLastCheckpointHook",
-          "SupervisedLatestResumeCheckpointHook"
-        ],
-        "target_updates": 10284,
-        "val_interval": 172
+        "target_updates": 2064
       }
     }
   },
@@ -242,97 +223,57 @@
       "actual_optimizer_updates": 344
     },
     "interruption_error": "Synthetic interruption after update 172.",
-    "validation_history": [
-      {
-        "optimizer_update": "172",
-        "bbox_mAP_50_95": "0.4",
-        "AP50": "0.5",
-        "AP75": "0.35000000000000003",
-        "AR_50_95_max100": "0.45",
-        "checkpoint_candidate": "True",
-        "best_so_far": "0.4",
-        "checkpoint_path": "checkpoints/best_model.pth"
-      },
-      {
-        "optimizer_update": "344",
-        "bbox_mAP_50_95": "0.55",
-        "AP50": "0.65",
-        "AP75": "0.5",
-        "AR_50_95_max100": "0.6000000000000001",
-        "checkpoint_candidate": "True",
-        "best_so_far": "0.55",
-        "checkpoint_path": "checkpoints/best_model.pth"
-      }
-    ],
-    "validation_best": {
-      "checkpoint_path": "checkpoints/best_model.pth",
-      "checkpoint_sha256": "d8ca8743cbf564bbafa3e9b8324249d374afd5abdfe77abb91a3e469d25b250c",
-      "rule": "ARGMAX_VALIDATION_BBOX_MAP_50_95",
-      "selected_metric_value": 0.55,
-      "selected_update": 344,
-      "selection_metric": "bbox_mAP_50_95",
-      "selection_split": "validation",
-      "tie_break": "STRICT_GREATER_KEEP_EARLIEST_MAX"
+    "resume_probe": {
+      "observed": true,
+      "resumed_iter": 172,
+      "student_matches_checkpoint": true,
+      "teacher_matches_checkpoint": true,
+      "teacher_differs_from_student": true
     },
     "checkpoint_index": {
       "checkpoint_policy": "LOCKED",
       "entries": [
         {
           "optimizer_update": 344,
-          "path": "best_model.pth",
-          "retained": true,
-          "role": "BEST",
-          "sha256": "d8ca8743cbf564bbafa3e9b8324249d374afd5abdfe77abb91a3e469d25b250c",
-          "validation_bbox_mAP_50_95": 0.55
-        },
-        {
-          "optimizer_update": 344,
-          "path": "last_model.pth",
-          "retained": true,
-          "role": "LAST",
-          "sha256": "d8ca8743cbf564bbafa3e9b8324249d374afd5abdfe77abb91a3e469d25b250c"
-        },
-        {
-          "optimizer_update": 344,
           "path": "latest_resume.pth",
           "retained": true,
           "role": "LATEST_RESUME",
-          "sha256": "d86ff951fbc523a6ae347b3fde4d74b1df3f058c10d7122848fdaf0d02e20025"
+          "sha256": "e04d0d22275e68d3009ff32cc532ab69deb452acf237693f0b4833e8eae8e0c4"
         }
       ]
     },
     "resume_save_events": [
       {
-        "timestamp_utc": "2026-09-10T22:23:18.827Z",
+        "timestamp_utc": "2026-09-12T15:16:48.825Z",
         "event": "RESUME_SAVE",
         "optimizer_update": 0,
         "raw_iteration": 0,
         "checkpoint_path": "checkpoints/latest_resume.pth",
-        "checkpoint_sha256": "3fa986a8cd13a4735dbe93dfddb87a5228000e6ef059bdb3f6d132dcfadeec90",
+        "checkpoint_sha256": "b717e871641ab1f8c0a94433821cf8e445f5fcd6ae6b6695b278d7032c1658b2",
         "reason": "initial_update_0"
       },
       {
-        "timestamp_utc": "2026-09-10T22:23:19.047Z",
+        "timestamp_utc": "2026-09-12T15:16:49.066Z",
         "event": "RESUME_SAVE",
         "optimizer_update": 172,
         "raw_iteration": 172,
         "checkpoint_path": "checkpoints/latest_resume.pth",
-        "checkpoint_sha256": "1f18943b7b620b6f2b3181a4c09175a68e144e4c115b6484edc1210d4d52099e",
+        "checkpoint_sha256": "15d93a8d099a9f55acd066558be8d7ab5b57d653ed07164d756a4af317ba9d8d",
         "reason": "post_validation_boundary"
       },
       {
-        "timestamp_utc": "2026-09-10T22:23:19.353Z",
+        "timestamp_utc": "2026-09-12T15:16:49.407Z",
         "event": "RESUME_SAVE",
         "optimizer_update": 344,
         "raw_iteration": 344,
         "checkpoint_path": "checkpoints/latest_resume.pth",
-        "checkpoint_sha256": "d86ff951fbc523a6ae347b3fde4d74b1df3f058c10d7122848fdaf0d02e20025",
+        "checkpoint_sha256": "e04d0d22275e68d3009ff32cc532ab69deb452acf237693f0b4833e8eae8e0c4",
         "reason": "post_validation_boundary"
       }
     ],
     "resume_restore_events": [
       {
-        "timestamp_utc": "2026-09-10T22:23:19.134Z",
+        "timestamp_utc": "2026-09-12T15:16:49.159Z",
         "event": "RESUME_RESTORE",
         "optimizer_update": 172,
         "raw_iteration": 172,
@@ -340,121 +281,127 @@
         "checkpoint_path": "checkpoints/latest_resume.pth"
       }
     ],
-    "latest_resume_sha256": "d86ff951fbc523a6ae347b3fde4d74b1df3f058c10d7122848fdaf0d02e20025"
+    "latest_resume_sha256": "e04d0d22275e68d3009ff32cc532ab69deb452acf237693f0b4833e8eae8e0c4"
   },
   "seed_mismatch_error": "Training-seed mismatch on resume: checkpoint=204886845, current=204886846.",
   "checks": {
+    "r50_1pct_ssl_model_preserved": true,
     "r50_1pct_validation_loop_preserved": true,
     "r50_1pct_validation_interval_preserved": true,
     "r50_1pct_max_iters_preserved": true,
     "r50_1pct_hook_order_exact": true,
     "r50_1pct_target_updates_preserved": true,
-    "r50_1pct_best_metric_preserved": true,
+    "r50_1pct_ema_momentum_exact": true,
+    "r50_1pct_ema_skip_buffers_true": true,
     "r50_1pct_latest_resume_interval_exact": true,
     "r50_1pct_native_default_checkpoint_disabled": true,
+    "r50_5pct_ssl_model_preserved": true,
     "r50_5pct_validation_loop_preserved": true,
     "r50_5pct_validation_interval_preserved": true,
     "r50_5pct_max_iters_preserved": true,
     "r50_5pct_hook_order_exact": true,
     "r50_5pct_target_updates_preserved": true,
-    "r50_5pct_best_metric_preserved": true,
+    "r50_5pct_ema_momentum_exact": true,
+    "r50_5pct_ema_skip_buffers_true": true,
     "r50_5pct_latest_resume_interval_exact": true,
     "r50_5pct_native_default_checkpoint_disabled": true,
+    "r50_10pct_ssl_model_preserved": true,
     "r50_10pct_validation_loop_preserved": true,
     "r50_10pct_validation_interval_preserved": true,
     "r50_10pct_max_iters_preserved": true,
     "r50_10pct_hook_order_exact": true,
     "r50_10pct_target_updates_preserved": true,
-    "r50_10pct_best_metric_preserved": true,
+    "r50_10pct_ema_momentum_exact": true,
+    "r50_10pct_ema_skip_buffers_true": true,
     "r50_10pct_latest_resume_interval_exact": true,
     "r50_10pct_native_default_checkpoint_disabled": true,
+    "r50_20pct_ssl_model_preserved": true,
     "r50_20pct_validation_loop_preserved": true,
     "r50_20pct_validation_interval_preserved": true,
     "r50_20pct_max_iters_preserved": true,
     "r50_20pct_hook_order_exact": true,
     "r50_20pct_target_updates_preserved": true,
-    "r50_20pct_best_metric_preserved": true,
+    "r50_20pct_ema_momentum_exact": true,
+    "r50_20pct_ema_skip_buffers_true": true,
     "r50_20pct_latest_resume_interval_exact": true,
     "r50_20pct_native_default_checkpoint_disabled": true,
-    "r50_100pct_validation_loop_preserved": true,
-    "r50_100pct_validation_interval_preserved": true,
-    "r50_100pct_max_iters_preserved": true,
-    "r50_100pct_hook_order_exact": true,
-    "r50_100pct_target_updates_preserved": true,
-    "r50_100pct_best_metric_preserved": true,
-    "r50_100pct_latest_resume_interval_exact": true,
-    "r50_100pct_native_default_checkpoint_disabled": true,
+    "swin_t_1pct_ssl_model_preserved": true,
     "swin_t_1pct_validation_loop_preserved": true,
     "swin_t_1pct_validation_interval_preserved": true,
     "swin_t_1pct_max_iters_preserved": true,
     "swin_t_1pct_hook_order_exact": true,
     "swin_t_1pct_target_updates_preserved": true,
-    "swin_t_1pct_best_metric_preserved": true,
+    "swin_t_1pct_ema_momentum_exact": true,
+    "swin_t_1pct_ema_skip_buffers_true": true,
     "swin_t_1pct_latest_resume_interval_exact": true,
     "swin_t_1pct_native_default_checkpoint_disabled": true,
+    "swin_t_5pct_ssl_model_preserved": true,
     "swin_t_5pct_validation_loop_preserved": true,
     "swin_t_5pct_validation_interval_preserved": true,
     "swin_t_5pct_max_iters_preserved": true,
     "swin_t_5pct_hook_order_exact": true,
     "swin_t_5pct_target_updates_preserved": true,
-    "swin_t_5pct_best_metric_preserved": true,
+    "swin_t_5pct_ema_momentum_exact": true,
+    "swin_t_5pct_ema_skip_buffers_true": true,
     "swin_t_5pct_latest_resume_interval_exact": true,
     "swin_t_5pct_native_default_checkpoint_disabled": true,
+    "swin_t_10pct_ssl_model_preserved": true,
     "swin_t_10pct_validation_loop_preserved": true,
     "swin_t_10pct_validation_interval_preserved": true,
     "swin_t_10pct_max_iters_preserved": true,
     "swin_t_10pct_hook_order_exact": true,
     "swin_t_10pct_target_updates_preserved": true,
-    "swin_t_10pct_best_metric_preserved": true,
+    "swin_t_10pct_ema_momentum_exact": true,
+    "swin_t_10pct_ema_skip_buffers_true": true,
     "swin_t_10pct_latest_resume_interval_exact": true,
     "swin_t_10pct_native_default_checkpoint_disabled": true,
+    "swin_t_20pct_ssl_model_preserved": true,
     "swin_t_20pct_validation_loop_preserved": true,
     "swin_t_20pct_validation_interval_preserved": true,
     "swin_t_20pct_max_iters_preserved": true,
     "swin_t_20pct_hook_order_exact": true,
     "swin_t_20pct_target_updates_preserved": true,
-    "swin_t_20pct_best_metric_preserved": true,
+    "swin_t_20pct_ema_momentum_exact": true,
+    "swin_t_20pct_ema_skip_buffers_true": true,
     "swin_t_20pct_latest_resume_interval_exact": true,
     "swin_t_20pct_native_default_checkpoint_disabled": true,
-    "swin_t_100pct_validation_loop_preserved": true,
-    "swin_t_100pct_validation_interval_preserved": true,
-    "swin_t_100pct_max_iters_preserved": true,
-    "swin_t_100pct_hook_order_exact": true,
-    "swin_t_100pct_target_updates_preserved": true,
-    "swin_t_100pct_best_metric_preserved": true,
-    "swin_t_100pct_latest_resume_interval_exact": true,
-    "swin_t_100pct_native_default_checkpoint_disabled": true,
-    "all_10_configs_checked": true,
+    "all_8_current_configs_checked": true,
+    "reference_student_teacher_diverged": true,
     "synthetic_interruption_observed": true,
     "latest_resume_exists_at_interruption": true,
-    "best_exists_before_resume": true,
-    "validation_best_exists_before_resume": true,
     "latest_resume_has_state_dict": true,
     "latest_resume_has_optimizer": true,
     "latest_resume_has_param_schedulers": true,
     "latest_resume_has_message_hub": true,
     "latest_resume_has_protocol_state": true,
     "latest_resume_meta_iter_exact_172": true,
+    "checkpoint_student_state_present": true,
+    "checkpoint_teacher_state_present": true,
+    "checkpoint_student_teacher_keysets_equal": true,
+    "checkpoint_teacher_distinct_from_student_at_172": true,
     "checkpoint_training_seed_exact": true,
     "checkpoint_counter_exact_172": true,
     "checkpoint_rng_state_present": true,
     "checkpoint_sampler_resume_mode_exact": true,
-    "best_before_resume_update_172": true,
-    "best_before_resume_metric_040": true,
+    "resume_probe_observed": true,
+    "resume_probe_iter_exact_172": true,
+    "student_restored_exact_before_resume_training": true,
+    "teacher_restored_exact_before_resume_training": true,
+    "teacher_not_resynced_from_student_on_resume": true,
     "final_raw_iteration_match": true,
     "actual_optimizer_update_counter_match": true,
-    "model_state_match": true,
+    "student_state_match": true,
+    "teacher_state_match": true,
+    "full_model_state_match": true,
     "optimizer_and_amp_scaler_state_match": true,
     "scheduler_state_match": true,
     "rng_state_match_at_run_end": true,
     "rng_next_draw_match": true,
-    "best_continues_across_resume": true,
-    "validation_history_continues_same_attempt": true,
-    "checkpoint_index_roles_exact": true,
+    "checkpoint_index_has_latest_resume": true,
     "latest_resume_index_update_terminal_344": true,
     "latest_resume_index_path_exact": true,
     "latest_resume_index_sha_matches": true,
-    "latest_resume_is_operational_without_ssl_model_role": true,
+    "latest_resume_operational_without_model_role": true,
     "resume_save_updates_exact": true,
     "resume_restore_exactly_once": true,
     "resume_restore_update_exact_172": true,
@@ -463,13 +410,12 @@
     "seed_mismatch_blocked": true,
     "same_attempt_resume_scope": true,
     "technical_retry_remains_separate_new_attempt_scope": true,
-    "latest_resume_independent_from_best_last": true,
     "official_training_remains_unauthorized": true,
     "test_split_not_used": true,
-    "ssl_teacher_resume_not_in_s3_13_sup_fixture": true
+    "hidden_u_gt_not_used": true
   },
-  "check_count": 123,
+  "check_count": 128,
   "failed_checks": [],
   "all_checks_pass": true,
-  "scope_note": "S3.13 supervised preflight only. Same-attempt resume is compared against an uninterrupted trajectory through the production S3.13 hook stack. Official training and test access remain unauthorized. SSL Teacher/Student resume is outside this SUP-specific fixture and remains covered by its own stage."
+  "scope_note": "S4.17 preflight only. Student and Teacher are independently checkpointed and restored. The resumed Teacher must preserve its EMA history and must not be resynchronized from Student. Optimizer/AMP scaler, scheduler, actual-update counter and RNG trajectory are compared with an uninterrupted reference trajectory. Official training, test access and hidden-U ground truth remain unauthorized."
 }

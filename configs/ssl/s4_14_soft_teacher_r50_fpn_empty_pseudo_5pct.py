@@ -5,6 +5,7 @@ custom_imports = dict(
         'src.hooks.teacher_initialization_hook',
         'src.hooks.actual_update_mean_teacher_hook',
         'src.hooks.ssl_training_summary_hook',
+        'src.hooks.ssl_latest_resume_checkpoint_hook',
         'src.utils.resume_checkpoint_hook',
         'src.utils.actual_update_validation_loop',
         'src.utils.actual_update_budget_hook',
