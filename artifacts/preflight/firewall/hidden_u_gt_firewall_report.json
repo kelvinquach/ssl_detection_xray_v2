@@ -1,176 +1,211 @@
 {
   "schema_version": "1.0",
-  "stage": "S2.15",
-  "scope": "hidden_u_gt_isolation_foundation",
+  "stage": "S4.16",
+  "scope": "hidden_u_gt_firewall",
+  "constraint": "No hidden U GT in development/Q_pseudo.",
   "official_training_authorized": false,
-  "hidden_u_annotations_present_in_training_object": false,
-  "unlabeled_source_reports": {
-    "U_1pct": {
-      "path": "/workspace/ssod/data/coco/instances_unlabeled_1pct.json",
-      "image_count": 3392,
-      "annotation_count": 0,
-      "category_count": 14,
-      "observed_image_keys": [
-        "canonical_image_id",
-        "file_name",
-        "height",
-        "id",
-        "original_image_id",
-        "width"
-      ],
-      "forbidden_image_keys": [],
-      "unexpected_image_keys": [],
-      "checks": {
-        "annotations_empty": true,
-        "no_forbidden_image_level_gt_keys": true,
-        "no_unexpected_image_keys": true,
-        "all_images_are_objects": true,
-        "all_images_have_id": true,
-        "image_ids_unique": true
+  "hidden_u_master_gt_opened": false,
+  "real_unlabeled_coco_modified": false,
+  "model_forward_executed": false,
+  "optimizer_step_executed": false,
+  "q_pseudo_executed": false,
+  "current_ssl_execution_reports": {
+    "R50-FPN:1pct": {
+      "architecture": "R50-FPN",
+      "budget": "1pct",
+      "expected_unlabeled_image_count": 3392,
+      "firewall_report": {
+        "architecture": "R50-FPN",
+        "budget": "1pct",
+        "config_path": "/workspace/ssod/project/configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_1pct.py",
+        "configured_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_1pct.json",
+        "resolved_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_1pct.json",
+        "annotation_count": 0,
+        "image_count": 3392,
+        "category_count": 14,
+        "recursive_pipeline_isolated": true,
+        "unlabeled_source_isolated": true,
+        "all_checks_pass": true
       },
-      "all_checks_pass": true
+      "pass": true,
+      "error": null
     },
-    "U_5pct": {
-      "path": "/workspace/ssod/data/coco/instances_unlabeled_5pct.json",
-      "image_count": 3255,
-      "annotation_count": 0,
-      "category_count": 14,
-      "observed_image_keys": [
-        "canonical_image_id",
-        "file_name",
-        "height",
-        "id",
-        "original_image_id",
-        "width"
-      ],
-      "forbidden_image_keys": [],
-      "unexpected_image_keys": [],
-      "checks": {
-        "annotations_empty": true,
-        "no_forbidden_image_level_gt_keys": true,
-        "no_unexpected_image_keys": true,
-        "all_images_are_objects": true,
-        "all_images_have_id": true,
-        "image_ids_unique": true
+    "R50-FPN:5pct": {
+      "architecture": "R50-FPN",
+      "budget": "5pct",
+      "expected_unlabeled_image_count": 3255,
+      "firewall_report": {
+        "architecture": "R50-FPN",
+        "budget": "5pct",
+        "config_path": "/workspace/ssod/project/configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_5pct.py",
+        "configured_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_5pct.json",
+        "resolved_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_5pct.json",
+        "annotation_count": 0,
+        "image_count": 3255,
+        "category_count": 14,
+        "recursive_pipeline_isolated": true,
+        "unlabeled_source_isolated": true,
+        "all_checks_pass": true
       },
-      "all_checks_pass": true
+      "pass": true,
+      "error": null
     },
-    "U_10pct": {
-      "path": "/workspace/ssod/data/coco/instances_unlabeled_10pct.json",
-      "image_count": 3083,
-      "annotation_count": 0,
-      "category_count": 14,
-      "observed_image_keys": [
-        "canonical_image_id",
-        "file_name",
-        "height",
-        "id",
-        "original_image_id",
-        "width"
-      ],
-      "forbidden_image_keys": [],
-      "unexpected_image_keys": [],
-      "checks": {
-        "annotations_empty": true,
-        "no_forbidden_image_level_gt_keys": true,
-        "no_unexpected_image_keys": true,
-        "all_images_are_objects": true,
-        "all_images_have_id": true,
-        "image_ids_unique": true
+    "R50-FPN:10pct": {
+      "architecture": "R50-FPN",
+      "budget": "10pct",
+      "expected_unlabeled_image_count": 3083,
+      "firewall_report": {
+        "architecture": "R50-FPN",
+        "budget": "10pct",
+        "config_path": "/workspace/ssod/project/configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_10pct.py",
+        "configured_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_10pct.json",
+        "resolved_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_10pct.json",
+        "annotation_count": 0,
+        "image_count": 3083,
+        "category_count": 14,
+        "recursive_pipeline_isolated": true,
+        "unlabeled_source_isolated": true,
+        "all_checks_pass": true
       },
-      "all_checks_pass": true
+      "pass": true,
+      "error": null
     },
-    "U_20pct": {
-      "path": "/workspace/ssod/data/coco/instances_unlabeled_20pct.json",
-      "image_count": 2741,
-      "annotation_count": 0,
-      "category_count": 14,
-      "observed_image_keys": [
-        "canonical_image_id",
-        "file_name",
-        "height",
-        "id",
-        "original_image_id",
-        "width"
-      ],
-      "forbidden_image_keys": [],
-      "unexpected_image_keys": [],
-      "checks": {
-        "annotations_empty": true,
-        "no_forbidden_image_level_gt_keys": true,
-        "no_unexpected_image_keys": true,
-        "all_images_are_objects": true,
-        "all_images_have_id": true,
-        "image_ids_unique": true
+    "R50-FPN:20pct": {
+      "architecture": "R50-FPN",
+      "budget": "20pct",
+      "expected_unlabeled_image_count": 2741,
+      "firewall_report": {
+        "architecture": "R50-FPN",
+        "budget": "20pct",
+        "config_path": "/workspace/ssod/project/configs/ssl/s4_14_soft_teacher_r50_fpn_empty_pseudo_20pct.py",
+        "configured_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_20pct.json",
+        "resolved_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_20pct.json",
+        "annotation_count": 0,
+        "image_count": 2741,
+        "category_count": 14,
+        "recursive_pipeline_isolated": true,
+        "unlabeled_source_isolated": true,
+        "all_checks_pass": true
       },
-      "all_checks_pass": true
+      "pass": true,
+      "error": null
+    },
+    "Swin-T-FPN:1pct": {
+      "architecture": "Swin-T-FPN",
+      "budget": "1pct",
+      "expected_unlabeled_image_count": 3392,
+      "firewall_report": {
+        "architecture": "Swin-T-FPN",
+        "budget": "1pct",
+        "config_path": "/workspace/ssod/project/configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_1pct.py",
+        "configured_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_1pct.json",
+        "resolved_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_1pct.json",
+        "annotation_count": 0,
+        "image_count": 3392,
+        "category_count": 14,
+        "recursive_pipeline_isolated": true,
+        "unlabeled_source_isolated": true,
+        "all_checks_pass": true
+      },
+      "pass": true,
+      "error": null
+    },
+    "Swin-T-FPN:5pct": {
+      "architecture": "Swin-T-FPN",
+      "budget": "5pct",
+      "expected_unlabeled_image_count": 3255,
+      "firewall_report": {
+        "architecture": "Swin-T-FPN",
+        "budget": "5pct",
+        "config_path": "/workspace/ssod/project/configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_5pct.py",
+        "configured_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_5pct.json",
+        "resolved_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_5pct.json",
+        "annotation_count": 0,
+        "image_count": 3255,
+        "category_count": 14,
+        "recursive_pipeline_isolated": true,
+        "unlabeled_source_isolated": true,
+        "all_checks_pass": true
+      },
+      "pass": true,
+      "error": null
+    },
+    "Swin-T-FPN:10pct": {
+      "architecture": "Swin-T-FPN",
+      "budget": "10pct",
+      "expected_unlabeled_image_count": 3083,
+      "firewall_report": {
+        "architecture": "Swin-T-FPN",
+        "budget": "10pct",
+        "config_path": "/workspace/ssod/project/configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_10pct.py",
+        "configured_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_10pct.json",
+        "resolved_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_10pct.json",
+        "annotation_count": 0,
+        "image_count": 3083,
+        "category_count": 14,
+        "recursive_pipeline_isolated": true,
+        "unlabeled_source_isolated": true,
+        "all_checks_pass": true
+      },
+      "pass": true,
+      "error": null
+    },
+    "Swin-T-FPN:20pct": {
+      "architecture": "Swin-T-FPN",
+      "budget": "20pct",
+      "expected_unlabeled_image_count": 2741,
+      "firewall_report": {
+        "architecture": "Swin-T-FPN",
+        "budget": "20pct",
+        "config_path": "/workspace/ssod/project/configs/ssl/s4_14_soft_teacher_swin_t_fpn_empty_pseudo_20pct.py",
+        "configured_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_20pct.json",
+        "resolved_ann_file": "/workspace/ssod/data/coco/instances_unlabeled_20pct.json",
+        "annotation_count": 0,
+        "image_count": 2741,
+        "category_count": 14,
+        "recursive_pipeline_isolated": true,
+        "unlabeled_source_isolated": true,
+        "all_checks_pass": true
+      },
+      "pass": true,
+      "error": null
     }
   },
-  "runtime_dataset_reports": {
-    "U_1pct": {
-      "image_count": 3392,
-      "expected_image_count": 3392,
-      "all_data_info_instances_empty": true,
-      "sample_0_loaded": true,
-      "sample_0_hidden_gt_present": false
-    },
-    "U_5pct": {
-      "image_count": 3255,
-      "expected_image_count": 3255,
-      "all_data_info_instances_empty": true,
-      "sample_0_loaded": true,
-      "sample_0_hidden_gt_present": false
-    },
-    "U_10pct": {
-      "image_count": 3083,
-      "expected_image_count": 3083,
-      "all_data_info_instances_empty": true,
-      "sample_0_loaded": true,
-      "sample_0_hidden_gt_present": false
-    },
-    "U_20pct": {
-      "image_count": 2741,
-      "expected_image_count": 2741,
-      "all_data_info_instances_empty": true,
-      "sample_0_loaded": true,
-      "sample_0_hidden_gt_present": false
-    }
+  "sup_non_regression": {
+    "pass": true,
+    "error": null
   },
   "negative_fixture_results": {
+    "nested_LoadAnnotations_detected": true,
+    "nested_LoadAnnotations_blocked": true,
     "contaminated_unlabeled_source_blocked": true,
-    "LoadAnnotations_in_unlabeled_pipeline_blocked": true
+    "contaminated_unlabeled_source_error": "Hidden-U firewall blocked unlabeled COCO: annotations_empty",
+    "active_ssl_pre_run_blocks_firewall_failure": true,
+    "active_ssl_pre_run_error": "synthetic hidden-U contamination"
   },
   "checks": {
-    "unlabeled_pipeline_has_no_LoadAnnotations": true,
-    "labeled_pipeline_still_has_LoadAnnotations": true,
-    "U_1pct_source_annotations_empty": true,
-    "U_1pct_config_pipeline_isolated": true,
-    "U_1pct_runtime_length_correct": true,
-    "U_1pct_runtime_instances_empty": true,
-    "U_1pct_sample_loads": true,
-    "U_1pct_sample_hidden_gt_absent": true,
-    "U_5pct_source_annotations_empty": true,
-    "U_5pct_config_pipeline_isolated": true,
-    "U_5pct_runtime_length_correct": true,
-    "U_5pct_runtime_instances_empty": true,
-    "U_5pct_sample_loads": true,
-    "U_5pct_sample_hidden_gt_absent": true,
-    "U_10pct_source_annotations_empty": true,
-    "U_10pct_config_pipeline_isolated": true,
-    "U_10pct_runtime_length_correct": true,
-    "U_10pct_runtime_instances_empty": true,
-    "U_10pct_sample_loads": true,
-    "U_10pct_sample_hidden_gt_absent": true,
-    "U_20pct_source_annotations_empty": true,
-    "U_20pct_config_pipeline_isolated": true,
-    "U_20pct_runtime_length_correct": true,
-    "U_20pct_runtime_instances_empty": true,
-    "U_20pct_sample_loads": true,
-    "U_20pct_sample_hidden_gt_absent": true,
+    "R50-FPN:1pct_current_ssl_firewall_pass": true,
+    "R50-FPN:5pct_current_ssl_firewall_pass": true,
+    "R50-FPN:10pct_current_ssl_firewall_pass": true,
+    "R50-FPN:20pct_current_ssl_firewall_pass": true,
+    "Swin-T-FPN:1pct_current_ssl_firewall_pass": true,
+    "Swin-T-FPN:5pct_current_ssl_firewall_pass": true,
+    "Swin-T-FPN:10pct_current_ssl_firewall_pass": true,
+    "Swin-T-FPN:20pct_current_ssl_firewall_pass": true,
+    "sup_path_unaffected": true,
+    "nested_LoadAnnotations_detected": true,
+    "nested_LoadAnnotations_blocked": true,
     "contaminated_unlabeled_source_blocked": true,
-    "LoadAnnotations_in_unlabeled_pipeline_blocked": true
+    "active_ssl_pre_run_blocks_firewall_failure": true,
+    "hidden_u_master_gt_not_opened": true,
+    "real_unlabeled_coco_not_modified": true,
+    "model_forward_not_executed": true,
+    "optimizer_step_not_executed": true,
+    "q_pseudo_not_executed": true,
+    "official_training_not_authorized": true
   },
-  "check_count": 28,
+  "check_count": 19,
   "failed_checks": [],
-  "all_checks_pass": true
+  "all_checks_pass": true,
+  "overall_pass": true
 }
