@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "S4",
+  "task": "S4.01",
+  "scope": "Student + EMA Teacher initialization",
+  "status": "PASS",
+  "official_training_authorized": false,
+  "contract": {
+    "teacher_t0_equals_student_t0": true,
+    "supervised_burn_in": false,
+    "resume_resynchronization_forbidden": true,
+    "ema_update_timing_validated_here": false,
+    "amp_ema_skip_validated_here": false
+  },
+  "implementation_identity": {
+    "r50_config": {
+      "path": "/workspace/ssod/project/configs/ssl/s4_01_soft_teacher_r50_fpn.py",
+      "expected_sha256": "264a7d8f0d3bd1b975de41ee01d78a6b4b2143a3fdeb36747c3f5ca895ee967c",
+      "observed_sha256": "264a7d8f0d3bd1b975de41ee01d78a6b4b2143a3fdeb36747c3f5ca895ee967c"
+    },
+    "swin_config": {
+      "path": "/workspace/ssod/project/configs/ssl/s4_01_soft_teacher_swin_t_fpn.py",
+      "expected_sha256": "b89aa4f8127e38abd2243f0c9a89fcbacd0b00651c7bfc3490a3368460f1811e",
+      "observed_sha256": "b89aa4f8127e38abd2243f0c9a89fcbacd0b00651c7bfc3490a3368460f1811e"
+    },
+    "init_hook": {
+      "path": "/workspace/ssod/project/src/hooks/teacher_initialization_hook.py",
+      "expected_sha256": "8a56444c94045ac7f0cfd9e7812d79a599655389074fbee8731c0b9179f439bc",
+      "observed_sha256": "8a56444c94045ac7f0cfd9e7812d79a599655389074fbee8731c0b9179f439bc"
+    }
+  },
+  "swin_checkpoint": {
+    "path": "/workspace/ssod/cache/pretrained/swin_tiny_patch4_window7_224.pth",
+    "expected_sha256": "9f71c168d837d1b99dd1dc29e14990a7a9e8bdc5f673d46b04fe36fe15590ad3",
+    "observed_sha256": "9f71c168d837d1b99dd1dc29e14990a7a9e8bdc5f673d46b04fe36fe15590ad3"
+  },
+  "models": [
+    {
+      "name": "R50",
+      "config": "/workspace/ssod/project/configs/ssl/s4_01_soft_teacher_r50_fpn.py",
+      "pre_hook_full_state_equal": false,
+      "checks": {
+        "model_is_softteacher": true,
+        "detector_is_faster_rcnn": true,
+        "teacher_frozen_by_config": true,
+        "semi_train_cfg_scope_is_s4_01_only": true,
+        "teacher_initialization_hook_registered": true,
+        "teacher_initialization_hook_priority_very_high": true,
+        "hook_has_no_custom_after_train_iter": true,
+        "fresh_teacher_equals_student_full_state": true,
+        "teacher_all_frozen": true,
+        "student_has_trainable_parameters": true,
+        "resume_teacher_not_resynchronized": true
+      },
+      "all_checks_pass": true
+    },
+    {
+      "name": "SWIN",
+      "config": "/workspace/ssod/project/configs/ssl/s4_01_soft_teacher_swin_t_fpn.py",
+      "pre_hook_full_state_equal": false,
+      "checks": {
+        "model_is_softteacher": true,
+        "detector_is_faster_rcnn": true,
+        "teacher_frozen_by_config": true,
+        "semi_train_cfg_scope_is_s4_01_only": true,
+        "teacher_initialization_hook_registered": true,
+        "teacher_initialization_hook_priority_very_high": true,
+        "hook_has_no_custom_after_train_iter": true,
+        "fresh_teacher_equals_student_full_state": true,
+        "teacher_all_frozen": true,
+        "student_has_trainable_parameters": true,
+        "resume_teacher_not_resynchronized": true
+      },
+      "all_checks_pass": true
+    }
+  ],
+  "checks": {
+    "r50_config_exists": true,
+    "r50_config_sha256_match": true,
+    "swin_config_exists": true,
+    "swin_config_sha256_match": true,
+    "init_hook_exists": true,
+    "init_hook_sha256_match": true,
+    "swin_checkpoint_exists": true,
+    "swin_checkpoint_sha256_match": true,
+    "r50_initialization_contract": true,
+    "swin_initialization_contract": true
+  },
+  "check_count": 10,
+  "failed_checks": [],
+  "all_checks_pass": true
+}
