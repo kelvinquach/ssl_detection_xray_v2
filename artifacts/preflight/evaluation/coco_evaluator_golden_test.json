@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "S5",
+  "task": "S5.01",
+  "status": "PASS",
+  "all_checks_pass": true,
+  "scientific_contract": {
+    "primary_metric": "bbox_mAP_50_95",
+    "iou_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "useCats": 1,
+    "maxDets": 100,
+    "extra_fixed_score_threshold_before_AP": false,
+    "dataset": "fixed_validation",
+    "test_attached": false
+  },
+  "implementation": {
+    "config": "configs/evaluation/s5_01_coco_bbox_evaluator.py",
+    "config_sha256": "cf86b8f51f3acdb1a36c94c7233ae075270bc536252948680394014d687d023e",
+    "runtime_metric_key": "coco/bbox_mAP"
+  },
+  "runtime": {
+    "mmdet_version": "3.3.0",
+    "metric_class": "mmdet.evaluation.metrics.CocoMetric"
+  },
+  "checks": {
+    "config_val_cfg_is_valloop": true,
+    "config_uses_fixed_validation": true,
+    "config_metric_is_bbox": true,
+    "config_classwise_false": true,
+    "config_proposal_nums_1_10_100": true,
+    "config_iou_grid_exact": true,
+    "config_metric_items_map_only": true,
+    "config_format_only_false": true,
+    "config_prefix_coco": true,
+    "config_test_not_attached": true,
+    "no_extra_fixed_score_threshold_before_ap": true,
+    "category_aware_usecCats_1_semantics": true,
+    "ap_enforces_max_dets_100": true
+  },
+  "observed": {
+    "low_score_tp_bbox_mAP": 1.0,
+    "wrong_category_bbox_mAP": 0.0,
+    "rank_101_tp_bbox_mAP": 0.0
+  }
+}
