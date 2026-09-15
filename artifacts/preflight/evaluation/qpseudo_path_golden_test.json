@@ -1,0 +1,432 @@
+{
+  "checks": [
+    {
+      "name": "canonical::sn-article.tex",
+      "observed": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc",
+      "pass": true
+    },
+    {
+      "name": "canonical::IMPLEMENTATION_HANDOFF.md",
+      "observed": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+      "pass": true
+    },
+    {
+      "name": "canonical::ARTIFACT_AND_EVIDENCE_CONTRACT.md",
+      "observed": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+      "pass": true
+    },
+    {
+      "name": "provenance::validation_split_local",
+      "observed": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+      "pass": true
+    },
+    {
+      "name": "provenance::validation_split_runtime",
+      "observed": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+      "pass": true
+    },
+    {
+      "name": "provenance::validation_local_runtime_identity",
+      "observed": {
+        "local": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+        "runtime": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
+      },
+      "pass": true
+    },
+    {
+      "name": "provenance::evaluator_config",
+      "observed": "a370acb4c0e76662b515b80943e3870a514d24f6f138db71df3680f71c204f2f",
+      "pass": true
+    },
+    {
+      "name": "provenance::acceptance_config",
+      "observed": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+      "pass": true
+    },
+    {
+      "name": "provenance::qpseudo_impl",
+      "observed": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788",
+      "pass": true
+    },
+    {
+      "name": "provenance::qpseudo_init",
+      "observed": "58083297b7df31668de5fcc60323eb1b6fb14a7c5927c233e63be16622a6ac5e",
+      "pass": true
+    },
+    {
+      "name": "config::checkpoint_role",
+      "observed": "LAST_EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "config::model_role",
+      "observed": "EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "config::serialization_scope",
+      "observed": "EMA_TEACHER_ONLY",
+      "pass": true
+    },
+    {
+      "name": "config::dataset",
+      "observed": "fixed_validation",
+      "pass": true
+    },
+    {
+      "name": "config::pseudo_set",
+      "observed": "accepted_rcnn_classification",
+      "pass": true
+    },
+    {
+      "name": "config::cls_thr",
+      "observed": 0.9,
+      "pass": true
+    },
+    {
+      "name": "config::strict_greater",
+      "observed": "STRICT_GREATER",
+      "pass": true
+    },
+    {
+      "name": "config::native_max100",
+      "observed": 100,
+      "pass": true
+    },
+    {
+      "name": "config::hidden_u_gt_false",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "config::test_false",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "constants::checkpoint_role",
+      "observed": "LAST_EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "constants::model_role",
+      "observed": "EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "constants::serialization_scope",
+      "observed": "EMA_TEACHER_ONLY",
+      "pass": true
+    },
+    {
+      "name": "constants::dataset",
+      "observed": "fixed_validation",
+      "pass": true
+    },
+    {
+      "name": "constants::pseudo_set",
+      "observed": "accepted_rcnn_classification",
+      "pass": true
+    },
+    {
+      "name": "constants::cls_thr",
+      "observed": 0.9,
+      "pass": true
+    },
+    {
+      "name": "constants::comparator",
+      "observed": "STRICT_GREATER",
+      "pass": true
+    },
+    {
+      "name": "constants::max100",
+      "observed": 100,
+      "pass": true
+    },
+    {
+      "name": "loader::strict_state_restored",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::reported_role",
+      "observed": {
+        "checkpoint_role": "LAST_EMA_TEACHER",
+        "checkpoint_sha256": "d62c52a010ea78e0e3989fe7474881470b1089f9a8cf7f388ff93d1740a0495f",
+        "model_role": "EMA_TEACHER",
+        "optimizer_update": 2064,
+        "scientific_checkpoint_role": "LAST",
+        "serialization_scope": "EMA_TEACHER_ONLY"
+      },
+      "pass": true
+    },
+    {
+      "name": "loader::reported_scope",
+      "observed": {
+        "checkpoint_role": "LAST_EMA_TEACHER",
+        "checkpoint_sha256": "d62c52a010ea78e0e3989fe7474881470b1089f9a8cf7f388ff93d1740a0495f",
+        "model_role": "EMA_TEACHER",
+        "optimizer_update": 2064,
+        "scientific_checkpoint_role": "LAST",
+        "serialization_scope": "EMA_TEACHER_ONLY"
+      },
+      "pass": true
+    },
+    {
+      "name": "loader::checkpoint_sha",
+      "observed": "d62c52a010ea78e0e3989fe7474881470b1089f9a8cf7f388ff93d1740a0495f",
+      "pass": true
+    },
+    {
+      "name": "loader::best_role_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::student_role_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::full_model_scope_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::operational_state_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::predict_on_student_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "acceptance::exact_090_rejected",
+      "observed": {
+        "accepted_count": 2,
+        "scores": [
+          0.9000999927520752,
+          0.9900000095367432
+        ]
+      },
+      "pass": true
+    },
+    {
+      "name": "acceptance::above_090_accepted",
+      "observed": 2,
+      "pass": true
+    },
+    {
+      "name": "acceptance::native_count_preserved",
+      "observed": 3,
+      "pass": true
+    },
+    {
+      "name": "acceptance::max100_guard",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "metric::PL_mAP_50_95",
+      "observed": 1.0,
+      "pass": true
+    },
+    {
+      "name": "metric::PL_AP50",
+      "observed": 1.0,
+      "pass": true
+    },
+    {
+      "name": "metric::PL_AP75",
+      "observed": 1.0,
+      "pass": true
+    },
+    {
+      "name": "metric::classwise_key_count",
+      "observed": 42,
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_required_fields",
+      "observed": [
+        "PL_AP50",
+        "PL_AP75",
+        "PL_mAP_50_95",
+        "acceptance",
+        "accepted_pseudo_count",
+        "checkpoint_role",
+        "checkpoint_sha256",
+        "dataset",
+        "evaluator_config_sha256",
+        "hidden_u_gt_used",
+        "pseudo_acceptance_config_sha256",
+        "pseudo_set",
+        "schema_version",
+        "test_used",
+        "validation_image_count",
+        "validation_split_sha256"
+      ],
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_checkpoint_role",
+      "observed": "LAST_EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_checkpoint_sha_match",
+      "observed": "d62c52a010ea78e0e3989fe7474881470b1089f9a8cf7f388ff93d1740a0495f",
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_dataset",
+      "observed": "fixed_validation",
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_pseudo_set",
+      "observed": "accepted_rcnn_classification",
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_hidden_u_false",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_test_false",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_primary_metric",
+      "observed": 1.0,
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_image_count",
+      "observed": 14,
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_threshold",
+      "observed": 0.9,
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_comparator",
+      "observed": "STRICT_GREATER",
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_no_second_nms",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_no_topk",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "artifact::classwise_14_rows",
+      "observed": 14,
+      "pass": true
+    },
+    {
+      "name": "artifact::classwise_columns",
+      "observed": [
+        "PL_AP50",
+        "PL_AP75",
+        "PL_AP_50_95",
+        "category_id",
+        "class_name"
+      ],
+      "pass": true
+    },
+    {
+      "name": "artifact::returned_paths_and_hashes",
+      "observed": [
+        "qpseudo_classwise",
+        "qpseudo_classwise_sha256",
+        "qpseudo_validation",
+        "qpseudo_validation_sha256",
+        "val_last_teacher_predictions",
+        "val_last_teacher_predictions_sha256"
+      ],
+      "pass": true
+    },
+    {
+      "name": "firewall::best_teacher_path_absent",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "firewall::test_split_absent",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "firewall::latest_resume_absent",
+      "observed": true,
+      "pass": true
+    }
+  ],
+  "checks_passed": 64,
+  "checks_total": 64,
+  "evidence_type": "qpseudo_path_golden_test",
+  "failed_checks": [],
+  "failed_count": 0,
+  "provenance": {
+    "canonical_sha256": {
+      "ARTIFACT_AND_EVIDENCE_CONTRACT.md": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+      "IMPLEMENTATION_HANDOFF.md": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+      "sn-article.tex": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc"
+    },
+    "evaluator_config_sha256": "a370acb4c0e76662b515b80943e3870a514d24f6f138db71df3680f71c204f2f",
+    "pseudo_acceptance_config_sha256": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+    "qpseudo_impl_sha256": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788",
+    "qpseudo_init_sha256": "58083297b7df31668de5fcc60323eb1b6fb14a7c5927c233e63be16622a6ac5e",
+    "validation_split_sha256": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
+  },
+  "schema_version": "1.0.0",
+  "scientific_protocol": {
+    "acceptance_comparator": "STRICT_GREATER",
+    "best_teacher_used": false,
+    "checkpoint_role": "LAST_EMA_TEACHER",
+    "classification_threshold": 0.9,
+    "dataset": "fixed_validation",
+    "detector_native_nms": true,
+    "hidden_u_gt_used": false,
+    "latest_resume_used": false,
+    "model_role": "EMA_TEACHER",
+    "native_max_per_img": 100,
+    "primary_metric": "PL_mAP_50_95",
+    "pseudo_set": "accepted_rcnn_classification",
+    "score_equal_0_90_accepted": false,
+    "second_nms": false,
+    "serialization_scope": "EMA_TEACHER_ONLY",
+    "test_used": false,
+    "topk_truncation": false
+  },
+  "source_sha256": {
+    "configs/evaluation/s5_02_coco_secondary_evaluator.py": "a370acb4c0e76662b515b80943e3870a514d24f6f138db71df3680f71c204f2f",
+    "configs/evaluation/s5_06_qpseudo_acceptance.py": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+    "scripts/S5_06_validate_qpseudo_path.py": "63bb6393bbdb5e897a2dfd17ff947373aab08de2849fec756de3bdf7cccb3b51",
+    "src/evaluation/__init__.py": "58083297b7df31668de5fcc60323eb1b6fb14a7c5927c233e63be16622a6ac5e",
+    "src/evaluation/qpseudo.py": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788",
+    "src/metrics/protocol_coco_metric.py": "89c0696a308ba68c3418ae01e2c4b94c292d4cfcd5ccfa432b6e2bd4fa29b504"
+  },
+  "status": "PASS",
+  "synthetic_golden": {
+    "PL_AP50": 1.0,
+    "PL_AP75": 1.0,
+    "PL_mAP_50_95": 1.0,
+    "classwise_row_count": 14,
+    "fixture": "SYNTHETIC_COCO_14_CLASS_PERFECT_PREDICTIONS",
+    "threshold_boundary_exact_0_90_rejected": true
+  },
+  "task": "S5.06"
+}
