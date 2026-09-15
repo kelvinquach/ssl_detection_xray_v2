@@ -1,0 +1,430 @@
+{
+  "canonical_proofs": {
+    "non_main_ablation_test_access": "BLOCKED",
+    "qpseudo_uses_validation_only": true,
+    "test_dataloader_not_available_to_checkpoint_selection_path": true,
+    "test_evaluator_not_invoked_in_preflight": true
+  },
+  "canonical_sha256": {
+    "ARTIFACT_AND_EVIDENCE_CONTRACT.md": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+    "IMPLEMENTATION_HANDOFF.md": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+    "sn-article.tex": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc"
+  },
+  "checks": [
+    {
+      "detail": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc",
+      "name": "canonical::sn-article.tex",
+      "pass": true
+    },
+    {
+      "detail": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+      "name": "canonical::IMPLEMENTATION_HANDOFF.md",
+      "pass": true
+    },
+    {
+      "detail": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+      "name": "canonical::ARTIFACT_AND_EVIDENCE_CONTRACT.md",
+      "pass": true
+    },
+    {
+      "detail": "108b9e64bcbe94096d2e4cf576b83a7a11380b109939c88616cecb46414b4f16",
+      "name": "governance::artifacts/governance/scientific_source_manifest.json",
+      "pass": true
+    },
+    {
+      "detail": "d73423a0977be30924d5c1ce7ee47c132aed63d9e6aca0835faefda52659266c",
+      "name": "governance::artifacts/governance/implementation_contract_manifest.json",
+      "pass": true
+    },
+    {
+      "detail": "196c4f859e588ca8716a71414dd24fe979b4f8191fd6c20b45c9ed8f3a664950",
+      "name": "governance::artifacts/governance/artifact_contract_manifest.json",
+      "pass": true
+    },
+    {
+      "detail": "aa3a874583d6bf4714e4882ef046d846f9e62526493bc754e11988eddda1e6ca",
+      "name": "source::src/utils/pre_run_guardrails.py",
+      "pass": true
+    },
+    {
+      "detail": "300fc37b08e4f1e9e3e97c29bc714aef2b219386c2932cc34669923707e57bcc",
+      "name": "source::src/evaluation/qpseudo.py",
+      "pass": true
+    },
+    {
+      "detail": "7559b3d253609adfc6ce0a5a1b3bb445ccb60c8aa3da0fe085ff9c4811df86d7",
+      "name": "source::scripts/S5_08_validate_qpseudo_gt_firewall.py",
+      "pass": true
+    },
+    {
+      "detail": {
+        "artifact_contract_exists": true,
+        "artifact_contract_hash_matches_lock": true,
+        "artifact_manifest_implementation_hash_consistent": true,
+        "artifact_manifest_scientific_hash_consistent": true,
+        "implementation_contract_exists": true,
+        "implementation_contract_hash_matches_lock": true,
+        "implementation_manifest_scientific_hash_consistent": true,
+        "scientific_source_exists": true,
+        "scientific_source_hash_matches_lock": true,
+        "scientific_source_name_canonical": true
+      },
+      "name": "governance::locked_source_integrity",
+      "pass": true
+    },
+    {
+      "detail": "50be7f43887f039acb4bee0aec56c919cef0654e8c8cdf037e3d8bb6cabe207d",
+      "name": "qpseudo::evidence_sha",
+      "pass": true
+    },
+    {
+      "detail": {
+        "dataset": "fixed_validation",
+        "fixed_validation_only": true
+      },
+      "name": "qpseudo::fixed_validation_only",
+      "pass": true
+    },
+    {
+      "detail": {
+        "test_gt_prohibited": true,
+        "test_used": false
+      },
+      "name": "qpseudo::test_not_used",
+      "pass": true
+    },
+    {
+      "detail": [],
+      "name": "preflight::test_dataloader_absent",
+      "pass": true
+    },
+    {
+      "detail": [],
+      "name": "preflight::test_evaluator_absent",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "runtime::sup_positive_identity",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "runtime::ssl_positive_identity",
+      "pass": true
+    },
+    {
+      "detail": {
+        "SSL": "bbox_mAP_50_95_validation",
+        "SUP": "bbox_mAP_50_95_validation"
+      },
+      "name": "firewall_expected::checkpoint_selection_metric",
+      "pass": true
+    },
+    {
+      "detail": {
+        "SSL": "FINAL_ONLY",
+        "SUP": "FINAL_ONLY"
+      },
+      "name": "firewall_expected::test_usage",
+      "pass": true
+    },
+    {
+      "detail": {
+        "SSL": false,
+        "SUP": false
+      },
+      "name": "firewall_expected::test_access_authorized",
+      "pass": true
+    },
+    {
+      "detail": {
+        "SSL": false,
+        "SUP": false
+      },
+      "name": "firewall_expected::test_accessed",
+      "pass": true
+    },
+    {
+      "detail": {
+        "SSL": "FINAL_ONLY",
+        "SUP": "FINAL_ONLY"
+      },
+      "name": "firewall_expected::test_access_reason",
+      "pass": true
+    },
+    {
+      "detail": {
+        "SSL": "NOT_AUTHORIZED",
+        "SUP": "NOT_AUTHORIZED"
+      },
+      "name": "firewall_expected::final_evaluation_status",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "mismatch_fields": [
+          "checkpoint_selection_metric"
+        ]
+      },
+      "name": "fail_closed::checkpoint_selection_metric",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "mismatch_fields": [
+          "test_usage"
+        ]
+      },
+      "name": "fail_closed::test_usage",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "mismatch_fields": [
+          "test_access_authorized"
+        ]
+      },
+      "name": "fail_closed::test_access_authorized",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "mismatch_fields": [
+          "test_accessed"
+        ]
+      },
+      "name": "fail_closed::test_accessed",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "mismatch_fields": [
+          "test_access_reason"
+        ]
+      },
+      "name": "fail_closed::test_access_reason",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "mismatch_fields": [
+          "final_evaluation_status"
+        ]
+      },
+      "name": "fail_closed::final_evaluation_status",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "missing_fields": [
+          "checkpoint_selection_metric"
+        ]
+      },
+      "name": "fail_closed_missing::checkpoint_selection_metric",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "missing_fields": [
+          "test_usage"
+        ]
+      },
+      "name": "fail_closed_missing::test_usage",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "missing_fields": [
+          "test_access_authorized"
+        ]
+      },
+      "name": "fail_closed_missing::test_access_authorized",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "missing_fields": [
+          "test_accessed"
+        ]
+      },
+      "name": "fail_closed_missing::test_accessed",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "missing_fields": [
+          "test_access_reason"
+        ]
+      },
+      "name": "fail_closed_missing::test_access_reason",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blocked": true,
+        "missing_fields": [
+          "final_evaluation_status"
+        ]
+      },
+      "name": "fail_closed_missing::final_evaluation_status",
+      "pass": true
+    },
+    {
+      "detail": {
+        "condition_role": "ABLATION",
+        "mismatch_fields": [
+          "test_access_authorized",
+          "test_accessed"
+        ],
+        "variant": "NON_MAIN"
+      },
+      "name": "firewall::non_main_ablation_test_access_blocked",
+      "pass": true
+    },
+    {
+      "detail": "/workspace/ssod/project/artifacts/final_test",
+      "name": "preflight::final_test_artifacts_not_materialized",
+      "pass": true
+    }
+  ],
+  "checks_passed": 37,
+  "checks_total": 37,
+  "constraint": "No checkpoint/model/tuning/ablation selection using test.",
+  "evidence_type": "test_firewall_preflight",
+  "failed_checks": [],
+  "failed_count": 0,
+  "firewall_state": {
+    "checkpoint_selection_metric": "bbox_mAP_50_95_validation",
+    "final_evaluation_status": "NOT_AUTHORIZED",
+    "test_access_authorized": false,
+    "test_access_reason": "FINAL_ONLY",
+    "test_accessed": false,
+    "test_usage": "FINAL_ONLY"
+  },
+  "governance_sha256": {
+    "artifacts/governance/artifact_contract_manifest.json": "196c4f859e588ca8716a71414dd24fe979b4f8191fd6c20b45c9ed8f3a664950",
+    "artifacts/governance/implementation_contract_manifest.json": "d73423a0977be30924d5c1ce7ee47c132aed63d9e6aca0835faefda52659266c",
+    "artifacts/governance/scientific_source_manifest.json": "108b9e64bcbe94096d2e4cf576b83a7a11380b109939c88616cecb46414b4f16"
+  },
+  "preflight_materialization": {
+    "final_test_artifacts_created": false,
+    "test_dataloader_config_present": false,
+    "test_evaluator_config_present": false
+  },
+  "qpseudo_firewall": {
+    "evidence_sha256": "50be7f43887f039acb4bee0aec56c919cef0654e8c8cdf037e3d8bb6cabe207d",
+    "fixed_validation_only": true,
+    "test_used": false
+  },
+  "runtime_negative_tests": {
+    "missing_field_cases": {
+      "checkpoint_selection_metric": {
+        "blocked": true,
+        "missing_fields": [
+          "checkpoint_selection_metric"
+        ]
+      },
+      "final_evaluation_status": {
+        "blocked": true,
+        "missing_fields": [
+          "final_evaluation_status"
+        ]
+      },
+      "test_access_authorized": {
+        "blocked": true,
+        "missing_fields": [
+          "test_access_authorized"
+        ]
+      },
+      "test_access_reason": {
+        "blocked": true,
+        "missing_fields": [
+          "test_access_reason"
+        ]
+      },
+      "test_accessed": {
+        "blocked": true,
+        "missing_fields": [
+          "test_accessed"
+        ]
+      },
+      "test_usage": {
+        "blocked": true,
+        "missing_fields": [
+          "test_usage"
+        ]
+      }
+    },
+    "mutation_cases": {
+      "checkpoint_selection_metric": {
+        "blocked": true,
+        "mismatch_fields": [
+          "checkpoint_selection_metric"
+        ]
+      },
+      "final_evaluation_status": {
+        "blocked": true,
+        "mismatch_fields": [
+          "final_evaluation_status"
+        ]
+      },
+      "test_access_authorized": {
+        "blocked": true,
+        "mismatch_fields": [
+          "test_access_authorized"
+        ]
+      },
+      "test_access_reason": {
+        "blocked": true,
+        "mismatch_fields": [
+          "test_access_reason"
+        ]
+      },
+      "test_accessed": {
+        "blocked": true,
+        "mismatch_fields": [
+          "test_accessed"
+        ]
+      },
+      "test_usage": {
+        "blocked": true,
+        "mismatch_fields": [
+          "test_usage"
+        ]
+      }
+    },
+    "non_main_ablation_test_access_blocked": true
+  },
+  "schema_version": "1.0",
+  "scientific_boundaries": {
+    "final_test_authorized": false,
+    "official_training_authorized": false,
+    "qpseudo_test_used": false,
+    "scientific_protocol_changed": false,
+    "test_used_for_ablation_selection": false,
+    "test_used_for_checkpoint_selection": false,
+    "test_used_for_model_selection": false,
+    "test_used_for_tuning": false
+  },
+  "source_sha256": {
+    "scripts/S5_08_validate_qpseudo_gt_firewall.py": "7559b3d253609adfc6ce0a5a1b3bb445ccb60c8aa3da0fe085ff9c4811df86d7",
+    "scripts/S5_09_validate_test_firewall.py": "7a000ed85dd800e1e699edcd5053bc9a56322e1df42ea2d097f8cecc14224048",
+    "src/evaluation/qpseudo.py": "300fc37b08e4f1e9e3e97c29bc714aef2b219386c2932cc34669923707e57bcc",
+    "src/utils/pre_run_guardrails.py": "aa3a874583d6bf4714e4882ef046d846f9e62526493bc754e11988eddda1e6ca"
+  },
+  "status": "PASS",
+  "task": "S5.09",
+  "tracker_action": "Keep test closed"
+}

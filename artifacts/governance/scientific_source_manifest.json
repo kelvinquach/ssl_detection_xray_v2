@@ -2,7 +2,7 @@
     "schema_version":  "1.1",
     "artifact_type":  "SCIENTIFIC_SOURCE_MANIFEST",
     "scientific_source_name":  "sn-article.tex",
-    "scientific_source_sha256":  "6a7f79514f9afbe1f35a0177db240210b306adbd6515eca649770ab8533065d9",
+    "scientific_source_sha256":  "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc",
     "role":  "SCIENTIFIC_SOURCE_OF_TRUTH",
     "status":  "RESEARCHER_APPROVED / LOCKED"
 }

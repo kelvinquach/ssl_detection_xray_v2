@@ -2,9 +2,9 @@
     "schema_version":  "1.1",
     "artifact_type":  "IMPLEMENTATION_CONTRACT_MANIFEST",
     "implementation_contract_name":  "IMPLEMENTATION_HANDOFF.md",
-    "implementation_contract_sha256":  "15d5ba137db50eac6675af36cab8e0b02f4aaa43e4fe55298e4e1d3fdb728a7e",
+    "implementation_contract_sha256":  "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
     "role":  "IMPLEMENTATION_CONTRACT",
     "scientific_source_name":  "sn-article.tex",
-    "scientific_source_sha256":  "6a7f79514f9afbe1f35a0177db240210b306adbd6515eca649770ab8533065d9",
+    "scientific_source_sha256":  "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc",
     "status":  "FINAL IMPLEMENTATION HANDOFF / PRE-IMPLEMENTATION"
 }

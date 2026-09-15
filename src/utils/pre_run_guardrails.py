@@ -379,6 +379,10 @@ def build_expected_pre_run_identity(
         "checkpoint_selection_metric":
             "bbox_mAP_50_95_validation",
         "test_usage": "FINAL_ONLY",
+        "test_access_authorized": False,
+        "test_accessed": False,
+        "test_access_reason": "FINAL_ONLY",
+        "final_evaluation_status": "NOT_AUTHORIZED",
 
         "seed_protocol_sha256": seed["seed_protocol_sha256"],
 
