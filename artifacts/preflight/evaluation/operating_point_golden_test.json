@@ -1,0 +1,210 @@
+{
+  "after_detector_native_nms_max100": true,
+  "checks": [
+    {
+      "name": "locks",
+      "observed": {
+        "cats": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "iou": 0.5,
+        "max": 100,
+        "tau": 0.5
+      },
+      "pass": true
+    },
+    {
+      "name": "tau_inclusive",
+      "observed": {
+        "FN": 0,
+        "FP": 0,
+        "GT": 1,
+        "TP": 1,
+        "retained_detections": 1
+      },
+      "pass": true
+    },
+    {
+      "name": "below_tau_filtered",
+      "observed": {
+        "FN": 1,
+        "FP": 0,
+        "GT": 1,
+        "TP": 0,
+        "retained_detections": 0
+      },
+      "pass": true
+    },
+    {
+      "name": "category_aware",
+      "observed": {
+        "FN": 1,
+        "FP": 1,
+        "GT": 1,
+        "TP": 0,
+        "retained_detections": 1
+      },
+      "pass": true
+    },
+    {
+      "name": "one_to_one",
+      "observed": {
+        "FN": 0,
+        "FP": 1,
+        "GT": 1,
+        "TP": 1,
+        "retained_detections": 2
+      },
+      "pass": true
+    },
+    {
+      "name": "score_descending",
+      "observed": {
+        "FN": 1,
+        "FP": 1,
+        "GT": 2,
+        "TP": 1,
+        "retained_detections": 2
+      },
+      "pass": true
+    },
+    {
+      "name": "equal_score_stable_detector_order",
+      "observed": {
+        "FN": 0,
+        "FP": 0,
+        "GT": 2,
+        "TP": 2,
+        "retained_detections": 2
+      },
+      "pass": true
+    },
+    {
+      "name": "equal_iou_earliest_annotation_order",
+      "observed": {
+        "earlier_gt1": {
+          "FN": 1,
+          "FP": 1,
+          "GT": 2,
+          "TP": 1,
+          "retained_detections": 2
+        },
+        "earlier_gt2": {
+          "FN": 0,
+          "FP": 0,
+          "GT": 2,
+          "TP": 2,
+          "retained_detections": 2
+        }
+      },
+      "pass": true
+    },
+    {
+      "name": "maximum_iou_selection",
+      "observed": {
+        "FN": 0,
+        "FP": 0,
+        "GT": 2,
+        "TP": 2,
+        "retained_detections": 2
+      },
+      "pass": true
+    },
+    {
+      "name": "iou_inclusive_050",
+      "observed": {
+        "FN": 0,
+        "FP": 0,
+        "GT": 1,
+        "TP": 1,
+        "retained_detections": 1
+      },
+      "pass": true
+    },
+    {
+      "name": "zero_gt_no_fn",
+      "observed": {
+        "FN": 0,
+        "FP": 1,
+        "GT": 0,
+        "TP": 0,
+        "retained_detections": 1
+      },
+      "pass": true
+    },
+    {
+      "name": "max100_guard_rejects_101",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "recall_aggregation",
+      "observed": {
+        "Recall_tau_eval": 0.5
+      },
+      "pass": true
+    },
+    {
+      "name": "recall_only_output",
+      "observed": [
+        "Recall_tau_eval"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixed_coco_annotation_order_preserved",
+      "observed": {
+        "api": [
+          8,
+          9
+        ],
+        "raw": [
+          8,
+          9
+        ]
+      },
+      "pass": true
+    }
+  ],
+  "checks_passed": 15,
+  "checks_total": 15,
+  "equal_iou_tie_break": "EARLIEST_FIXED_COCO_ANNOTATION_ORDER",
+  "equal_score_tie_break": "PRESERVE_DETECTOR_OUTPUT_ORDER",
+  "evaluator_runs_second_nms": false,
+  "evaluator_truncates_top100": false,
+  "evidence_type": "operating_point_golden_test",
+  "fixed_validation_only": true,
+  "fixture": "SYNTHETIC_COCO_14_CLASS",
+  "gt_candidate_policy": "UNMATCHED_SAME_CLASS_ONLY",
+  "gt_selection": "MAX_IOU",
+  "iou_match_threshold": 0.5,
+  "matching": "CATEGORY_AWARE_ONE_TO_ONE",
+  "matching_algorithm": "DETERMINISTIC_SCORE_DESCENDING_GREEDY",
+  "max_dets_per_image": 100,
+  "metric": "Recall_tau_eval",
+  "prediction_order": "DESCENDING_CONFIDENCE_STABLE_DETECTOR_ORDER",
+  "schema_version": "1.0.0",
+  "source_sha256": {
+    "configs/evaluation/s5_03_operating_point_evaluator.py": "51c4e137ae341a276021dd7c6c0e6d5eabfd330635d9304331c06a8d8522f366",
+    "scripts/S5_03_validate_operating_point_metric.py": "0c9bda89417f6356d50385340aa78f6185cb7ec188afd7b539993c20c0273c74",
+    "src/metrics/__init__.py": "5c67cebb4e4d164f68b83419a60204bf32ea2310986ea51718a064c800678a88",
+    "src/metrics/operating_point_metric.py": "e1bd577f8aaa613e9b31910f0df029792036bdb03790796a0394d13c1eac03a1"
+  },
+  "status": "PASS",
+  "task": "S5.03",
+  "tau_eval": 0.5,
+  "test_access": false
+}
