@@ -6642,8 +6642,17 @@ s_j
 
 mới được giữ lại để tính các chỉ số tại operating point.
 
-Một prediction được ghép với ground truth khi đồng thời thỏa ba điều kiện:
-cùng lớp, chưa được ghép với một prediction khác và có
+Để phép matching tại operating point có tính xác định và tái lập, các
+detection còn lại sau bước lọc theo
+\(\tau_{\mathrm{eval}}\)
+được duyệt theo confidence score giảm dần. Khi hai detection có cùng
+confidence score, thứ tự đầu ra của detector sau detector-native
+post-processing được giữ nguyên.
+
+Với mỗi detection theo thứ tự này, chỉ các ground-truth bounding box chưa
+được ghép và thuộc cùng lớp mới được xem là ứng viên. Detection được ghép
+với ground-truth bounding box có IoU lớn nhất trong tập ứng viên; cặp ghép
+chỉ được chấp nhận khi
 
 \begin{equation}
 IoU(B_p,B_g)
@@ -6652,9 +6661,13 @@ IoU(B_p,B_g)
 \label{eq:operating_point_matching_iou}
 \end{equation}
 
-Matching được thực hiện theo nguyên tắc category-aware và one-to-one. Từ số
-true positive \(TP\) và false negative \(FN\), Recall tại operating point
-được tính bởi
+Nếu nhiều ground-truth bounding box có cùng giá trị IoU lớn nhất, ground
+truth xuất hiện trước theo thứ tự annotation cố định trong tệp COCO của tập
+đánh giá được chọn. Sau khi một ground truth được ghép thành công, ground
+truth đó không còn khả dụng cho các detection tiếp theo. Quy trình này tạo
+thành deterministic score-descending greedy, category-aware, one-to-one
+matching. Từ số true positive \(TP\) và false negative \(FN\), Recall tại
+operating point được tính bởi
 
 \begin{equation}
 Recall_{\tau_{\mathrm{eval}}}

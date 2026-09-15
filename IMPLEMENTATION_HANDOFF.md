@@ -1029,9 +1029,20 @@ Operating-point metrics:
 
 ```text
 tau_eval = 0.50
-matching = category-aware, one-to-one
+matching = deterministic score-descending greedy, category-aware, one-to-one
 IoU match >= 0.50
 after detector-native NMS/max100
+
+matching_order:
+  1. apply tau_eval after detector-native NMS/max100
+  2. process retained detections by descending confidence score
+  3. for each detection, consider only unmatched ground truths of the same class
+  4. select the unmatched same-class ground truth with maximum IoU
+  5. accept the match only when IoU >= 0.50
+
+deterministic_tie_breaking:
+  equal_detection_score = preserve detector output order
+  equal_best_gt_iou = choose the earliest ground truth in fixed COCO annotation order
 ```
 
 No Finding evaluation:
