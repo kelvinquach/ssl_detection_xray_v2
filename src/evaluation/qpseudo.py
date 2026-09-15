@@ -30,6 +30,7 @@ PSEUDO_SET = "accepted_rcnn_classification"
 CLS_PSEUDO_THR = 0.90
 ACCEPTANCE_COMPARATOR = "STRICT_GREATER"
 MAX_DETS_PER_IMAGE = 100
+FIXED_VALIDATION_SHA256 = "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
 
 
 def sha256_file(path) -> str:
@@ -40,6 +41,25 @@ def sha256_file(path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def _assert_fixed_validation_identity(ann_file) -> str:
+    """Fail closed unless ann_file is the exact locked fixed-validation COCO."""
+    path = Path(ann_file)
+    if not path.is_file():
+        raise FileNotFoundError(
+            f"Q_pseudo fixed-validation annotation file not found: {path}"
+        )
+
+    observed_sha256 = sha256_file(path)
+    if observed_sha256 != FIXED_VALIDATION_SHA256:
+        raise ValueError(
+            "Q_pseudo ann_file is not the locked fixed validation; "
+            f"expected_sha256={FIXED_VALIDATION_SHA256}, "
+            f"observed_sha256={observed_sha256}"
+        )
+
+    return observed_sha256
 
 
 def load_last_ema_teacher_checkpoint(model, checkpoint_path) -> Dict[str, object]:
@@ -278,6 +298,20 @@ def evaluate_qpseudo_predictions(
     ann_file,
     evaluator_cfg: Mapping[str, object],
 ) -> Dict[str, float]:
+    """Evaluate Q_pseudo only against the exact locked fixed validation."""
+    _assert_fixed_validation_identity(ann_file)
+    return _evaluate_qpseudo_predictions_unchecked(
+        predictions,
+        ann_file,
+        evaluator_cfg,
+    )
+
+
+def _evaluate_qpseudo_predictions_unchecked(
+    predictions: Sequence[Mapping[str, object]],
+    ann_file,
+    evaluator_cfg: Mapping[str, object],
+) -> Dict[str, float]:
     """Evaluate accepted pseudo labels with locked ProtocolCocoMetric."""
     payload, categories = _load_validation_categories(ann_file)
 
@@ -421,6 +455,48 @@ def _prediction_artifact_rows(predictions, category_ids):
 
 
 def write_qpseudo_artifacts(
+    output_dir,
+    predictions: Sequence[Mapping[str, object]],
+    metrics: Mapping[str, float],
+    checkpoint_sha256: str,
+    validation_split_sha256: str,
+    pseudo_acceptance_config_sha256: str,
+    evaluator_config_sha256: str,
+    ann_file,
+) -> Dict[str, str]:
+    """Write Q_pseudo artifacts only for the exact locked fixed validation."""
+    observed_validation_sha256 = _assert_fixed_validation_identity(
+        ann_file
+    )
+    declared_validation_sha256 = str(
+        validation_split_sha256
+    ).lower()
+
+    if declared_validation_sha256 != FIXED_VALIDATION_SHA256:
+        raise ValueError(
+            "Q_pseudo validation_split_sha256 must identify the "
+            "locked fixed validation"
+        )
+
+    if declared_validation_sha256 != observed_validation_sha256:
+        raise ValueError(
+            "Q_pseudo validation_split_sha256 does not match ann_file"
+        )
+
+    return _write_qpseudo_artifacts_unchecked(
+        output_dir=output_dir,
+        predictions=predictions,
+        metrics=metrics,
+        checkpoint_sha256=checkpoint_sha256,
+        validation_split_sha256=declared_validation_sha256,
+        pseudo_acceptance_config_sha256=
+            pseudo_acceptance_config_sha256,
+        evaluator_config_sha256=evaluator_config_sha256,
+        ann_file=ann_file,
+    )
+
+
+def _write_qpseudo_artifacts_unchecked(
     output_dir,
     predictions: Sequence[Mapping[str, object]],
     metrics: Mapping[str, float],
