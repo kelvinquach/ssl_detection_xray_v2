@@ -197,11 +197,14 @@ class OperatingPointMetric(BaseMetric):
             )
 
     def compute_metrics(self, results) -> Dict[str, float]:
-        """Compute Recall and FP/image at the locked operating point."""
+        """Compute locked operating-point and zero-GT negative metrics."""
         tp_total = 0
         fp_total = 0
         fn_total = 0
         evaluated_image_count = len(results)
+        negative_image_count = 0
+        fp_total_on_negative = 0
+        negative_images_with_fp = 0
 
         for result in results:
             matched = self.match_image(
@@ -214,6 +217,12 @@ class OperatingPointMetric(BaseMetric):
             fp_total += matched["FP"]
             fn_total += matched["FN"]
 
+            if matched["GT"] == 0:
+                negative_image_count += 1
+                fp_total_on_negative += matched["FP"]
+                if matched["FP"] >= 1:
+                    negative_images_with_fp += 1
+
         denominator = tp_total + fn_total
         recall = float("nan") if denominator == 0 else tp_total / denominator
         fp_per_image = (
@@ -221,8 +230,20 @@ class OperatingPointMetric(BaseMetric):
             if evaluated_image_count == 0
             else fp_total / evaluated_image_count
         )
+        fp_per_negative = (
+            float("nan")
+            if negative_image_count == 0
+            else fp_total_on_negative / negative_image_count
+        )
+        negative_image_far = (
+            float("nan")
+            if negative_image_count == 0
+            else negative_images_with_fp / negative_image_count
+        )
 
         return {
             "Recall_tau_eval": float(recall),
             "FP_per_image": float(fp_per_image),
+            "FP_per_negative": float(fp_per_negative),
+            "negative_image_FAR": float(negative_image_far),
         }
