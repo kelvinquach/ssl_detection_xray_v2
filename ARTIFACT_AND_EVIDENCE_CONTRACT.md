@@ -1532,6 +1532,12 @@ Bắt buộc để không bỏ sót các secondary outcomes của Methodology:
   "tau_eval": 0.50,
   "iou_match_threshold": 0.50,
   "matching": "CATEGORY_AWARE_ONE_TO_ONE",
+  "matching_algorithm": "DETERMINISTIC_SCORE_DESCENDING_GREEDY",
+  "prediction_order": "DESCENDING_CONFIDENCE_STABLE_DETECTOR_ORDER",
+  "gt_candidate_policy": "UNMATCHED_SAME_CLASS_ONLY",
+  "gt_selection": "MAX_IOU",
+  "equal_score_tie_break": "PRESERVE_DETECTOR_OUTPUT_ORDER",
+  "equal_iou_tie_break": "EARLIEST_FIXED_COCO_ANNOTATION_ORDER",
   "after_detector_native_nms_max100": true,
   "evaluated_image_count": 734,
   "GT_total": 0,
@@ -1544,6 +1550,7 @@ Bắt buộc để không bỏ sót các secondary outcomes của Methodology:
 ```
 
 `tau_eval=0.50` chỉ dùng cho operating-point metrics; không được áp trước COCO AP.
+`operating_point_golden_test.json` phải xác nhận đúng deterministic score-descending greedy, category-aware, one-to-one matching: detection được xử lý theo confidence giảm dần; score bằng nhau giữ thứ tự detector output; chỉ xét unmatched ground truth cùng lớp; chọn ground truth có IoU lớn nhất; IoU bằng nhau chọn ground truth xuất hiện sớm nhất theo fixed COCO annotation order; và điều kiện match sử dụng `IoU >= 0.50`.
 
 ---
 

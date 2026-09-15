@@ -1,0 +1,152 @@
+{
+  "all_checks_pass": true,
+  "checks": {
+    "ap_enforces_max_dets_100": true,
+    "category_aware_usecCats_1_semantics": true,
+    "config_classwise_false": true,
+    "config_format_only_false": true,
+    "config_iou_grid_exact": true,
+    "config_metric_is_bbox": true,
+    "config_metric_items_map_only": true,
+    "config_prefix_coco": true,
+    "config_proposal_nums_1_10_100": true,
+    "config_test_not_attached": true,
+    "config_uses_fixed_validation": true,
+    "config_val_cfg_is_valloop": true,
+    "no_extra_fixed_score_threshold_before_ap": true
+  },
+  "implementation": {
+    "config": "configs/evaluation/s5_01_coco_bbox_evaluator.py",
+    "config_sha256": "cf86b8f51f3acdb1a36c94c7233ae075270bc536252948680394014d687d023e",
+    "runtime_metric_key": "coco/bbox_mAP"
+  },
+  "observed": {
+    "low_score_tp_bbox_mAP": 1.0,
+    "rank_101_tp_bbox_mAP": 0.0,
+    "wrong_category_bbox_mAP": 0.0
+  },
+  "runtime": {
+    "metric_class": "mmdet.evaluation.metrics.CocoMetric",
+    "mmdet_version": "3.3.0"
+  },
+  "s5_02_secondary_metrics": {
+    "all_checks_pass": true,
+    "checks": {
+      "aggregate_ap50": true,
+      "aggregate_ap75": true,
+      "aggregate_map": true,
+      "class_A_ap": true,
+      "class_A_ap50": true,
+      "class_A_ap75": true,
+      "class_B_ap": true,
+      "class_B_ap50": true,
+      "class_B_ap75": true,
+      "config_classwise_true": true,
+      "config_fixed_validation": true,
+      "config_metric_bbox": true,
+      "config_metric_items_exact": true,
+      "config_no_explicit_iou_thrs": true,
+      "config_proposal_nums_1_10_100": true,
+      "config_test_not_attached": true,
+      "config_type_protocol_coco_metric": true,
+      "fixed_validation_category_ids_1_14": true,
+      "fixed_validation_has_14_categories": true,
+      "no_official_size_ap_keys": true,
+      "normalized_ar_max100": true,
+      "raw_misleading_ar_removed": true,
+      "reference_ar_max100_is_1": true,
+      "reference_ar_max1_is_075": true,
+      "runtime_iou_grid_exact": true,
+      "runtime_iou_type_ndarray": true,
+      "runtime_proposal_nums_exact": true
+    },
+    "fixed_validation": {
+      "category_count": 14,
+      "category_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    "implementation": {
+      "classwise_key_template": "coco/classwise/<class_name>/{AP_50_95,AP50,AP75}",
+      "config": "configs/evaluation/s5_02_coco_secondary_evaluator.py",
+      "config_sha256": "a370acb4c0e76662b515b80943e3870a514d24f6f138db71df3680f71c204f2f",
+      "metric_impl": "src/metrics/protocol_coco_metric.py",
+      "metric_impl_sha256": "89c0696a308ba68c3418ae01e2c4b94c292d4cfcd5ccfa432b6e2bd4fa29b504",
+      "normalized_ar_key": "coco/AR_50_95_max100",
+      "runtime_metric_class": "ProtocolCocoMetric"
+    },
+    "observed": {
+      "AP50": 1.0,
+      "AP75": 1.0,
+      "bbox_mAP": 1.0,
+      "normalized_AR_50_95_max100": 1.0,
+      "reference_raw_AR_slot_6_named_bbox_AR_at_100": 0.75,
+      "reference_raw_AR_slot_8_named_bbox_AR_at_1000": 1.0
+    },
+    "scientific_contract": {
+      "AP50": "secondary",
+      "AP75": "secondary",
+      "AR_50_95_max100": true,
+      "area": "all",
+      "classwise_AP50": true,
+      "classwise_AP75": true,
+      "classwise_AP_50_95": true,
+      "dataset": "fixed_validation",
+      "iou_thresholds": [
+        0.5,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95
+      ],
+      "maxDets": 100,
+      "official_size_specific_AP": false,
+      "test_attached": false,
+      "useCats": 1
+    },
+    "status": "PASS",
+    "task": "S5.02"
+  },
+  "schema_version": "1.0.0",
+  "scientific_contract": {
+    "dataset": "fixed_validation",
+    "extra_fixed_score_threshold_before_AP": false,
+    "iou_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "maxDets": 100,
+    "primary_metric": "bbox_mAP_50_95",
+    "test_attached": false,
+    "useCats": 1
+  },
+  "stage": "S5",
+  "status": "PASS",
+  "task": "S5.01"
+}

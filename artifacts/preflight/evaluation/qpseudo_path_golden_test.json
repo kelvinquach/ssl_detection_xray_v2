@@ -1,0 +1,878 @@
+{
+  "checks": [
+    {
+      "name": "canonical::sn-article.tex",
+      "observed": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc",
+      "pass": true
+    },
+    {
+      "name": "canonical::IMPLEMENTATION_HANDOFF.md",
+      "observed": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+      "pass": true
+    },
+    {
+      "name": "canonical::ARTIFACT_AND_EVIDENCE_CONTRACT.md",
+      "observed": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+      "pass": true
+    },
+    {
+      "name": "provenance::validation_split_local",
+      "observed": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+      "pass": true
+    },
+    {
+      "name": "provenance::validation_split_runtime",
+      "observed": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+      "pass": true
+    },
+    {
+      "name": "provenance::validation_local_runtime_identity",
+      "observed": {
+        "local": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+        "runtime": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
+      },
+      "pass": true
+    },
+    {
+      "name": "provenance::evaluator_config",
+      "observed": "a370acb4c0e76662b515b80943e3870a514d24f6f138db71df3680f71c204f2f",
+      "pass": true
+    },
+    {
+      "name": "provenance::acceptance_config",
+      "observed": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+      "pass": true
+    },
+    {
+      "name": "provenance::qpseudo_impl",
+      "observed": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788",
+      "pass": true
+    },
+    {
+      "name": "provenance::qpseudo_init",
+      "observed": "58083297b7df31668de5fcc60323eb1b6fb14a7c5927c233e63be16622a6ac5e",
+      "pass": true
+    },
+    {
+      "name": "config::checkpoint_role",
+      "observed": "LAST_EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "config::model_role",
+      "observed": "EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "config::serialization_scope",
+      "observed": "EMA_TEACHER_ONLY",
+      "pass": true
+    },
+    {
+      "name": "config::dataset",
+      "observed": "fixed_validation",
+      "pass": true
+    },
+    {
+      "name": "config::pseudo_set",
+      "observed": "accepted_rcnn_classification",
+      "pass": true
+    },
+    {
+      "name": "config::cls_thr",
+      "observed": 0.9,
+      "pass": true
+    },
+    {
+      "name": "config::strict_greater",
+      "observed": "STRICT_GREATER",
+      "pass": true
+    },
+    {
+      "name": "config::native_max100",
+      "observed": 100,
+      "pass": true
+    },
+    {
+      "name": "config::hidden_u_gt_false",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "config::test_false",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "constants::checkpoint_role",
+      "observed": "LAST_EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "constants::model_role",
+      "observed": "EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "constants::serialization_scope",
+      "observed": "EMA_TEACHER_ONLY",
+      "pass": true
+    },
+    {
+      "name": "constants::dataset",
+      "observed": "fixed_validation",
+      "pass": true
+    },
+    {
+      "name": "constants::pseudo_set",
+      "observed": "accepted_rcnn_classification",
+      "pass": true
+    },
+    {
+      "name": "constants::cls_thr",
+      "observed": 0.9,
+      "pass": true
+    },
+    {
+      "name": "constants::comparator",
+      "observed": "STRICT_GREATER",
+      "pass": true
+    },
+    {
+      "name": "constants::max100",
+      "observed": 100,
+      "pass": true
+    },
+    {
+      "name": "loader::strict_state_restored",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::reported_role",
+      "observed": {
+        "checkpoint_role": "LAST_EMA_TEACHER",
+        "checkpoint_sha256": "d62c52a010ea78e0e3989fe7474881470b1089f9a8cf7f388ff93d1740a0495f",
+        "model_role": "EMA_TEACHER",
+        "optimizer_update": 2064,
+        "scientific_checkpoint_role": "LAST",
+        "serialization_scope": "EMA_TEACHER_ONLY"
+      },
+      "pass": true
+    },
+    {
+      "name": "loader::reported_scope",
+      "observed": {
+        "checkpoint_role": "LAST_EMA_TEACHER",
+        "checkpoint_sha256": "d62c52a010ea78e0e3989fe7474881470b1089f9a8cf7f388ff93d1740a0495f",
+        "model_role": "EMA_TEACHER",
+        "optimizer_update": 2064,
+        "scientific_checkpoint_role": "LAST",
+        "serialization_scope": "EMA_TEACHER_ONLY"
+      },
+      "pass": true
+    },
+    {
+      "name": "loader::checkpoint_sha",
+      "observed": "d62c52a010ea78e0e3989fe7474881470b1089f9a8cf7f388ff93d1740a0495f",
+      "pass": true
+    },
+    {
+      "name": "loader::best_role_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::student_role_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::full_model_scope_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::operational_state_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "loader::predict_on_student_rejected",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "acceptance::exact_090_rejected",
+      "observed": {
+        "accepted_count": 2,
+        "scores": [
+          0.9000999927520752,
+          0.9900000095367432
+        ]
+      },
+      "pass": true
+    },
+    {
+      "name": "acceptance::above_090_accepted",
+      "observed": 2,
+      "pass": true
+    },
+    {
+      "name": "acceptance::native_count_preserved",
+      "observed": 3,
+      "pass": true
+    },
+    {
+      "name": "acceptance::max100_guard",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "metric::PL_mAP_50_95",
+      "observed": 1.0,
+      "pass": true
+    },
+    {
+      "name": "metric::PL_AP50",
+      "observed": 1.0,
+      "pass": true
+    },
+    {
+      "name": "metric::PL_AP75",
+      "observed": 1.0,
+      "pass": true
+    },
+    {
+      "name": "metric::classwise_key_count",
+      "observed": 42,
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_required_fields",
+      "observed": [
+        "PL_AP50",
+        "PL_AP75",
+        "PL_mAP_50_95",
+        "acceptance",
+        "accepted_pseudo_count",
+        "checkpoint_role",
+        "checkpoint_sha256",
+        "dataset",
+        "evaluator_config_sha256",
+        "hidden_u_gt_used",
+        "pseudo_acceptance_config_sha256",
+        "pseudo_set",
+        "schema_version",
+        "test_used",
+        "validation_image_count",
+        "validation_split_sha256"
+      ],
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_checkpoint_role",
+      "observed": "LAST_EMA_TEACHER",
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_checkpoint_sha_match",
+      "observed": "d62c52a010ea78e0e3989fe7474881470b1089f9a8cf7f388ff93d1740a0495f",
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_dataset",
+      "observed": "fixed_validation",
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_pseudo_set",
+      "observed": "accepted_rcnn_classification",
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_hidden_u_false",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_test_false",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "artifact::validation_primary_metric",
+      "observed": 1.0,
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_image_count",
+      "observed": 14,
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_threshold",
+      "observed": 0.9,
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_comparator",
+      "observed": "STRICT_GREATER",
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_no_second_nms",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "artifact::prediction_no_topk",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "name": "artifact::classwise_14_rows",
+      "observed": 14,
+      "pass": true
+    },
+    {
+      "name": "artifact::classwise_columns",
+      "observed": [
+        "PL_AP50",
+        "PL_AP75",
+        "PL_AP_50_95",
+        "category_id",
+        "class_name"
+      ],
+      "pass": true
+    },
+    {
+      "name": "artifact::returned_paths_and_hashes",
+      "observed": [
+        "qpseudo_classwise",
+        "qpseudo_classwise_sha256",
+        "qpseudo_validation",
+        "qpseudo_validation_sha256",
+        "val_last_teacher_predictions",
+        "val_last_teacher_predictions_sha256"
+      ],
+      "pass": true
+    },
+    {
+      "name": "firewall::best_teacher_path_absent",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "firewall::test_split_absent",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "name": "firewall::latest_resume_absent",
+      "observed": true,
+      "pass": true
+    }
+  ],
+  "checks_passed": 64,
+  "checks_total": 64,
+  "evidence_type": "qpseudo_path_golden_test",
+  "failed_checks": [],
+  "failed_count": 0,
+  "provenance": {
+    "canonical_sha256": {
+      "ARTIFACT_AND_EVIDENCE_CONTRACT.md": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+      "IMPLEMENTATION_HANDOFF.md": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+      "sn-article.tex": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc"
+    },
+    "evaluator_config_sha256": "a370acb4c0e76662b515b80943e3870a514d24f6f138db71df3680f71c204f2f",
+    "pseudo_acceptance_config_sha256": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+    "qpseudo_impl_sha256": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788",
+    "qpseudo_init_sha256": "58083297b7df31668de5fcc60323eb1b6fb14a7c5927c233e63be16622a6ac5e",
+    "validation_split_sha256": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
+  },
+  "s5_07_best_teacher_firewall": {
+    "canonical_rule": {
+      "best_ema_teacher_role": "OFFICIAL_DETECTION_EVALUATION_ONLY",
+      "best_teacher_qpseudo_blocked": true,
+      "last_ema_teacher_role": "Q_PSEUDO_FIXED_VALIDATION",
+      "last_teacher_qpseudo_required": true
+    },
+    "canonical_sha256": {
+      "ARTIFACT_AND_EVIDENCE_CONTRACT.md": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+      "IMPLEMENTATION_HANDOFF.md": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+      "sn-article.tex": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc"
+    },
+    "checks": [
+      {
+        "name": "historical_s5_06_evidence_identity",
+        "observed": "71b9ac534117830ad559ca69645520adc49f9a154b642f56d850bb4b71723b87",
+        "pass": true
+      },
+      {
+        "name": "historical_s5_06_task",
+        "observed": "S5.06",
+        "pass": true
+      },
+      {
+        "name": "historical_s5_06_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "historical_s5_06_checks_64_of_64",
+        "observed": {
+          "failed": 0,
+          "passed": 64,
+          "total": 64
+        },
+        "pass": true
+      },
+      {
+        "name": "historical_s5_06_best_teacher_used_false",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "historical_best_role_rejection_pass",
+        "observed": {
+          "name": "loader::best_role_rejected",
+          "observed": true,
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "historical_best_path_absence_pass",
+        "observed": {
+          "name": "firewall::best_teacher_path_absent",
+          "observed": true,
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "source_identity::src/evaluation/qpseudo.py",
+        "observed": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788",
+        "pass": true
+      },
+      {
+        "name": "source_identity::configs/evaluation/s5_06_qpseudo_acceptance.py",
+        "observed": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+        "pass": true
+      },
+      {
+        "name": "source_identity::scripts/S5_06_validate_qpseudo_path.py",
+        "observed": "63bb6393bbdb5e897a2dfd17ff947373aab08de2849fec756de3bdf7cccb3b51",
+        "pass": true
+      },
+      {
+        "name": "canonical_identity::sn-article.tex",
+        "observed": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc",
+        "pass": true
+      },
+      {
+        "name": "canonical_identity::IMPLEMENTATION_HANDOFF.md",
+        "observed": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+        "pass": true
+      },
+      {
+        "name": "canonical_identity::ARTIFACT_AND_EVIDENCE_CONTRACT.md",
+        "observed": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+        "pass": true
+      },
+      {
+        "name": "constant_checkpoint_role_last_ema_teacher",
+        "observed": "LAST_EMA_TEACHER",
+        "pass": true
+      },
+      {
+        "name": "constant_scientific_role_last",
+        "observed": "LAST",
+        "pass": true
+      },
+      {
+        "name": "constant_model_role_ema_teacher",
+        "observed": "EMA_TEACHER",
+        "pass": true
+      },
+      {
+        "name": "constant_scope_teacher_only",
+        "observed": "EMA_TEACHER_ONLY",
+        "pass": true
+      },
+      {
+        "name": "implementation_requires_last_role",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "acceptance_config_requires_last_ema_teacher",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "qpseudo_impl_has_no_best_checkpoint_path",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "acceptance_config_has_no_best_checkpoint_path",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "handoff_best_is_official_detection_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "handoff_last_is_qpseudo",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "handoff_best_substitution_prohibited",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "artifact_best_to_qpseudo_forbidden",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "artifact_last_qpseudo_hash_relation",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "runtime_best_checkpoint_rejected_for_qpseudo",
+        "observed": "Q_pseudo requires scientific_checkpoint_role='LAST'",
+        "pass": true
+      },
+      {
+        "name": "runtime_last_checkpoint_accepted_for_qpseudo",
+        "observed": {
+          "checkpoint_role": "LAST_EMA_TEACHER",
+          "checkpoint_sha256": "d3aa6a073b97297f5babf617aaee4eccf23ecce39cd0d3fe839e3d21f832d77f",
+          "model_role": "EMA_TEACHER",
+          "optimizer_update": 100,
+          "scientific_checkpoint_role": "LAST",
+          "serialization_scope": "EMA_TEACHER_ONLY"
+        },
+        "pass": true
+      },
+      {
+        "name": "runtime_last_scientific_role_is_last",
+        "observed": "LAST",
+        "pass": true
+      },
+      {
+        "name": "runtime_last_model_role_is_ema_teacher",
+        "observed": "EMA_TEACHER",
+        "pass": true
+      },
+      {
+        "name": "runtime_last_scope_is_teacher_only",
+        "observed": "EMA_TEACHER_ONLY",
+        "pass": true
+      },
+      {
+        "name": "runtime_best_and_last_state_dicts_identical",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "runtime_best_rejection_is_role_based",
+        "observed": "Q_pseudo requires scientific_checkpoint_role='LAST'",
+        "pass": true
+      }
+    ],
+    "checks_passed": 33,
+    "checks_total": 33,
+    "failed_checks": [],
+    "failed_count": 0,
+    "historical_s5_06": {
+      "checks_passed": 64,
+      "checks_total": 64,
+      "evidence_sha256_before_s5_07_extension": "71b9ac534117830ad559ca69645520adc49f9a154b642f56d850bb4b71723b87",
+      "status": "PASS",
+      "task": "S5.06"
+    },
+    "runtime_firewall": {
+      "accepted_checkpoint_role": "LAST_EMA_TEACHER",
+      "best_checkpoint_rejected": true,
+      "best_checkpoint_role": "BEST",
+      "rejection_basis": "SCIENTIFIC_CHECKPOINT_ROLE_METADATA",
+      "required_scientific_checkpoint_role": "LAST",
+      "same_valid_teacher_state_used_for_best_and_last": true
+    },
+    "scientific_boundaries": {
+      "hidden_u_gt_used": false,
+      "official_detection_model": "BEST_EMA_TEACHER",
+      "qpseudo_model": "LAST_EMA_TEACHER",
+      "scientific_protocol_changed": false,
+      "test_used": false
+    },
+    "source_sha256": {
+      "configs/evaluation/s5_06_qpseudo_acceptance.py": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+      "scripts/S5_06_validate_qpseudo_path.py": "63bb6393bbdb5e897a2dfd17ff947373aab08de2849fec756de3bdf7cccb3b51",
+      "scripts/S5_07_validate_best_teacher_firewall.py": "121e489e2963f1bd15cec1b90338b56b99f8db8db58d78fd0195aaf31557f2fd",
+      "src/evaluation/qpseudo.py": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788"
+    },
+    "status": "PASS",
+    "task": "S5.07",
+    "tracker_action": "Block BEST Teacher for Q_pseudo"
+  },
+  "s5_08_hidden_u_test_gt_firewall": {
+    "canonical_rule": {
+      "dataset": "fixed_validation",
+      "fixed_validation_sha256": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+      "hidden_u_gt_prohibited": true,
+      "test_gt_prohibited": true
+    },
+    "canonical_sha256": {
+      "ARTIFACT_AND_EVIDENCE_CONTRACT.md": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+      "IMPLEMENTATION_HANDOFF.md": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+      "sn-article.tex": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc"
+    },
+    "checks": [
+      {
+        "detail": "72e81b8ef7639c31b9be2cac79eed451caf9130e7e4b4ae1895cd125d0769b1d",
+        "name": "historical::evidence_sha",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "historical::s5_06_pass",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "historical::s5_07_pass",
+        "pass": true
+      },
+      {
+        "detail": "300fc37b08e4f1e9e3e97c29bc714aef2b219386c2932cc34669923707e57bcc",
+        "name": "source::src/evaluation/qpseudo.py",
+        "pass": true
+      },
+      {
+        "detail": "58083297b7df31668de5fcc60323eb1b6fb14a7c5927c233e63be16622a6ac5e",
+        "name": "source::src/evaluation/__init__.py",
+        "pass": true
+      },
+      {
+        "detail": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+        "name": "source::configs/evaluation/s5_06_qpseudo_acceptance.py",
+        "pass": true
+      },
+      {
+        "detail": "63bb6393bbdb5e897a2dfd17ff947373aab08de2849fec756de3bdf7cccb3b51",
+        "name": "source::scripts/S5_06_validate_qpseudo_path.py",
+        "pass": true
+      },
+      {
+        "detail": "121e489e2963f1bd15cec1b90338b56b99f8db8db58d78fd0195aaf31557f2fd",
+        "name": "source::scripts/S5_07_validate_best_teacher_firewall.py",
+        "pass": true
+      },
+      {
+        "detail": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc",
+        "name": "canonical::sn-article.tex",
+        "pass": true
+      },
+      {
+        "detail": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+        "name": "canonical::IMPLEMENTATION_HANDOFF.md",
+        "pass": true
+      },
+      {
+        "detail": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+        "name": "canonical::ARTIFACT_AND_EVIDENCE_CONTRACT.md",
+        "pass": true
+      },
+      {
+        "detail": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+        "name": "fixed_validation::sha",
+        "pass": true
+      },
+      {
+        "detail": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a",
+        "name": "fixed_validation::constant",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "fixed_validation::guard_accepts",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "static::private_helpers_not_exported",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "static::forbidden_gt_paths_absent",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "static::public_evaluator_guard_present",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "static::public_writer_guard_present",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::public_eval_accepts_fixed",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::public_writer_accepts_fixed",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::writer_normalizes_validation_sha",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::public_eval_rejects_test",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::public_writer_rejects_test",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::public_eval_rejects_train",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::public_writer_rejects_train",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::public_eval_rejects_hidden_u",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::public_writer_rejects_hidden_u",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "runtime::writer_rejects_declared_sha_mismatch",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "regression::private_synthetic_map",
+        "pass": true
+      },
+      {
+        "detail": null,
+        "name": "regression::private_synthetic_artifacts",
+        "pass": true
+      }
+    ],
+    "checks_passed": 30,
+    "checks_total": 30,
+    "constraint": "Validation only.",
+    "failed_count": 0,
+    "historical_evidence": {
+      "s5_06_preserved": true,
+      "s5_07_preserved": true,
+      "sha256_before_s5_08_extension": "72e81b8ef7639c31b9be2cac79eed451caf9130e7e4b4ae1895cd125d0769b1d"
+    },
+    "regression": {
+      "private_synthetic_helper_not_exported": true,
+      "synthetic_PL_AP50": 1.0,
+      "synthetic_PL_AP75": 1.0,
+      "synthetic_PL_mAP_50_95": 1.0,
+      "synthetic_artifact_writer": "PASS"
+    },
+    "runtime_firewall": {
+      "identity_basis": "EXACT_FIXED_VALIDATION_SHA256",
+      "public_evaluator_accepts_exact_fixed_validation": true,
+      "public_evaluator_rejects_hidden_u_gt": true,
+      "public_evaluator_rejects_test_like_gt": true,
+      "public_evaluator_rejects_train_gt": true,
+      "public_writer_accepts_exact_fixed_validation": true,
+      "public_writer_rejects_hidden_u_gt": true,
+      "public_writer_rejects_test_like_gt": true,
+      "public_writer_rejects_train_gt": true,
+      "writer_rejects_declared_validation_sha_mismatch": true
+    },
+    "scientific_boundaries": {
+      "fixed_validation_only": true,
+      "hidden_u_gt_used": false,
+      "official_detection_model": "BEST_EMA_TEACHER",
+      "qpseudo_model": "LAST_EMA_TEACHER",
+      "scientific_protocol_changed": false,
+      "test_used": false
+    },
+    "source_sha256": {
+      "configs/evaluation/s5_06_qpseudo_acceptance.py": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+      "scripts/S5_06_validate_qpseudo_path.py": "63bb6393bbdb5e897a2dfd17ff947373aab08de2849fec756de3bdf7cccb3b51",
+      "scripts/S5_07_validate_best_teacher_firewall.py": "121e489e2963f1bd15cec1b90338b56b99f8db8db58d78fd0195aaf31557f2fd",
+      "scripts/S5_08_validate_qpseudo_gt_firewall.py": "7559b3d253609adfc6ce0a5a1b3bb445ccb60c8aa3da0fe085ff9c4811df86d7",
+      "src/evaluation/__init__.py": "58083297b7df31668de5fcc60323eb1b6fb14a7c5927c233e63be16622a6ac5e",
+      "src/evaluation/qpseudo.py": "300fc37b08e4f1e9e3e97c29bc714aef2b219386c2932cc34669923707e57bcc"
+    },
+    "status": "PASS",
+    "task": "S5.08",
+    "tracker_action": "Verify no hidden-U/test GT in Q_pseudo"
+  },
+  "schema_version": "1.0.0",
+  "scientific_protocol": {
+    "acceptance_comparator": "STRICT_GREATER",
+    "best_teacher_used": false,
+    "checkpoint_role": "LAST_EMA_TEACHER",
+    "classification_threshold": 0.9,
+    "dataset": "fixed_validation",
+    "detector_native_nms": true,
+    "hidden_u_gt_used": false,
+    "latest_resume_used": false,
+    "model_role": "EMA_TEACHER",
+    "native_max_per_img": 100,
+    "primary_metric": "PL_mAP_50_95",
+    "pseudo_set": "accepted_rcnn_classification",
+    "score_equal_0_90_accepted": false,
+    "second_nms": false,
+    "serialization_scope": "EMA_TEACHER_ONLY",
+    "test_used": false,
+    "topk_truncation": false
+  },
+  "source_sha256": {
+    "configs/evaluation/s5_02_coco_secondary_evaluator.py": "a370acb4c0e76662b515b80943e3870a514d24f6f138db71df3680f71c204f2f",
+    "configs/evaluation/s5_06_qpseudo_acceptance.py": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+    "scripts/S5_06_validate_qpseudo_path.py": "63bb6393bbdb5e897a2dfd17ff947373aab08de2849fec756de3bdf7cccb3b51",
+    "src/evaluation/__init__.py": "58083297b7df31668de5fcc60323eb1b6fb14a7c5927c233e63be16622a6ac5e",
+    "src/evaluation/qpseudo.py": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788",
+    "src/metrics/protocol_coco_metric.py": "89c0696a308ba68c3418ae01e2c4b94c292d4cfcd5ccfa432b6e2bd4fa29b504"
+  },
+  "status": "PASS",
+  "synthetic_golden": {
+    "PL_AP50": 1.0,
+    "PL_AP75": 1.0,
+    "PL_mAP_50_95": 1.0,
+    "classwise_row_count": 14,
+    "fixture": "SYNTHETIC_COCO_14_CLASS_PERFECT_PREDICTIONS",
+    "threshold_boundary_exact_0_90_rejected": true
+  },
+  "task": "S5.06"
+}

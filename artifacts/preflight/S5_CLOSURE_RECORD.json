@@ -1,0 +1,79 @@
+{
+    "schema_version":  "1.0",
+    "stage":  "S5",
+    "task":  "S5.10",
+    "gate":  "Close S5",
+    "status":  "CLOSED / PASS",
+    "exact_git_commit":  "5669eeaf65b7f9bf2aea07cb92b1c0dc3d4719b3",
+    "working_tree_clean":  false,
+    "official_training_authorized":  false,
+    "final_test_authorized":  false,
+    "global_preflight_closed":  false,
+    "verification":  {
+                         "S5.01_COCO_BBOX_MAP_50_95":  "PASS",
+                         "S5.02_COCO_AP50_AP75_CLASSWISE_AP_AR":  "PASS",
+                         "S5.03_RECALL_AT_TAU_EVAL_0_50":  "PASS",
+                         "S5.04_FP_PER_IMAGE":  "PASS",
+                         "S5.05_FP_PER_NEGATIVE_AND_FAR_NEG":  "PASS",
+                         "S5.06_QPSEUDO_PL_MAP_50_95":  "PASS",
+                         "S5.07_BEST_TEACHER_BLOCKED_FOR_QPSEUDO":  "PASS",
+                         "S5.08_HIDDEN_U_TEST_GT_QPSEUDO_FIREWALL":  "PASS",
+                         "S5.09_TEST_FIREWALL":  "PASS"
+                     },
+    "closure_groups":  {
+                           "COCO_EVALUATOR_GOLDEN_TESTS":  "PASS",
+                           "OPERATING_POINT_GOLDEN_TESTS":  "PASS",
+                           "QPSEUDO_GOLDEN_TESTS":  "PASS",
+                           "TEST_FIREWALL":  "PASS"
+                       },
+    "optimizer_recipes":  {
+                              "scope":  "UNCHANGED_BY_S5",
+                              "modified_by_s5":  false
+                          },
+    "training_protocol":  {
+                              "scope":  "S5_DOES_NOT_MODIFY_TRAINING_PROTOCOL",
+                              "modified_by_s5":  false,
+                              "evaluation_protocol":  {
+                                                          "coco_bbox_primary_metric":  "bbox_mAP@[0.50:0.95]",
+                                                          "coco_iou_thresholds":  "0.50:0.05:0.95",
+                                                          "coco_use_cats":  1,
+                                                          "coco_max_dets":  100,
+                                                          "fixed_score_threshold_before_ap":  false,
+                                                          "operating_tau_eval":  0.5,
+                                                          "operating_iou_match_threshold":  0.5,
+                                                          "operating_matching":  "CATEGORY_AWARE_DETERMINISTIC_SCORE_DESCENDING_GREEDY_ONE_TO_ONE",
+                                                          "detector_native_nms_max100":  true,
+                                                          "negative_zero_gt_all_retained_detections_are_fp":  true,
+                                                          "qpseudo_metric":  "PL-mAP@[0.50:0.95]",
+                                                          "qpseudo_checkpoint":  "LAST_EMA_TEACHER",
+                                                          "qpseudo_dataset":  "FIXED_VALIDATION",
+                                                          "qpseudo_source":  "ACCEPTED_RCNN_CLASSIFICATION_PSEUDO_LABELS",
+                                                          "best_ema_teacher_role":  "OFFICIAL_SSL_DETECTION_MODEL",
+                                                          "hidden_u_gt_used_for_qpseudo":  false,
+                                                          "test_used_for_qpseudo":  false,
+                                                          "test_access_authorized":  false,
+                                                          "test_accessed":  false
+                                                      }
+                          },
+    "evidence":  {
+                     "S5.01/S5.02":  "artifacts/preflight/evaluation/coco_evaluator_golden_test.json",
+                     "S5.03/S5.04/S5.05":  "artifacts/preflight/evaluation/operating_point_golden_test.json",
+                     "S5.06/S5.07/S5.08":  "artifacts/preflight/evaluation/qpseudo_path_golden_test.json",
+                     "S5.09":  "artifacts/preflight/firewall/test_firewall_preflight.json"
+                 },
+    "closure_scope":  {
+                          "all_s5_01_to_s5_09_verified":  true,
+                          "evaluator_golden_tests_verified":  true,
+                          "qpseudo_validation_firewall_verified":  true,
+                          "test_firewall_verified":  true,
+                          "test_remains_closed":  true,
+                          "research_task_scope_clean":  true,
+                          "management_only_worktree_entries":  2,
+                          "management_workbook_git_state_excluded_from_research_commit":  true,
+                          "test_firewall_state_deferred_to":  "S8.08",
+                          "does_not_close_global_preflight":  true,
+                          "does_not_authorize_official_training":  true,
+                          "does_not_authorize_final_test":  true
+                      },
+    "acceptance":  "S5=CLOSED / PASS"
+}
