@@ -196,6 +196,164 @@
   "max_dets_per_image": 100,
   "metric": "Recall_tau_eval",
   "prediction_order": "DESCENDING_CONFIDENCE_STABLE_DETECTOR_ORDER",
+  "s5_04_fp_per_image": {
+    "FP_per_image": 0.6666666666666666,
+    "FP_total": 2,
+    "Recall_tau_eval": 0.5,
+    "after_detector_native_nms_max100": true,
+    "checks": [
+      {
+        "name": "historical_s5_03_identity",
+        "observed": {
+          "checks_passed": 15,
+          "checks_total": 15,
+          "status": "PASS",
+          "task": "S5.03"
+        },
+        "pass": true
+      },
+      {
+        "name": "historical_s5_03_checks_preserved",
+        "observed": 15,
+        "pass": true
+      },
+      {
+        "name": "historical_s5_03_source_hashes_preserved",
+        "observed": {
+          "configs/evaluation/s5_03_operating_point_evaluator.py": "51c4e137ae341a276021dd7c6c0e6d5eabfd330635d9304331c06a8d8522f366",
+          "scripts/S5_03_validate_operating_point_metric.py": "0c9bda89417f6356d50385340aa78f6185cb7ec188afd7b539993c20c0273c74",
+          "src/metrics/__init__.py": "5c67cebb4e4d164f68b83419a60204bf32ea2310986ea51718a064c800678a88",
+          "src/metrics/operating_point_metric.py": "e1bd577f8aaa613e9b31910f0df029792036bdb03790796a0394d13c1eac03a1"
+        },
+        "pass": true
+      },
+      {
+        "name": "same_operating_point_locks",
+        "observed": {
+          "cats": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "iou": 0.5,
+          "max": 100,
+          "tau": 0.5
+        },
+        "pass": true
+      },
+      {
+        "name": "fp_total",
+        "observed": {
+          "FP_total": 2,
+          "per_image": [
+            {
+              "FN": 0,
+              "FP": 1,
+              "GT": 1,
+              "TP": 1,
+              "retained_detections": 2
+            },
+            {
+              "FN": 1,
+              "FP": 0,
+              "GT": 1,
+              "TP": 0,
+              "retained_detections": 0
+            },
+            {
+              "FN": 0,
+              "FP": 1,
+              "GT": 0,
+              "TP": 0,
+              "retained_detections": 1
+            }
+          ]
+        },
+        "pass": true
+      },
+      {
+        "name": "evaluated_image_count",
+        "observed": 3,
+        "pass": true
+      },
+      {
+        "name": "fp_per_image",
+        "observed": {
+          "FP_per_image": 0.6666666666666666,
+          "Recall_tau_eval": 0.5
+        },
+        "pass": true
+      },
+      {
+        "name": "recall_preserved",
+        "observed": {
+          "FP_per_image": 0.6666666666666666,
+          "Recall_tau_eval": 0.5
+        },
+        "pass": true
+      },
+      {
+        "name": "output_keys_exact",
+        "observed": [
+          "FP_per_image",
+          "Recall_tau_eval"
+        ],
+        "pass": true
+      },
+      {
+        "name": "zero_gt_image_contributes_global_fp",
+        "observed": {
+          "FN": 0,
+          "FP": 1,
+          "GT": 0,
+          "TP": 0,
+          "retained_detections": 1
+        },
+        "pass": true
+      }
+    ],
+    "checks_passed": 10,
+    "checks_total": 10,
+    "definition": "SUM_FP_OVER_ALL_EVALUATED_IMAGES_DIVIDED_BY_EVALUATED_IMAGE_COUNT",
+    "equal_iou_tie_break": "EARLIEST_FIXED_COCO_ANNOTATION_ORDER",
+    "equal_score_tie_break": "PRESERVE_DETECTOR_OUTPUT_ORDER",
+    "evaluated_image_count": 3,
+    "evaluator_runs_second_nms": false,
+    "evaluator_truncates_top100": false,
+    "fixed_validation_only": true,
+    "fixture": "SYNTHETIC_COCO_14_CLASS_REUSED_FROM_S5_03",
+    "gt_candidate_policy": "UNMATCHED_SAME_CLASS_ONLY",
+    "gt_selection": "MAX_IOU",
+    "iou_match_threshold": 0.5,
+    "matching": "CATEGORY_AWARE_ONE_TO_ONE",
+    "matching_algorithm": "DETERMINISTIC_SCORE_DESCENDING_GREEDY",
+    "max_dets_per_image": 100,
+    "metric": "FP_per_image",
+    "prediction_order": "DESCENDING_CONFIDENCE_STABLE_DETECTOR_ORDER",
+    "schema_version": "1.0.0",
+    "source_sha256": {
+      "configs/evaluation/s5_03_operating_point_evaluator.py": "51c4e137ae341a276021dd7c6c0e6d5eabfd330635d9304331c06a8d8522f366",
+      "scripts/S5_03_validate_operating_point_metric.py": "0c9bda89417f6356d50385340aa78f6185cb7ec188afd7b539993c20c0273c74",
+      "scripts/S5_04_validate_fp_per_image.py": "407beee0b2aa88917996a7fca3256185ca7fc0e0946dd17b1376317b16b64fb7",
+      "src/metrics/__init__.py": "5c67cebb4e4d164f68b83419a60204bf32ea2310986ea51718a064c800678a88",
+      "src/metrics/operating_point_metric.py": "03e1a6800e9cb9150e7da05d6e3406dc50a6892337d0b0e943267633dfc73112"
+    },
+    "status": "PASS",
+    "task": "S5.04",
+    "tau_eval": 0.5,
+    "test_access": false
+  },
   "schema_version": "1.0.0",
   "source_sha256": {
     "configs/evaluation/s5_03_operating_point_evaluator.py": "51c4e137ae341a276021dd7c6c0e6d5eabfd330635d9304331c06a8d8522f366",

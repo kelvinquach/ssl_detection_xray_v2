@@ -197,9 +197,11 @@ class OperatingPointMetric(BaseMetric):
             )
 
     def compute_metrics(self, results) -> Dict[str, float]:
-        """Compute Recall at the locked operating point."""
+        """Compute Recall and FP/image at the locked operating point."""
         tp_total = 0
+        fp_total = 0
         fn_total = 0
+        evaluated_image_count = len(results)
 
         for result in results:
             matched = self.match_image(
@@ -209,9 +211,18 @@ class OperatingPointMetric(BaseMetric):
                 result["labels"],
             )
             tp_total += matched["TP"]
+            fp_total += matched["FP"]
             fn_total += matched["FN"]
 
         denominator = tp_total + fn_total
         recall = float("nan") if denominator == 0 else tp_total / denominator
+        fp_per_image = (
+            float("nan")
+            if evaluated_image_count == 0
+            else fp_total / evaluated_image_count
+        )
 
-        return {"Recall_tau_eval": float(recall)}
+        return {
+            "Recall_tau_eval": float(recall),
+            "FP_per_image": float(fp_per_image),
+        }
