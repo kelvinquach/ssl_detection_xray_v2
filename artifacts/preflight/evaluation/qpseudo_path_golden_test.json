@@ -391,6 +391,240 @@
     "qpseudo_init_sha256": "58083297b7df31668de5fcc60323eb1b6fb14a7c5927c233e63be16622a6ac5e",
     "validation_split_sha256": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
   },
+  "s5_07_best_teacher_firewall": {
+    "canonical_rule": {
+      "best_ema_teacher_role": "OFFICIAL_DETECTION_EVALUATION_ONLY",
+      "best_teacher_qpseudo_blocked": true,
+      "last_ema_teacher_role": "Q_PSEUDO_FIXED_VALIDATION",
+      "last_teacher_qpseudo_required": true
+    },
+    "canonical_sha256": {
+      "ARTIFACT_AND_EVIDENCE_CONTRACT.md": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+      "IMPLEMENTATION_HANDOFF.md": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+      "sn-article.tex": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc"
+    },
+    "checks": [
+      {
+        "name": "historical_s5_06_evidence_identity",
+        "observed": "71b9ac534117830ad559ca69645520adc49f9a154b642f56d850bb4b71723b87",
+        "pass": true
+      },
+      {
+        "name": "historical_s5_06_task",
+        "observed": "S5.06",
+        "pass": true
+      },
+      {
+        "name": "historical_s5_06_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "historical_s5_06_checks_64_of_64",
+        "observed": {
+          "failed": 0,
+          "passed": 64,
+          "total": 64
+        },
+        "pass": true
+      },
+      {
+        "name": "historical_s5_06_best_teacher_used_false",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "historical_best_role_rejection_pass",
+        "observed": {
+          "name": "loader::best_role_rejected",
+          "observed": true,
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "historical_best_path_absence_pass",
+        "observed": {
+          "name": "firewall::best_teacher_path_absent",
+          "observed": true,
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "source_identity::src/evaluation/qpseudo.py",
+        "observed": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788",
+        "pass": true
+      },
+      {
+        "name": "source_identity::configs/evaluation/s5_06_qpseudo_acceptance.py",
+        "observed": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+        "pass": true
+      },
+      {
+        "name": "source_identity::scripts/S5_06_validate_qpseudo_path.py",
+        "observed": "63bb6393bbdb5e897a2dfd17ff947373aab08de2849fec756de3bdf7cccb3b51",
+        "pass": true
+      },
+      {
+        "name": "canonical_identity::sn-article.tex",
+        "observed": "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc",
+        "pass": true
+      },
+      {
+        "name": "canonical_identity::IMPLEMENTATION_HANDOFF.md",
+        "observed": "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+        "pass": true
+      },
+      {
+        "name": "canonical_identity::ARTIFACT_AND_EVIDENCE_CONTRACT.md",
+        "observed": "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+        "pass": true
+      },
+      {
+        "name": "constant_checkpoint_role_last_ema_teacher",
+        "observed": "LAST_EMA_TEACHER",
+        "pass": true
+      },
+      {
+        "name": "constant_scientific_role_last",
+        "observed": "LAST",
+        "pass": true
+      },
+      {
+        "name": "constant_model_role_ema_teacher",
+        "observed": "EMA_TEACHER",
+        "pass": true
+      },
+      {
+        "name": "constant_scope_teacher_only",
+        "observed": "EMA_TEACHER_ONLY",
+        "pass": true
+      },
+      {
+        "name": "implementation_requires_last_role",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "acceptance_config_requires_last_ema_teacher",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "qpseudo_impl_has_no_best_checkpoint_path",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "acceptance_config_has_no_best_checkpoint_path",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "handoff_best_is_official_detection_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "handoff_last_is_qpseudo",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "handoff_best_substitution_prohibited",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "artifact_best_to_qpseudo_forbidden",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "artifact_last_qpseudo_hash_relation",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "runtime_best_checkpoint_rejected_for_qpseudo",
+        "observed": "Q_pseudo requires scientific_checkpoint_role='LAST'",
+        "pass": true
+      },
+      {
+        "name": "runtime_last_checkpoint_accepted_for_qpseudo",
+        "observed": {
+          "checkpoint_role": "LAST_EMA_TEACHER",
+          "checkpoint_sha256": "d3aa6a073b97297f5babf617aaee4eccf23ecce39cd0d3fe839e3d21f832d77f",
+          "model_role": "EMA_TEACHER",
+          "optimizer_update": 100,
+          "scientific_checkpoint_role": "LAST",
+          "serialization_scope": "EMA_TEACHER_ONLY"
+        },
+        "pass": true
+      },
+      {
+        "name": "runtime_last_scientific_role_is_last",
+        "observed": "LAST",
+        "pass": true
+      },
+      {
+        "name": "runtime_last_model_role_is_ema_teacher",
+        "observed": "EMA_TEACHER",
+        "pass": true
+      },
+      {
+        "name": "runtime_last_scope_is_teacher_only",
+        "observed": "EMA_TEACHER_ONLY",
+        "pass": true
+      },
+      {
+        "name": "runtime_best_and_last_state_dicts_identical",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "runtime_best_rejection_is_role_based",
+        "observed": "Q_pseudo requires scientific_checkpoint_role='LAST'",
+        "pass": true
+      }
+    ],
+    "checks_passed": 33,
+    "checks_total": 33,
+    "failed_checks": [],
+    "failed_count": 0,
+    "historical_s5_06": {
+      "checks_passed": 64,
+      "checks_total": 64,
+      "evidence_sha256_before_s5_07_extension": "71b9ac534117830ad559ca69645520adc49f9a154b642f56d850bb4b71723b87",
+      "status": "PASS",
+      "task": "S5.06"
+    },
+    "runtime_firewall": {
+      "accepted_checkpoint_role": "LAST_EMA_TEACHER",
+      "best_checkpoint_rejected": true,
+      "best_checkpoint_role": "BEST",
+      "rejection_basis": "SCIENTIFIC_CHECKPOINT_ROLE_METADATA",
+      "required_scientific_checkpoint_role": "LAST",
+      "same_valid_teacher_state_used_for_best_and_last": true
+    },
+    "scientific_boundaries": {
+      "hidden_u_gt_used": false,
+      "official_detection_model": "BEST_EMA_TEACHER",
+      "qpseudo_model": "LAST_EMA_TEACHER",
+      "scientific_protocol_changed": false,
+      "test_used": false
+    },
+    "source_sha256": {
+      "configs/evaluation/s5_06_qpseudo_acceptance.py": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+      "scripts/S5_06_validate_qpseudo_path.py": "63bb6393bbdb5e897a2dfd17ff947373aab08de2849fec756de3bdf7cccb3b51",
+      "scripts/S5_07_validate_best_teacher_firewall.py": "121e489e2963f1bd15cec1b90338b56b99f8db8db58d78fd0195aaf31557f2fd",
+      "src/evaluation/qpseudo.py": "7b0bfb96fb595be24288d083576fabfb2367d48ea1d870c1c099bbe9a889f788"
+    },
+    "status": "PASS",
+    "task": "S5.07",
+    "tracker_action": "Block BEST Teacher for Q_pseudo"
+  },
   "schema_version": "1.0.0",
   "scientific_protocol": {
     "acceptance_comparator": "STRICT_GREATER",
