@@ -766,6 +766,1029 @@
     "task": "S6.03",
     "tracker_action": "Implement repeated-measures ANOVA + GG ALWAYS"
   },
+  "s6_04_rq3_pairwise_contrasts": {
+    "checks": [
+      {
+        "name": "contract::replication_unit",
+        "observed": "TRAINING_SEED_TRAINED_RUN",
+        "status": "PASS"
+      },
+      {
+        "name": "contract::official_seed_count",
+        "observed": 10,
+        "status": "PASS"
+      },
+      {
+        "name": "contract::sample_sd_ddof",
+        "observed": 1,
+        "status": "PASS"
+      },
+      {
+        "name": "contract::contrast_count",
+        "observed": 6,
+        "status": "PASS"
+      },
+      {
+        "name": "contract::contrast_names",
+        "observed": [
+          "5%-1%",
+          "10%-1%",
+          "20%-1%",
+          "10%-5%",
+          "20%-5%",
+          "20%-10%"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "contract::contrast_direction_5_1",
+        "observed": [
+          "5%-1%",
+          "5%",
+          "1%"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "contract::contrast_direction_10_1",
+        "observed": [
+          "10%-1%",
+          "10%",
+          "1%"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "contract::contrast_direction_20_1",
+        "observed": [
+          "20%-1%",
+          "20%",
+          "1%"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "contract::contrast_direction_10_5",
+        "observed": [
+          "10%-5%",
+          "10%",
+          "5%"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "contract::contrast_direction_20_5",
+        "observed": [
+          "20%-5%",
+          "20%",
+          "5%"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "contract::contrast_direction_20_10",
+        "observed": [
+          "20%-10%",
+          "20%",
+          "10%"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "contract::null_mean",
+        "observed": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "contract::alternative_two_sided",
+        "observed": "two-sided",
+        "status": "PASS"
+      },
+      {
+        "name": "contract::alpha",
+        "observed": 0.05,
+        "status": "PASS"
+      },
+      {
+        "name": "contract::ci_level",
+        "observed": 0.95,
+        "status": "PASS"
+      },
+      {
+        "name": "contract::df",
+        "observed": 9,
+        "status": "PASS"
+      },
+      {
+        "name": "contract::holm_not_applied",
+        "observed": false,
+        "status": "PASS"
+      },
+      {
+        "name": "contract::holm_deferred_task",
+        "observed": "S6.10",
+        "status": "PASS"
+      },
+      {
+        "name": "positive::top_level_contrast_count",
+        "observed": 6,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::top_level_holm_not_applied",
+        "observed": false,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::top_level_holm_deferred",
+        "observed": "S6.10",
+        "status": "PASS"
+      },
+      {
+        "name": "positive::result_contrast_order",
+        "observed": [
+          "5%-1%",
+          "10%-1%",
+          "20%-1%",
+          "10%-5%",
+          "20%-5%",
+          "20%-10%"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::direction",
+        "observed": "b2-b1",
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::n_df_ddof",
+        "observed": {
+          "ddof": 1,
+          "df": 9,
+          "n": 10
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::two_sided_contract",
+        "observed": {
+          "alternative": "two-sided",
+          "ci_level": 0.95,
+          "ci_sidedness": "two-sided",
+          "p_sidedness": "two-sided"
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::mean",
+        "observed": 0.41,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::sample_sd",
+        "observed": 0.07378647873726217,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::t_statistic",
+        "observed": 17.571428571428573,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::raw_p",
+        "observed": 2.834973060272998e-08,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::ci95",
+        "observed": {
+          "high": 0.46278366713195807,
+          "low": 0.3572163328680419
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::paired_t_equivalence",
+        "observed": {
+          "paired_p": 2.834973060272998e-08,
+          "paired_t": 17.571428571428573
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::paired_difference_values",
+        "observed": [
+          0.3999999999999999,
+          0.30000000000000004,
+          0.4,
+          0.30000000000000004,
+          0.5,
+          0.5,
+          0.3999999999999999,
+          0.3999999999999999,
+          0.5,
+          0.40000000000000013
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::seed_order",
+        "observed": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::5%-1%::no_holm_fields",
+        "observed": [
+          "alternative",
+          "budget_1",
+          "budget_2",
+          "ci_high",
+          "ci_level",
+          "ci_low",
+          "ci_sidedness",
+          "contrast",
+          "df",
+          "direction",
+          "effect",
+          "effect_estimate",
+          "n",
+          "null_mean",
+          "p_value_sidedness",
+          "paired_differences_by_seed",
+          "raw_p_value",
+          "sample_sd",
+          "sample_sd_ddof",
+          "t_statistic"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::direction",
+        "observed": "b2-b1",
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::n_df_ddof",
+        "observed": {
+          "ddof": 1,
+          "df": 9,
+          "n": 10
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::two_sided_contract",
+        "observed": {
+          "alternative": "two-sided",
+          "ci_level": 0.95,
+          "ci_sidedness": "two-sided",
+          "p_sidedness": "two-sided"
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::mean",
+        "observed": 0.76,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::sample_sd",
+        "observed": 0.15055453054181625,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::t_statistic",
+        "observed": 15.963192957919308,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::raw_p",
+        "observed": 6.563138462998306e-08,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::ci95",
+        "observed": {
+          "high": 0.8677002231482596,
+          "low": 0.6522997768517405
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::paired_t_equivalence",
+        "observed": {
+          "paired_p": 6.563138462998306e-08,
+          "paired_t": 15.963192957919308
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::paired_difference_values",
+        "observed": [
+          0.8,
+          0.7,
+          0.7000000000000001,
+          0.8000000000000003,
+          0.5999999999999999,
+          0.7,
+          0.7,
+          0.8999999999999999,
+          1.1,
+          0.6000000000000001
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::seed_order",
+        "observed": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-1%::no_holm_fields",
+        "observed": [
+          "alternative",
+          "budget_1",
+          "budget_2",
+          "ci_high",
+          "ci_level",
+          "ci_low",
+          "ci_sidedness",
+          "contrast",
+          "df",
+          "direction",
+          "effect",
+          "effect_estimate",
+          "n",
+          "null_mean",
+          "p_value_sidedness",
+          "paired_differences_by_seed",
+          "raw_p_value",
+          "sample_sd",
+          "sample_sd_ddof",
+          "t_statistic"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::direction",
+        "observed": "b2-b1",
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::n_df_ddof",
+        "observed": {
+          "ddof": 1,
+          "df": 9,
+          "n": 10
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::two_sided_contract",
+        "observed": {
+          "alternative": "two-sided",
+          "ci_level": 0.95,
+          "ci_sidedness": "two-sided",
+          "p_sidedness": "two-sided"
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::mean",
+        "observed": 1.1800000000000002,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::sample_sd",
+        "observed": 0.07888106377466154,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::t_statistic",
+        "observed": 47.305239818499125,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::raw_p",
+        "observed": 4.2223701082406414e-12,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::ci95",
+        "observed": {
+          "high": 1.2364281137215167,
+          "low": 1.1235718862784836
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::paired_t_equivalence",
+        "observed": {
+          "paired_p": 4.2223701082406414e-12,
+          "paired_t": 47.305239818499125
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::paired_difference_values",
+        "observed": [
+          1.1,
+          1.2,
+          1.1,
+          1.1,
+          1.1999999999999997,
+          1.3,
+          1.0999999999999999,
+          1.2000000000000002,
+          1.2000000000000002,
+          1.3
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::seed_order",
+        "observed": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-1%::no_holm_fields",
+        "observed": [
+          "alternative",
+          "budget_1",
+          "budget_2",
+          "ci_high",
+          "ci_level",
+          "ci_low",
+          "ci_sidedness",
+          "contrast",
+          "df",
+          "direction",
+          "effect",
+          "effect_estimate",
+          "n",
+          "null_mean",
+          "p_value_sidedness",
+          "paired_differences_by_seed",
+          "raw_p_value",
+          "sample_sd",
+          "sample_sd_ddof",
+          "t_statistic"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::direction",
+        "observed": "b2-b1",
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::n_df_ddof",
+        "observed": {
+          "ddof": 1,
+          "df": 9,
+          "n": 10
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::two_sided_contract",
+        "observed": {
+          "alternative": "two-sided",
+          "ci_level": 0.95,
+          "ci_sidedness": "two-sided",
+          "p_sidedness": "two-sided"
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::mean",
+        "observed": 0.35,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::sample_sd",
+        "observed": 0.15811388300841903,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::t_statistic",
+        "observed": 6.9999999999999964,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::raw_p",
+        "observed": 6.324738963736726e-05,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::ci95",
+        "observed": {
+          "high": 0.4631078581399103,
+          "low": 0.2368921418600897
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::paired_t_equivalence",
+        "observed": {
+          "paired_p": 6.324738963736726e-05,
+          "paired_t": 6.9999999999999964
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::paired_difference_values",
+        "observed": [
+          0.40000000000000013,
+          0.3999999999999999,
+          0.30000000000000004,
+          0.5000000000000002,
+          0.09999999999999987,
+          0.19999999999999996,
+          0.30000000000000004,
+          0.5,
+          0.6000000000000001,
+          0.19999999999999996
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::seed_order",
+        "observed": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::10%-5%::no_holm_fields",
+        "observed": [
+          "alternative",
+          "budget_1",
+          "budget_2",
+          "ci_high",
+          "ci_level",
+          "ci_low",
+          "ci_sidedness",
+          "contrast",
+          "df",
+          "direction",
+          "effect",
+          "effect_estimate",
+          "n",
+          "null_mean",
+          "p_value_sidedness",
+          "paired_differences_by_seed",
+          "raw_p_value",
+          "sample_sd",
+          "sample_sd_ddof",
+          "t_statistic"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::direction",
+        "observed": "b2-b1",
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::n_df_ddof",
+        "observed": {
+          "ddof": 1,
+          "df": 9,
+          "n": 10
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::two_sided_contract",
+        "observed": {
+          "alternative": "two-sided",
+          "ci_level": 0.95,
+          "ci_sidedness": "two-sided",
+          "p_sidedness": "two-sided"
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::mean",
+        "observed": 0.7699999999999999,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::sample_sd",
+        "observed": 0.08232726023485644,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::t_statistic",
+        "observed": 29.576519264498973,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::raw_p",
+        "observed": 2.8194237481487004e-10,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::ci95",
+        "observed": {
+          "high": 0.8288933741586485,
+          "low": 0.7111066258413513
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::paired_t_equivalence",
+        "observed": {
+          "paired_p": 2.8194237481487004e-10,
+          "paired_t": 29.576519264498973
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::paired_difference_values",
+        "observed": [
+          0.7000000000000002,
+          0.8999999999999999,
+          0.7,
+          0.8,
+          0.6999999999999997,
+          0.8,
+          0.7,
+          0.8000000000000003,
+          0.7000000000000002,
+          0.8999999999999999
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::seed_order",
+        "observed": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-5%::no_holm_fields",
+        "observed": [
+          "alternative",
+          "budget_1",
+          "budget_2",
+          "ci_high",
+          "ci_level",
+          "ci_low",
+          "ci_sidedness",
+          "contrast",
+          "df",
+          "direction",
+          "effect",
+          "effect_estimate",
+          "n",
+          "null_mean",
+          "p_value_sidedness",
+          "paired_differences_by_seed",
+          "raw_p_value",
+          "sample_sd",
+          "sample_sd_ddof",
+          "t_statistic"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::direction",
+        "observed": "b2-b1",
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::n_df_ddof",
+        "observed": {
+          "ddof": 1,
+          "df": 9,
+          "n": 10
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::two_sided_contract",
+        "observed": {
+          "alternative": "two-sided",
+          "ci_level": 0.95,
+          "ci_sidedness": "two-sided",
+          "p_sidedness": "two-sided"
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::mean",
+        "observed": 0.42000000000000004,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::sample_sd",
+        "observed": 0.18135294011647254,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::t_statistic",
+        "observed": 7.323601240860617,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::raw_p",
+        "observed": 4.4508692797458346e-05,
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::ci95",
+        "observed": {
+          "high": 0.549732078130403,
+          "low": 0.29026792186959705
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::paired_t_equivalence",
+        "observed": {
+          "paired_p": 4.4508692797458346e-05,
+          "paired_t": 7.323601240860617
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::paired_difference_values",
+        "observed": [
+          0.30000000000000004,
+          0.5,
+          0.3999999999999999,
+          0.2999999999999998,
+          0.5999999999999999,
+          0.6000000000000001,
+          0.3999999999999999,
+          0.30000000000000027,
+          0.10000000000000009,
+          0.7
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::seed_order",
+        "observed": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "positive::20%-10%::no_holm_fields",
+        "observed": [
+          "alternative",
+          "budget_1",
+          "budget_2",
+          "ci_high",
+          "ci_level",
+          "ci_low",
+          "ci_sidedness",
+          "contrast",
+          "df",
+          "direction",
+          "effect",
+          "effect_estimate",
+          "n",
+          "null_mean",
+          "p_value_sidedness",
+          "paired_differences_by_seed",
+          "raw_p_value",
+          "sample_sd",
+          "sample_sd_ddof",
+          "t_statistic"
+        ],
+        "status": "PASS"
+      },
+      {
+        "name": "negative::missing_seed",
+        "observed": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743)",
+        "status": "PASS"
+      },
+      {
+        "name": "negative::reordered_seeds",
+        "observed": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(869675675, 477581743, 875651179, 1878351743, 1603952859, 1814859839, 2045683682, 1798418854, 1480646854, 204886845)",
+        "status": "PASS"
+      },
+      {
+        "name": "negative::wrong_shape",
+        "observed": "seed 204886845 must provide shape (4,); observed=(3,)",
+        "status": "PASS"
+      },
+      {
+        "name": "negative::nonfinite",
+        "observed": "seed 204886845 contains non-finite budget gain values",
+        "status": "PASS"
+      },
+      {
+        "name": "negative::degenerate_paired_differences",
+        "observed": "contrast 5%-1% requires positive finite paired-difference SD",
+        "status": "PASS"
+      }
+    ],
+    "checks_passed": 99,
+    "checks_total": 99,
+    "failed_checks": [],
+    "failed_count": 0,
+    "historical_s6_03_evidence_sha256_before_extension": "e553142ec90662b28d26ae8c344355170a0a14dfb3b06beb2e562dd03dcd22d8",
+    "negative_fixtures": {
+      "degenerate_paired_differences": {
+        "observed": "contrast 5%-1% requires positive finite paired-difference SD",
+        "status": "PASS"
+      },
+      "missing_seed": {
+        "observed": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743)",
+        "status": "PASS"
+      },
+      "nonfinite": {
+        "observed": "seed 204886845 contains non-finite budget gain values",
+        "status": "PASS"
+      },
+      "reordered_seeds": {
+        "observed": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(869675675, 477581743, 875651179, 1878351743, 1603952859, 1814859839, 2045683682, 1798418854, 1480646854, 204886845)",
+        "status": "PASS"
+      },
+      "wrong_shape": {
+        "observed": "seed 204886845 must provide shape (4,); observed=(3,)",
+        "status": "PASS"
+      }
+    },
+    "positive_fixture": {
+      "contrast_count": 6,
+      "golden_results": [
+        {
+          "ci95_high": 0.46278366713195807,
+          "ci95_low": 0.3572163328680419,
+          "contrast": "5%-1%",
+          "df": 9,
+          "mean_paired_difference": 0.41,
+          "n": 10,
+          "raw_two_sided_p_value": 2.834973060272998e-08,
+          "sample_sd": 0.07378647873726217,
+          "t_statistic": 17.571428571428573
+        },
+        {
+          "ci95_high": 0.8677002231482596,
+          "ci95_low": 0.6522997768517405,
+          "contrast": "10%-1%",
+          "df": 9,
+          "mean_paired_difference": 0.76,
+          "n": 10,
+          "raw_two_sided_p_value": 6.563138462998306e-08,
+          "sample_sd": 0.15055453054181625,
+          "t_statistic": 15.963192957919308
+        },
+        {
+          "ci95_high": 1.2364281137215167,
+          "ci95_low": 1.1235718862784836,
+          "contrast": "20%-1%",
+          "df": 9,
+          "mean_paired_difference": 1.1800000000000002,
+          "n": 10,
+          "raw_two_sided_p_value": 4.2223701082406414e-12,
+          "sample_sd": 0.07888106377466154,
+          "t_statistic": 47.305239818499125
+        },
+        {
+          "ci95_high": 0.4631078581399103,
+          "ci95_low": 0.2368921418600897,
+          "contrast": "10%-5%",
+          "df": 9,
+          "mean_paired_difference": 0.35,
+          "n": 10,
+          "raw_two_sided_p_value": 6.324738963736726e-05,
+          "sample_sd": 0.15811388300841903,
+          "t_statistic": 6.9999999999999964
+        },
+        {
+          "ci95_high": 0.8288933741586485,
+          "ci95_low": 0.7111066258413513,
+          "contrast": "20%-5%",
+          "df": 9,
+          "mean_paired_difference": 0.7699999999999999,
+          "n": 10,
+          "raw_two_sided_p_value": 2.8194237481487004e-10,
+          "sample_sd": 0.08232726023485644,
+          "t_statistic": 29.576519264498973
+        },
+        {
+          "ci95_high": 0.549732078130403,
+          "ci95_low": 0.29026792186959705,
+          "contrast": "20%-10%",
+          "df": 9,
+          "mean_paired_difference": 0.42000000000000004,
+          "n": 10,
+          "raw_two_sided_p_value": 4.4508692797458346e-05,
+          "sample_sd": 0.18135294011647254,
+          "t_statistic": 7.323601240860617
+        }
+      ]
+    },
+    "scientific_boundaries": {
+      "final_test_authorized": false,
+      "fixture_only_no_official_results": true,
+      "hidden_unlabeled_gt_used": false,
+      "holm_f3_implemented_in_s6_04": false,
+      "official_training_authorized": false,
+      "test_used": false
+    },
+    "scientific_contract": {
+      "ci": "INDIVIDUAL_TWO_SIDED_95_PERCENT",
+      "contrast_count": 6,
+      "contrast_direction": "b2-b1",
+      "contrasts": [
+        "5%-1%",
+        "10%-1%",
+        "20%-1%",
+        "10%-5%",
+        "20%-5%",
+        "20%-10%"
+      ],
+      "df": 9,
+      "effect": "D_c_s",
+      "holm_applied": false,
+      "holm_deferred_task": "S6.10",
+      "inferential_replication_unit": "TRAINING_SEED_TRAINED_RUN",
+      "n_subjects": 10,
+      "paired_t_equivalence": true,
+      "raw_p_value": "TWO_SIDED",
+      "sample_sd_ddof": 1,
+      "test": "TWO_SIDED_ONE_SAMPLE_T_ON_PAIRED_DIFFERENCES"
+    },
+    "source_sha256": {
+      "scripts/S6_04_validate_rq3_pairwise.py": "114d601343ec862d1c627437d6975e964b33b1714d503127053d3eae9709a0fd",
+      "src/statistics/rq3_pairwise.py": "18c0c84fd396193e6019c9a55f051e6ab68ea9cb08e132017d92ddd017be8381",
+      "src/statistics/rq3_primary.py": "41ac57f7c4f9c19daef8f4f062001bcff1ff41b0af7b4683eb3459e436bf3676",
+      "src/statistics/seed_summary.py": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f"
+    },
+    "status": "PASS",
+    "task": "S6.04",
+    "tracker_action": "Implement six prespecified paired budget contrasts"
+  },
   "schema_version": "1.0",
   "scientific_boundaries": {
     "bbox_is_replication": false,
