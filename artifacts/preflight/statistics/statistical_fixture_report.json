@@ -3149,4 +3149,416 @@
     "training_seed_count": 10,
     "validator_sha256": "a6573eae3b288b9338199581509c82d6c5c1032b123b86d176c90a5150494974"
   }
+,
+  "s6_08_rq7_architecture_effect_primary_t_test": {
+    "checks": [
+      {
+        "name": "historical_report_sha256",
+        "observed": "2ecb5ef5feb68f5517dcb326457f4e3cd5114879e14f52b9d0b5814b7c9ce34f",
+        "pass": true
+      },
+      {
+        "name": "historical_report_lf_closing",
+        "observed": "220a20207d0a7d0a",
+        "pass": true
+      },
+      {
+        "name": "s6_01_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_02_rq2_primary_t_test_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_03_rq3_gg_repeated_measures_anova_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_04_rq3_pairwise_contrasts_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_05_rq4_mixed_model_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_06_rq5_rare_class_summary_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_07_rq6_negative_fp_primary_t_test_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_08_not_preexisting",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "rq7_core_sha256",
+        "observed": "3bc1d87feee80ecaad2ea00142f7dd56fb6491d4f2b626db005f32c1c44e6471",
+        "pass": true
+      },
+      {
+        "name": "rq7_core_lf_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "rq7_validator_lf_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "official_seed_count",
+        "observed": 10,
+        "pass": true
+      },
+      {
+        "name": "sample_sd_ddof",
+        "observed": 1,
+        "pass": true
+      },
+      {
+        "name": "rq7_architectures",
+        "observed": [
+          "R50",
+          "Swin-T"
+        ],
+        "pass": true
+      },
+      {
+        "name": "rq7_budgets",
+        "observed": [
+          "1%",
+          "5%",
+          "10%",
+          "20%"
+        ],
+        "pass": true
+      },
+      {
+        "name": "rq7_total_rows",
+        "observed": 80,
+        "pass": true
+      },
+      {
+        "name": "rq7_alternative",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "rq7_df",
+        "observed": 9,
+        "pass": true
+      },
+      {
+        "name": "rq7_ci_level",
+        "observed": 0.95,
+        "pass": true
+      },
+      {
+        "name": "positive_fixture_row_count",
+        "observed": 80,
+        "pass": true
+      },
+      {
+        "name": "architecture_gain_seed_count",
+        "observed": 10,
+        "pass": true
+      },
+      {
+        "name": "difference_seed_order",
+        "observed": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_01",
+        "observed": 0.10000000000000009,
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_02",
+        "observed": 0.19999999999999996,
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_03",
+        "observed": 0.30000000000000004,
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_04",
+        "observed": 0.40000000000000013,
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_05",
+        "observed": 0.5,
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_06",
+        "observed": 0.6000000000000001,
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_07",
+        "observed": 0.7,
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_08",
+        "observed": 0.8,
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_09",
+        "observed": 0.9000000000000001,
+        "pass": true
+      },
+      {
+        "name": "d_s_seed_10",
+        "observed": 1.0,
+        "pass": true
+      },
+      {
+        "name": "golden_effect_estimate",
+        "observed": 0.55,
+        "pass": true
+      },
+      {
+        "name": "golden_sample_sd",
+        "observed": 0.30276503540974914,
+        "pass": true
+      },
+      {
+        "name": "golden_t_statistic",
+        "observed": 5.744562646538029,
+        "pass": true
+      },
+      {
+        "name": "golden_p_value",
+        "observed": 0.00027819601104818546,
+        "pass": true
+      },
+      {
+        "name": "golden_ci_low",
+        "observed": 0.33341494102783165,
+        "pass": true
+      },
+      {
+        "name": "golden_ci_high",
+        "observed": 0.7665850589721684,
+        "pass": true
+      },
+      {
+        "name": "result_effect",
+        "observed": "D_s",
+        "pass": true
+      },
+      {
+        "name": "result_effect_definition",
+        "observed": "A_Swin-T_minus_A_R50",
+        "pass": true
+      },
+      {
+        "name": "result_n",
+        "observed": 10,
+        "pass": true
+      },
+      {
+        "name": "result_df",
+        "observed": 9,
+        "pass": true
+      },
+      {
+        "name": "result_ddof",
+        "observed": 1,
+        "pass": true
+      },
+      {
+        "name": "result_alternative",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "result_p_sidedness",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "result_ci_sidedness",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "interpretation_scope",
+        "observed": "DIFFERENCE_IN_SSL_GAIN_BETWEEN_ARCHITECTURES_NOT_ABSOLUTE_SUPERIORITY",
+        "pass": true
+      },
+      {
+        "name": "negative_wrong_row_count",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_duplicate_cell",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_invalid_architecture",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_invalid_budget",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_seed_index_mapping",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_unknown_training_seed",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_nonfinite_delta",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_missing_delta_field",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_wrong_seed_order",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_missing_architecture_gain",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "negative_zero_seed_sd",
+        "observed": "RQ7ArchitectureEffectError",
+        "pass": true
+      },
+      {
+        "name": "candidate_section_present",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "candidate_section_marker_present",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "historical_bytes_preserved",
+        "observed": "2ecb5ef5feb68f5517dcb326457f4e3cd5114879e14f52b9d0b5814b7c9ce34f",
+        "pass": true
+      }
+    ],
+    "checks_passed": 63,
+    "checks_total": 63,
+    "failed_checks": [],
+    "failed_count": 0,
+    "historical_s6_07_evidence_sha256_before_extension": "2ecb5ef5feb68f5517dcb326457f4e3cd5114879e14f52b9d0b5814b7c9ce34f",
+    "positive_fixture": {
+      "primary_result": {
+        "alternative": "two-sided",
+        "ci_high": 0.7665850589721684,
+        "ci_level": 0.95,
+        "ci_low": 0.33341494102783165,
+        "ci_sidedness": "two-sided",
+        "df": 9,
+        "effect": "D_s",
+        "effect_definition": "A_Swin-T_minus_A_R50",
+        "effect_estimate": 0.55,
+        "interpretation_scope": "DIFFERENCE_IN_SSL_GAIN_BETWEEN_ARCHITECTURES_NOT_ABSOLUTE_SUPERIORITY",
+        "n": 10,
+        "null_mean": 0.0,
+        "p_value": 0.00027819601104818546,
+        "p_value_sidedness": "two-sided",
+        "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+        "sample_sd": 0.30276503540974914,
+        "sample_sd_ddof": 1,
+        "t_statistic": 5.744562646538029
+      },
+      "row_count": 80,
+      "seed_differences": [
+        0.10000000000000009,
+        0.19999999999999996,
+        0.30000000000000004,
+        0.40000000000000013,
+        0.5,
+        0.6000000000000001,
+        0.7,
+        0.8,
+        0.9000000000000001,
+        1.0
+      ],
+      "training_seed_count": 10
+    },
+    "rq": "RQ7",
+    "scientific_boundaries": {
+      "final_test_authorized": false,
+      "hidden_unlabeled_gt_used": false,
+      "official_training_authorized": false,
+      "test_gt_used": false,
+      "test_used": false
+    },
+    "scientific_contract": {
+      "absolute_swin_superiority_test": false,
+      "alpha": 0.05,
+      "alternative": "two-sided",
+      "architecture_difference": "D_s=A_Swin-T,s-A_R50,s",
+      "architecture_gain": "A_{a,s}=mean_of_four_budget_delta_mAP_test_values",
+      "ci": "individual_two-sided_95_percent",
+      "df": 9,
+      "exact_sign_flip_applied_in_s6_08": false,
+      "holm_f2_applied_in_s6_08": false,
+      "loso_applied_in_s6_08": false,
+      "n": 10,
+      "null_mean": 0.0,
+      "official_seed_count": 10,
+      "primitive_effect": "delta_mAP_test=SSL-SUP",
+      "replication_unit": "TRAINING_SEED_TRAINED_RUN"
+    },
+    "source_sha256": {
+      "scripts/S6_08_validate_rq7_architecture_effect.py": "d14f7688f0c9af7c10d99ee6dfa3e76a2010913a3e6926216d81d0e14a861b7d",
+      "src/statistics/rq7_architecture_effect.py": "3bc1d87feee80ecaad2ea00142f7dd56fb6491d4f2b626db005f32c1c44e6471"
+    },
+    "status": "PASS",
+    "task": "S6.08",
+    "tracker_action": "Implement two-sided architecture effect"
+  }
 }
