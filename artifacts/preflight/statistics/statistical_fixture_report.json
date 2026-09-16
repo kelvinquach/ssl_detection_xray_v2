@@ -2776,4 +2776,377 @@
       }
     ]
   }
+,
+  "s6_07_rq6_negative_fp_primary_t_test": {
+    "alternative": "two-sided",
+    "cell_count_per_seed": 8,
+    "checks": [
+      {
+        "name": "historical_report_sha256",
+        "observed": "af3c3e6fee343a900a04de23ef6ea8272d98da109730e7e41e01795ad1611bad",
+        "pass": true
+      },
+      {
+        "name": "historical_report_lf_closing",
+        "observed": "5d0a20207d0a7d0a",
+        "pass": true
+      },
+      {
+        "name": "s6_01_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_02_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_03_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_04_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_05_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_06_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_07_not_preexisting",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "rq6_core_sha256",
+        "observed": "69579793b2927c7a3ed39f7f94d3a2a598b35a0eacbe2b591cce48f69c2d0907",
+        "pass": true
+      },
+      {
+        "name": "official_seed_count",
+        "observed": 10,
+        "pass": true
+      },
+      {
+        "name": "rq6_cell_count",
+        "observed": 8,
+        "pass": true
+      },
+      {
+        "name": "rq6_alternative",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "rq6_df",
+        "observed": 9,
+        "pass": true
+      },
+      {
+        "name": "rq6_ci_level",
+        "observed": 0.95,
+        "pass": true
+      },
+      {
+        "name": "far_secondary_outcome",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "far_no_formal_p_value",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "positive_fixture_row_count",
+        "observed": 80,
+        "pass": true
+      },
+      {
+        "name": "positive_seed_effects",
+        "observed": {
+          "204886845": 1.0,
+          "477581743": 9.0,
+          "869675675": 10.0,
+          "875651179": 8.0,
+          "1480646854": 2.0,
+          "1603952859": 6.0,
+          "1798418854": 3.0,
+          "1814859839": 5.0,
+          "1878351743": 7.0,
+          "2045683682": 4.0
+        },
+        "pass": true
+      },
+      {
+        "name": "primary_effect",
+        "observed": "H_s",
+        "pass": true
+      },
+      {
+        "name": "primitive_effect_direction",
+        "observed": "FP_SSL_NEG_MINUS_FP_SUP_NEG",
+        "pass": true
+      },
+      {
+        "name": "primary_metric",
+        "observed": "FP_PER_NEGATIVE",
+        "pass": true
+      },
+      {
+        "name": "effect_estimate",
+        "observed": 5.5,
+        "pass": true
+      },
+      {
+        "name": "sample_sd",
+        "observed": 3.0276503540974917,
+        "pass": true
+      },
+      {
+        "name": "sample_sd_ddof",
+        "observed": 1,
+        "pass": true
+      },
+      {
+        "name": "n",
+        "observed": 10,
+        "pass": true
+      },
+      {
+        "name": "df",
+        "observed": 9,
+        "pass": true
+      },
+      {
+        "name": "null_mean",
+        "observed": 0.0,
+        "pass": true
+      },
+      {
+        "name": "alternative",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "t_statistic",
+        "observed": 5.744562646538029,
+        "pass": true
+      },
+      {
+        "name": "two_sided_p_value",
+        "observed": 0.00027819601104818546,
+        "pass": true
+      },
+      {
+        "name": "p_value_sidedness",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "ci_level",
+        "observed": 0.95,
+        "pass": true
+      },
+      {
+        "name": "ci_sidedness",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "ci_low",
+        "observed": 3.3341494102783162,
+        "pass": true
+      },
+      {
+        "name": "ci_high",
+        "observed": 7.665850589721684,
+        "pass": true
+      },
+      {
+        "name": "negative_interpretation",
+        "observed": "SSL_LESS_FP_PER_NEGATIVE",
+        "pass": true
+      },
+      {
+        "name": "positive_interpretation",
+        "observed": "SSL_MORE_FP_PER_NEGATIVE",
+        "pass": true
+      },
+      {
+        "name": "result_far_secondary",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "result_far_no_formal_p",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "no_far_p_value_field",
+        "observed": [
+          "alternative",
+          "cell_count_per_seed",
+          "cell_weight",
+          "ci_high",
+          "ci_level",
+          "ci_low",
+          "ci_sidedness",
+          "df",
+          "effect",
+          "effect_estimate",
+          "far_formal_p_value_required",
+          "far_secondary_outcome",
+          "n",
+          "negative_effect_interpretation",
+          "null_mean",
+          "p_value",
+          "p_value_sidedness",
+          "positive_effect_interpretation",
+          "primary_metric",
+          "primitive_effect",
+          "replication_unit",
+          "sample_sd",
+          "sample_sd_ddof",
+          "t_statistic"
+        ],
+        "pass": true
+      },
+      {
+        "name": "reject_wrong_row_count",
+        "observed": "RQ6NegativeFPError",
+        "pass": true
+      },
+      {
+        "name": "reject_duplicate_cell",
+        "observed": "RQ6NegativeFPError",
+        "pass": true
+      },
+      {
+        "name": "reject_bad_architecture",
+        "observed": "RQ6NegativeFPError",
+        "pass": true
+      },
+      {
+        "name": "reject_bad_budget",
+        "observed": "RQ6NegativeFPError",
+        "pass": true
+      },
+      {
+        "name": "reject_bad_seed_mapping",
+        "observed": "RQ6NegativeFPError",
+        "pass": true
+      },
+      {
+        "name": "reject_nan_delta",
+        "observed": "RQ6NegativeFPError",
+        "pass": true
+      },
+      {
+        "name": "reject_infinite_delta",
+        "observed": "RQ6NegativeFPError",
+        "pass": true
+      },
+      {
+        "name": "reject_out_of_range_delta",
+        "observed": "RQ6NegativeFPError",
+        "pass": true
+      },
+      {
+        "name": "test_used",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "hidden_unlabeled_gt_used",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "official_training_authorized",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "final_test_authorized",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "fixture_is_synthetic",
+        "observed": "SYNTHETIC_ONLY",
+        "pass": true
+      },
+      {
+        "name": "all_checks_pass",
+        "observed": "54/54",
+        "pass": true
+      },
+      {
+        "name": "section_marker_present",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "historical_bytes_preserved",
+        "observed": "af3c3e6fee343a900a04de23ef6ea8272d98da109730e7e41e01795ad1611bad",
+        "pass": true
+      }
+    ],
+    "checks_passed": 57,
+    "checks_total": 57,
+    "ci": "TWO_SIDED_95_PERCENT",
+    "core_sha256": "69579793b2927c7a3ed39f7f94d3a2a598b35a0eacbe2b591cce48f69c2d0907",
+    "df": 9,
+    "far_formal_p_value_required": false,
+    "far_secondary_outcome": true,
+    "final_test_authorized": false,
+    "fixture": "SYNTHETIC_ONLY",
+    "hidden_unlabeled_gt_used": false,
+    "historical_report_sha256": "af3c3e6fee343a900a04de23ef6ea8272d98da109730e7e41e01795ad1611bad",
+    "negative_effect_interpretation": "SSL_LESS_FP_PER_NEGATIVE",
+    "official_training_authorized": false,
+    "positive_effect_interpretation": "SSL_MORE_FP_PER_NEGATIVE",
+    "positive_fixture": {
+      "ci_high": 7.665850589721684,
+      "ci_low": 3.3341494102783162,
+      "effect_estimate": 5.5,
+      "p_value": 0.00027819601104818546,
+      "sample_sd": 3.0276503540974917,
+      "seed_effects": {
+        "204886845": 1.0,
+        "477581743": 9.0,
+        "869675675": 10.0,
+        "875651179": 8.0,
+        "1480646854": 2.0,
+        "1603952859": 6.0,
+        "1798418854": 3.0,
+        "1814859839": 5.0,
+        "1878351743": 7.0,
+        "2045683682": 4.0
+      },
+      "t_statistic": 5.744562646538029
+    },
+    "primary_effect": "H_s",
+    "primary_metric": "FP_PER_NEGATIVE",
+    "primary_test": "TWO_SIDED_ONE_SAMPLE_T_TEST",
+    "primitive_effect": "FP_SSL_NEG_MINUS_FP_SUP_NEG",
+    "rq": "RQ6",
+    "sample_sd_ddof": 1,
+    "status": "PASS",
+    "task": "S6.07",
+    "test_used": false,
+    "training_seed_count": 10,
+    "validator_sha256": "a6573eae3b288b9338199581509c82d6c5c1032b123b86d176c90a5150494974"
+  }
 }
