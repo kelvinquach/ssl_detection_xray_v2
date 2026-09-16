@@ -7551,6 +7551,85 @@ N_{\mathrm{sign\text{-}flip}}
 \label{eq:exact_sign_flip_count}
 \end{equation}
 
+Để phép kiểm định exact sign-flip được xác định hoàn toàn trước khi xem kết
+quả, ký hiệu \(Z_s\) là hiệu ứng ghép cặp ở training seed \(s\). Cụ thể,
+\(Z_s=G_s\) đối với RQ2, \(Z_s=H_s\) đối với RQ6 và \(Z_s=D_s\) đối với
+RQ7. Thống kê quan sát được định nghĩa là trung bình số học của 10 hiệu ứng
+ghép cặp,
+
+\begin{equation}
+T_{\mathrm{obs}}
+=
+\frac{1}{10}
+\sum_{s=1}^{10} Z_s.
+\label{eq:sign_flip_observed_statistic}
+\end{equation}
+
+Với mỗi vector dấu
+\(\boldsymbol{\epsilon}
+=(\epsilon_1,\ldots,\epsilon_{10})\),
+trong đó
+\(\epsilon_s\in\{-1,+1\}\),
+thống kê sign-flip tương ứng được tính bởi
+
+\begin{equation}
+T(\boldsymbol{\epsilon})
+=
+\frac{1}{10}
+\sum_{s=1}^{10}
+\epsilon_s Z_s.
+\label{eq:sign_flip_statistic}
+\end{equation}
+
+Toàn bộ \(2^{10}=1024\) vector dấu được liệt kê chính xác, bao gồm cấu hình
+quan sát với tất cả dấu bằng \(+1\). Đối với RQ2, do giả thuyết chính có hướng
+dương, exact sign-flip sử dụng kiểm định một phía và \(p\)-value được định
+nghĩa là
+
+\begin{equation}
+p_{\mathrm{SF},\mathrm{RQ2}}
+=
+\frac{
+\#\left\{
+\boldsymbol{\epsilon}:
+T(\boldsymbol{\epsilon})
+\ge
+T_{\mathrm{obs}}
+\right\}
+}{
+1024
+}.
+\label{eq:sign_flip_rq2_pvalue}
+\end{equation}
+
+Đối với RQ6 và RQ7, exact sign-flip sử dụng kiểm định hai phía. Mức độ cực
+đoan được xác định theo trị tuyệt đối của cùng thống kê trung bình,
+
+\begin{equation}
+p_{\mathrm{SF},\mathrm{two\text{-}sided}}
+=
+\frac{
+\#\left\{
+\boldsymbol{\epsilon}:
+\left|T(\boldsymbol{\epsilon})\right|
+\ge
+\left|T_{\mathrm{obs}}\right|
+\right\}
+}{
+1024
+}.
+\label{eq:sign_flip_two_sided_pvalue}
+\end{equation}
+
+Các cấu hình có thống kê bằng đúng ngưỡng quan sát được tính vào tử số thông
+qua dấu bất đẳng thức \(\ge\). Vì toàn bộ không gian \(1024\) cấu hình được
+liệt kê chính xác, không áp dụng hiệu chỉnh \(+1\) vốn thường được dùng cho
+Monte Carlo permutation tests. Nếu một hiệu ứng ghép cặp bằng đúng \(0\), seed
+đó vẫn được giữ trong phân tích; đổi dấu của giá trị \(0\) vẫn cho \(0\), nhưng
+toàn bộ \(1024\) cấu hình dấu vẫn được giữ và các thống kê trùng nhau vẫn được
+tính theo từng cấu hình. Không seed nào bị loại hoặc làm giảm \(n\) vì hiệu
+ứng bằng \(0\).
+
 Phân tích này kiểm tra liệu kết luận về hiệu ứng ghép cặp có còn được hỗ trợ
 khi không phụ thuộc hoàn toàn vào giả định phân phối chuẩn của one-sample
 \(t\)-test.

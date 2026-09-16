@@ -1455,6 +1455,32 @@ RQ6 = two-sided
 RQ7 = two-sided
 ```
 
+```text
+Exact sign-flip implementation contract:
+
+- Input là đúng 10 paired training-seed effects theo locked ordered
+  training-seed list.
+- RQ2 dùng `G_s`; RQ6 dùng `H_s`; RQ7 dùng `D_s`.
+- Observed test statistic:
+  `T_obs = arithmetic mean of the 10 paired seed effects`.
+- Enumerate exhaustive toàn bộ `2^10 = 1024` sign vectors
+  `epsilon_s ∈ {-1,+1}`, bao gồm all-positive observed configuration.
+- Với mỗi configuration:
+  `T_flip = mean(epsilon_s * Z_s)` trên đủ 10 seed.
+- RQ2 exact one-sided greater p-value:
+  `count(T_flip >= T_obs) / 1024`.
+- RQ6/RQ7 exact two-sided p-value:
+  `count(abs(T_flip) >= abs(T_obs)) / 1024`.
+- Equality/ties được tính vào tử số bằng `>=`.
+- Không áp dụng `+1` correction vì đây là exhaustive exact enumeration,
+  không phải Monte Carlo approximation.
+- Nếu paired effect của một seed bằng đúng `0`, seed vẫn được giữ;
+  vẫn enumerate đủ 1024 sign configurations và duplicate statistics
+  vẫn được tính theo configuration.
+- Không giảm `n`, không loại seed và không thay đổi primary analysis
+  dựa trên kết quả robustness.
+```
+
 Đồng thời thực hiện:
 
 ```text

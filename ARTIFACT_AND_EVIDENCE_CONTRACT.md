@@ -2792,6 +2792,63 @@ RQ6 = two-sided
 RQ7 = two-sided
 ```
 
+Machine-readable exact sign-flip evidence cho mỗi RQ phải lưu tối thiểu:
+
+```text
+rq
+effect
+ordered_training_seeds
+seed_effect_count = 10
+test_statistic = arithmetic_mean_of_paired_seed_effects
+observed_statistic
+sign_configuration_count = 1024
+observed_all_positive_configuration_included = true
+alternative
+extremeness_rule
+equality_ties_included = true
+plus_one_correction = false
+zero_effect_seed_retained = true
+duplicate_statistics_counted_by_configuration = true
+extreme_configuration_count
+exact_p_value
+```
+
+Semantics bắt buộc:
+
+```text
+RQ2:
+  effect = G_s
+  alternative = one-sided-greater
+  extremeness_rule = T_flip >= T_obs
+  exact_p_value = extreme_configuration_count / 1024
+
+RQ6:
+  effect = H_s
+  alternative = two-sided
+  extremeness_rule = abs(T_flip) >= abs(T_obs)
+  exact_p_value = extreme_configuration_count / 1024
+
+RQ7:
+  effect = D_s
+  alternative = two-sided
+  extremeness_rule = abs(T_flip) >= abs(T_obs)
+  exact_p_value = extreme_configuration_count / 1024
+```
+
+Nếu paired effect bằng đúng `0`, training seed đó vẫn phải xuất hiện trong
+`ordered_training_seeds` và `seed_effect_count` vẫn bằng `10`. Không giảm số
+configuration do các sign vectors tạo ra cùng một statistic.
+
+Preflight implementation evidence của S6.11 phải được ghi machine-readable
+trong:
+
+```text
+artifacts/preflight/statistics/statistical_fixture_report.json
+```
+
+và phải chứng minh implementation tuân thủ chính xác các semantics ở trên trước
+khi S6.11 được CLOSED / PASS.
+
 LOSO:
 
 ```text
