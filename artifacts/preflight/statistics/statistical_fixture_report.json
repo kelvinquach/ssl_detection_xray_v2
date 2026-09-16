@@ -1,0 +1,176 @@
+{
+  "aggregation": {
+    "cross_seed_prediction_pooling_allowed": false,
+    "ddof": 1,
+    "denominator": "n-1",
+    "mean_across_training_seeds": true,
+    "sample_standard_deviation": true
+  },
+  "checks": [
+    {
+      "detail": "TRAINING_SEED_TRAINED_RUN",
+      "name": "contract::replication_unit",
+      "pass": true
+    },
+    {
+      "detail": 10,
+      "name": "contract::official_seed_count",
+      "pass": true
+    },
+    {
+      "detail": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "name": "contract::ordered_seed_identity",
+      "pass": true
+    },
+    {
+      "detail": 1,
+      "name": "contract::sample_sd_ddof",
+      "pass": true
+    },
+    {
+      "detail": false,
+      "name": "contract::cross_seed_prediction_pooling_prohibited",
+      "pass": true
+    },
+    {
+      "detail": 10,
+      "name": "positive::n_10",
+      "pass": true
+    },
+    {
+      "detail": 5.5,
+      "name": "positive::mean",
+      "pass": true
+    },
+    {
+      "detail": 3.0276503540974917,
+      "name": "positive::sample_sd_ddof1",
+      "pass": true
+    },
+    {
+      "detail": 9,
+      "name": "positive::sample_sd_denominator_n_minus_1",
+      "pass": true
+    },
+    {
+      "detail": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "name": "positive::seed_order_preserved",
+      "pass": true
+    },
+    {
+      "detail": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743)",
+      "name": "fail_closed::missing_seed",
+      "pass": true
+    },
+    {
+      "detail": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(869675675, 477581743, 875651179, 1878351743, 1603952859, 1814859839, 2045683682, 1798418854, 1480646854, 204886845)",
+      "name": "fail_closed::reordered_seeds",
+      "pass": true
+    },
+    {
+      "detail": "seed-level metric values must all be finite",
+      "name": "fail_closed::nonfinite_metric",
+      "pass": true
+    },
+    {
+      "detail": "each official training seed must contribute exactly one scalar metric",
+      "name": "fail_closed::non_scalar_per_seed",
+      "pass": true
+    }
+  ],
+  "checks_passed": 14,
+  "checks_total": 14,
+  "evidence_type": "statistical_fixture_report",
+  "failed_checks": [],
+  "failed_count": 0,
+  "inferential_replication_unit": "TRAINING_SEED_TRAINED_RUN",
+  "negative_fixtures": {
+    "missing_seed": {
+      "blocked": true,
+      "error": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743)"
+    },
+    "non_scalar_per_seed": {
+      "blocked": true,
+      "error": "each official training seed must contribute exactly one scalar metric"
+    },
+    "nonfinite_metric": {
+      "blocked": true,
+      "error": "seed-level metric values must all be finite"
+    },
+    "reordered_seeds": {
+      "blocked": true,
+      "error": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(869675675, 477581743, 875651179, 1878351743, 1603952859, 1814859839, 2045683682, 1798418854, 1480646854, 204886845)"
+    }
+  },
+  "official_seed_count": 10,
+  "ordered_training_seeds": [
+    204886845,
+    1480646854,
+    1798418854,
+    2045683682,
+    1814859839,
+    1603952859,
+    1878351743,
+    875651179,
+    477581743,
+    869675675
+  ],
+  "positive_fixture": {
+    "input_values": [
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0
+    ],
+    "mean": 5.5,
+    "sample_sd": 3.0276503540974917,
+    "sample_sd_denominator": 9
+  },
+  "schema_version": "1.0",
+  "scientific_boundaries": {
+    "bbox_is_replication": false,
+    "detection_is_replication": false,
+    "final_test_authorized": false,
+    "hidden_unlabeled_gt_used": false,
+    "image_is_replication": false,
+    "official_training_authorized": false,
+    "test_used": false,
+    "training_seed_trained_run_is_replication": true
+  },
+  "source_sha256": {
+    "data/manifests/seed_manifest.json": "4f230698f0d70a5c48cbf13f8a4ab06ff36edd8268fc3d6e48b884ab38d08a2b",
+    "scripts/S6_01_validate_seed_summary.py": "99e571af06ac3db43a6673f1139d898cfa7079654b6ae8352ad81b177872cc35",
+    "src/statistics/seed_summary.py": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f"
+  },
+  "status": "PASS",
+  "task": "S6.01",
+  "tracker_action": "Implement mean/SD ddof=1"
+}
