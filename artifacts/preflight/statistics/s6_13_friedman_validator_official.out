@@ -1,0 +1,292 @@
+{
+  "checks": [
+    {
+      "check_id": "C01",
+      "detail": [
+        "1%",
+        "5%",
+        "10%",
+        "20%"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "C02",
+      "detail": 3,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C03",
+      "detail": "SENSITIVITY_ONLY",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C04",
+      "detail": "NO_SYSTEMATIC_DIFFERENCE_IN_WITHIN_SEED_RANK_STRUCTURE_ACROSS_BUDGETS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C05",
+      "detail": "RIGHT_TAIL_ASYMPTOTIC_CHI_SQUARE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C06",
+      "detail": "STANDARD_FRIEDMAN_TIE_CORRECTION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C07",
+      "detail": "NONE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C08",
+      "detail": false,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C09",
+      "detail": "GREENHOUSE_GEISSER_REPEATED_MEASURES_ANOVA",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C10",
+      "detail": true,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C11",
+      "detail": "B_b_s",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C12",
+      "detail": "TRAINING_SEED_TRAINED_RUN",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C13",
+      "detail": 10,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C14",
+      "detail": 4,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C15",
+      "detail": [
+        "1%",
+        "5%",
+        "10%",
+        "20%"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "C16",
+      "detail": "friedman_chi_square",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C17",
+      "detail": 30.0,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C18",
+      "detail": 1.3800570312932553e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C19",
+      "detail": 3,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C20",
+      "detail": "RIGHT_TAIL_ASYMPTOTIC_CHI_SQUARE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C21",
+      "detail": "SENSITIVITY_ONLY",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C22",
+      "detail": "NONE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C23",
+      "detail": false,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C24",
+      "detail": true,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C25",
+      "detail": 25.58823529411765,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C26",
+      "detail": 1.163105756259275e-05,
+      "status": "PASS"
+    },
+    {
+      "check_id": "C27",
+      "detail": "STANDARD_FRIEDMAN_TIE_CORRECTION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C28",
+      "detail": "missing official seed rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C29",
+      "detail": "wrong seed order rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C30",
+      "detail": "wrong budget count rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C31",
+      "detail": "nonnumeric value rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C32",
+      "detail": "NaN rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C33",
+      "detail": "infinity rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C34",
+      "detail": "non-finite degenerate Friedman result rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C35",
+      "detail": "499630d1983030addb51b529519a92cef34bb3840d22e0784e7f7319fff2fc1f",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C36",
+      "detail": "41ac57f7c4f9c19daef8f4f062001bcff1ff41b0af7b4683eb3459e436bf3676",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C37",
+      "detail": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f",
+      "status": "PASS"
+    }
+  ],
+  "checks_passed": 37,
+  "checks_total": 37,
+  "failed_checks": [],
+  "failed_count": 0,
+  "final_test_authorized": false,
+  "fixture_only_no_official_results": true,
+  "hidden_unlabeled_gt_used": false,
+  "official_training_authorized": false,
+  "positive_fixture": {
+    "no_tie": {
+      "budget_count": 4,
+      "budget_levels": [
+        "1%",
+        "5%",
+        "10%",
+        "20%"
+      ],
+      "df": 3,
+      "inferential_replication_unit": "TRAINING_SEED_TRAINED_RUN",
+      "input_effect": "B_b_s",
+      "multiplicity_family_added": false,
+      "n_subjects": 10,
+      "null_hypothesis": "NO_SYSTEMATIC_DIFFERENCE_IN_WITHIN_SEED_RANK_STRUCTURE_ACROSS_BUDGETS",
+      "p_value": 1.3800570312932553e-06,
+      "p_value_form": "RIGHT_TAIL_ASYMPTOTIC_CHI_SQUARE",
+      "posthoc": "NONE",
+      "primary_method": "GREENHOUSE_GEISSER_REPEATED_MEASURES_ANOVA",
+      "primary_method_unchanged": true,
+      "role": "SENSITIVITY_ONLY",
+      "statistic": 30.0,
+      "statistic_name": "friedman_chi_square",
+      "tie_handling": "STANDARD_FRIEDMAN_TIE_CORRECTION"
+    },
+    "with_ties": {
+      "budget_count": 4,
+      "budget_levels": [
+        "1%",
+        "5%",
+        "10%",
+        "20%"
+      ],
+      "df": 3,
+      "inferential_replication_unit": "TRAINING_SEED_TRAINED_RUN",
+      "input_effect": "B_b_s",
+      "multiplicity_family_added": false,
+      "n_subjects": 10,
+      "null_hypothesis": "NO_SYSTEMATIC_DIFFERENCE_IN_WITHIN_SEED_RANK_STRUCTURE_ACROSS_BUDGETS",
+      "p_value": 1.163105756259275e-05,
+      "p_value_form": "RIGHT_TAIL_ASYMPTOTIC_CHI_SQUARE",
+      "posthoc": "NONE",
+      "primary_method": "GREENHOUSE_GEISSER_REPEATED_MEASURES_ANOVA",
+      "primary_method_unchanged": true,
+      "role": "SENSITIVITY_ONLY",
+      "statistic": 25.58823529411765,
+      "statistic_name": "friedman_chi_square",
+      "tie_handling": "STANDARD_FRIEDMAN_TIE_CORRECTION"
+    }
+  },
+  "scientific_contract": {
+    "budget_levels": [
+      "1%",
+      "5%",
+      "10%",
+      "20%"
+    ],
+    "df": 3,
+    "inferential_replication_unit": "TRAINING_SEED_TRAINED_RUN",
+    "input_effect": "B_b_s",
+    "n_subjects": 10,
+    "new_multiplicity_family": "NONE",
+    "p_value": "right_tail_asymptotic_chi_square",
+    "posthoc": "NONE",
+    "primary_method": "Greenhouse-Geisser repeated-measures ANOVA",
+    "primary_method_unchanged": true,
+    "role": "sensitivity_only",
+    "statistic": "friedman_chi_square",
+    "test": "standard_friedman_rank_test",
+    "tie_handling": "standard_friedman_tie_correction"
+  },
+  "source_sha256": {
+    "scripts/S6_13_validate_rq3_friedman.py": "b358caf5b39ec375242796cf5384fc77e10384642ecc9eb74c1a0206cbc320ab",
+    "src/statistics/rq3_friedman.py": "499630d1983030addb51b529519a92cef34bb3840d22e0784e7f7319fff2fc1f",
+    "src/statistics/rq3_primary.py": "41ac57f7c4f9c19daef8f4f062001bcff1ff41b0af7b4683eb3459e436bf3676",
+    "src/statistics/seed_summary.py": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f"
+  },
+  "statistical_environment": {
+    "scipy_version": "1.15.3"
+  },
+  "status": "PASS",
+  "task": "S6.13",
+  "test_used": false,
+  "tracker_action": "Implement Friedman RQ3"
+}
+S6_13_FRIEDMAN_FIXTURE=37/37_PASS
