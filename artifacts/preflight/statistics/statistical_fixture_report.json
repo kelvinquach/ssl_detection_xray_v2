@@ -5608,6 +5608,43 @@
                                                                                 "image_digest":  "sha256:bb99a07178ba662bd2e84c5e03421007668b7e35856c83cb6ee816cffab15d37",
                                                                                 "vast_template":  "SSOD Statistical Runtime — Frozen S6",
                                                                                 "verification_instance_id":  "51254018"
-                                                                            }
+                                                                            },
+                                                    "hash_representation_provenance":  {
+                                                                                           "policy":  "PRESERVE_EXECUTION_HASH_AND_RECORD_GIT_BLOB_HASH_WHEN_LINE_ENDING_NORMALIZATION_CHANGES_BYTES",
+                                                                                           "verified_by":  "S6.14 STEP 7G-R2",
+                                                                                           "content_equivalence_basis":  "CANONICAL_LF_TEXT_EQUAL",
+                                                                                           "primary_rq4_core":  {
+                                                                                                                    "path":  "src/statistics/rq4_mixed_model.R",
+                                                                                                                    "recorded_source_sha256_semantics":  "HISTORICAL_EXECUTION_WORKTREE_BYTES",
+                                                                                                                    "execution_sha256":  "b41e68c4bdad9448d4ad510f8307c97a4d54532de86b718ceba0ab0ea02f320e",
+                                                                                                                    "execution_line_endings":  "LF",
+                                                                                                                    "git_committed_blob_sha256":  "6c92eaf928c203cd68917b1a1ebc7cd3fd0b6977e541e9e3df7962a3c08ff1d4",
+                                                                                                                    "git_blob_line_endings":  "CRLF",
+                                                                                                                    "canonical_lf_text_equal":  true,
+                                                                                                                    "historical_s6_05_reference_preserved":  true
+                                                                                                                },
+                                                                                           "cr2_core":  {
+                                                                                                            "path":  "src/statistics/rq4_cr2_sensitivity.R",
+                                                                                                            "execution_sha256":  "9e9a21faf87c851ed9d74151d4b6c2860d70f2b143fb32ad4662dd2b0c049668",
+                                                                                                            "git_committed_blob_sha256":  "9e9a21faf87c851ed9d74151d4b6c2860d70f2b143fb32ad4662dd2b0c049668",
+                                                                                                            "byte_identical_across_representations":  true
+                                                                                                        },
+                                                                                           "validator":  {
+                                                                                                             "path":  "scripts/S6_14_validate_rq4_cr2_sensitivity.R",
+                                                                                                             "execution_sha256":  "450e369fbce35b23afa9059f46dcd19d456d02f96e645395c4a0d456d1898e8f",
+                                                                                                             "git_committed_blob_sha256":  "450e369fbce35b23afa9059f46dcd19d456d02f96e645395c4a0d456d1898e8f",
+                                                                                                             "byte_identical_across_representations":  true
+                                                                                                         },
+                                                                                           "official_validator_output":  {
+                                                                                                                             "path":  "artifacts/preflight/statistics/s6_14_cr2_validator_official.out",
+                                                                                                                             "recorded_evidence_sha256_semantics":  "MATERIALIZED_EXECUTION_BYTES",
+                                                                                                                             "execution_sha256":  "37954554aec7c0ca535ad55fb46d2c86abb597a08c5b02f90108beb2fd8aba0c",
+                                                                                                                             "execution_line_endings":  "LF",
+                                                                                                                             "git_committed_blob_sha256":  "81325ccb14cc2ecdc51a3cb4bf052e051ecc9cecef7f6195b5c7fbafe28a8a8a",
+                                                                                                                             "git_blob_line_endings":  "CRLF",
+                                                                                                                             "canonical_lf_text_equal":  true,
+                                                                                                                             "evidence_content_changed":  false
+                                                                                                                         }
+                                                                                       }
                                                 }
 }
