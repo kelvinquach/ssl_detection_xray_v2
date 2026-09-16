@@ -7143,9 +7143,37 @@ phản ghép cặp đã xác định trước được xem xét:
 \label{eq:rq3_budget_contrasts}
 \end{equation}
 
-Các phép so sánh này được điều chỉnh đa kiểm định theo phương pháp Holm như
-trình bày ở
-Mục~\ref{subsubsec:statistical_multiplicity}.
+Đối với mỗi tương phản \(c=(b_2-b_1)\in\mathcal{C}_{budget}\) và mỗi
+training seed \(s\), hiệu ứng ghép cặp giữa hai mức ngân sách được xác định bởi
+
+\begin{equation}
+D_{c,s}
+=
+B_{b_2,s}
+-
+B_{b_1,s}.
+\label{eq:rq3_budget_contrast_difference}
+\end{equation}
+
+Mỗi tương phản được kiểm định bằng two-sided one-sample \(t\)-test trên
+\(\{D_{c,s}\}_{s=1}^{10}\) so với giá trị không, tương đương với paired
+\(t\)-test giữa hai mức ngân sách trên cùng các training seeds. Với \(n=10\),
+bậc tự do của mỗi phép kiểm định là
+
+\begin{equation}
+df
+=
+n-1
+=
+9.
+\label{eq:rq3_budget_contrast_df}
+\end{equation}
+
+Đối với mỗi tương phản, nghiên cứu báo cáo mean paired difference, sample
+standard deviation với \(ddof=1\), khoảng tin cậy 95\% hai phía cho hiệu ứng
+riêng và raw two-sided \(p\)-value. Sáu raw \(p\)-value này tạo thành
+multiplicity family riêng của RQ3 và được điều chỉnh bằng thủ tục Holm như
+trình bày ở Mục~\ref{subsubsec:statistical_multiplicity}.
 
 \subsubsection{Sự khác biệt về mức lợi ích SSL giữa hai kiến trúc}
 \label{subsubsec:statistical_rq7}
@@ -7423,11 +7451,40 @@ FWER
 
 \cite{holm1979sequentially}.
 
-Sáu phép so sánh cặp giữa bốn ngân sách nhãn của RQ3 tạo thành một family riêng
-và cũng được điều chỉnh bằng phương pháp Holm. Một khác biệt cụ thể giữa hai
-ngân sách chỉ được diễn giải như một kết quả chính thức của RQ3 khi cả omnibus
-analysis tương ứng và phép so sánh cặp sau điều chỉnh đều đáp ứng tiêu chí đã
-xác định.
+Sáu phép so sánh cặp giữa bốn ngân sách nhãn của RQ3 tạo thành một
+multiplicity family riêng, ký hiệu là \(F_3\). Các \(p\)-value đầu vào của
+family này là sáu raw two-sided \(p\)-value thu được từ các phép kiểm định
+ghép cặp đã xác định tại Phương trình~\eqref{eq:rq3_budget_contrast_difference}:
+
+\begin{equation}
+\mathcal{P}_{F_3}
+=
+\left\{
+p_{5\%-1\%},
+p_{10\%-1\%},
+p_{20\%-1\%},
+p_{10\%-5\%},
+p_{20\%-5\%},
+p_{20\%-10\%}
+\right\}.
+\label{eq:rq3_holm_f3_family}
+\end{equation}
+
+Family \(F_3\) có
+
+\begin{equation}
+m_{F_3}
+=
+6
+\label{eq:rq3_holm_f3_size}
+\end{equation}
+
+phép kiểm định và được điều chỉnh bằng thủ tục Holm step-down để kiểm soát
+family-wise error rate ở mức \(0.05\).
+
+Một khác biệt cụ thể giữa hai ngân sách chỉ được diễn giải như một kết quả
+chính thức của RQ3 khi cả omnibus analysis tương ứng và phép so sánh cặp sau
+điều chỉnh đều đáp ứng tiêu chí đã xác định.
 
 Không thu nhỏ số lượng phép kiểm định trong family sau khi quan sát kết quả
 hoặc khi một kết quả không thuận lợi.

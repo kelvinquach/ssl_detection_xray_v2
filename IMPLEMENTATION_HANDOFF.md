@@ -1233,7 +1233,27 @@ Sáu prespecified paired contrasts:
 20%-10%
 ```
 
-Các contrast này thuộc một multiplicity family riêng và dùng Holm.
+Với mỗi contrast c = b2 - b1 và training seed s:
+
+```text
+D_{c,s} = B_{b2,s} - B_{b1,s}
+```
+
+Primary pairwise inference cho từng contrast:
+
+```text
+two-sided one-sample t-test trên 10 paired differences D_{c,s} so với 0
+equivalent to paired t-test giữa hai budget trên cùng training seeds
+n = 10
+df = 9
+sample SD of paired differences: ddof = 1
+effect = mean paired difference
+CI = individual two-sided 95% CI
+p-value = raw two-sided p-value
+```
+
+S6.04 tạo đúng sáu raw pairwise p-values theo sáu contrast prespecified ở trên.
+Các contrast này thuộc multiplicity family F3. Holm adjustment không được thực hiện trong S6.04; S6.10 áp dụng Holm step-down lên đúng sáu raw p-values này.
 
 ## 21.4. RQ7 — Architecture-dependent SSL effect
 
@@ -1387,9 +1407,13 @@ Family F3:
 
 ```text
 6 prespecified RQ3 pairwise budget contrasts
+raw input p-values = six two-sided p-values from the S6.04 paired-difference tests
 Holm step-down
 m = 6
+FWER = 0.05
 ```
+
+Không thay đổi hoặc thu nhỏ family F3 sau khi quan sát kết quả. Individual 95% CI của từng contrast vẫn là two-sided 95% CI và không phải Holm-adjusted simultaneous CI.
 
 Một RQ3 pairwise localization claim chỉ được xem là formal khi:
 

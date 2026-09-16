@@ -2296,7 +2296,28 @@ Sáu paired contrasts prespecified duy nhất là:
 20%-10%
 ```
 
-Các contrast thuộc Holm family F3.
+Với mỗi contrast c = b2 - b1 và training seed s:
+
+```text
+D_c,s = B_b2,s - B_b1,s
+```
+
+Pairwise inference được khóa như sau:
+
+```text
+two-sided one-sample t-test trên 10 paired differences D_c,s so với 0
+equivalent to paired t-test giữa hai budget trên cùng training seeds
+n = 10
+df = 9
+sample SD of paired differences: ddof = 1
+effect = mean paired difference
+CI = individual two-sided 95% CI
+raw p-value = two-sided
+```
+
+Artifact analysis/rq3/rq3_pairwise_contrasts.csv phải lưu tối thiểu semantics của từng contrast gồm: contrast identity/direction, n, df, mean paired difference, sample SD với ddof=1, individual two-sided 95% CI và raw two-sided p-value.
+
+S6.04 chỉ tạo và kiểm chứng six raw pairwise contrast results/raw p-values; không thực hiện Holm adjustment. Sáu raw p-values này thuộc Holm family F3. S6.10 thực hiện Holm step-down trên đúng sáu raw p-values, với m = 6 và FWER = 0.05. Individual 95% CI không phải Holm-adjusted simultaneous CI.
 
 ---
 
