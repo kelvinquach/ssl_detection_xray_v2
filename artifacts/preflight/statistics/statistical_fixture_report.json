@@ -1818,11 +1818,11 @@
       "rows": 80,
       "architecture_budget_cells": 8,
       "training_seeds": 10,
-      "max_abs_within_cell_center_sum": 5.5511151231257827e-17,
+      "max_abs_within_cell_center_sum": 5.551115123125783e-17,
       "golden_result": {
-        "effect_estimate": 0.12052482619044901,
-        "kenward_roger_standard_error": 0.00083286843267676904,
-        "kenward_roger_df": 62.031103884805717,
+        "effect_estimate": 0.120524826190449,
+        "kenward_roger_standard_error": 0.000832868432676769,
+        "kenward_roger_df": 62.03110388480572,
         "t_statistic": 144.7105226489283,
         "one_sided_p_value": 1.7546992557096755e-80,
         "ci95_low": 0.11885996252200141,
@@ -1881,12 +1881,20 @@
       {
         "name": "contract::architectures",
         "status": "PASS",
-        "observed": ["R50", "Swin-T"]
+        "observed": [
+          "R50",
+          "Swin-T"
+        ]
       },
       {
         "name": "contract::budgets",
         "status": "PASS",
-        "observed": ["1%", "5%", "10%", "20%"]
+        "observed": [
+          "1%",
+          "5%",
+          "10%",
+          "20%"
+        ]
       },
       {
         "name": "contract::cell_count",
@@ -1911,17 +1919,37 @@
       {
         "name": "contract::ci_level",
         "status": "PASS",
-        "observed": 0.94999999999999996
+        "observed": 0.95
       },
       {
         "name": "contract::cell_encoding",
         "status": "PASS",
-        "observed": ["R50__1pct", "R50__5pct", "R50__10pct", "R50__20pct", "Swin-T__1pct", "Swin-T__5pct", "Swin-T__10pct", "Swin-T__20pct"]
+        "observed": [
+          "R50__1pct",
+          "R50__5pct",
+          "R50__10pct",
+          "R50__20pct",
+          "Swin-T__1pct",
+          "Swin-T__5pct",
+          "Swin-T__10pct",
+          "Swin-T__20pct"
+        ]
       },
       {
         "name": "contract::ordered_training_seeds",
         "status": "PASS",
-        "observed": [204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675]
+        "observed": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ]
       },
       {
         "name": "positive::rows",
@@ -1955,7 +1983,7 @@
       {
         "name": "positive::within_cell_centering",
         "status": "PASS",
-        "observed": 5.5511151231257827e-17
+        "observed": 5.551115123125783e-17
       },
       {
         "name": "positive::x_scaling",
@@ -1988,17 +2016,17 @@
       {
         "name": "positive::effect_estimate",
         "status": "PASS",
-        "observed": 0.12052482619044901
+        "observed": 0.120524826190449
       },
       {
         "name": "positive::kr_se",
         "status": "PASS",
-        "observed": 0.00083286843267676904
+        "observed": 0.000832868432676769
       },
       {
         "name": "positive::kr_df",
         "status": "PASS",
-        "observed": 62.031103884805717
+        "observed": 62.03110388480572
       },
       {
         "name": "positive::kr_t",
@@ -2033,7 +2061,13 @@
       {
         "name": "positive::finite_inference",
         "status": "PASS",
-        "observed": [0.12052482619044901, 0.00083286843267676904, 62.031103884805717, 144.7105226489283, 1.7546992557096755e-80]
+        "observed": [
+          0.120524826190449,
+          0.000832868432676769,
+          62.03110388480572,
+          144.7105226489283,
+          1.7546992557096755e-80
+        ]
       },
       {
         "name": "positive::one_sided_direction",
@@ -2098,8 +2132,7 @@
   },
   "status": "PASS",
   "task": "S6.01",
-  "tracker_action": "Implement mean/SD ddof=1"
-,
+  "tracker_action": "Implement mean/SD ddof=1",
   "s6_06_rq5_rare_class_summary": {
     "task": "S6.06",
     "rq": "RQ5",
@@ -2775,8 +2808,7 @@
         "observed": "Atelectasis requires exactly 10 seed rows"
       }
     ]
-  }
-,
+  },
   "s6_07_rq6_negative_fp_primary_t_test": {
     "alternative": "two-sided",
     "cell_count_per_seed": 8,
@@ -3148,8 +3180,7 @@
     "test_used": false,
     "training_seed_count": 10,
     "validator_sha256": "a6573eae3b288b9338199581509c82d6c5c1032b123b86d176c90a5150494974"
-  }
-,
+  },
   "s6_08_rq7_architecture_effect_primary_t_test": {
     "checks": [
       {
@@ -3560,5 +3591,529 @@
     "status": "PASS",
     "task": "S6.08",
     "tracker_action": "Implement two-sided architecture effect"
+  },
+  "s6_11_exact_sign_flip_robustness": {
+    "checks": [
+      {
+        "check_id": "C01",
+        "detail": "2^10 must equal 1024",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C02",
+        "detail": "locked test statistic",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C03",
+        "detail": "RQ2 effect identity",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C04",
+        "detail": "RQ6 effect identity",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C05",
+        "detail": "RQ7 effect identity",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C06",
+        "detail": "RQ2 sidedness",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C07",
+        "detail": "RQ6 sidedness",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C08",
+        "detail": "RQ7 sidedness",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C09",
+        "detail": "RQ2 extremeness rule",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C10",
+        "detail": "RQ6 extremeness rule",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C11",
+        "detail": "RQ7 extremeness rule",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C12",
+        "detail": "RQ2 seed count",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C13",
+        "detail": "RQ6 seed count",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C14",
+        "detail": "RQ7 seed count",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C15",
+        "detail": "locked seed order",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C16",
+        "detail": "RQ2 sign configuration count",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C17",
+        "detail": "RQ6 sign configuration count",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C18",
+        "detail": "RQ7 sign configuration count",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C19",
+        "detail": "RQ2 exhaustive enumeration",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C20",
+        "detail": "RQ6 exhaustive enumeration",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C21",
+        "detail": "RQ7 exhaustive enumeration",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C22",
+        "detail": "observed configuration included",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C23",
+        "detail": "ties included",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C24",
+        "detail": "no +1 correction",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C25",
+        "detail": "zero-effect seed retained",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C26",
+        "detail": "duplicate statistics counted by configuration",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C27",
+        "detail": "RQ2 observed mean",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C28",
+        "detail": "RQ2 positive fixture extreme count",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C29",
+        "detail": "RQ2 exact p",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C30",
+        "detail": "RQ6 positive fixture extreme count",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C31",
+        "detail": "RQ6 exact p",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C32",
+        "detail": "RQ7 observed mean",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C33",
+        "detail": "RQ7 positive fixture extreme count",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C34",
+        "detail": "RQ7 exact p",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C35",
+        "detail": "all zero effects retained",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C36",
+        "detail": "zero fixture keeps n=10",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C37",
+        "detail": "zero fixture still enumerates 1024",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C38",
+        "detail": "equality includes all zero configurations",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C39",
+        "detail": "all-zero exact p equals 1",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C40",
+        "detail": "one zero effect retained",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C41",
+        "detail": "zero-sign duplicate configurations counted separately",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C42",
+        "detail": "duplicate configurations remain in denominator",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C43",
+        "detail": "rq must be exactly one of RQ2, RQ6, RQ7",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C44",
+        "detail": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(869675675, 477581743, 875651179, 1878351743, 1603952859, 1814859839, 2045683682, 1798418854, 1480646854, 204886845)",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C45",
+        "detail": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743)",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C46",
+        "detail": "seed_effect[204886845] must be finite",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C47",
+        "detail": "seed_effect[204886845] must be finite",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C48",
+        "detail": "seed_effect[204886845] must be numeric, not bool",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C49",
+        "detail": "seed_effects must be a mapping",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C50",
+        "detail": "inferential replication unit",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C51",
+        "detail": "RQ2 denominator exactly 1024",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C52",
+        "detail": "RQ6 denominator exactly 1024",
+        "status": "PASS"
+      },
+      {
+        "check_id": "C53",
+        "detail": "RQ7 denominator exactly 1024",
+        "status": "PASS"
+      }
+    ],
+    "checks_passed": 53,
+    "checks_total": 53,
+    "failed_checks": [],
+    "failed_count": 0,
+    "final_test_authorized": false,
+    "hidden_unlabeled_gt_used": false,
+    "official_training_authorized": false,
+    "positive_fixture": {
+      "rq2": {
+        "alternative": "one-sided-greater",
+        "duplicate_statistics_counted_by_configuration": true,
+        "effect": "G_s",
+        "enumerated_configuration_count": 1024,
+        "equality_ties_included": true,
+        "exact_p_value": 0.0009765625,
+        "extreme_configuration_count": 1,
+        "extremeness_rule": "T_flip >= T_obs",
+        "observed_all_positive_configuration_included": true,
+        "observed_statistic": 5.5,
+        "ordered_training_seeds": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "plus_one_correction": false,
+        "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+        "rq": "RQ2",
+        "seed_effect_count": 10,
+        "seed_effects": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0,
+          10.0
+        ],
+        "sign_configuration_count": 1024,
+        "test_statistic": "arithmetic_mean_of_paired_seed_effects",
+        "zero_effect_count": 0,
+        "zero_effect_seed_retained": true
+      },
+      "rq6": {
+        "alternative": "two-sided",
+        "duplicate_statistics_counted_by_configuration": true,
+        "effect": "H_s",
+        "enumerated_configuration_count": 1024,
+        "equality_ties_included": true,
+        "exact_p_value": 0.001953125,
+        "extreme_configuration_count": 2,
+        "extremeness_rule": "abs(T_flip) >= abs(T_obs)",
+        "observed_all_positive_configuration_included": true,
+        "observed_statistic": 5.5,
+        "ordered_training_seeds": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "plus_one_correction": false,
+        "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+        "rq": "RQ6",
+        "seed_effect_count": 10,
+        "seed_effects": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0,
+          10.0
+        ],
+        "sign_configuration_count": 1024,
+        "test_statistic": "arithmetic_mean_of_paired_seed_effects",
+        "zero_effect_count": 0,
+        "zero_effect_seed_retained": true
+      },
+      "rq7": {
+        "alternative": "two-sided",
+        "duplicate_statistics_counted_by_configuration": true,
+        "effect": "D_s",
+        "enumerated_configuration_count": 1024,
+        "equality_ties_included": true,
+        "exact_p_value": 0.001953125,
+        "extreme_configuration_count": 2,
+        "extremeness_rule": "abs(T_flip) >= abs(T_obs)",
+        "observed_all_positive_configuration_included": true,
+        "observed_statistic": 0.55,
+        "ordered_training_seeds": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "plus_one_correction": false,
+        "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+        "rq": "RQ7",
+        "seed_effect_count": 10,
+        "seed_effects": [
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.9,
+          1.0
+        ],
+        "sign_configuration_count": 1024,
+        "test_statistic": "arithmetic_mean_of_paired_seed_effects",
+        "zero_effect_count": 0,
+        "zero_effect_seed_retained": true
+      }
+    },
+    "scientific_contract": {
+      "duplicate_statistics_counted_by_configuration": true,
+      "equality_ties_included": true,
+      "plus_one_correction": false,
+      "rq2_alternative": "one-sided-greater",
+      "rq6_alternative": "two-sided",
+      "rq7_alternative": "two-sided",
+      "seed_effect_count": 10,
+      "sign_configuration_count": 1024,
+      "test_statistic": "arithmetic_mean_of_paired_seed_effects",
+      "zero_effect_seed_retained": true
+    },
+    "status": "PASS",
+    "task": "S6.11",
+    "test_used": false,
+    "tracker_action": "Implement exact sign-flip 2^10",
+    "zero_effect_fixture": {
+      "all_zero_rq2": {
+        "alternative": "one-sided-greater",
+        "duplicate_statistics_counted_by_configuration": true,
+        "effect": "G_s",
+        "enumerated_configuration_count": 1024,
+        "equality_ties_included": true,
+        "exact_p_value": 1.0,
+        "extreme_configuration_count": 1024,
+        "extremeness_rule": "T_flip >= T_obs",
+        "observed_all_positive_configuration_included": true,
+        "observed_statistic": 0.0,
+        "ordered_training_seeds": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "plus_one_correction": false,
+        "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+        "rq": "RQ2",
+        "seed_effect_count": 10,
+        "seed_effects": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "sign_configuration_count": 1024,
+        "test_statistic": "arithmetic_mean_of_paired_seed_effects",
+        "zero_effect_count": 10,
+        "zero_effect_seed_retained": true
+      },
+      "one_zero_rq2": {
+        "alternative": "one-sided-greater",
+        "duplicate_statistics_counted_by_configuration": true,
+        "effect": "G_s",
+        "enumerated_configuration_count": 1024,
+        "equality_ties_included": true,
+        "exact_p_value": 0.001953125,
+        "extreme_configuration_count": 2,
+        "extremeness_rule": "T_flip >= T_obs",
+        "observed_all_positive_configuration_included": true,
+        "observed_statistic": 4.5,
+        "ordered_training_seeds": [
+          204886845,
+          1480646854,
+          1798418854,
+          2045683682,
+          1814859839,
+          1603952859,
+          1878351743,
+          875651179,
+          477581743,
+          869675675
+        ],
+        "plus_one_correction": false,
+        "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+        "rq": "RQ2",
+        "seed_effect_count": 10,
+        "seed_effects": [
+          0.0,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0
+        ],
+        "sign_configuration_count": 1024,
+        "test_statistic": "arithmetic_mean_of_paired_seed_effects",
+        "zero_effect_count": 1,
+        "zero_effect_seed_retained": true
+      }
+    },
+    "core_sha256": "56f352002e0e69a308eaffc8456f598fae666f18811171e24949ee5d299fbf20",
+    "validator_sha256": "eeeef86e044639e728be21cea1e4ca25ac5169d83f02f94d8f8c461639d2a63a",
+    "historical_report_sha256_before_extension": "c0874e61745f8d2cae5be707fbe0d82c802b780a63f8fb5510458614f985b3bc",
+    "controlled_clarification_commit": "39c8ade0b7ae3756162c19d7cddb129c62aff320",
+    "vast_validator_output_sha256": "23a1448f2fc22cd1d70483b6ebb9e660f191d197120d9ee639445d4efca9a5fc",
+    "execution_environment": "VAST_PYTHON",
+    "official_vast_execution": true,
+    "validator_rerun_during_materialization": false
   }
 }
