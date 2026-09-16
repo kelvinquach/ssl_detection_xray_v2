@@ -410,6 +410,562 @@
     "task": "S6.09",
     "tracker_action": "Implement Holm F2 m=4"
   },
+  "s6_10_holm_f3": {
+    "category": "Multiplicity",
+    "checks": [
+      {
+        "name": "statistical_fixture_report_sha256",
+        "observed": "c0874e61745f8d2cae5be707fbe0d82c802b780a63f8fb5510458614f985b3bc",
+        "pass": true
+      },
+      {
+        "name": "statistical_fixture_report_lf_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "input_multiplicity_fixture_report_sha256",
+        "observed": "b40686709ea6b6dbe0aff5cf89b2b6eede459e1164754052ede62008e3a498d0",
+        "pass": true
+      },
+      {
+        "name": "input_multiplicity_fixture_report_lf_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "holm_f3_core_sha256",
+        "observed": "5a3ebb59f83927c8df55ecc9f2dcf512d333914cdeed3bd6c321d1f5f3883c80",
+        "pass": true
+      },
+      {
+        "name": "holm_f3_core_lf_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "validator_lf_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "input_schema_version",
+        "observed": "1.0",
+        "pass": true
+      },
+      {
+        "name": "input_top_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "input_top_level_keys",
+        "observed": [
+          "s6_09_holm_f2",
+          "schema_version",
+          "status"
+        ],
+        "pass": true
+      },
+      {
+        "name": "historical_s6_09_present",
+        "observed": "dict",
+        "pass": true
+      },
+      {
+        "name": "historical_s6_09_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "historical_s6_09_checks",
+        "observed": [
+          50,
+          50
+        ],
+        "pass": true
+      },
+      {
+        "name": "historical_s6_09_failed_count",
+        "observed": 0,
+        "pass": true
+      },
+      {
+        "name": "s6_04_section_present",
+        "observed": "s6_04_rq3_pairwise_contrasts",
+        "pass": true
+      },
+      {
+        "name": "s6_04_section_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "s6_04_checks",
+        "observed": [
+          99,
+          99
+        ],
+        "pass": true
+      },
+      {
+        "name": "s6_04_failed_count",
+        "observed": 0,
+        "pass": true
+      },
+      {
+        "name": "s6_04_contrast_count",
+        "observed": 6,
+        "pass": true
+      },
+      {
+        "name": "s6_04_contrasts",
+        "observed": [
+          "5%-1%",
+          "10%-1%",
+          "20%-1%",
+          "10%-5%",
+          "20%-5%",
+          "20%-10%"
+        ],
+        "pass": true
+      },
+      {
+        "name": "s6_04_raw_p_two_sided",
+        "observed": "TWO_SIDED",
+        "pass": true
+      },
+      {
+        "name": "s6_04_holm_not_applied",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "s6_04_holm_deferred_s6_10",
+        "observed": "S6.10",
+        "pass": true
+      },
+      {
+        "name": "golden_row_count",
+        "observed": 6,
+        "pass": true
+      },
+      {
+        "name": "golden_members_exact",
+        "observed": [
+          "10%-1%",
+          "10%-5%",
+          "20%-1%",
+          "20%-10%",
+          "20%-5%",
+          "5%-1%"
+        ],
+        "pass": true
+      },
+      {
+        "name": "raw_p_finite_5%-1%",
+        "observed": 2.834973060272998e-08,
+        "pass": true
+      },
+      {
+        "name": "raw_p_finite_10%-1%",
+        "observed": 6.563138462998306e-08,
+        "pass": true
+      },
+      {
+        "name": "raw_p_finite_20%-1%",
+        "observed": 4.2223701082406414e-12,
+        "pass": true
+      },
+      {
+        "name": "raw_p_finite_10%-5%",
+        "observed": 6.324738963736726e-05,
+        "pass": true
+      },
+      {
+        "name": "raw_p_finite_20%-5%",
+        "observed": 2.8194237481487004e-10,
+        "pass": true
+      },
+      {
+        "name": "raw_p_finite_20%-10%",
+        "observed": 4.4508692797458346e-05,
+        "pass": true
+      },
+      {
+        "name": "f3_family_id",
+        "observed": "F3",
+        "pass": true
+      },
+      {
+        "name": "f3_member_order",
+        "observed": [
+          "5%-1%",
+          "10%-1%",
+          "20%-1%",
+          "10%-5%",
+          "20%-5%",
+          "20%-10%"
+        ],
+        "pass": true
+      },
+      {
+        "name": "f3_m",
+        "observed": 6,
+        "pass": true
+      },
+      {
+        "name": "f3_method",
+        "observed": "HOLM_STEP_DOWN",
+        "pass": true
+      },
+      {
+        "name": "f3_fwer",
+        "observed": 0.05,
+        "pass": true
+      },
+      {
+        "name": "result_family",
+        "observed": "F3",
+        "pass": true
+      },
+      {
+        "name": "result_method",
+        "observed": "HOLM_STEP_DOWN",
+        "pass": true
+      },
+      {
+        "name": "result_family_size",
+        "observed": 6,
+        "pass": true
+      },
+      {
+        "name": "result_fwer",
+        "observed": 0.05,
+        "pass": true
+      },
+      {
+        "name": "result_membership_locked",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "result_ci_not_adjusted",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "ordered_members",
+        "observed": [
+          "20%-1%",
+          "20%-5%",
+          "5%-1%",
+          "10%-1%",
+          "20%-10%",
+          "10%-5%"
+        ],
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_5%-1%",
+        "observed": 1.1339892241091992e-07,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_5%-1%",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_10%-1%",
+        "observed": 1.9689415388994918e-07,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_10%-1%",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_20%-1%",
+        "observed": 2.5334220649443847e-11,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_20%-1%",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_10%-5%",
+        "observed": 8.901738559491669e-05,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_10%-5%",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_20%-5%",
+        "observed": 1.4097118740743502e-09,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_20%-5%",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_20%-10%",
+        "observed": 8.901738559491669e-05,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_20%-10%",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "adjusted_p_monotone",
+        "observed": [
+          2.5334220649443847e-11,
+          1.4097118740743502e-09,
+          1.1339892241091992e-07,
+          1.9689415388994918e-07,
+          8.901738559491669e-05,
+          8.901738559491669e-05
+        ],
+        "pass": true
+      },
+      {
+        "name": "negative_missing_member",
+        "observed": "HolmF3Error",
+        "pass": true
+      },
+      {
+        "name": "negative_extra_member",
+        "observed": "HolmF3Error",
+        "pass": true
+      },
+      {
+        "name": "negative_nan_p",
+        "observed": "HolmF3Error",
+        "pass": true
+      },
+      {
+        "name": "negative_below_zero_p",
+        "observed": "HolmF3Error",
+        "pass": true
+      },
+      {
+        "name": "negative_above_one_p",
+        "observed": "HolmF3Error",
+        "pass": true
+      },
+      {
+        "name": "negative_boolean_p",
+        "observed": "HolmF3Error",
+        "pass": true
+      },
+      {
+        "name": "deterministic_tie_order",
+        "observed": [
+          "5%-1%",
+          "10%-1%",
+          "20%-1%",
+          "10%-5%",
+          "20%-5%",
+          "20%-10%"
+        ],
+        "pass": true
+      },
+      {
+        "name": "historical_s6_09_preserved_before_write",
+        "observed": "e2a3f760749dde0c4ea511842b7c60eee3d38c306fda186d766c48405651d583",
+        "pass": true
+      }
+    ],
+    "checks_passed": 63,
+    "checks_total": 63,
+    "failed_checks": [],
+    "failed_count": 0,
+    "family": "F3",
+    "historical_s6_09_section_canonical_sha256": "e2a3f760749dde0c4ea511842b7c60eee3d38c306fda186d766c48405651d583",
+    "holm_result": {
+      "by_member": {
+        "10%-1%": {
+          "adjusted_p_value": 1.9689415388994918e-07,
+          "holm_multiplier": 3,
+          "holm_threshold": 0.016666666666666666,
+          "rank": 4,
+          "raw_p_value": 6.563138462998306e-08,
+          "reject_at_fwer_0_05": true
+        },
+        "10%-5%": {
+          "adjusted_p_value": 8.901738559491669e-05,
+          "holm_multiplier": 1,
+          "holm_threshold": 0.05,
+          "rank": 6,
+          "raw_p_value": 6.324738963736726e-05,
+          "reject_at_fwer_0_05": true
+        },
+        "20%-1%": {
+          "adjusted_p_value": 2.5334220649443847e-11,
+          "holm_multiplier": 6,
+          "holm_threshold": 0.008333333333333333,
+          "rank": 1,
+          "raw_p_value": 4.2223701082406414e-12,
+          "reject_at_fwer_0_05": true
+        },
+        "20%-10%": {
+          "adjusted_p_value": 8.901738559491669e-05,
+          "holm_multiplier": 2,
+          "holm_threshold": 0.025,
+          "rank": 5,
+          "raw_p_value": 4.4508692797458346e-05,
+          "reject_at_fwer_0_05": true
+        },
+        "20%-5%": {
+          "adjusted_p_value": 1.4097118740743502e-09,
+          "holm_multiplier": 5,
+          "holm_threshold": 0.01,
+          "rank": 2,
+          "raw_p_value": 2.8194237481487004e-10,
+          "reject_at_fwer_0_05": true
+        },
+        "5%-1%": {
+          "adjusted_p_value": 1.1339892241091992e-07,
+          "holm_multiplier": 4,
+          "holm_threshold": 0.0125,
+          "rank": 3,
+          "raw_p_value": 2.834973060272998e-08,
+          "reject_at_fwer_0_05": true
+        }
+      },
+      "family": "F3",
+      "family_membership_locked": true,
+      "family_size": 6,
+      "fwer": 0.05,
+      "individual_ci_adjusted": false,
+      "member_order": [
+        "5%-1%",
+        "10%-1%",
+        "20%-1%",
+        "10%-5%",
+        "20%-5%",
+        "20%-10%"
+      ],
+      "method": "HOLM_STEP_DOWN",
+      "ordered_results": [
+        {
+          "adjusted_p_value": 2.5334220649443847e-11,
+          "holm_multiplier": 6,
+          "holm_threshold": 0.008333333333333333,
+          "member": "20%-1%",
+          "rank": 1,
+          "raw_p_value": 4.2223701082406414e-12,
+          "reject_at_fwer_0_05": true
+        },
+        {
+          "adjusted_p_value": 1.4097118740743502e-09,
+          "holm_multiplier": 5,
+          "holm_threshold": 0.01,
+          "member": "20%-5%",
+          "rank": 2,
+          "raw_p_value": 2.8194237481487004e-10,
+          "reject_at_fwer_0_05": true
+        },
+        {
+          "adjusted_p_value": 1.1339892241091992e-07,
+          "holm_multiplier": 4,
+          "holm_threshold": 0.0125,
+          "member": "5%-1%",
+          "rank": 3,
+          "raw_p_value": 2.834973060272998e-08,
+          "reject_at_fwer_0_05": true
+        },
+        {
+          "adjusted_p_value": 1.9689415388994918e-07,
+          "holm_multiplier": 3,
+          "holm_threshold": 0.016666666666666666,
+          "member": "10%-1%",
+          "rank": 4,
+          "raw_p_value": 6.563138462998306e-08,
+          "reject_at_fwer_0_05": true
+        },
+        {
+          "adjusted_p_value": 8.901738559491669e-05,
+          "holm_multiplier": 2,
+          "holm_threshold": 0.025,
+          "member": "20%-10%",
+          "rank": 5,
+          "raw_p_value": 4.4508692797458346e-05,
+          "reject_at_fwer_0_05": true
+        },
+        {
+          "adjusted_p_value": 8.901738559491669e-05,
+          "holm_multiplier": 1,
+          "holm_threshold": 0.05,
+          "member": "10%-5%",
+          "rank": 6,
+          "raw_p_value": 6.324738963736726e-05,
+          "reject_at_fwer_0_05": true
+        }
+      ]
+    },
+    "input_source": {
+      "field": "positive_fixture.golden_results[*].raw_two_sided_p_value",
+      "path": "artifacts/preflight/statistics/statistical_fixture_report.json",
+      "section": "s6_04_rq3_pairwise_contrasts",
+      "sha256": "c0874e61745f8d2cae5be707fbe0d82c802b780a63f8fb5510458614f985b3bc",
+      "synthetic_fixture_only": true
+    },
+    "raw_p_values": {
+      "10%-1%": 6.563138462998306e-08,
+      "10%-5%": 6.324738963736726e-05,
+      "20%-1%": 4.2223701082406414e-12,
+      "20%-10%": 4.4508692797458346e-05,
+      "20%-5%": 2.8194237481487004e-10,
+      "5%-1%": 2.834973060272998e-08
+    },
+    "scientific_boundaries": {
+      "exact_sign_flip_applied_in_s6_10": false,
+      "family_shrunk_after_results": false,
+      "final_test_authorized": false,
+      "fixture_only_no_official_results": true,
+      "hidden_unlabeled_gt_used": false,
+      "holm_f2_recomputed_in_s6_10": false,
+      "individual_ci_holm_adjusted": false,
+      "loso_applied_in_s6_10": false,
+      "official_training_authorized": false,
+      "test_gt_used": false,
+      "test_used": false
+    },
+    "scientific_contract": {
+      "family_membership_locked": true,
+      "fwer": 0.05,
+      "individual_ci_holm_adjusted": false,
+      "m": 6,
+      "member_input_semantics": "S6.04_RAW_TWO_SIDED_RQ3_PAIRWISE_P",
+      "members": [
+        "5%-1%",
+        "10%-1%",
+        "20%-1%",
+        "10%-5%",
+        "20%-5%",
+        "20%-10%"
+      ],
+      "method": "HOLM_STEP_DOWN"
+    },
+    "source_sha256": {
+      "scripts/S6_10_validate_holm_f3.py": "d8a2a403d9d7538ab81364e1c98b83d988f89182234f50701b36f5ebc3747bca",
+      "src/statistics/holm_f3.py": "5a3ebb59f83927c8df55ecc9f2dcf512d333914cdeed3bd6c321d1f5f3883c80"
+    },
+    "status": "PASS",
+    "task": "S6.10",
+    "tracker_action": "Implement Holm F3 m=6"
+  },
   "schema_version": "1.0",
   "status": "PASS"
 }
