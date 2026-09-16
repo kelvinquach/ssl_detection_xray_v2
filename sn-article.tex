@@ -7658,6 +7658,17 @@ thuộc mạnh vào các giả định phân phối của repeated-measures ANOV
 Kết quả Friedman chỉ có vai trò hỗ trợ diễn giải và không thay thế kết luận
 chính sau khi đã quan sát dữ liệu.
 
+Đối với phân tích độ nhạy Friedman, đầu vào là các hiệu ứng ngân sách ở mức
+seed \(B_{b,s}\) đã được định nghĩa cho RQ3, với 10 training seed là các block
+lặp lại và bốn điều kiện ngân sách nhãn theo thứ tự \(1\%, 5\%, 10\%, 20\%\).
+Giả thuyết không của phân tích độ nhạy này là bốn điều kiện ngân sách có cùng
+phân phối/vị trí hạng. Phép kiểm sử dụng Friedman rank test chuẩn với thống kê
+chi-square, \(df=k-1=3\), p-value phía phải theo xấp xỉ chi-square và hiệu chỉnh
+tie chuẩn của Friedman. Không thực hiện post-hoc test phát sinh từ Friedman và
+phân tích này không bổ sung một family multiplicity mới. Kết quả Friedman chỉ
+được dùng để đánh giá độ nhạy và không thay thế hoặc lựa chọn lại primary
+Greenhouse--Geisser repeated-measures ANOVA.
+
 Đối với RQ4, mô hình mixed-effects chính được đánh giá trước hết thông qua các
 chẩn đoán gồm khả năng hội tụ, singularity, residual-versus-fitted pattern,
 Q--Q plot và mức ảnh hưởng của từng training seed. Các chẩn đoán này được sử

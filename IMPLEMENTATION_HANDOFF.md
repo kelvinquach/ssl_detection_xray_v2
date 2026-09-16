@@ -1495,6 +1495,19 @@ RQ3:
 ```text
 primary = GG repeated-measures ANOVA
 sensitivity = Friedman test
+Friedman input = B_b_s from S6.03
+repeated blocks = 10 official training seeds
+conditions = 1%, 5%, 10%, 20%
+null = same distribution/rank location across the four budgets
+test = standard Friedman rank test
+statistic = Friedman chi-square
+df = k-1 = 3
+p-value = right-tail asymptotic chi-square
+tie handling = standard Friedman tie correction
+post-hoc from Friedman = NONE
+new multiplicity family in S6.13 = NONE
+role = sensitivity only
+primary conclusion replacement/selection = PROHIBITED
 ```
 
 RQ4 diagnostics tối thiểu:
