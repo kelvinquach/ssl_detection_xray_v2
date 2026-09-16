@@ -1,0 +1,55 @@
+{
+    "schema_version":  "1.0.0",
+    "task":  "S6.14",
+    "status":  "PASS",
+    "purpose":  "Link historical S6 statistical execution environment to frozen successor runtime without rewriting historical evidence",
+    "historical_environment":  {
+                                   "path":  "artifacts/preflight/environment/statistics_environment.json",
+                                   "sha256":  "89911ca0e0b89070d95f37c5156a6407d4aaa3f680553eaee44478b21674ad27",
+                                   "runtime":  {
+                                                   "R":  "4.5.3",
+                                                   "lme4":  "2.0.1",
+                                                   "lmerTest":  "3.2.1",
+                                                   "pbkrtest":  "0.5.5",
+                                                   "jsonlite":  "2.0.0"
+                                               },
+                                   "historical_results_recomputed":  false,
+                                   "historical_evidence_modified":  false
+                               },
+    "frozen_successor_environment":  {
+                                         "manifest_path":  "artifacts/preflight/environment/statistics_runtime_image_manifest.json",
+                                         "committed_manifest_sha256":  "10a92f95543100f88950cf439d52609e1accefa4cccb2d46aff5f3287e9a4197",
+                                         "image_tag":  "quachthainguyen/sslxray-statistics:s6-r4.5.3-20260423",
+                                         "immutable_image_reference":  "quachthainguyen/sslxray-statistics@sha256:bb99a07178ba662bd2e84c5e03421007668b7e35856c83cb6ee816cffab15d37",
+                                         "registry_digest":  "sha256:bb99a07178ba662bd2e84c5e03421007668b7e35856c83cb6ee816cffab15d37",
+                                         "vast_template":  "SSOD Statistical Runtime — Frozen S6",
+                                         "verification_instance_id":  "51254018",
+                                         "runtime":  {
+                                                         "R":  "4.5.3",
+                                                         "lme4":  "2.0.1",
+                                                         "lmerTest":  "3.2.1",
+                                                         "pbkrtest":  "0.5.5",
+                                                         "jsonlite":  "2.0.0",
+                                                         "clubSandwich":  "0.6.2"
+                                                     }
+                                     },
+    "continuity":  {
+                       "R_preserved":  true,
+                       "lme4_preserved":  true,
+                       "lmerTest_preserved":  true,
+                       "pbkrtest_preserved":  true,
+                       "jsonlite_preserved":  true,
+                       "new_dependency":  {
+                                              "name":  "clubSandwich",
+                                              "version":  "0.6.2",
+                                              "introduced_for":  "S6.14 CR2/Satterthwaite sensitivity"
+                                          },
+                       "successor_not_retroactive_runtime_claim":  true
+                   },
+    "scientific_boundaries":  {
+                                  "test_used":  false,
+                                  "hidden_unlabeled_gt_used":  false,
+                                  "official_training_authorized":  false,
+                                  "final_test_authorized":  false
+                              }
+}
