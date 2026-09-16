@@ -1,0 +1,31 @@
+{
+    "schema_version":  "1.0.0",
+    "stage":  "S6.05",
+    "status":  "PASS",
+    "purpose":  "SEPARATE_STATISTICAL_RUNTIME",
+    "instance_id":  "51217522",
+    "template_name":  "SSOD Statistical Runtime",
+    "container_image":  "rocker/r-ver:4.5.3",
+    "operating_system":  "Ubuntu 24.04.4 LTS",
+    "kernel":  "6.8.0-110-generic",
+    "language":  "R",
+    "r_version":  "4.5.3",
+    "r_platform":  "x86_64-pc-linux-gnu",
+    "r_arch":  "x86_64",
+    "cran_repository":  "https://p3m.dev/cran/__linux__/noble/2026-04-23",
+    "library_paths":  [
+                          "/usr/local/lib/R/site-library",
+                          "/usr/local/lib/R/library"
+                      ],
+    "packages":  {
+                     "lme4":  "2.0.1",
+                     "lmerTest":  "3.2.1",
+                     "pbkrtest":  "0.5.5"
+                 },
+    "kenward_roger_capability_verified":  true,
+    "reml_capability_verified":  true,
+    "training_runtime_separate":  true,
+    "training_image_modified":  false,
+    "final_test_accessed":  false,
+    "hidden_unlabeled_gt_accessed":  false
+}
