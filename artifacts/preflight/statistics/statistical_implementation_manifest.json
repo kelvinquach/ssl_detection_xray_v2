@@ -277,8 +277,8 @@
                                        {
                                            "path":  "scripts/S6_05_validate_rq4_mixed_model.R",
                                            "worktree_execution_sha256":  "d98c71d60e10b8654648d28d896a563afa10ba5f22cb332e7a5bc57f9ad95572",
-                                           "committed_byte_sha256":  "dd68b3f111fd64af7a00c5dae64ebf4285b59318af84d9e027f65514a05d5815",
-                                           "representation_class":  "LINE_ENDING_ONLY",
+                                           "committed_byte_sha256":  "d98c71d60e10b8654648d28d896a563afa10ba5f22cb332e7a5bc57f9ad95572",
+                                           "representation_class":  "BYTE_IDENTICAL",
                                            "canonical_lf_text_equal":  true
                                        },
                                        {
@@ -340,8 +340,8 @@
                                        {
                                            "path":  "scripts/S6_14_validate_rq4_cr2_sensitivity.R",
                                            "worktree_execution_sha256":  "450e369fbce35b23afa9059f46dcd19d456d02f96e645395c4a0d456d1898e8f",
-                                           "committed_byte_sha256":  "450e369fbce35b23afa9059f46dcd19d456d02f96e645395c4a0d456d1898e8f",
-                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "committed_byte_sha256":  "4178e69c4354304e9f4a56d5b7dc0b6bfde31fe64e6637862a21aa5f91f600fb",
+                                           "representation_class":  "LINE_ENDING_ONLY",
                                            "canonical_lf_text_equal":  true
                                        },
                                        {
@@ -410,15 +410,15 @@
                                        {
                                            "path":  "src/statistics/rq4_cr2_sensitivity.R",
                                            "worktree_execution_sha256":  "9e9a21faf87c851ed9d74151d4b6c2860d70f2b143fb32ad4662dd2b0c049668",
-                                           "committed_byte_sha256":  "9e9a21faf87c851ed9d74151d4b6c2860d70f2b143fb32ad4662dd2b0c049668",
-                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "committed_byte_sha256":  "c61fc4345e4f5aceca8f8d4a9959fd231ec81f15de1b9ecf80cd18a6a14d4f5d",
+                                           "representation_class":  "LINE_ENDING_ONLY",
                                            "canonical_lf_text_equal":  true
                                        },
                                        {
                                            "path":  "src/statistics/rq4_mixed_model.R",
                                            "worktree_execution_sha256":  "b41e68c4bdad9448d4ad510f8307c97a4d54532de86b718ceba0ab0ea02f320e",
-                                           "committed_byte_sha256":  "6c92eaf928c203cd68917b1a1ebc7cd3fd0b6977e541e9e3df7962a3c08ff1d4",
-                                           "representation_class":  "LINE_ENDING_ONLY",
+                                           "committed_byte_sha256":  "b41e68c4bdad9448d4ad510f8307c97a4d54532de86b718ceba0ab0ea02f320e",
+                                           "representation_class":  "BYTE_IDENTICAL",
                                            "canonical_lf_text_equal":  true
                                        },
                                        {
@@ -496,8 +496,8 @@
                                      {
                                          "path":  "docker/statistics/Dockerfile",
                                          "worktree_execution_sha256":  "193511049b0921045982801521c6047ab34961eaadda3e94030efd683b718d2e",
-                                         "committed_byte_sha256":  "193511049b0921045982801521c6047ab34961eaadda3e94030efd683b718d2e",
-                                         "representation_class":  "BYTE_IDENTICAL",
+                                         "committed_byte_sha256":  "1869cd75d0c935d2bd5105941c9559174fb54794ea14f397733a5ca56dfca93d",
+                                         "representation_class":  "LINE_ENDING_ONLY",
                                          "canonical_lf_text_equal":  true
                                      }
                                  ],
