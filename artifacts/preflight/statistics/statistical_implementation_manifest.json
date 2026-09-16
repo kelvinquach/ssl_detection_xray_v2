@@ -1,0 +1,524 @@
+{
+    "schema_version":  "1.1",
+    "artifact":  "statistical_implementation_manifest",
+    "stage":  "S6.15",
+    "status":  "PASS",
+    "tracker_action":  "Capture statistics environment + script hashes",
+    "purpose":  "Package/runtime/script identity for statistical implementation without retroactive runtime claims",
+    "prepared_from":  {
+                          "git_branch":  "implementation/s6",
+                          "git_head":  "79d6dd197682a61914a067424040b17863350a8c"
+                      },
+    "canonical_contracts":  {
+                                "scientific_source":  {
+                                                          "path":  "sn-article.tex",
+                                                          "sha256":  "b6881ce90da9194f88fd9664b51dc96bdf112145949e3a89705f16b06853c681"
+                                                      },
+                                "implementation_contract":  {
+                                                                "path":  "IMPLEMENTATION_HANDOFF.md",
+                                                                "sha256":  "d274f98402e0492039a9da0bdfed538102fc6ca155f4f7870525c55c46aa0e1d"
+                                                            },
+                                "artifact_contract":  {
+                                                          "path":  "ARTIFACT_AND_EVIDENCE_CONTRACT.md",
+                                                          "sha256":  "4fbb142904bd4b34b000f75f5b07a173ddf72e7958ebf420bb4cce14b5051e53",
+                                                          "artifact_contract_version":  "1.1.0",
+                                                          "schema_version":  "1.1"
+                                                      }
+                            },
+    "hash_policy":  {
+                        "name":  "PRESERVE_WORKTREE_EXECUTION_HASH_AND_COMMITTED_HASH_WHEN_LINE_ENDING_REPRESENTATION_DIFFERS",
+                        "canonical_text_basis":  "CANONICAL_LF_TEXT_EQUAL",
+                        "single_hash_allowed_when":  "BYTE_IDENTICAL",
+                        "retroactive_hash_rewrite_allowed":  false
+                    },
+    "runtime_lineage":  {
+                            "python_canonical_implementation_reference":  {
+                                                                              "claim_scope":  "REFERENCE_FOR_CURRENT_CANONICAL_PYTHON_IMPLEMENTATION_NOT_RETROACTIVE_EXECUTION_CLAIM",
+                                                                              "runtime_evidence_path":  "reports/environment/gateI_gpu_runtime.txt",
+                                                                              "package_snapshot_path":  "reports/environment/gateI_official_gpu_pip_freeze.txt",
+                                                                              "baseline_path":  "configs/protocol/gateI_environment_baseline.yaml",
+                                                                              "python":  "3.10.13",
+                                                                              "numpy":  "1.26.4",
+                                                                              "scipy":  "1.15.3",
+                                                                              "direct_fixture_evidence":  {
+                                                                                                              "s6_11_execution_environment":  "VAST_PYTHON",
+                                                                                                              "s6_11_python_version_recorded":  false,
+                                                                                                              "s6_13_scipy_version":  "1.15.3"
+                                                                                                          }
+                                                                          },
+                            "r_historical_s6_05":  {
+                                                       "claim_scope":  "HISTORICAL_EXECUTION_RUNTIME",
+                                                       "environment_path":  "artifacts/preflight/environment/statistics_environment.json",
+                                                       "environment_sha256":  "89911ca0e0b89070d95f37c5156a6407d4aaa3f680553eaee44478b21674ad27",
+                                                       "R":  "4.5.3",
+                                                       "packages":  {
+                                                                        "lme4":  "2.0.1",
+                                                                        "lmerTest":  "3.2.1",
+                                                                        "pbkrtest":  "0.5.5",
+                                                                        "jsonlite":  "2.0.0"
+                                                                    },
+                                                       "historical_results_recomputed":  false,
+                                                       "historical_evidence_modified":  false
+                                                   },
+                            "r_frozen_successor_s6_14":  {
+                                                             "claim_scope":  "FROZEN_SUCCESSOR_RUNTIME_NOT_RETROACTIVE",
+                                                             "manifest_path":  "artifacts/preflight/environment/statistics_runtime_image_manifest.json",
+                                                             "committed_manifest_sha256":  "10a92f95543100f88950cf439d52609e1accefa4cccb2d46aff5f3287e9a4197",
+                                                             "bridge_path":  "artifacts/preflight/statistics/s6_14_statistical_runtime_provenance_bridge.json",
+                                                             "image":  "quachthainguyen/sslxray-statistics:s6-r4.5.3-20260423",
+                                                             "immutable_image_reference":  "quachthainguyen/sslxray-statistics@sha256:bb99a07178ba662bd2e84c5e03421007668b7e35856c83cb6ee816cffab15d37",
+                                                             "R":  "4.5.3",
+                                                             "packages":  {
+                                                                              "lme4":  "2.0.1",
+                                                                              "lmerTest":  "3.2.1",
+                                                                              "pbkrtest":  "0.5.5",
+                                                                              "jsonlite":  "2.0.0",
+                                                                              "clubSandwich":  "0.6.2"
+                                                                          },
+                                                             "successor_not_retroactive_runtime_claim":  true
+                                                         }
+                        },
+    "methods":  [
+                    {
+                        "id":  "one_sample_t_tests",
+                        "role":  "PRIMARY_OR_PRESPECIFIED_PAIRWISE",
+                        "core_paths":  [
+                                           "src/statistics/rq2_primary.py",
+                                           "src/statistics/rq3_pairwise.py",
+                                           "src/statistics/rq6_negative_fp.py",
+                                           "src/statistics/rq7_architecture_effect.py"
+                                       ],
+                        "validator_paths":  [
+                                                "scripts/S6_02_validate_rq2_primary.py",
+                                                "scripts/S6_04_validate_rq3_pairwise.py",
+                                                "scripts/S6_07_validate_rq6_negative_fp.py",
+                                                "scripts/S6_08_validate_rq7_architecture_effect.py"
+                                            ],
+                        "implementation":  "scipy.stats.ttest_1samp plus locked custom aggregation",
+                        "dependencies":  [
+                                             "Python",
+                                             "NumPy",
+                                             "SciPy"
+                                         ],
+                        "runtime_lineage":  "PYTHON_CANONICAL_IMPLEMENTATION_REFERENCE_NOT_RETROACTIVE_EXECUTION_CLAIM"
+                    },
+                    {
+                        "id":  "greenhouse_geisser_correction",
+                        "role":  "RQ3_PRIMARY",
+                        "core_paths":  [
+                                           "src/statistics/rq3_primary.py"
+                                       ],
+                        "validator_paths":  [
+                                                "scripts/S6_03_validate_rq3_primary.py"
+                                            ],
+                        "implementation":  "custom repeated-measures ANOVA and Greenhouse-Geisser epsilon with scipy F-tail",
+                        "dependencies":  [
+                                             "Python",
+                                             "NumPy",
+                                             "SciPy"
+                                         ],
+                        "runtime_lineage":  "PYTHON_CANONICAL_IMPLEMENTATION_REFERENCE_NOT_RETROACTIVE_EXECUTION_CLAIM"
+                    },
+                    {
+                        "id":  "holm_adjustment",
+                        "role":  "MULTIPLICITY_F2_F3",
+                        "core_paths":  [
+                                           "src/statistics/holm_f2.py",
+                                           "src/statistics/holm_f3.py"
+                                       ],
+                        "validator_paths":  [
+                                                "scripts/S6_09_validate_holm_f2.py",
+                                                "scripts/S6_10_validate_holm_f3.py"
+                                            ],
+                        "implementation":  "custom locked Holm step-down",
+                        "dependencies":  [
+                                             "Python standard library"
+                                         ],
+                        "runtime_lineage":  "PYTHON_CANONICAL_IMPLEMENTATION_REFERENCE_NOT_RETROACTIVE_EXECUTION_CLAIM"
+                    },
+                    {
+                        "id":  "kenward_roger_inference",
+                        "role":  "RQ4_PRIMARY",
+                        "core_paths":  [
+                                           "src/statistics/rq4_mixed_model.R"
+                                       ],
+                        "validator_paths":  [
+                                                "scripts/S6_05_validate_rq4_mixed_model.R"
+                                            ],
+                        "implementation":  "REML mixed model via lmerTest::lmer with Kenward-Roger inference",
+                        "dependencies":  [
+                                             "R",
+                                             "lme4",
+                                             "lmerTest",
+                                             "pbkrtest",
+                                             "jsonlite-validator"
+                                         ],
+                        "runtime_lineage":  "S6_05_HISTORICAL_R_RUNTIME"
+                    },
+                    {
+                        "id":  "exact_sign_flip",
+                        "role":  "ROBUSTNESS",
+                        "core_paths":  [
+                                           "src/statistics/exact_sign_flip.py"
+                                       ],
+                        "validator_paths":  [
+                                                "scripts/S6_11_validate_exact_sign_flip.py"
+                                            ],
+                        "implementation":  "custom exhaustive 2^10 exact sign-flip",
+                        "dependencies":  [
+                                             "Python standard library"
+                                         ],
+                        "runtime_lineage":  "DIRECT_EXECUTION_ENVIRONMENT_VAST_PYTHON_VERSION_NOT_RECORDED"
+                    },
+                    {
+                        "id":  "loso",
+                        "role":  "ROBUSTNESS",
+                        "core_paths":  [
+                                           "src/statistics/loso_robustness.py"
+                                       ],
+                        "validator_paths":  [
+                                                "scripts/S6_12_validate_loso_robustness.py"
+                                            ],
+                        "implementation":  "custom exactly-10 leave-one-seed-out analysis",
+                        "dependencies":  [
+                                             "Python standard library"
+                                         ],
+                        "runtime_lineage":  "PYTHON_CANONICAL_IMPLEMENTATION_REFERENCE_NOT_RETROACTIVE_EXECUTION_CLAIM"
+                    },
+                    {
+                        "id":  "friedman_sensitivity",
+                        "role":  "SENSITIVITY",
+                        "core_paths":  [
+                                           "src/statistics/rq3_friedman.py"
+                                       ],
+                        "validator_paths":  [
+                                                "scripts/S6_13_validate_rq3_friedman.py"
+                                            ],
+                        "implementation":  "scipy.stats.friedmanchisquare",
+                        "dependencies":  [
+                                             "Python",
+                                             "SciPy"
+                                         ],
+                        "runtime_lineage":  "DIRECT_FIXTURE_SCIPY_VERSION_1.15.3"
+                    },
+                    {
+                        "id":  "cr2_satterthwaite_sensitivity",
+                        "role":  "SENSITIVITY",
+                        "core_paths":  [
+                                           "src/statistics/rq4_cr2_sensitivity.R",
+                                           "src/statistics/rq4_mixed_model.R"
+                                       ],
+                        "validator_paths":  [
+                                                "scripts/S6_14_validate_rq4_cr2_sensitivity.R"
+                                            ],
+                        "implementation":  "stats::lm + clubSandwich::vcovCR(type=CR2) + coef_test/conf_int(test=Satterthwaite)",
+                        "dependencies":  [
+                                             "R",
+                                             "clubSandwich",
+                                             "lme4",
+                                             "lmerTest",
+                                             "pbkrtest",
+                                             "jsonlite"
+                                         ],
+                        "runtime_lineage":  "S6_14_FROZEN_SUCCESSOR_R_RUNTIME_NOT_RETROACTIVE"
+                    }
+                ],
+    "supporting_implementations":  [
+                                       {
+                                           "id":  "seed_summary",
+                                           "core_paths":  [
+                                                              "src/statistics/seed_summary.py"
+                                                          ],
+                                           "validator_paths":  [
+                                                                   "scripts/S6_01_validate_seed_summary.py"
+                                                               ],
+                                           "purpose":  "locked seed-level summary infrastructure"
+                                       },
+                                       {
+                                           "id":  "rq5_rare_class_summary",
+                                           "core_paths":  [
+                                                              "src/statistics/rq5_rare_class.py"
+                                                          ],
+                                           "validator_paths":  [
+                                                                   "scripts/S6_06_validate_rq5_rare_class.py"
+                                                               ],
+                                           "purpose":  "descriptive rare-class summary; no formal p-value"
+                                       }
+                                   ],
+    "implementation_file_hashes":  [
+                                       {
+                                           "path":  "scripts/S6_01_validate_seed_summary.py",
+                                           "worktree_execution_sha256":  "99e571af06ac3db43a6673f1139d898cfa7079654b6ae8352ad81b177872cc35",
+                                           "committed_byte_sha256":  "99e571af06ac3db43a6673f1139d898cfa7079654b6ae8352ad81b177872cc35",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_02_validate_rq2_primary.py",
+                                           "worktree_execution_sha256":  "4cca5652003b43dbf34f44dc26ea0566f655bee368df08d51784165a23e4b468",
+                                           "committed_byte_sha256":  "4cca5652003b43dbf34f44dc26ea0566f655bee368df08d51784165a23e4b468",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_03_validate_rq3_primary.py",
+                                           "worktree_execution_sha256":  "515c64047d25ad54078f8c842e7c7b9967fbc0f75d8b5a02f40f475dd9d95f00",
+                                           "committed_byte_sha256":  "515c64047d25ad54078f8c842e7c7b9967fbc0f75d8b5a02f40f475dd9d95f00",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_04_validate_rq3_pairwise.py",
+                                           "worktree_execution_sha256":  "3f49a327f21ab834749a75b6a3c88a5753f4c07231fa5ebeec5212131a8dd839",
+                                           "committed_byte_sha256":  "3f49a327f21ab834749a75b6a3c88a5753f4c07231fa5ebeec5212131a8dd839",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_05_validate_rq4_mixed_model.R",
+                                           "worktree_execution_sha256":  "d98c71d60e10b8654648d28d896a563afa10ba5f22cb332e7a5bc57f9ad95572",
+                                           "committed_byte_sha256":  "dd68b3f111fd64af7a00c5dae64ebf4285b59318af84d9e027f65514a05d5815",
+                                           "representation_class":  "LINE_ENDING_ONLY",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_06_validate_rq5_rare_class.py",
+                                           "worktree_execution_sha256":  "637066fe041e180f43a6a5d7518568c195d4caff0462678457ebdc10e07fdd50",
+                                           "committed_byte_sha256":  "637066fe041e180f43a6a5d7518568c195d4caff0462678457ebdc10e07fdd50",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_07_validate_rq6_negative_fp.py",
+                                           "worktree_execution_sha256":  "a6573eae3b288b9338199581509c82d6c5c1032b123b86d176c90a5150494974",
+                                           "committed_byte_sha256":  "a6573eae3b288b9338199581509c82d6c5c1032b123b86d176c90a5150494974",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_08_validate_rq7_architecture_effect.py",
+                                           "worktree_execution_sha256":  "d14f7688f0c9af7c10d99ee6dfa3e76a2010913a3e6926216d81d0e14a861b7d",
+                                           "committed_byte_sha256":  "d14f7688f0c9af7c10d99ee6dfa3e76a2010913a3e6926216d81d0e14a861b7d",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_09_validate_holm_f2.py",
+                                           "worktree_execution_sha256":  "cfd6828ebbccd4ecfc11685850165839f74b64885fb83cb2d3ccd4b536f90180",
+                                           "committed_byte_sha256":  "cfd6828ebbccd4ecfc11685850165839f74b64885fb83cb2d3ccd4b536f90180",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_10_validate_holm_f3.py",
+                                           "worktree_execution_sha256":  "d8a2a403d9d7538ab81364e1c98b83d988f89182234f50701b36f5ebc3747bca",
+                                           "committed_byte_sha256":  "d8a2a403d9d7538ab81364e1c98b83d988f89182234f50701b36f5ebc3747bca",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_11_validate_exact_sign_flip.py",
+                                           "worktree_execution_sha256":  "eeeef86e044639e728be21cea1e4ca25ac5169d83f02f94d8f8c461639d2a63a",
+                                           "committed_byte_sha256":  "eeeef86e044639e728be21cea1e4ca25ac5169d83f02f94d8f8c461639d2a63a",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_12_validate_loso_robustness.py",
+                                           "worktree_execution_sha256":  "b347a9a23763f9f0751677f2796a4858bfff390b64d7d03c24188398d8ce885e",
+                                           "committed_byte_sha256":  "b347a9a23763f9f0751677f2796a4858bfff390b64d7d03c24188398d8ce885e",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_13_validate_rq3_friedman.py",
+                                           "worktree_execution_sha256":  "b358caf5b39ec375242796cf5384fc77e10384642ecc9eb74c1a0206cbc320ab",
+                                           "committed_byte_sha256":  "b358caf5b39ec375242796cf5384fc77e10384642ecc9eb74c1a0206cbc320ab",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "scripts/S6_14_validate_rq4_cr2_sensitivity.R",
+                                           "worktree_execution_sha256":  "450e369fbce35b23afa9059f46dcd19d456d02f96e645395c4a0d456d1898e8f",
+                                           "committed_byte_sha256":  "450e369fbce35b23afa9059f46dcd19d456d02f96e645395c4a0d456d1898e8f",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/__init__.py",
+                                           "worktree_execution_sha256":  "3e288ac08e9c66f5a492189c939faf2529d245f38cdfb3956c87612016e6be29",
+                                           "committed_byte_sha256":  "3e288ac08e9c66f5a492189c939faf2529d245f38cdfb3956c87612016e6be29",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/exact_sign_flip.py",
+                                           "worktree_execution_sha256":  "56f352002e0e69a308eaffc8456f598fae666f18811171e24949ee5d299fbf20",
+                                           "committed_byte_sha256":  "56f352002e0e69a308eaffc8456f598fae666f18811171e24949ee5d299fbf20",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/holm_f2.py",
+                                           "worktree_execution_sha256":  "d080f91729bb44838d64bba5b4d2c8a351dda76966e09d365b9e4dc9d4225707",
+                                           "committed_byte_sha256":  "d080f91729bb44838d64bba5b4d2c8a351dda76966e09d365b9e4dc9d4225707",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/holm_f3.py",
+                                           "worktree_execution_sha256":  "5a3ebb59f83927c8df55ecc9f2dcf512d333914cdeed3bd6c321d1f5f3883c80",
+                                           "committed_byte_sha256":  "5a3ebb59f83927c8df55ecc9f2dcf512d333914cdeed3bd6c321d1f5f3883c80",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/loso_robustness.py",
+                                           "worktree_execution_sha256":  "4cdddff20648d241c17d1e3d7917b36d692ee68eab9a98ddd9af1763a1431b50",
+                                           "committed_byte_sha256":  "4cdddff20648d241c17d1e3d7917b36d692ee68eab9a98ddd9af1763a1431b50",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/rq2_primary.py",
+                                           "worktree_execution_sha256":  "a9dea0204ec7f38cba428736edbe9f1c70f4583f71103e2b8dbc21be83121c3a",
+                                           "committed_byte_sha256":  "a9dea0204ec7f38cba428736edbe9f1c70f4583f71103e2b8dbc21be83121c3a",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/rq3_friedman.py",
+                                           "worktree_execution_sha256":  "499630d1983030addb51b529519a92cef34bb3840d22e0784e7f7319fff2fc1f",
+                                           "committed_byte_sha256":  "499630d1983030addb51b529519a92cef34bb3840d22e0784e7f7319fff2fc1f",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/rq3_pairwise.py",
+                                           "worktree_execution_sha256":  "18c0c84fd396193e6019c9a55f051e6ab68ea9cb08e132017d92ddd017be8381",
+                                           "committed_byte_sha256":  "18c0c84fd396193e6019c9a55f051e6ab68ea9cb08e132017d92ddd017be8381",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/rq3_primary.py",
+                                           "worktree_execution_sha256":  "41ac57f7c4f9c19daef8f4f062001bcff1ff41b0af7b4683eb3459e436bf3676",
+                                           "committed_byte_sha256":  "41ac57f7c4f9c19daef8f4f062001bcff1ff41b0af7b4683eb3459e436bf3676",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/rq4_cr2_sensitivity.R",
+                                           "worktree_execution_sha256":  "9e9a21faf87c851ed9d74151d4b6c2860d70f2b143fb32ad4662dd2b0c049668",
+                                           "committed_byte_sha256":  "9e9a21faf87c851ed9d74151d4b6c2860d70f2b143fb32ad4662dd2b0c049668",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/rq4_mixed_model.R",
+                                           "worktree_execution_sha256":  "b41e68c4bdad9448d4ad510f8307c97a4d54532de86b718ceba0ab0ea02f320e",
+                                           "committed_byte_sha256":  "6c92eaf928c203cd68917b1a1ebc7cd3fd0b6977e541e9e3df7962a3c08ff1d4",
+                                           "representation_class":  "LINE_ENDING_ONLY",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/rq5_rare_class.py",
+                                           "worktree_execution_sha256":  "d284a41528ae0340a7e881877a10abcfd09d2a712fa47d6e44ce6e72b6336a7a",
+                                           "committed_byte_sha256":  "21fd5694902ceccc6956e499bb2739a67e8d4533e56ee39f42280ef7031ef41d",
+                                           "representation_class":  "LINE_ENDING_ONLY",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/rq6_negative_fp.py",
+                                           "worktree_execution_sha256":  "69579793b2927c7a3ed39f7f94d3a2a598b35a0eacbe2b591cce48f69c2d0907",
+                                           "committed_byte_sha256":  "69579793b2927c7a3ed39f7f94d3a2a598b35a0eacbe2b591cce48f69c2d0907",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/rq7_architecture_effect.py",
+                                           "worktree_execution_sha256":  "3bc1d87feee80ecaad2ea00142f7dd56fb6491d4f2b626db005f32c1c44e6471",
+                                           "committed_byte_sha256":  "3bc1d87feee80ecaad2ea00142f7dd56fb6491d4f2b626db005f32c1c44e6471",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       },
+                                       {
+                                           "path":  "src/statistics/seed_summary.py",
+                                           "worktree_execution_sha256":  "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f",
+                                           "committed_byte_sha256":  "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f",
+                                           "representation_class":  "BYTE_IDENTICAL",
+                                           "canonical_lf_text_equal":  true
+                                       }
+                                   ],
+    "runtime_reference_hashes":  [
+                                     {
+                                         "path":  "reports/environment/gateI_gpu_runtime.txt",
+                                         "worktree_execution_sha256":  "4d7cf6f88d6701afa09f794787468f50f1743c60d0dbf574d3f1f607786ecab1",
+                                         "committed_byte_sha256":  "4d7cf6f88d6701afa09f794787468f50f1743c60d0dbf574d3f1f607786ecab1",
+                                         "representation_class":  "BYTE_IDENTICAL",
+                                         "canonical_lf_text_equal":  true
+                                     },
+                                     {
+                                         "path":  "reports/environment/gateI_official_gpu_pip_freeze.txt",
+                                         "worktree_execution_sha256":  "20b315ee7d3a706cdf707728e8909dce214f630e423c13a9a9f92e8c1a55b0dd",
+                                         "committed_byte_sha256":  "20b315ee7d3a706cdf707728e8909dce214f630e423c13a9a9f92e8c1a55b0dd",
+                                         "representation_class":  "BYTE_IDENTICAL",
+                                         "canonical_lf_text_equal":  true
+                                     },
+                                     {
+                                         "path":  "configs/protocol/gateI_environment_baseline.yaml",
+                                         "worktree_execution_sha256":  "b0303846204dd47a72952f4ff4f33700cd7fd1f70e32b07676962b5291aebeca",
+                                         "committed_byte_sha256":  "b0303846204dd47a72952f4ff4f33700cd7fd1f70e32b07676962b5291aebeca",
+                                         "representation_class":  "BYTE_IDENTICAL",
+                                         "canonical_lf_text_equal":  true
+                                     },
+                                     {
+                                         "path":  "artifacts/preflight/environment/statistics_environment.json",
+                                         "worktree_execution_sha256":  "89911ca0e0b89070d95f37c5156a6407d4aaa3f680553eaee44478b21674ad27",
+                                         "committed_byte_sha256":  "89911ca0e0b89070d95f37c5156a6407d4aaa3f680553eaee44478b21674ad27",
+                                         "representation_class":  "BYTE_IDENTICAL",
+                                         "canonical_lf_text_equal":  true
+                                     },
+                                     {
+                                         "path":  "artifacts/preflight/environment/statistics_runtime_image_manifest.json",
+                                         "worktree_execution_sha256":  "ecb977d11c0a4093e415142e6f7f8f2eb0f3ef420155596cca989f62e4edc027",
+                                         "committed_byte_sha256":  "10a92f95543100f88950cf439d52609e1accefa4cccb2d46aff5f3287e9a4197",
+                                         "representation_class":  "LINE_ENDING_ONLY",
+                                         "canonical_lf_text_equal":  true
+                                     },
+                                     {
+                                         "path":  "artifacts/preflight/statistics/s6_14_statistical_runtime_provenance_bridge.json",
+                                         "worktree_execution_sha256":  "b01c8df833021e1e686526dc98efd15f4c5b29a4d70fa4d1ae5522ebbc5452ba",
+                                         "committed_byte_sha256":  "b01c8df833021e1e686526dc98efd15f4c5b29a4d70fa4d1ae5522ebbc5452ba",
+                                         "representation_class":  "BYTE_IDENTICAL",
+                                         "canonical_lf_text_equal":  true
+                                     },
+                                     {
+                                         "path":  "docker/statistics/Dockerfile",
+                                         "worktree_execution_sha256":  "193511049b0921045982801521c6047ab34961eaadda3e94030efd683b718d2e",
+                                         "committed_byte_sha256":  "193511049b0921045982801521c6047ab34961eaadda3e94030efd683b718d2e",
+                                         "representation_class":  "BYTE_IDENTICAL",
+                                         "canonical_lf_text_equal":  true
+                                     }
+                                 ],
+    "evidence_references":  {
+                                "statistical_fixture_report":  "artifacts/preflight/statistics/statistical_fixture_report.json",
+                                "statistical_fixture_report_sha256":  "be349720423c99907421f5989bf71febe45a9236f51bb8486f52d865aa09c361",
+                                "multiplicity_fixture_report":  "artifacts/preflight/statistics/multiplicity_fixture_report.json",
+                                "multiplicity_fixture_report_sha256":  "a53556925357d829c133d8075079eca49614b0e0d793da3ad2a72bcc6e29be02",
+                                "s6_14_runtime_bridge":  "artifacts/preflight/statistics/s6_14_statistical_runtime_provenance_bridge.json",
+                                "s6_14_runtime_bridge_sha256":  "b01c8df833021e1e686526dc98efd15f4c5b29a4d70fa4d1ae5522ebbc5452ba"
+                            },
+    "scientific_boundaries":  {
+                                  "fixture_only_no_official_results":  true,
+                                  "test_used":  false,
+                                  "hidden_unlabeled_gt_used":  false,
+                                  "global_preflight_closed":  false,
+                                  "official_training_authorized":  false,
+                                  "final_test_authorized":  false,
+                                  "git_push_authorized":  false,
+                                  "canonical_documents_modified":  false,
+                                  "historical_results_recomputed":  false,
+                                  "historical_evidence_modified":  false
+                              }
+}
