@@ -154,6 +154,250 @@
     "sample_sd": 3.0276503540974917,
     "sample_sd_denominator": 9
   },
+  "s6_02_rq2_primary_t_test": {
+    "checks": [
+      {
+        "detail": "50f9f408ab3d8c4a030825c99a14fd0c055be6a61567b720150f2d4104fac368",
+        "name": "historical::s6_01_evidence_sha256",
+        "pass": true
+      },
+      {
+        "detail": "S6.01",
+        "name": "historical::s6_01_task",
+        "pass": true
+      },
+      {
+        "detail": "PASS",
+        "name": "historical::s6_01_status",
+        "pass": true
+      },
+      {
+        "detail": {
+          "checks_passed": 14,
+          "checks_total": 14,
+          "failed_count": 0
+        },
+        "name": "historical::s6_01_checks_14_of_14",
+        "pass": true
+      },
+      {
+        "detail": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f",
+        "name": "historical::s6_01_seed_summary_sha256",
+        "pass": true
+      },
+      {
+        "detail": "99e571af06ac3db43a6673f1139d898cfa7079654b6ae8352ad81b177872cc35",
+        "name": "historical::s6_01_validator_sha256",
+        "pass": true
+      },
+      {
+        "detail": "TRAINING_SEED_TRAINED_RUN",
+        "name": "contract::replication_unit",
+        "pass": true
+      },
+      {
+        "detail": 10,
+        "name": "contract::official_seed_count",
+        "pass": true
+      },
+      {
+        "detail": 8,
+        "name": "contract::cell_count_8",
+        "pass": true
+      },
+      {
+        "detail": 0.0,
+        "name": "contract::null_mean_zero",
+        "pass": true
+      },
+      {
+        "detail": "greater",
+        "name": "contract::alternative_greater",
+        "pass": true
+      },
+      {
+        "detail": 0.05,
+        "name": "contract::alpha_005",
+        "pass": true
+      },
+      {
+        "detail": 0.95,
+        "name": "contract::ci_level_095",
+        "pass": true
+      },
+      {
+        "detail": 9,
+        "name": "contract::df_9",
+        "pass": true
+      },
+      {
+        "detail": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0,
+          10.0
+        ],
+        "name": "positive::g_s_equal_weight_mean",
+        "pass": true
+      },
+      {
+        "detail": 10,
+        "name": "positive::n_10",
+        "pass": true
+      },
+      {
+        "detail": 9,
+        "name": "positive::df_9",
+        "pass": true
+      },
+      {
+        "detail": 5.5,
+        "name": "positive::effect_estimate",
+        "pass": true
+      },
+      {
+        "detail": 3.0276503540974917,
+        "name": "positive::sample_sd_ddof1",
+        "pass": true
+      },
+      {
+        "detail": 1,
+        "name": "positive::sample_sd_ddof_field",
+        "pass": true
+      },
+      {
+        "detail": 5.744562646538029,
+        "name": "positive::t_statistic",
+        "pass": true
+      },
+      {
+        "detail": 0.00013909800552409273,
+        "name": "positive::one_sided_p_value",
+        "pass": true
+      },
+      {
+        "detail": "one-sided",
+        "name": "positive::p_value_sidedness",
+        "pass": true
+      },
+      {
+        "detail": {
+          "ci_high": 7.665850589721684,
+          "ci_level": 0.95,
+          "ci_low": 3.3341494102783162,
+          "ci_sidedness": "two-sided"
+        },
+        "name": "positive::ci_two_sided_95",
+        "pass": true
+      },
+      {
+        "detail": "greater",
+        "name": "positive::alternative",
+        "pass": true
+      },
+      {
+        "detail": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743)",
+        "name": "fail_closed::missing_seed",
+        "pass": true
+      },
+      {
+        "detail": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(869675675, 477581743, 875651179, 1878351743, 1603952859, 1814859839, 2045683682, 1798418854, 1480646854, 204886845)",
+        "name": "fail_closed::reordered_seeds",
+        "pass": true
+      },
+      {
+        "detail": "seed 204886845 must provide exactly 8 cell effects",
+        "name": "fail_closed::wrong_cell_count",
+        "pass": true
+      },
+      {
+        "detail": "seed 204886845 cell effects must all be finite",
+        "name": "fail_closed::nonfinite_cell_effect",
+        "pass": true
+      }
+    ],
+    "checks_passed": 29,
+    "checks_total": 29,
+    "failed_checks": [],
+    "failed_count": 0,
+    "historical_s6_01_evidence_sha256_before_extension": "50f9f408ab3d8c4a030825c99a14fd0c055be6a61567b720150f2d4104fac368",
+    "negative_fixtures": {
+      "missing_seed": {
+        "blocked": true,
+        "error": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743)"
+      },
+      "nonfinite_cell_effect": {
+        "blocked": true,
+        "error": "seed 204886845 cell effects must all be finite"
+      },
+      "reordered_seeds": {
+        "blocked": true,
+        "error": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(869675675, 477581743, 875651179, 1878351743, 1603952859, 1814859839, 2045683682, 1798418854, 1480646854, 204886845)"
+      },
+      "wrong_cell_count": {
+        "blocked": true,
+        "error": "seed 204886845 must provide exactly 8 cell effects"
+      }
+    },
+    "positive_fixture": {
+      "ci_high": 7.665850589721684,
+      "ci_low": 3.3341494102783162,
+      "effect_estimate": 5.5,
+      "g_s_values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0
+      ],
+      "p_value": 0.00013909800552409273,
+      "sample_sd": 3.0276503540974917,
+      "sample_sd_ddof": 1,
+      "t_statistic": 5.744562646538029
+    },
+    "scientific_boundaries": {
+      "final_test_authorized": false,
+      "fixture_only_no_official_results": true,
+      "hidden_unlabeled_gt_used": false,
+      "loso_implemented_in_s6_02": false,
+      "official_training_authorized": false,
+      "sign_flip_implemented_in_s6_02": false,
+      "test_used": false
+    },
+    "scientific_contract": {
+      "alternative": "greater",
+      "cell_count_per_seed": 8,
+      "cell_weight": 0.125,
+      "ci_level": 0.95,
+      "ci_sidedness": "two-sided",
+      "df": 9,
+      "effect": "G_s",
+      "g_s_definition": "EQUAL_WEIGHT_MEAN_OF_8_PAIRED_ARCHITECTURE_BUDGET_DELTA_MAP_CELLS",
+      "inferential_replication_unit": "TRAINING_SEED_TRAINED_RUN",
+      "n": 10,
+      "null_mean": 0.0,
+      "p_value_sidedness": "one-sided"
+    },
+    "source_sha256": {
+      "scripts/S6_02_validate_rq2_primary.py": "4cca5652003b43dbf34f44dc26ea0566f655bee368df08d51784165a23e4b468",
+      "src/statistics/rq2_primary.py": "a9dea0204ec7f38cba428736edbe9f1c70f4583f71103e2b8dbc21be83121c3a",
+      "src/statistics/seed_summary.py": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f"
+    },
+    "status": "PASS",
+    "task": "S6.02",
+    "tracker_action": "Implement one-sample t, alternative=greater"
+  },
   "schema_version": "1.0",
   "scientific_boundaries": {
     "bbox_is_replication": false,
