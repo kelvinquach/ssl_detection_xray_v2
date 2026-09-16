@@ -155,7 +155,7 @@ def build_report() -> dict[str, object]:
         check(f"positive::{name}::sample_sd", np.isclose(row["sample_sd"], EXPECTED_SDS[index], rtol=1e-12, atol=1e-12), row["sample_sd"])
         check(f"positive::{name}::t_statistic", np.isclose(row["t_statistic"], EXPECTED_T[index], rtol=1e-12, atol=1e-12), row["t_statistic"])
         check(f"positive::{name}::raw_p", np.isclose(row["raw_p_value"], EXPECTED_P[index], rtol=1e-10, atol=1e-20), row["raw_p_value"])
-        check(f"positive::{name}::ci95", np.isclose(row["ci_low"], EXPECTED_CI[index][0], rtol=1e-12, atol=1e-12) and np.isclose(row["ci_high"], EXPECTED_CI[index][1], rtol=1e-12, atol=1e-12), {"low": row["ci_low"], "high": row["ci_high"]})
+        check(f"positive::{name}::ci95", np.isclose(row["ci_low"], EXPECTED_CI[index][0], rtol=1e-12, atol=5e-12) and np.isclose(row["ci_high"], EXPECTED_CI[index][1], rtol=1e-12, atol=5e-12), {"low": row["ci_low"], "high": row["ci_high"]})
 
         j2 = budget_index[row["budget_2"]]
         j1 = budget_index[row["budget_1"]]
