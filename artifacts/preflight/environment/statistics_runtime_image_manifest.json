@@ -1,0 +1,81 @@
+{
+    "schema_version":  "1.0.0",
+    "status":  "PASS",
+    "role":  "SSOD statistical runtime",
+    "stage_context":  "S6 Statistical Fixtures",
+    "prepared_from_git_branch":  "implementation/s6",
+    "prepared_from_git_head":  "96acc558187c5c792e06ac49870a60789de84654",
+    "image_tag":  "quachthainguyen/sslxray-statistics:s6-r4.5.3-20260423",
+    "immutable_image_reference":  "quachthainguyen/sslxray-statistics@sha256:bb99a07178ba662bd2e84c5e03421007668b7e35856c83cb6ee816cffab15d37",
+    "oci_index_digest":  "sha256:bb99a07178ba662bd2e84c5e03421007668b7e35856c83cb6ee816cffab15d37",
+    "linux_amd64_manifest_digest":  "sha256:8945393cd3d02990d2896a6cdc9a4e78f0b5ac54b81aecba9b97d4c757f50e55",
+    "attestation_manifest_digest":  "sha256:0f9f7b9c225270f1bd2fa34779a31aefd936b42a43a7ce77974f8cf5f3a4078e",
+    "platform":  {
+                     "os":  "linux",
+                     "architecture":  "amd64"
+                 },
+    "base_image":  {
+                       "tag":  "rocker/r-ver:4.5.3",
+                       "immutable_reference":  "rocker/r-ver@sha256:c3f39b365d1077fe24f8e9ab2742e352b6d3950897f51af1624a5bb5550c21c0",
+                       "digest":  "sha256:c3f39b365d1077fe24f8e9ab2742e352b6d3950897f51af1624a5bb5550c21c0"
+                   },
+    "dockerfile":  {
+                       "path":  "docker/statistics/Dockerfile",
+                       "sha256":  "193511049b0921045982801521c6047ab34961eaadda3e94030efd683b718d2e"
+                   },
+    "package_repository":  {
+                               "url":  "https://p3m.dev/cran/__linux__/noble/2026-04-23",
+                               "snapshot_date":  "2026-04-23"
+                           },
+    "runtime":  {
+                    "R":  "4.5.3",
+                    "packages":  {
+                                     "lme4":  "2.0.1",
+                                     "lmerTest":  "3.2.1",
+                                     "pbkrtest":  "0.5.5",
+                                     "jsonlite":  "2.0.0",
+                                     "clubSandwich":  "0.6.2"
+                                 },
+                    "required_clubSandwich_exports":  [
+                                                          "vcovCR",
+                                                          "coef_test",
+                                                          "conf_int"
+                                                      ]
+                },
+    "build_host":  {
+                       "role":  "local Windows Docker Desktop",
+                       "docker_client_version":  "29.7.2",
+                       "docker_server_version":  "29.7.2"
+                   },
+    "verification":  {
+                         "local_clean_container_verified":  true,
+                         "registry_manifest_verified":  true,
+                         "pull_by_digest_verified":  true,
+                         "registry_digest_runtime_verified":  true,
+                         "runtime_network_required":  false,
+                         "test_used":  false,
+                         "hidden_u_gt_used":  false,
+                         "fresh_vast_template_verified":  true,
+                         "fresh_vast_runtime_r_version_verified":  true,
+                         "fresh_vast_runtime_packages_verified":  true,
+                         "fresh_vast_clubSandwich_exports_verified":  true,
+                         "fresh_vast_cr2_satterthwaite_smoke_verified":  true,
+                         "package_install_performed_during_fresh_instance_verification":  false,
+                         "network_install_required_on_fresh_instance":  false
+                     },
+    "governance":  {
+                       "canonical_documents_modified":  false,
+                       "global_preflight_closed":  false,
+                       "official_training_authorized":  false,
+                       "final_test_authorized":  false,
+                       "git_push_authorized":  false
+                   },
+    "vast_template":  {
+                          "name":  "SSOD Statistical Runtime — Frozen S6",
+                          "image_tag":  "quachthainguyen/sslxray-statistics:s6-r4.5.3-20260423",
+                          "expected_registry_digest":  "sha256:bb99a07178ba662bd2e84c5e03421007668b7e35856c83cb6ee816cffab15d37",
+                          "launch_mode":  "Interactive shell server, SSH",
+                          "fresh_instance_verified":  true,
+                          "verification_instance_id":  "51254018"
+                      }
+}
