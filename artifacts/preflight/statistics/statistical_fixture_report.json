@@ -398,6 +398,374 @@
     "task": "S6.02",
     "tracker_action": "Implement one-sample t, alternative=greater"
   },
+  "s6_03_rq3_gg_repeated_measures_anova": {
+    "checks": [
+      {
+        "detail": "e9197b86831e31d008575ec61fb6fdfb378f1458667f836d61155ebd733b6e95",
+        "name": "historical::evidence_sha",
+        "pass": true
+      },
+      {
+        "detail": {
+          "checks": [
+            14,
+            14
+          ],
+          "failed": 0,
+          "status": "PASS",
+          "task": "S6.01"
+        },
+        "name": "historical::s6_01",
+        "pass": true
+      },
+      {
+        "detail": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f",
+        "name": "historical::s6_01_seed_sha",
+        "pass": true
+      },
+      {
+        "detail": {
+          "checks": [
+            29,
+            29
+          ],
+          "failed": 0,
+          "status": "PASS",
+          "task": "S6.02"
+        },
+        "name": "historical::s6_02",
+        "pass": true
+      },
+      {
+        "detail": "a9dea0204ec7f38cba428736edbe9f1c70f4583f71103e2b8dbc21be83121c3a",
+        "name": "historical::s6_02_primary_sha",
+        "pass": true
+      },
+      {
+        "detail": "4cca5652003b43dbf34f44dc26ea0566f655bee368df08d51784165a23e4b468",
+        "name": "historical::s6_02_validator_sha",
+        "pass": true
+      },
+      {
+        "detail": "TRAINING_SEED_TRAINED_RUN",
+        "name": "contract::replication_unit",
+        "pass": true
+      },
+      {
+        "detail": 10,
+        "name": "contract::seed_count_10",
+        "pass": true
+      },
+      {
+        "detail": [
+          "1%",
+          "5%",
+          "10%",
+          "20%"
+        ],
+        "name": "contract::budget_levels",
+        "pass": true
+      },
+      {
+        "detail": 4,
+        "name": "contract::budget_count_4",
+        "pass": true
+      },
+      {
+        "detail": 2,
+        "name": "contract::architecture_count_2",
+        "pass": true
+      },
+      {
+        "detail": 0.5,
+        "name": "contract::architecture_weight_half",
+        "pass": true
+      },
+      {
+        "detail": 3,
+        "name": "contract::df_num_3",
+        "pass": true
+      },
+      {
+        "detail": 27,
+        "name": "contract::df_den_27",
+        "pass": true
+      },
+      {
+        "detail": "ALWAYS",
+        "name": "contract::gg_always",
+        "pass": true
+      },
+      {
+        "detail": "DIAGNOSTIC_ONLY",
+        "name": "contract::mauchly_diagnostic_only",
+        "pass": true
+      },
+      {
+        "detail": [
+          [
+            1.0,
+            1.4,
+            1.8,
+            2.1
+          ],
+          [
+            1.2,
+            1.5,
+            1.9,
+            2.4
+          ],
+          [
+            0.9,
+            1.3,
+            1.6,
+            2.0
+          ],
+          [
+            1.4,
+            1.7,
+            2.2,
+            2.5
+          ],
+          [
+            1.1,
+            1.6,
+            1.7,
+            2.3
+          ],
+          [
+            1.3,
+            1.8,
+            2.0,
+            2.6
+          ],
+          [
+            0.8,
+            1.2,
+            1.5,
+            1.9
+          ],
+          [
+            1.5,
+            1.9,
+            2.4,
+            2.7
+          ],
+          [
+            1.0,
+            1.5,
+            2.1,
+            2.2
+          ],
+          [
+            1.2,
+            1.6,
+            1.8,
+            2.5
+          ]
+        ],
+        "name": "positive::b_b_s_architecture_mean",
+        "pass": true
+      },
+      {
+        "detail": 10,
+        "name": "positive::n_10",
+        "pass": true
+      },
+      {
+        "detail": 4,
+        "name": "positive::budget_count_4",
+        "pass": true
+      },
+      {
+        "detail": [
+          1.14,
+          1.55,
+          1.9000000000000004,
+          2.32
+        ],
+        "name": "positive::budget_means",
+        "pass": true
+      },
+      {
+        "detail": 306.05050505050576,
+        "name": "positive::F",
+        "pass": true
+      },
+      {
+        "detail": 0.5303135665058788,
+        "name": "positive::epsilon_GG",
+        "pass": true
+      },
+      {
+        "detail": 1.5909406995176365,
+        "name": "positive::df_GG_num",
+        "pass": true
+      },
+      {
+        "detail": 14.318466295658727,
+        "name": "positive::df_GG_den",
+        "pass": true
+      },
+      {
+        "detail": 5.009062437721509e-12,
+        "name": "positive::p_GG",
+        "pass": true
+      },
+      {
+        "detail": [
+          "ALWAYS",
+          true
+        ],
+        "name": "positive::GG_applied",
+        "pass": true
+      },
+      {
+        "detail": {
+          "chi_square": 10.45004978816455,
+          "defined": true,
+          "df": 5,
+          "p_value": 0.06344250637550405,
+          "role": "DIAGNOSTIC_ONLY",
+          "used_to_select_primary_method": false,
+          "w": 0.2584006846610439
+        },
+        "name": "positive::Mauchly_not_selector",
+        "pass": true
+      },
+      {
+        "detail": {
+          "chi_square": 10.45004978816455,
+          "defined": true,
+          "df": 5,
+          "p_value": 0.06344250637550405,
+          "role": "DIAGNOSTIC_ONLY",
+          "used_to_select_primary_method": false,
+          "w": 0.2584006846610439
+        },
+        "name": "positive::Mauchly_fixture",
+        "pass": true
+      },
+      {
+        "detail": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743)",
+        "name": "fail_closed::missing_seed",
+        "pass": true
+      },
+      {
+        "detail": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(869675675, 477581743, 875651179, 1878351743, 1603952859, 1814859839, 2045683682, 1798418854, 1480646854, 204886845)",
+        "name": "fail_closed::reordered_seeds",
+        "pass": true
+      },
+      {
+        "detail": "seed 204886845 must provide exactly shape (4, 2); observed=(3, 2)",
+        "name": "fail_closed::wrong_shape",
+        "pass": true
+      },
+      {
+        "detail": "seed 204886845 architecture-budget effects must all be finite",
+        "name": "fail_closed::nonfinite",
+        "pass": true
+      },
+      {
+        "detail": "repeated-measures ANOVA requires non-negative budget variance and positive residual variance; ss_budget=0.0, ss_error=0.0",
+        "name": "fail_closed::degenerate_variance",
+        "pass": true
+      },
+      {
+        "detail": "41ac57f7c4f9c19daef8f4f062001bcff1ff41b0af7b4683eb3459e436bf3676",
+        "name": "source::rq3_primary_sha",
+        "pass": true
+      }
+    ],
+    "checks_passed": 34,
+    "checks_total": 34,
+    "failed_checks": [],
+    "failed_count": 0,
+    "historical_s6_02_evidence_sha256_before_extension": "e9197b86831e31d008575ec61fb6fdfb378f1458667f836d61155ebd733b6e95",
+    "negative_fixtures": {
+      "degenerate_variance": {
+        "blocked": true,
+        "error": "repeated-measures ANOVA requires non-negative budget variance and positive residual variance; ss_budget=0.0, ss_error=0.0"
+      },
+      "missing_seed": {
+        "blocked": true,
+        "error": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743)"
+      },
+      "nonfinite": {
+        "blocked": true,
+        "error": "seed 204886845 architecture-budget effects must all be finite"
+      },
+      "reordered_seeds": {
+        "blocked": true,
+        "error": "training seeds must match the exact locked ordered list; expected=(204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675), observed=(869675675, 477581743, 875651179, 1878351743, 1603952859, 1814859839, 2045683682, 1798418854, 1480646854, 204886845)"
+      },
+      "wrong_shape": {
+        "blocked": true,
+        "error": "seed 204886845 must provide exactly shape (4, 2); observed=(3, 2)"
+      }
+    },
+    "positive_fixture": {
+      "budget_means": [
+        1.14,
+        1.55,
+        1.9000000000000004,
+        2.32
+      ],
+      "df_gg_denominator": 14.318466295658727,
+      "df_gg_numerator": 1.5909406995176365,
+      "df_uncorrected_denominator": 27,
+      "df_uncorrected_numerator": 3,
+      "epsilon_gg": 0.5303135665058788,
+      "f_statistic": 306.05050505050576,
+      "mauchly_diagnostic": {
+        "chi_square": 10.45004978816455,
+        "defined": true,
+        "df": 5,
+        "p_value": 0.06344250637550405,
+        "role": "DIAGNOSTIC_ONLY",
+        "used_to_select_primary_method": false,
+        "w": 0.2584006846610439
+      },
+      "p_gg": 5.009062437721509e-12
+    },
+    "scientific_boundaries": {
+      "final_test_authorized": false,
+      "fixture_only_no_official_results": true,
+      "friedman_sensitivity_implemented_in_s6_03": false,
+      "hidden_unlabeled_gt_used": false,
+      "holm_f3_implemented_in_s6_03": false,
+      "mauchly_used_to_select_primary_method": false,
+      "official_training_authorized": false,
+      "pairwise_contrasts_implemented_in_s6_03": false,
+      "test_used": false
+    },
+    "scientific_contract": {
+      "architecture_count": 2,
+      "architecture_weight": 0.5,
+      "b_b_s_definition": "MEAN_OF_R50_AND_SWIN_T_PAIRED_DELTA_MAP_TEST_WITHIN_BUDGET_AND_SEED",
+      "budget_factor": "REPEATED_CATEGORICAL",
+      "budget_levels": [
+        "1%",
+        "5%",
+        "10%",
+        "20%"
+      ],
+      "effect": "B_b_s",
+      "greenhouse_geisser_policy": "ALWAYS",
+      "inferential_replication_unit": "TRAINING_SEED_TRAINED_RUN",
+      "mauchly_role": "DIAGNOSTIC_ONLY",
+      "n_subjects": 10,
+      "primary_method": "ONE_WAY_REPEATED_MEASURES_ANOVA"
+    },
+    "source_sha256": {
+      "scripts/S6_03_validate_rq3_primary.py": "515c64047d25ad54078f8c842e7c7b9967fbc0f75d8b5a02f40f475dd9d95f00",
+      "src/statistics/rq3_primary.py": "41ac57f7c4f9c19daef8f4f062001bcff1ff41b0af7b4683eb3459e436bf3676",
+      "src/statistics/seed_summary.py": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f"
+    },
+    "status": "PASS",
+    "task": "S6.03",
+    "tracker_action": "Implement repeated-measures ANOVA + GG ALWAYS"
+  },
   "schema_version": "1.0",
   "scientific_boundaries": {
     "bbox_is_replication": false,
