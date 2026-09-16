@@ -1,0 +1,415 @@
+{
+  "s6_09_holm_f2": {
+    "category": "Multiplicity",
+    "checks": [
+      {
+        "name": "statistical_fixture_report_sha256",
+        "observed": "c0874e61745f8d2cae5be707fbe0d82c802b780a63f8fb5510458614f985b3bc",
+        "pass": true
+      },
+      {
+        "name": "statistical_fixture_report_lf_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "holm_f2_core_sha256",
+        "observed": "d080f91729bb44838d64bba5b4d2c8a351dda76966e09d365b9e4dc9d4225707",
+        "pass": true
+      },
+      {
+        "name": "holm_f2_core_lf_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "validator_lf_only",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "rq3_section_present",
+        "observed": "s6_03_rq3_gg_repeated_measures_anova",
+        "pass": true
+      },
+      {
+        "name": "rq3_section_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "rq4_section_present",
+        "observed": "s6_05_rq4_mixed_model",
+        "pass": true
+      },
+      {
+        "name": "rq4_section_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "rq6_section_present",
+        "observed": "s6_07_rq6_negative_fp_primary_t_test",
+        "pass": true
+      },
+      {
+        "name": "rq6_section_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "rq7_section_present",
+        "observed": "s6_08_rq7_architecture_effect_primary_t_test",
+        "pass": true
+      },
+      {
+        "name": "rq7_section_status",
+        "observed": "PASS",
+        "pass": true
+      },
+      {
+        "name": "rq3_gg_always",
+        "observed": "ALWAYS",
+        "pass": true
+      },
+      {
+        "name": "rq3_p_gg_finite",
+        "observed": 5.009062437721509e-12,
+        "pass": true
+      },
+      {
+        "name": "rq4_kenward_roger",
+        "observed": "Kenward-Roger",
+        "pass": true
+      },
+      {
+        "name": "rq4_one_sided_greater",
+        "observed": "greater",
+        "pass": true
+      },
+      {
+        "name": "rq4_one_sided_p_finite",
+        "observed": 1.7546992557096755e-80,
+        "pass": true
+      },
+      {
+        "name": "rq6_two_sided",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "rq6_two_sided_p_finite",
+        "observed": 0.00027819601104818546,
+        "pass": true
+      },
+      {
+        "name": "rq7_two_sided",
+        "observed": "two-sided",
+        "pass": true
+      },
+      {
+        "name": "rq7_two_sided_p_finite",
+        "observed": 0.00027819601104818546,
+        "pass": true
+      },
+      {
+        "name": "f2_family_id",
+        "observed": "F2",
+        "pass": true
+      },
+      {
+        "name": "f2_member_order",
+        "observed": [
+          "RQ3",
+          "RQ4",
+          "RQ6",
+          "RQ7"
+        ],
+        "pass": true
+      },
+      {
+        "name": "f2_m",
+        "observed": 4,
+        "pass": true
+      },
+      {
+        "name": "f2_method",
+        "observed": "HOLM_STEP_DOWN",
+        "pass": true
+      },
+      {
+        "name": "f2_fwer",
+        "observed": 0.05,
+        "pass": true
+      },
+      {
+        "name": "result_family",
+        "observed": "F2",
+        "pass": true
+      },
+      {
+        "name": "result_method",
+        "observed": "HOLM_STEP_DOWN",
+        "pass": true
+      },
+      {
+        "name": "result_family_size",
+        "observed": 4,
+        "pass": true
+      },
+      {
+        "name": "result_fwer",
+        "observed": 0.05,
+        "pass": true
+      },
+      {
+        "name": "result_membership_locked",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "result_ci_not_adjusted",
+        "observed": false,
+        "pass": true
+      },
+      {
+        "name": "ordered_members",
+        "observed": [
+          "RQ4",
+          "RQ3",
+          "RQ6",
+          "RQ7"
+        ],
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_rq3",
+        "observed": 1.5027187313164528e-11,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_rq3",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_rq4",
+        "observed": 7.018797022838702e-80,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_rq4",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_rq6",
+        "observed": 0.0005563920220963709,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_rq6",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "golden_adjusted_rq7",
+        "observed": 0.0005563920220963709,
+        "pass": true
+      },
+      {
+        "name": "golden_reject_rq7",
+        "observed": true,
+        "pass": true
+      },
+      {
+        "name": "adjusted_p_monotone",
+        "observed": [
+          7.018797022838702e-80,
+          1.5027187313164528e-11,
+          0.0005563920220963709,
+          0.0005563920220963709
+        ],
+        "pass": true
+      },
+      {
+        "name": "negative_missing_member",
+        "observed": "HolmF2Error",
+        "pass": true
+      },
+      {
+        "name": "negative_extra_member",
+        "observed": "HolmF2Error",
+        "pass": true
+      },
+      {
+        "name": "negative_wrong_member",
+        "observed": "HolmF2Error",
+        "pass": true
+      },
+      {
+        "name": "negative_nan_p",
+        "observed": "HolmF2Error",
+        "pass": true
+      },
+      {
+        "name": "negative_below_zero_p",
+        "observed": "HolmF2Error",
+        "pass": true
+      },
+      {
+        "name": "negative_above_one_p",
+        "observed": "HolmF2Error",
+        "pass": true
+      },
+      {
+        "name": "negative_boolean_p",
+        "observed": "HolmF2Error",
+        "pass": true
+      }
+    ],
+    "checks_passed": 50,
+    "checks_total": 50,
+    "failed_checks": [],
+    "failed_count": 0,
+    "family": "F2",
+    "holm_result": {
+      "by_member": {
+        "RQ3": {
+          "adjusted_p_value": 1.5027187313164528e-11,
+          "holm_multiplier": 3,
+          "holm_threshold": 0.016666666666666666,
+          "rank": 2,
+          "raw_p_value": 5.009062437721509e-12,
+          "reject_at_fwer_0_05": true
+        },
+        "RQ4": {
+          "adjusted_p_value": 7.018797022838702e-80,
+          "holm_multiplier": 4,
+          "holm_threshold": 0.0125,
+          "rank": 1,
+          "raw_p_value": 1.7546992557096755e-80,
+          "reject_at_fwer_0_05": true
+        },
+        "RQ6": {
+          "adjusted_p_value": 0.0005563920220963709,
+          "holm_multiplier": 2,
+          "holm_threshold": 0.025,
+          "rank": 3,
+          "raw_p_value": 0.00027819601104818546,
+          "reject_at_fwer_0_05": true
+        },
+        "RQ7": {
+          "adjusted_p_value": 0.0005563920220963709,
+          "holm_multiplier": 1,
+          "holm_threshold": 0.05,
+          "rank": 4,
+          "raw_p_value": 0.00027819601104818546,
+          "reject_at_fwer_0_05": true
+        }
+      },
+      "family": "F2",
+      "family_membership_locked": true,
+      "family_size": 4,
+      "fwer": 0.05,
+      "individual_ci_adjusted": false,
+      "member_order": [
+        "RQ3",
+        "RQ4",
+        "RQ6",
+        "RQ7"
+      ],
+      "method": "HOLM_STEP_DOWN",
+      "ordered_results": [
+        {
+          "adjusted_p_value": 7.018797022838702e-80,
+          "holm_multiplier": 4,
+          "holm_threshold": 0.0125,
+          "member": "RQ4",
+          "rank": 1,
+          "raw_p_value": 1.7546992557096755e-80,
+          "reject_at_fwer_0_05": true
+        },
+        {
+          "adjusted_p_value": 1.5027187313164528e-11,
+          "holm_multiplier": 3,
+          "holm_threshold": 0.016666666666666666,
+          "member": "RQ3",
+          "rank": 2,
+          "raw_p_value": 5.009062437721509e-12,
+          "reject_at_fwer_0_05": true
+        },
+        {
+          "adjusted_p_value": 0.0005563920220963709,
+          "holm_multiplier": 2,
+          "holm_threshold": 0.025,
+          "member": "RQ6",
+          "rank": 3,
+          "raw_p_value": 0.00027819601104818546,
+          "reject_at_fwer_0_05": true
+        },
+        {
+          "adjusted_p_value": 0.0005563920220963709,
+          "holm_multiplier": 1,
+          "holm_threshold": 0.05,
+          "member": "RQ7",
+          "rank": 4,
+          "raw_p_value": 0.00027819601104818546,
+          "reject_at_fwer_0_05": true
+        }
+      ]
+    },
+    "input_source": {
+      "path": "artifacts/preflight/statistics/statistical_fixture_report.json",
+      "sha256": "c0874e61745f8d2cae5be707fbe0d82c802b780a63f8fb5510458614f985b3bc",
+      "synthetic_fixture_only": true
+    },
+    "raw_p_values": {
+      "RQ3": 5.009062437721509e-12,
+      "RQ4": 1.7546992557096755e-80,
+      "RQ6": 0.00027819601104818546,
+      "RQ7": 0.00027819601104818546
+    },
+    "scientific_boundaries": {
+      "exact_sign_flip_applied_in_s6_09": false,
+      "family_shrunk_after_results": false,
+      "final_test_authorized": false,
+      "fixture_only_no_official_results": true,
+      "hidden_unlabeled_gt_used": false,
+      "holm_f3_applied_in_s6_09": false,
+      "individual_ci_holm_adjusted": false,
+      "loso_applied_in_s6_09": false,
+      "official_training_authorized": false,
+      "test_gt_used": false,
+      "test_used": false
+    },
+    "scientific_contract": {
+      "family_membership_locked": true,
+      "fwer": 0.05,
+      "individual_ci_holm_adjusted": false,
+      "m": 4,
+      "member_input_semantics": {
+        "RQ3": "GG_CORRECTED_OMNIBUS_P",
+        "RQ4": "ONE_SIDED_KENWARD_ROGER_BETA_Q_P",
+        "RQ6": "TWO_SIDED_PRIMARY_P",
+        "RQ7": "TWO_SIDED_PRIMARY_P"
+      },
+      "members": [
+        "RQ3",
+        "RQ4",
+        "RQ6",
+        "RQ7"
+      ],
+      "method": "HOLM_STEP_DOWN"
+    },
+    "source_sha256": {
+      "scripts/S6_09_validate_holm_f2.py": "cfd6828ebbccd4ecfc11685850165839f74b64885fb83cb2d3ccd4b536f90180",
+      "src/statistics/holm_f2.py": "d080f91729bb44838d64bba5b4d2c8a351dda76966e09d365b9e4dc9d4225707"
+    },
+    "status": "PASS",
+    "task": "S6.09",
+    "tracker_action": "Implement Holm F2 m=4"
+  },
+  "schema_version": "1.0",
+  "status": "PASS"
+}
