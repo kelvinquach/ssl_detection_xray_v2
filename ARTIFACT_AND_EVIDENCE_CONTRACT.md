@@ -2296,7 +2296,28 @@ Sáu paired contrasts prespecified duy nhất là:
 20%-10%
 ```
 
-Các contrast thuộc Holm family F3.
+Với mỗi contrast c = b2 - b1 và training seed s:
+
+```text
+D_c,s = B_b2,s - B_b1,s
+```
+
+Pairwise inference được khóa như sau:
+
+```text
+two-sided one-sample t-test trên 10 paired differences D_c,s so với 0
+equivalent to paired t-test giữa hai budget trên cùng training seeds
+n = 10
+df = 9
+sample SD of paired differences: ddof = 1
+effect = mean paired difference
+CI = individual two-sided 95% CI
+raw p-value = two-sided
+```
+
+Artifact analysis/rq3/rq3_pairwise_contrasts.csv phải lưu tối thiểu semantics của từng contrast gồm: contrast identity/direction, n, df, mean paired difference, sample SD với ddof=1, individual two-sided 95% CI và raw two-sided p-value.
+
+S6.04 chỉ tạo và kiểm chứng six raw pairwise contrast results/raw p-values; không thực hiện Holm adjustment. Sáu raw p-values này thuộc Holm family F3. S6.10 thực hiện Holm step-down trên đúng sáu raw p-values, với m = 6 và FWER = 0.05. Individual 95% CI không phải Holm-adjusted simultaneous CI.
 
 ---
 
@@ -2771,6 +2792,63 @@ RQ6 = two-sided
 RQ7 = two-sided
 ```
 
+Machine-readable exact sign-flip evidence cho mỗi RQ phải lưu tối thiểu:
+
+```text
+rq
+effect
+ordered_training_seeds
+seed_effect_count = 10
+test_statistic = arithmetic_mean_of_paired_seed_effects
+observed_statistic
+sign_configuration_count = 1024
+observed_all_positive_configuration_included = true
+alternative
+extremeness_rule
+equality_ties_included = true
+plus_one_correction = false
+zero_effect_seed_retained = true
+duplicate_statistics_counted_by_configuration = true
+extreme_configuration_count
+exact_p_value
+```
+
+Semantics bắt buộc:
+
+```text
+RQ2:
+  effect = G_s
+  alternative = one-sided-greater
+  extremeness_rule = T_flip >= T_obs
+  exact_p_value = extreme_configuration_count / 1024
+
+RQ6:
+  effect = H_s
+  alternative = two-sided
+  extremeness_rule = abs(T_flip) >= abs(T_obs)
+  exact_p_value = extreme_configuration_count / 1024
+
+RQ7:
+  effect = D_s
+  alternative = two-sided
+  extremeness_rule = abs(T_flip) >= abs(T_obs)
+  exact_p_value = extreme_configuration_count / 1024
+```
+
+Nếu paired effect bằng đúng `0`, training seed đó vẫn phải xuất hiện trong
+`ordered_training_seeds` và `seed_effect_count` vẫn bằng `10`. Không giảm số
+configuration do các sign vectors tạo ra cùng một statistic.
+
+Preflight implementation evidence của S6.11 phải được ghi machine-readable
+trong:
+
+```text
+artifacts/preflight/statistics/statistical_fixture_report.json
+```
+
+và phải chứng minh implementation tuân thủ chính xác các semantics ở trên trước
+khi S6.11 được CLOSED / PASS.
+
 LOSO:
 
 ```text
@@ -2784,6 +2862,18 @@ RQ3:
 ```text
 primary = GG repeated-measures ANOVA
 sensitivity = Friedman
+Friedman input = B_b_s from S6.03
+repeated blocks = 10 official training seeds
+conditions = 1%, 5%, 10%, 20%
+null = same distribution/rank location across the four budgets
+test = standard Friedman rank test
+statistic = Friedman chi-square
+df = 3
+p-value = right-tail asymptotic chi-square
+tie correction = standard Friedman tie correction
+Friedman post-hoc = NONE
+new multiplicity family in S6.13 = NONE
+primary method unchanged = true
 ```
 
 RQ4 sensitivity:

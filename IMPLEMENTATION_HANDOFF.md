@@ -1233,7 +1233,27 @@ Sáu prespecified paired contrasts:
 20%-10%
 ```
 
-Các contrast này thuộc một multiplicity family riêng và dùng Holm.
+Với mỗi contrast c = b2 - b1 và training seed s:
+
+```text
+D_{c,s} = B_{b2,s} - B_{b1,s}
+```
+
+Primary pairwise inference cho từng contrast:
+
+```text
+two-sided one-sample t-test trên 10 paired differences D_{c,s} so với 0
+equivalent to paired t-test giữa hai budget trên cùng training seeds
+n = 10
+df = 9
+sample SD of paired differences: ddof = 1
+effect = mean paired difference
+CI = individual two-sided 95% CI
+p-value = raw two-sided p-value
+```
+
+S6.04 tạo đúng sáu raw pairwise p-values theo sáu contrast prespecified ở trên.
+Các contrast này thuộc multiplicity family F3. Holm adjustment không được thực hiện trong S6.04; S6.10 áp dụng Holm step-down lên đúng sáu raw p-values này.
 
 ## 21.4. RQ7 — Architecture-dependent SSL effect
 
@@ -1387,9 +1407,13 @@ Family F3:
 
 ```text
 6 prespecified RQ3 pairwise budget contrasts
+raw input p-values = six two-sided p-values from the S6.04 paired-difference tests
 Holm step-down
 m = 6
+FWER = 0.05
 ```
+
+Không thay đổi hoặc thu nhỏ family F3 sau khi quan sát kết quả. Individual 95% CI của từng contrast vẫn là two-sided 95% CI và không phải Holm-adjusted simultaneous CI.
 
 Một RQ3 pairwise localization claim chỉ được xem là formal khi:
 
@@ -1431,6 +1455,32 @@ RQ6 = two-sided
 RQ7 = two-sided
 ```
 
+```text
+Exact sign-flip implementation contract:
+
+- Input là đúng 10 paired training-seed effects theo locked ordered
+  training-seed list.
+- RQ2 dùng `G_s`; RQ6 dùng `H_s`; RQ7 dùng `D_s`.
+- Observed test statistic:
+  `T_obs = arithmetic mean of the 10 paired seed effects`.
+- Enumerate exhaustive toàn bộ `2^10 = 1024` sign vectors
+  `epsilon_s ∈ {-1,+1}`, bao gồm all-positive observed configuration.
+- Với mỗi configuration:
+  `T_flip = mean(epsilon_s * Z_s)` trên đủ 10 seed.
+- RQ2 exact one-sided greater p-value:
+  `count(T_flip >= T_obs) / 1024`.
+- RQ6/RQ7 exact two-sided p-value:
+  `count(abs(T_flip) >= abs(T_obs)) / 1024`.
+- Equality/ties được tính vào tử số bằng `>=`.
+- Không áp dụng `+1` correction vì đây là exhaustive exact enumeration,
+  không phải Monte Carlo approximation.
+- Nếu paired effect của một seed bằng đúng `0`, seed vẫn được giữ;
+  vẫn enumerate đủ 1024 sign configurations và duplicate statistics
+  vẫn được tính theo configuration.
+- Không giảm `n`, không loại seed và không thay đổi primary analysis
+  dựa trên kết quả robustness.
+```
+
 Đồng thời thực hiện:
 
 ```text
@@ -1445,6 +1495,19 @@ RQ3:
 ```text
 primary = GG repeated-measures ANOVA
 sensitivity = Friedman test
+Friedman input = B_b_s from S6.03
+repeated blocks = 10 official training seeds
+conditions = 1%, 5%, 10%, 20%
+null = same distribution/rank location across the four budgets
+test = standard Friedman rank test
+statistic = Friedman chi-square
+df = k-1 = 3
+p-value = right-tail asymptotic chi-square
+tie handling = standard Friedman tie correction
+post-hoc from Friedman = NONE
+new multiplicity family in S6.13 = NONE
+role = sensitivity only
+primary conclusion replacement/selection = PROHIBITED
 ```
 
 RQ4 diagnostics tối thiểu:

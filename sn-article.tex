@@ -7143,9 +7143,37 @@ phản ghép cặp đã xác định trước được xem xét:
 \label{eq:rq3_budget_contrasts}
 \end{equation}
 
-Các phép so sánh này được điều chỉnh đa kiểm định theo phương pháp Holm như
-trình bày ở
-Mục~\ref{subsubsec:statistical_multiplicity}.
+Đối với mỗi tương phản \(c=(b_2-b_1)\in\mathcal{C}_{budget}\) và mỗi
+training seed \(s\), hiệu ứng ghép cặp giữa hai mức ngân sách được xác định bởi
+
+\begin{equation}
+D_{c,s}
+=
+B_{b_2,s}
+-
+B_{b_1,s}.
+\label{eq:rq3_budget_contrast_difference}
+\end{equation}
+
+Mỗi tương phản được kiểm định bằng two-sided one-sample \(t\)-test trên
+\(\{D_{c,s}\}_{s=1}^{10}\) so với giá trị không, tương đương với paired
+\(t\)-test giữa hai mức ngân sách trên cùng các training seeds. Với \(n=10\),
+bậc tự do của mỗi phép kiểm định là
+
+\begin{equation}
+df
+=
+n-1
+=
+9.
+\label{eq:rq3_budget_contrast_df}
+\end{equation}
+
+Đối với mỗi tương phản, nghiên cứu báo cáo mean paired difference, sample
+standard deviation với \(ddof=1\), khoảng tin cậy 95\% hai phía cho hiệu ứng
+riêng và raw two-sided \(p\)-value. Sáu raw \(p\)-value này tạo thành
+multiplicity family riêng của RQ3 và được điều chỉnh bằng thủ tục Holm như
+trình bày ở Mục~\ref{subsubsec:statistical_multiplicity}.
 
 \subsubsection{Sự khác biệt về mức lợi ích SSL giữa hai kiến trúc}
 \label{subsubsec:statistical_rq7}
@@ -7423,11 +7451,40 @@ FWER
 
 \cite{holm1979sequentially}.
 
-Sáu phép so sánh cặp giữa bốn ngân sách nhãn của RQ3 tạo thành một family riêng
-và cũng được điều chỉnh bằng phương pháp Holm. Một khác biệt cụ thể giữa hai
-ngân sách chỉ được diễn giải như một kết quả chính thức của RQ3 khi cả omnibus
-analysis tương ứng và phép so sánh cặp sau điều chỉnh đều đáp ứng tiêu chí đã
-xác định.
+Sáu phép so sánh cặp giữa bốn ngân sách nhãn của RQ3 tạo thành một
+multiplicity family riêng, ký hiệu là \(F_3\). Các \(p\)-value đầu vào của
+family này là sáu raw two-sided \(p\)-value thu được từ các phép kiểm định
+ghép cặp đã xác định tại Phương trình~\eqref{eq:rq3_budget_contrast_difference}:
+
+\begin{equation}
+\mathcal{P}_{F_3}
+=
+\left\{
+p_{5\%-1\%},
+p_{10\%-1\%},
+p_{20\%-1\%},
+p_{10\%-5\%},
+p_{20\%-5\%},
+p_{20\%-10\%}
+\right\}.
+\label{eq:rq3_holm_f3_family}
+\end{equation}
+
+Family \(F_3\) có
+
+\begin{equation}
+m_{F_3}
+=
+6
+\label{eq:rq3_holm_f3_size}
+\end{equation}
+
+phép kiểm định và được điều chỉnh bằng thủ tục Holm step-down để kiểm soát
+family-wise error rate ở mức \(0.05\).
+
+Một khác biệt cụ thể giữa hai ngân sách chỉ được diễn giải như một kết quả
+chính thức của RQ3 khi cả omnibus analysis tương ứng và phép so sánh cặp sau
+điều chỉnh đều đáp ứng tiêu chí đã xác định.
 
 Không thu nhỏ số lượng phép kiểm định trong family sau khi quan sát kết quả
 hoặc khi một kết quả không thuận lợi.
@@ -7494,6 +7551,85 @@ N_{\mathrm{sign\text{-}flip}}
 \label{eq:exact_sign_flip_count}
 \end{equation}
 
+Để phép kiểm định exact sign-flip được xác định hoàn toàn trước khi xem kết
+quả, ký hiệu \(Z_s\) là hiệu ứng ghép cặp ở training seed \(s\). Cụ thể,
+\(Z_s=G_s\) đối với RQ2, \(Z_s=H_s\) đối với RQ6 và \(Z_s=D_s\) đối với
+RQ7. Thống kê quan sát được định nghĩa là trung bình số học của 10 hiệu ứng
+ghép cặp,
+
+\begin{equation}
+T_{\mathrm{obs}}
+=
+\frac{1}{10}
+\sum_{s=1}^{10} Z_s.
+\label{eq:sign_flip_observed_statistic}
+\end{equation}
+
+Với mỗi vector dấu
+\(\boldsymbol{\epsilon}
+=(\epsilon_1,\ldots,\epsilon_{10})\),
+trong đó
+\(\epsilon_s\in\{-1,+1\}\),
+thống kê sign-flip tương ứng được tính bởi
+
+\begin{equation}
+T(\boldsymbol{\epsilon})
+=
+\frac{1}{10}
+\sum_{s=1}^{10}
+\epsilon_s Z_s.
+\label{eq:sign_flip_statistic}
+\end{equation}
+
+Toàn bộ \(2^{10}=1024\) vector dấu được liệt kê chính xác, bao gồm cấu hình
+quan sát với tất cả dấu bằng \(+1\). Đối với RQ2, do giả thuyết chính có hướng
+dương, exact sign-flip sử dụng kiểm định một phía và \(p\)-value được định
+nghĩa là
+
+\begin{equation}
+p_{\mathrm{SF},\mathrm{RQ2}}
+=
+\frac{
+\#\left\{
+\boldsymbol{\epsilon}:
+T(\boldsymbol{\epsilon})
+\ge
+T_{\mathrm{obs}}
+\right\}
+}{
+1024
+}.
+\label{eq:sign_flip_rq2_pvalue}
+\end{equation}
+
+Đối với RQ6 và RQ7, exact sign-flip sử dụng kiểm định hai phía. Mức độ cực
+đoan được xác định theo trị tuyệt đối của cùng thống kê trung bình,
+
+\begin{equation}
+p_{\mathrm{SF},\mathrm{two\text{-}sided}}
+=
+\frac{
+\#\left\{
+\boldsymbol{\epsilon}:
+\left|T(\boldsymbol{\epsilon})\right|
+\ge
+\left|T_{\mathrm{obs}}\right|
+\right\}
+}{
+1024
+}.
+\label{eq:sign_flip_two_sided_pvalue}
+\end{equation}
+
+Các cấu hình có thống kê bằng đúng ngưỡng quan sát được tính vào tử số thông
+qua dấu bất đẳng thức \(\ge\). Vì toàn bộ không gian \(1024\) cấu hình được
+liệt kê chính xác, không áp dụng hiệu chỉnh \(+1\) vốn thường được dùng cho
+Monte Carlo permutation tests. Nếu một hiệu ứng ghép cặp bằng đúng \(0\), seed
+đó vẫn được giữ trong phân tích; đổi dấu của giá trị \(0\) vẫn cho \(0\), nhưng
+toàn bộ \(1024\) cấu hình dấu vẫn được giữ và các thống kê trùng nhau vẫn được
+tính theo từng cấu hình. Không seed nào bị loại hoặc làm giảm \(n\) vì hiệu
+ứng bằng \(0\).
+
 Phân tích này kiểm tra liệu kết luận về hiệu ứng ghép cặp có còn được hỗ trợ
 khi không phụ thuộc hoàn toàn vào giả định phân phối chuẩn của one-sample
 \(t\)-test.
@@ -7521,6 +7657,17 @@ số nhằm đánh giá xem kết luận về sự khác biệt giữa các ngâ
 thuộc mạnh vào các giả định phân phối của repeated-measures ANOVA hay không.
 Kết quả Friedman chỉ có vai trò hỗ trợ diễn giải và không thay thế kết luận
 chính sau khi đã quan sát dữ liệu.
+
+Đối với phân tích độ nhạy Friedman, đầu vào là các hiệu ứng ngân sách ở mức
+seed \(B_{b,s}\) đã được định nghĩa cho RQ3, với 10 training seed là các block
+lặp lại và bốn điều kiện ngân sách nhãn theo thứ tự \(1\%, 5\%, 10\%, 20\%\).
+Giả thuyết không của phân tích độ nhạy này là bốn điều kiện ngân sách có cùng
+phân phối/vị trí hạng. Phép kiểm sử dụng Friedman rank test chuẩn với thống kê
+chi-square, \(df=k-1=3\), p-value phía phải theo xấp xỉ chi-square và hiệu chỉnh
+tie chuẩn của Friedman. Không thực hiện post-hoc test phát sinh từ Friedman và
+phân tích này không bổ sung một family multiplicity mới. Kết quả Friedman chỉ
+được dùng để đánh giá độ nhạy và không thay thế hoặc lựa chọn lại primary
+Greenhouse--Geisser repeated-measures ANOVA.
 
 Đối với RQ4, mô hình mixed-effects chính được đánh giá trước hết thông qua các
 chẩn đoán gồm khả năng hội tụ, singularity, residual-versus-fitted pattern,

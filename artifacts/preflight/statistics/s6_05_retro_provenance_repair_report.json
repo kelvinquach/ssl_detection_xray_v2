@@ -1,0 +1,291 @@
+{
+  "task": "S6.05",
+  "rq": "RQ4",
+  "tracker_action": "Implement mixed model",
+  "status": "PASS",
+  "checks_total": 42,
+  "checks_passed": 42,
+  "failed_count": 0,
+  "failed_checks": [],
+  "scientific_contract": {
+    "formula": "Y ~ X + architecture_budget_cell + (1 | training_seed)",
+    "estimation": "REML",
+    "fixed_effect_inference": "Kenward-Roger",
+    "beta_Q_alternative": "greater",
+    "effect_unit": "downstream AP-point change per +1 pseudo AP point",
+    "ci": "TWO_SIDED_95_PERCENT",
+    "predictor_centering": "WITHIN_ARCHITECTURE_BUDGET_CELL",
+    "predictor_scale": "Q_WC / 0.01",
+    "inferential_replication_unit": "TRAINING_SEED_TRAINED_RUN",
+    "n_training_seeds": 10,
+    "n_architecture_budget_cells": 8,
+    "max_rows": 80
+  },
+  "positive_fixture": {
+    "synthetic_only": true,
+    "true_beta": 0.12,
+    "rows": 80,
+    "architecture_budget_cells": 8,
+    "training_seeds": 10,
+    "max_abs_within_cell_center_sum": 5.5511151231257827e-17,
+    "golden_result": {
+      "effect_estimate": 0.12052482619044901,
+      "kenward_roger_standard_error": 0.00083286843267676904,
+      "kenward_roger_df": 62.031103884805717,
+      "t_statistic": 144.7105226489283,
+      "one_sided_p_value": 1.7546992557096755e-80,
+      "ci95_low": 0.11885996252200141,
+      "ci95_high": 0.1221896898588966,
+      "convergence_status": "CONVERGED",
+      "singularity_status": "NON_SINGULAR"
+    }
+  },
+  "scientific_boundaries": {
+    "fixture_only_no_official_results": true,
+    "official_training_authorized": false,
+    "final_test_authorized": false,
+    "test_used": false,
+    "hidden_unlabeled_gt_used": false,
+    "holm_f2_applied": false,
+    "cr2_sensitivity_implemented": false
+  },
+  "historical_s6_04_evidence_sha256_before_extension": "3984a439d209a96d58f4a15924b67e50690a8d9580a96cbbee5852fc076682c1",
+  "source_sha256": {
+    "src/statistics/rq4_mixed_model.R": "b41e68c4bdad9448d4ad510f8307c97a4d54532de86b718ceba0ab0ea02f320e",
+    "scripts/S6_05_validate_rq4_mixed_model.R": "d98c71d60e10b8654648d28d896a563afa10ba5f22cb332e7a5bc57f9ad95572"
+  },
+  "statistical_runtime": {
+    "R": "4.5.3",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "pbkrtest": "0.5.5",
+    "jsonlite": "2.0.0"
+  },
+  "checks": [
+    {
+      "name": "contract::formula",
+      "status": "PASS",
+      "observed": "Y ~ X + architecture_budget_cell + (1 | training_seed)"
+    },
+    {
+      "name": "contract::estimation",
+      "status": "PASS",
+      "observed": "REML"
+    },
+    {
+      "name": "contract::fixed_effect_inference",
+      "status": "PASS",
+      "observed": "Kenward-Roger"
+    },
+    {
+      "name": "contract::beta_alternative",
+      "status": "PASS",
+      "observed": "greater"
+    },
+    {
+      "name": "contract::effect_unit",
+      "status": "PASS",
+      "observed": "downstream AP-point change per +1 pseudo AP point"
+    },
+    {
+      "name": "contract::architectures",
+      "status": "PASS",
+      "observed": ["R50", "Swin-T"]
+    },
+    {
+      "name": "contract::budgets",
+      "status": "PASS",
+      "observed": ["1%", "5%", "10%", "20%"]
+    },
+    {
+      "name": "contract::cell_count",
+      "status": "PASS",
+      "observed": 8
+    },
+    {
+      "name": "contract::seed_count",
+      "status": "PASS",
+      "observed": 10
+    },
+    {
+      "name": "contract::row_count",
+      "status": "PASS",
+      "observed": 80
+    },
+    {
+      "name": "contract::q_scale",
+      "status": "PASS",
+      "observed": 0.01
+    },
+    {
+      "name": "contract::ci_level",
+      "status": "PASS",
+      "observed": 0.94999999999999996
+    },
+    {
+      "name": "contract::cell_encoding",
+      "status": "PASS",
+      "observed": ["R50__1pct", "R50__5pct", "R50__10pct", "R50__20pct", "Swin-T__1pct", "Swin-T__5pct", "Swin-T__10pct", "Swin-T__20pct"]
+    },
+    {
+      "name": "contract::ordered_training_seeds",
+      "status": "PASS",
+      "observed": [204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675]
+    },
+    {
+      "name": "positive::rows",
+      "status": "PASS",
+      "observed": 80
+    },
+    {
+      "name": "positive::cells",
+      "status": "PASS",
+      "observed": 8
+    },
+    {
+      "name": "positive::seeds",
+      "status": "PASS",
+      "observed": 10
+    },
+    {
+      "name": "positive::cell_counts",
+      "status": "PASS",
+      "observed": {
+        "R50__1pct": 10,
+        "R50__5pct": 10,
+        "R50__10pct": 10,
+        "R50__20pct": 10,
+        "Swin-T__1pct": 10,
+        "Swin-T__5pct": 10,
+        "Swin-T__10pct": 10,
+        "Swin-T__20pct": 10
+      }
+    },
+    {
+      "name": "positive::within_cell_centering",
+      "status": "PASS",
+      "observed": 5.5511151231257827e-17
+    },
+    {
+      "name": "positive::x_scaling",
+      "status": "PASS",
+      "observed": 0
+    },
+    {
+      "name": "positive::formula",
+      "status": "PASS",
+      "observed": "Y ~ X + architecture_budget_cell + (1 | training_seed)"
+    },
+    {
+      "name": "positive::reml",
+      "status": "PASS",
+      "observed": {
+        "result": "REML",
+        "isREML": true
+      }
+    },
+    {
+      "name": "positive::kr_inference",
+      "status": "PASS",
+      "observed": "Kenward-Roger"
+    },
+    {
+      "name": "positive::alternative_greater",
+      "status": "PASS",
+      "observed": "greater"
+    },
+    {
+      "name": "positive::effect_estimate",
+      "status": "PASS",
+      "observed": 0.12052482619044901
+    },
+    {
+      "name": "positive::kr_se",
+      "status": "PASS",
+      "observed": 0.00083286843267676904
+    },
+    {
+      "name": "positive::kr_df",
+      "status": "PASS",
+      "observed": 62.031103884805717
+    },
+    {
+      "name": "positive::kr_t",
+      "status": "PASS",
+      "observed": 144.7105226489283
+    },
+    {
+      "name": "positive::one_sided_p",
+      "status": "PASS",
+      "observed": 1.7546992557096755e-80
+    },
+    {
+      "name": "positive::ci95_low",
+      "status": "PASS",
+      "observed": 0.11885996252200141
+    },
+    {
+      "name": "positive::ci95_high",
+      "status": "PASS",
+      "observed": 0.1221896898588966
+    },
+    {
+      "name": "positive::convergence",
+      "status": "PASS",
+      "observed": "CONVERGED"
+    },
+    {
+      "name": "positive::non_singular",
+      "status": "PASS",
+      "observed": "NON_SINGULAR"
+    },
+    {
+      "name": "positive::finite_inference",
+      "status": "PASS",
+      "observed": [0.12052482619044901, 0.00083286843267676904, 62.031103884805717, 144.7105226489283, 1.7546992557096755e-80]
+    },
+    {
+      "name": "positive::one_sided_direction",
+      "status": "PASS",
+      "observed": {
+        "t": 144.7105226489283,
+        "p": 1.7546992557096755e-80
+      }
+    },
+    {
+      "name": "negative::missing_row",
+      "status": "PASS",
+      "observed": "RQ4 requires exactly 80 rows; observed=79"
+    },
+    {
+      "name": "negative::bad_seed_mapping",
+      "status": "PASS",
+      "observed": "training_seed does not match locked seed_index mapping"
+    },
+    {
+      "name": "negative::duplicate_cell_seed",
+      "status": "PASS",
+      "observed": "duplicate architecture-budget-seed row"
+    },
+    {
+      "name": "negative::nonfinite_q",
+      "status": "PASS",
+      "observed": "Q_pseudo must be finite"
+    },
+    {
+      "name": "negative::nonfinite_y",
+      "status": "PASS",
+      "observed": "RQ4 input contains missing values"
+    },
+    {
+      "name": "negative::invalid_architecture",
+      "status": "PASS",
+      "observed": "RQ4 input contains invalid architecture"
+    },
+    {
+      "name": "negative::invalid_budget",
+      "status": "PASS",
+      "observed": "RQ4 input contains invalid budget"
+    }
+  ]
+}

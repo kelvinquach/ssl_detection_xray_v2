@@ -1,0 +1,892 @@
+{
+  "checks": [
+    {
+      "check_id": "C01",
+      "detail": "exactly 10 LOSO analyses",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C02",
+      "detail": "each LOSO analysis retains 9 seeds",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C03",
+      "detail": "RQ2 has exactly 10 analyses",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C04",
+      "detail": "RQ6 has exactly 10 analyses",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C05",
+      "detail": "RQ7 has exactly 10 analyses",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C06",
+      "detail": "RQ2 full effect is 5.5",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C07",
+      "detail": "RQ6 full effect is 5.5",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C08",
+      "detail": "RQ7 full effect is 0.55",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C09",
+      "detail": "RQ2 cannot exclude primary seed",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C10",
+      "detail": "RQ6 cannot exclude primary seed",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C11",
+      "detail": "RQ7 cannot exclude primary seed",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C12",
+      "detail": "RQ2 omits each official seed exactly once in locked order",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C13",
+      "detail": "RQ6 omits each official seed exactly once in locked order",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C14",
+      "detail": "RQ7 omits each official seed exactly once in locked order",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C15",
+      "detail": "RQ2 omission 1 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C16",
+      "detail": "RQ2 omission 2 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C17",
+      "detail": "RQ2 omission 3 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C18",
+      "detail": "RQ2 omission 4 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C19",
+      "detail": "RQ2 omission 5 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C20",
+      "detail": "RQ2 omission 6 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C21",
+      "detail": "RQ2 omission 7 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C22",
+      "detail": "RQ2 omission 8 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C23",
+      "detail": "RQ2 omission 9 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C24",
+      "detail": "RQ2 omission 10 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C25",
+      "detail": "RQ6 omission 1 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C26",
+      "detail": "RQ6 omission 2 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C27",
+      "detail": "RQ6 omission 3 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C28",
+      "detail": "RQ6 omission 4 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C29",
+      "detail": "RQ6 omission 5 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C30",
+      "detail": "RQ6 omission 6 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C31",
+      "detail": "RQ6 omission 7 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C32",
+      "detail": "RQ6 omission 8 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C33",
+      "detail": "RQ6 omission 9 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C34",
+      "detail": "RQ6 omission 10 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C35",
+      "detail": "RQ7 omission 1 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C36",
+      "detail": "RQ7 omission 2 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C37",
+      "detail": "RQ7 omission 3 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C38",
+      "detail": "RQ7 omission 4 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C39",
+      "detail": "RQ7 omission 5 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C40",
+      "detail": "RQ7 omission 6 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C41",
+      "detail": "RQ7 omission 7 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C42",
+      "detail": "RQ7 omission 8 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C43",
+      "detail": "RQ7 omission 9 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C44",
+      "detail": "RQ7 omission 10 recomputed mean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C45",
+      "detail": "RQ2 retains 9 seeds every time",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C46",
+      "detail": "RQ6 retains 9 seeds every time",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C47",
+      "detail": "RQ7 retains 9 seeds every time",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C48",
+      "detail": "RQ2 omitted seed absent only from its LOSO replicate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C49",
+      "detail": "RQ6 omitted seed absent only from its LOSO replicate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C50",
+      "detail": "RQ7 omitted seed absent only from its LOSO replicate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C51",
+      "detail": "invalid RQ rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C52",
+      "detail": "missing seed rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C53",
+      "detail": "wrong seed order rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C54",
+      "detail": "boolean effect rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C55",
+      "detail": "NaN effect rejected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "C56",
+      "detail": "infinite effect rejected",
+      "status": "PASS"
+    }
+  ],
+  "checks_passed": 56,
+  "checks_total": 56,
+  "failed_checks": [],
+  "failed_count": 0,
+  "final_test_authorized": false,
+  "hidden_unlabeled_gt_used": false,
+  "official_training_authorized": false,
+  "positive_fixture": {
+    "rq2": {
+      "analyses": [
+        {
+          "analysis_index": 1,
+          "omitted_seed": 204886845,
+          "recomputed_effect": 6.0,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 2,
+          "omitted_seed": 1480646854,
+          "recomputed_effect": 5.888888888888889,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 3,
+          "omitted_seed": 1798418854,
+          "recomputed_effect": 5.777777777777778,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 4,
+          "omitted_seed": 2045683682,
+          "recomputed_effect": 5.666666666666667,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 5,
+          "omitted_seed": 1814859839,
+          "recomputed_effect": 5.555555555555555,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 6,
+          "omitted_seed": 1603952859,
+          "recomputed_effect": 5.444444444444445,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 7,
+          "omitted_seed": 1878351743,
+          "recomputed_effect": 5.333333333333333,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 8,
+          "omitted_seed": 875651179,
+          "recomputed_effect": 5.222222222222222,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 9,
+          "omitted_seed": 477581743,
+          "recomputed_effect": 5.111111111111111,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 10,
+          "omitted_seed": 869675675,
+          "recomputed_effect": 5.0,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743
+          ]
+        }
+      ],
+      "effect": "G_s",
+      "full_effect": 5.5,
+      "loso_analysis_count": 10,
+      "ordered_training_seeds": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "primary_seed_exclusion_allowed": false,
+      "recomputed_statistic": "arithmetic_mean_of_remaining_seed_effects",
+      "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+      "retained_seed_count_per_analysis": 9,
+      "rq": "RQ2",
+      "seed_effect_count": 10
+    },
+    "rq6": {
+      "analyses": [
+        {
+          "analysis_index": 1,
+          "omitted_seed": 204886845,
+          "recomputed_effect": 6.0,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 2,
+          "omitted_seed": 1480646854,
+          "recomputed_effect": 5.888888888888889,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 3,
+          "omitted_seed": 1798418854,
+          "recomputed_effect": 5.777777777777778,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 4,
+          "omitted_seed": 2045683682,
+          "recomputed_effect": 5.666666666666667,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 5,
+          "omitted_seed": 1814859839,
+          "recomputed_effect": 5.555555555555555,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 6,
+          "omitted_seed": 1603952859,
+          "recomputed_effect": 5.444444444444445,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 7,
+          "omitted_seed": 1878351743,
+          "recomputed_effect": 5.333333333333333,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 8,
+          "omitted_seed": 875651179,
+          "recomputed_effect": 5.222222222222222,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 9,
+          "omitted_seed": 477581743,
+          "recomputed_effect": 5.111111111111111,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 10,
+          "omitted_seed": 869675675,
+          "recomputed_effect": 5.0,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743
+          ]
+        }
+      ],
+      "effect": "H_s",
+      "full_effect": 5.5,
+      "loso_analysis_count": 10,
+      "ordered_training_seeds": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "primary_seed_exclusion_allowed": false,
+      "recomputed_statistic": "arithmetic_mean_of_remaining_seed_effects",
+      "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+      "retained_seed_count_per_analysis": 9,
+      "rq": "RQ6",
+      "seed_effect_count": 10
+    },
+    "rq7": {
+      "analyses": [
+        {
+          "analysis_index": 1,
+          "omitted_seed": 204886845,
+          "recomputed_effect": 0.6000000000000001,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 2,
+          "omitted_seed": 1480646854,
+          "recomputed_effect": 0.5888888888888889,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 3,
+          "omitted_seed": 1798418854,
+          "recomputed_effect": 0.5777777777777778,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 4,
+          "omitted_seed": 2045683682,
+          "recomputed_effect": 0.5666666666666668,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 5,
+          "omitted_seed": 1814859839,
+          "recomputed_effect": 0.5555555555555556,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 6,
+          "omitted_seed": 1603952859,
+          "recomputed_effect": 0.5444444444444445,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1878351743,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 7,
+          "omitted_seed": 1878351743,
+          "recomputed_effect": 0.5333333333333334,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            875651179,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 8,
+          "omitted_seed": 875651179,
+          "recomputed_effect": 0.5222222222222221,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            477581743,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 9,
+          "omitted_seed": 477581743,
+          "recomputed_effect": 0.5111111111111111,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            869675675
+          ]
+        },
+        {
+          "analysis_index": 10,
+          "omitted_seed": 869675675,
+          "recomputed_effect": 0.5,
+          "retained_seed_count": 9,
+          "retained_training_seeds": [
+            204886845,
+            1480646854,
+            1798418854,
+            2045683682,
+            1814859839,
+            1603952859,
+            1878351743,
+            875651179,
+            477581743
+          ]
+        }
+      ],
+      "effect": "D_s",
+      "full_effect": 0.55,
+      "loso_analysis_count": 10,
+      "ordered_training_seeds": [
+        204886845,
+        1480646854,
+        1798418854,
+        2045683682,
+        1814859839,
+        1603952859,
+        1878351743,
+        875651179,
+        477581743,
+        869675675
+      ],
+      "primary_seed_exclusion_allowed": false,
+      "recomputed_statistic": "arithmetic_mean_of_remaining_seed_effects",
+      "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+      "retained_seed_count_per_analysis": 9,
+      "rq": "RQ7",
+      "seed_effect_count": 10
+    }
+  },
+  "scientific_contract": {
+    "loso_analysis_count": 10,
+    "loso_confidence_interval_required": false,
+    "loso_p_value_required": false,
+    "primary_seed_exclusion_allowed": false,
+    "recomputed_statistic": "arithmetic_mean_of_remaining_seed_effects",
+    "retained_seed_count_per_analysis": 9,
+    "seed_effect_count": 10
+  },
+  "status": "PASS",
+  "task": "S6.12",
+  "test_used": false,
+  "tracker_action": "Implement exactly 10 LOSO"
+}
+S6_12_LOSO_FIXTURE=56/56_PASS
