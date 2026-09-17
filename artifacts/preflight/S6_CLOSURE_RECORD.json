@@ -1,0 +1,81 @@
+{
+    "schema_version":  "1.0",
+    "stage":  "S6",
+    "task":  "S6.16",
+    "gate":  "Close S6",
+    "status":  "CLOSED / PASS",
+    "exact_git_commit":  "31e029c71c4d03c3f24dc3c1082cb79a6931c0f0",
+    "working_tree_clean":  true,
+    "official_training_authorized":  false,
+    "final_test_authorized":  false,
+    "global_preflight_closed":  false,
+    "verification":  {
+                         "S6.01_SEED_SUMMARY_MEAN_SD":  "PASS",
+                         "S6.02_RQ2_PRIMARY_ONE_SAMPLE_T":  "PASS",
+                         "S6.03_RQ3_GG_REPEATED_MEASURES_ANOVA":  "PASS",
+                         "S6.04_RQ3_PRESPECIFIED_CONTRASTS":  "PASS",
+                         "S6.05_RQ4_REML_KENWARD_ROGER":  "PASS",
+                         "S6.06_RQ5_RARE_CLASS_SUMMARY":  "PASS",
+                         "S6.07_RQ6_NEGATIVE_FP_PRIMARY_T":  "PASS",
+                         "S6.08_RQ7_ARCHITECTURE_EFFECT":  "PASS",
+                         "S6.09_HOLM_F2":  "PASS",
+                         "S6.10_HOLM_F3":  "PASS",
+                         "S6.11_EXACT_SIGN_FLIP":  "PASS",
+                         "S6.12_LOSO":  "PASS",
+                         "S6.13_FRIEDMAN_SENSITIVITY":  "PASS",
+                         "S6.14_CR2_SATTERTHWAITE_SENSITIVITY":  "PASS",
+                         "S6.15_STATISTICAL_IMPLEMENTATION_PROVENANCE":  "PASS"
+                     },
+    "closure_groups":  {
+                           "STATISTICAL_SYNTHETIC_GOLDEN_FIXTURES":  "PASS",
+                           "MULTIPLICITY_FIXTURES":  "PASS",
+                           "STATISTICAL_RUNTIME_FREEZE":  "PASS",
+                           "STATISTICAL_IMPLEMENTATION_PROVENANCE":  "PASS"
+                       },
+    "optimizer_recipes":  {
+                              "scope":  "UNCHANGED_BY_S6",
+                              "modified_by_s6":  false
+                          },
+    "training_protocol":  {
+                              "scope":  "S6_DOES_NOT_MODIFY_TRAINING_PROTOCOL",
+                              "modified_by_s6":  false,
+                              "inferential_replication_unit":  "TRAINING_SEED_TRAINED_RUN",
+                              "official_training_seed_count":  10,
+                              "test_used":  false,
+                              "hidden_unlabeled_gt_used":  false
+                          },
+    "evidence":  {
+                     "S6.01-S6.08/S6.11-S6.14":  "artifacts/preflight/statistics/statistical_fixture_report.json",
+                     "S6.09/S6.10":  "artifacts/preflight/statistics/multiplicity_fixture_report.json",
+                     "S6.05_HISTORICAL_STATISTICS_ENVIRONMENT":  "artifacts/preflight/environment/statistics_environment.json",
+                     "S6.14_FROZEN_RUNTIME_IMAGE":  "artifacts/preflight/environment/statistics_runtime_image_manifest.json",
+                     "S6.14_RUNTIME_PROVENANCE_BRIDGE":  "artifacts/preflight/statistics/s6_14_statistical_runtime_provenance_bridge.json",
+                     "S6.15_IMPLEMENTATION_PROVENANCE":  "artifacts/preflight/statistics/statistical_implementation_manifest.json"
+                 },
+    "evidence_sha256":  {
+                            "statistical_fixture_report":  "be349720423c99907421f5989bf71febe45a9236f51bb8486f52d865aa09c361",
+                            "multiplicity_fixture_report":  "a53556925357d829c133d8075079eca49614b0e0d793da3ad2a72bcc6e29be02",
+                            "statistics_environment":  "89911ca0e0b89070d95f37c5156a6407d4aaa3f680553eaee44478b21674ad27",
+                            "s6_14_runtime_bridge":  "b01c8df833021e1e686526dc98efd15f4c5b29a4d70fa4d1ae5522ebbc5452ba",
+                            "statistical_implementation_manifest":  "eb2f5eb19164030d4e1435a181996315c6009aef61058ddfed10c13431f9f30e"
+                        },
+    "closure_scope":  {
+                          "all_s6_01_to_s6_15_verified":  true,
+                          "all_statistical_fixtures_pass":  true,
+                          "statistical_fixture_coverage":  "S6.01-S6.14 = 14/14",
+                          "statistical_runtime_frozen":  true,
+                          "statistical_implementation_provenance_verified":  true,
+                          "canonical_contracts_unchanged":  true,
+                          "historical_statistics_environment_preserved":  true,
+                          "historical_results_recomputed":  false,
+                          "historical_evidence_modified":  false,
+                          "test_remains_closed":  true,
+                          "hidden_unlabeled_gt_used":  false,
+                          "research_task_scope_clean":  true,
+                          "does_not_close_global_preflight":  true,
+                          "does_not_authorize_official_training":  true,
+                          "does_not_authorize_final_test":  true,
+                          "does_not_authorize_git_push":  true
+                      },
+    "acceptance":  "S6=CLOSED / PASS"
+}
