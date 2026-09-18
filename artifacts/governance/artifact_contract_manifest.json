@@ -1,17 +1,19 @@
 {
     "schema_version":  "1.1",
-    "artifact_contract_version":  "1.1.0",
+    "artifact_contract_version":  "1.1.1",
     "artifact_type":  "ARTIFACT_EVIDENCE_CONTRACT_MANIFEST",
     "artifact_contract_name":  "ARTIFACT_AND_EVIDENCE_CONTRACT.md",
-    "artifact_contract_sha256":  "885d4eeb66857e99744f6e8a27083e5bb695bbcc0d172cf4ebff722c53f655a4",
+    "artifact_contract_sha256":  "222270bfe62f64074ec1cc9c0436a68bd3b0766b92900a1457511ba4535d4ccc",
     "scientific_source_name":  "sn-article.tex",
-    "scientific_source_sha256":  "8d97840cc546a58aef7354af0c856119b1aea16f8be1cb7bbc1ab1a324d40fcc",
+    "scientific_source_sha256":  "b6881ce90da9194f88fd9664b51dc96bdf112145949e3a89705f16b06853c681",
     "implementation_contract_name":  "IMPLEMENTATION_HANDOFF.md",
-    "implementation_contract_sha256":  "540c94746571612ff819fb62a1e9fac6123c4035bc2642518eaa7740770820d0",
+    "implementation_contract_sha256":  "d274f98402e0492039a9da0bdfed538102fc6ca155f4f7870525c55c46aa0e1d",
     "priority_order":  [
                            "sn-article.tex",
                            "IMPLEMENTATION_HANDOFF.md",
                            "ARTIFACT_AND_EVIDENCE_CONTRACT.md"
                        ],
-    "status":  "RESEARCHER_APPROVED / LOCKED"
+    "status":  "RESEARCHER_APPROVED / LOCKED",
+    "hash_basis":  "GIT_BLOB_CONTENT_SHA256",
+    "controlled_revision":  "PRE_S7_THESIS_OUTPUT_READINESS"
 }

@@ -1457,6 +1457,8 @@ pseudo/val_last_teacher_predictions.json
 pseudo/qpseudo_classwise.csv
 ```
 
+`pseudo/val_last_teacher_predictions.json` là permanent scientific-retention artifact cho official SSL runs; không được xóa sau run closure và phải được giữ để hỗ trợ Q_pseudo audit và thesis qualitative reconstruction.
+
 `qpseudo_validation.json` tối thiểu:
 
 ```json
@@ -1598,6 +1600,8 @@ Không gán `0`.
 Lưu detector-native detections đủ để tái tính evaluator nếu cần.
 
 Không được thêm một threshold trước COCO AP.
+
+`detections.json` là permanent scientific-retention artifact cho mọi applicable official final-test evaluation để evaluator và thesis qualitative figures có thể được tái dựng mà không cần chạy lại model.
 
 ---
 
@@ -2968,6 +2972,168 @@ Không sử dụng cụm `marginally significant`.
 
 ---
 
+## 31.2. Qualitative medical-image thesis evidence
+
+Qualitative chest X-ray outputs là descriptive thesis evidence. Chúng không tạo endpoint, hypothesis, model-selection criterion hoặc tuning signal mới và không thay thế các quantitative analyses đã khóa.
+
+Required canonical artifacts:
+
+```text
+thesis_artifacts/qualitative/qualitative_case_selection_manifest.csv
+thesis_artifacts/qualitative/qualitative_figure_manifest.csv
+thesis_artifacts/qualitative/qualitative_reconstruction_check.json
+```
+
+Case selection phải dùng deterministic pre-specified rule độc lập với model prediction quality. Cấm chọn thủ công các ảnh có kết quả đẹp hoặc thuận lợi nhất. Với final-test qualitative outputs, selection rule phải được khóa trước final-test authorization; danh sách case được chọn chỉ được materialize sau final-test authorization, và việc chọn case không được sử dụng model predictions, prediction scores, error magnitude hoặc bất kỳ thông tin nào về chất lượng kết quả của model.
+
+Qualitative evidence có thể gồm real chest X-ray panels với GT, SUP predictions, SSL predictions, No Finding behavior và validation pseudo-labels khi applicable. Không bắt buộc mỗi RQ phải có một figure; figure chỉ được tạo khi bổ sung thông tin hữu ích ngoài quantitative table.
+
+Image-level / figure-level provenance tối thiểu phải lưu:
+
+```text
+figure_id
+panel_id
+split
+image_id
+image_sha256
+selection_rule_id
+selection_reason
+gt_source_file
+gt_source_sha256
+model_role
+run_id
+seed
+checkpoint_role
+checkpoint_sha256
+prediction_source_file
+prediction_source_sha256
+evaluator_or_acceptance_config_sha256
+generation_script
+generation_script_sha256
+figure_sha256
+```
+
+`qualitative_reconstruction_check.json` phải chứng minh mỗi retained thesis qualitative figure có thể được tái tạo từ retained source image / GT / prediction artifacts và generation script đã ghi nhận mà không cần retraining.
+
+### 31.2.1. Deterministic qualitative case-selection schema
+
+`qualitative_case_selection_manifest.csv` sử dụng schema:
+
+```text
+selection_rule_id
+rule_version
+split
+candidate_definition
+selection_count
+ordering_algorithm
+ordering_salt
+source_split_sha256
+materialization_gate
+prediction_independent
+selection_rank
+image_id
+image_sha256
+materialization_status
+```
+
+Ba rule được khóa trước khi truy cập final-test results:
+
+```text
+FT_ABNORMAL_HASH_V1
+split = final_test
+candidate_definition = images with >= 1 GT bbox
+selection_count = 6
+ordering_algorithm = ascending SHA256(ordering_salt + "|" + selection_rule_id + "|" + image_id)
+ordering_salt = SSOD_THESIS_QUAL_V1
+materialization_gate = FINAL_TEST_AUTHORIZED
+prediction_independent = TRUE
+
+FT_NO_FINDING_HASH_V1
+split = final_test
+candidate_definition = zero-GT images
+selection_count = 3
+ordering_algorithm = ascending SHA256(ordering_salt + "|" + selection_rule_id + "|" + image_id)
+ordering_salt = SSOD_THESIS_QUAL_V1
+materialization_gate = FINAL_TEST_AUTHORIZED
+prediction_independent = TRUE
+
+VAL_QPSEUDO_HASH_V1
+split = fixed_validation
+candidate_definition = all images in the fixed validation split
+selection_count = 6
+ordering_algorithm = ascending SHA256(ordering_salt + "|" + selection_rule_id + "|" + image_id)
+ordering_salt = SSOD_THESIS_QUAL_V1
+materialization_gate = SSL_RUN_CLOSED_VERIFIED
+prediction_independent = TRUE
+```
+
+Trước khi materialization gate tương ứng PASS, chỉ rule/schema được phép tồn tại; `selection_rank`, `image_id` và `image_sha256` của case thực tế phải để trống. Khi gate PASS, chọn đúng `selection_count` candidate có ordering hash nhỏ nhất. Không được thay candidate, số lượng case hoặc ordering sau khi nhìn model predictions.
+
+### 31.2.2. Qualitative figure-manifest schema
+
+`qualitative_figure_manifest.csv` phải có tối thiểu:
+
+```text
+figure_id
+figure_path
+panel_id
+panel_role
+split
+image_id
+image_sha256
+selection_rule_id
+selection_rank
+gt_source_file
+gt_source_sha256
+model_role
+architecture
+labeled_budget
+run_id
+seed
+checkpoint_role
+checkpoint_sha256
+prediction_source_file
+prediction_source_sha256
+evaluator_or_acceptance_config_sha256
+generation_script
+generation_script_sha256
+render_config_sha256
+figure_sha256
+```
+
+Nếu một panel không sử dụng model prediction, các field model/run/checkpoint/prediction tương ứng phải để trống thay vì điền giá trị suy đoán. Mọi panel dùng prediction phải trỏ tới retained raw prediction artifact của đúng run/checkpoint. Việc chọn model/run để trình bày không được dựa trên realized qualitative appearance hoặc per-image prediction quality.
+
+### 31.2.3. Qualitative reconstruction-check schema
+
+`qualitative_reconstruction_check.json` tối thiểu phải ghi:
+
+```json
+{
+  "schema_version": "1.0",
+  "status": "PASS|FAIL",
+  "case_selection_manifest_sha256": "...",
+  "figure_manifest_sha256": "...",
+  "generation_script_sha256": "...",
+  "render_config_sha256": "...",
+  "all_required_source_files_present": true,
+  "all_recorded_source_hashes_match": true,
+  "retraining_required": false,
+  "figure_regeneration_completed": true,
+  "recorded_figure_sha256": "...",
+  "regenerated_figure_sha256": "...",
+  "exact_figure_hash_match": true
+}
+```
+
+PASS chỉ khi toàn bộ retained source image / GT / prediction / checkpoint provenance cần thiết tồn tại, hash khớp, figure được regenerate mà không retraining và regenerated figure khớp recorded figure theo deterministic render configuration.
+
+Các schema/rule trên là artifact-readiness requirements; chúng không truy cập final-test GT hoặc predictions ở thời điểm controlled revision này.
+
+
+Section này chỉ bổ sung artifact, retention và provenance requirements; không thay đổi scientific estimand, evaluation threshold, statistical hypothesis, training semantics hoặc final-test authorization rule.
+
+---
+
 # 32. REPRODUCIBILITY → THESIS EVIDENCE MAP
 
 | Nội dung cần viết trong luận văn | Artifact canonical |
@@ -3034,6 +3200,11 @@ operating-point metrics
 class-wise AP
 negative metrics
 Q_pseudo artifact for SSL
+detector-native detections.json for applicable official final-test evaluations
+pseudo/val_last_teacher_predictions.json for official SSL runs
+qualitative case-selection and figure manifests
+qualitative reconstruction checks
+final thesis-ready qualitative figures
 official training/final-test master tables
 ablation inventories/effects
 statistical analysis outputs
@@ -3049,7 +3220,7 @@ retry/deviation record
 temporary caches
 download cache
 intermediate non-BEST/non-LAST checkpoints
-temporary visualization files
+temporary visualization files, excluding retained thesis-ready qualitative figures and their reconstruction inputs
 framework temporary work files
 ```
 
@@ -3413,7 +3584,7 @@ thesis table/figure ↔ analysis source provenance match
 Tài liệu này đã được khóa với:
 
 ```text
-artifact_contract_version = 1.1.0
+artifact_contract_version = 1.1.1
 schema_version = 1.1
 status = RESEARCHER_APPROVED / LOCKED
 ```
@@ -3423,8 +3594,12 @@ Lock basis:
 ```text
 scientific_source = sn-article.tex
 implementation_contract = IMPLEMENTATION_HANDOFF.md
-final_cross_check = PASS
-audited_criteria = 88/88
+original_final_cross_check = PASS
+original_audited_criteria = 88/88
+controlled_revision = PRE_S7_THESIS_OUTPUT_READINESS
+revision_scope = ARTIFACT_SCHEMA_RETENTION_PROVENANCE_ONLY
+scientific_protocol_change = FALSE
+backward_compatibility = ADDITIVE
 ```
 
 Scientific protocol change:
@@ -3649,18 +3824,22 @@ Trạng thái chính thức:
 ARTIFACT_AND_EVIDENCE_CONTRACT
 = RESEARCHER_APPROVED / LOCKED
 
-artifact_contract_version = 1.1.0
+artifact_contract_version = 1.1.1
 schema_version = 1.1
 ```
 
 Lock basis:
 
 ```text
-FINAL_CROSS_CHECK = PASS
-AUDITED_CRITERIA = 88/88
+ORIGINAL_FINAL_CROSS_CHECK = PASS
+ORIGINAL_AUDITED_CRITERIA = 88/88
+CONTROLLED_REVISION = PRE_S7_THESIS_OUTPUT_READINESS
+REVISION_SCOPE = ARTIFACT_SCHEMA_RETENTION_PROVENANCE_ONLY
+SCIENTIFIC_PROTOCOL_CHANGE = FALSE
+SOURCE_HASH_BASIS = GIT_BLOB_SHA256
 SCIENTIFIC_SOURCE = sn-article.tex
-SCIENTIFIC_SOURCE_SHA256 = a5f63ff018ee28a37ad2daa3fff337daf6b30faf34d9f12c6ff5c0fa92fe5237
-IMPLEMENTATION_HANDOFF_SHA256 = d70e556d45f4a54a5e0498842b4932deef7991de0d986095ec85e546dcc2d026
+SCIENTIFIC_SOURCE_SHA256 = b6881ce90da9194f88fd9664b51dc96bdf112145949e3a89705f16b06853c681
+IMPLEMENTATION_HANDOFF_SHA256 = d274f98402e0492039a9da0bdfed538102fc6ca155f4f7870525c55c46aa0e1d
 ```
 
 Từ thời điểm này:
