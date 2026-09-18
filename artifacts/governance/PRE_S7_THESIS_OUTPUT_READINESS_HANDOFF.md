@@ -908,7 +908,7 @@ AUTHORITY_LEVEL = NON_CANONICAL_GUIDE
 SCIENTIFIC_PROTOCOL_CHANGE = FALSE
 S7_P01_STARTED = FALSE
 FINAL_TEST_ACCESSED = FALSE
-PRE_S7_THESIS_OUTPUT_READINESS = IN_PROGRESS
+PRE_S7_THESIS_OUTPUT_READINESS = CLOSED / PASS
 ```
 
-Status này chỉ được đổi sau controlled PRE-S7 revision commit và independent post-commit verification.
+Controlled PRE-S7 revision commit `fd0aed9fe8b46f0ac45ec01c7ba5a5bf29f93961` đã được independent post-commit verification PASS. Handoff này hiện mang trạng thái operational closure `CLOSED / PASS`.
