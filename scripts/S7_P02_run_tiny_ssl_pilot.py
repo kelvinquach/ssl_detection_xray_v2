@@ -16,7 +16,11 @@ from mmengine.runner import Runner
 TRAINING_SEED = 204886845
 PARTITION_SEED = 42
 LOCKED_ATTEMPT_ID = "attempt_001"
-RETRY_ATTEMPT_ID = "attempt_002"
+RETRY_ATTEMPT_IDS = ("attempt_002", "attempt_003")
+ATTEMPT_PREDECESSOR = {
+    "attempt_002": "attempt_001",
+    "attempt_003": "attempt_002",
+}
 
 MANIFEST_REL = Path(
     "artifacts/preflight/pilot/pilot_end_to_end_manifest.json"
@@ -75,12 +79,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--attempt-id",
         default=LOCKED_ATTEMPT_ID,
-        choices=[LOCKED_ATTEMPT_ID, RETRY_ATTEMPT_ID],
+        choices=[LOCKED_ATTEMPT_ID, *RETRY_ATTEMPT_IDS],
     )
     parser.add_argument(
         "--retry-of",
         default=None,
-        choices=[LOCKED_ATTEMPT_ID],
+        choices=[LOCKED_ATTEMPT_ID, "attempt_002"],
     )
     return parser.parse_args()
 
@@ -390,10 +394,8 @@ def main() -> int:
         if args.retry_of is not None:
             raise RuntimeError("Initial attempt cannot declare retry_of")
     else:
-        if (
-            args.attempt_id != RETRY_ATTEMPT_ID
-            or args.retry_of != LOCKED_ATTEMPT_ID
-        ):
+        expected_retry_of = ATTEMPT_PREDECESSOR.get(args.attempt_id)
+        if expected_retry_of is None or args.retry_of != expected_retry_of:
             raise RuntimeError("Invalid controlled technical retry request")
         prior_dir = (expected_parent / args.retry_of).resolve()
         prior_manifest_path = prior_dir / "run_manifest.json"
@@ -406,7 +408,7 @@ def main() -> int:
         prior_retry = load_json(prior_retry_path)
         if prior_manifest.get("run_id") != args.run_id:
             raise RuntimeError("Prior attempt run_id mismatch")
-        if prior_manifest.get("attempt_id") != LOCKED_ATTEMPT_ID:
+        if prior_manifest.get("attempt_id") != args.retry_of:
             raise RuntimeError("Prior attempt_id mismatch")
         if prior_manifest.get("training_seed") != TRAINING_SEED:
             raise RuntimeError("Prior attempt training seed mismatch")
