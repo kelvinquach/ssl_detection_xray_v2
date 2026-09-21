@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "artifact_type": "GT_BBOX_ALIGNMENT_REPORT",
+  "task": "S7.P03",
+  "status": "PASS",
+  "evidence_role": "derived_preflight_evidence",
+  "scientific_protocol_change": false,
+  "source_evidence": {
+    "path": "reports/phase2D1E_post_coco_visual_overlay_audit.json",
+    "sha256": "83ce48b3bdec54666804e696f215eadfc51362de11bb7854f67f152b2c58bc7a",
+    "coco_sha256": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0",
+    "coco_sha256_expected": "f587152278f713460ff1e727a2912248a47052f6abc48de8f7bad6e8a63b94c0"
+  },
+  "scope": {
+    "automated_checks_scope": "exhaustive over ALL COCO images and ALL COCO annotations",
+    "images_total": 4894,
+    "images_checked": 4894,
+    "annotations_total": 36096,
+    "annotations_checked": 36096,
+    "bbox_tolerance_px": 1.0,
+    "bbox_tolerance_note": "Intentional +/-1px in-bounds tolerance from the existing validate_bbox_xywh validator; preserved, not changed."
+  },
+  "manual_visual_review": {
+    "scope": "representative selected samples only",
+    "status": "PENDING_GPT_REVIEW",
+    "gating_for_this_report": false,
+    "reason": "Canonical pilot rule permits visual test OR sufficiently strong assertion; this report relies on exhaustive automated assertions over all images and annotations."
+  },
+  "checks": {
+    "source_report_sha256_locked": true,
+    "canonical_coco_sha256_match": true,
+    "dataset_or_coco_modified_false": true,
+    "all_images_checked": true,
+    "all_annotations_checked": true,
+    "jpeg_availability_pass": true,
+    "dimension_consistency_pass": true,
+    "bbox_geometry_pass": true,
+    "reference_integrity_pass": true,
+    "automated_checks_status_pass": true
+  },
+  "failed_checks": [],
+  "check_count": 10,
+  "all_checks_pass": true,
+  "overall_pass": true
+}

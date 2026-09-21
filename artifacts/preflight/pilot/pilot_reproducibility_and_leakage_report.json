@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "artifact_type": "PILOT_REPRODUCIBILITY_AND_LEAKAGE_REPORT",
+  "task": "S7.P03",
+  "status": "PASS",
+  "scientific_protocol_change": false,
+  "official_training_authorized": false,
+  "final_test_authorized": false,
+  "test_accessed": false,
+  "performance_driven_tuning_used": false,
+  "technical_training_seed": 204886845,
+  "compliance_groups": {
+    "code_completes_intended_path": true,
+    "image_annotation_alignment": true,
+    "pseudo_box_transform_alignment": true,
+    "ema_timing": true,
+    "checkpoint_save_select_resume": true,
+    "protocol_seed_reproducibility": true,
+    "hidden_u_and_test_firewall": true,
+    "no_data_leakage": true
+  },
+  "evidence_sources": {
+    "artifacts/preflight/pilot/pilot_end_to_end_report.json": {
+      "sha256": "e6a5b225ec724c2ca9699e21f6d22e6ffc9799c01238d60a3c207e07b1e01401"
+    },
+    "artifacts/preflight/ssl/gt_bbox_alignment_report.json": {
+      "sha256": "c6822e14e53f4773779a64d21af85c8d37a73d6011134536a4987dbb8354e59e"
+    },
+    "artifacts/preflight/ssl/pseudo_bbox_alignment_report.json": {
+      "sha256": "27b69568818301ef21a1896fdca290ea4be2fca2ea348d3248e874e4ccc6142c"
+    },
+    "artifacts/preflight/ssl/ema_timing_test.json": {
+      "sha256": "2fa821dbe18baea43486bfa163ba578ca15ae71eecf54a2352e208b9cfc0eda0"
+    },
+    "artifacts/preflight/resume/resume_equivalence_test.json": {
+      "sha256": "f92db6919196d9f2f3098053017af57a115896c4544ef5ecc249c097a0ad5e80"
+    },
+    "artifacts/preflight/seed/training_seed_invariance_audit.json": {
+      "sha256": "209c9c3fd30da7771a4663e8bac5e5ab27c80cf79e912a4b36c193e0315b797a"
+    },
+    "artifacts/preflight/seed/seed_propagation_audit.json": {
+      "sha256": "c6e8d5d9e3ec30af0851e94e26d4b3f95b1632f10203628da0e539d313b4f1c6"
+    },
+    "artifacts/preflight/seed/dataloader_worker_seed_audit.json": {
+      "sha256": "f7fa227e60f62139c8ecdd48eb0356bac92873b4f7cf81963be631d069232921"
+    },
+    "artifacts/preflight/firewall/hidden_u_gt_firewall_report.json": {
+      "sha256": "f52fd896ea38b59fd353f191fae74a8303053eea184572973ffa18219432ac01"
+    },
+    "artifacts/preflight/firewall/test_firewall_preflight.json": {
+      "sha256": "f89161690013d4045cfafa8f677f0464e6c171cae9cb206bbf764bef044915b7"
+    },
+    "data/manifests/leakage_check_report.json": {
+      "sha256": "c794d7be3deaa9661c40f990296d03eb7f664ef81887ff62636d924f9a30d2fc"
+    },
+    "data/manifests/phase2F_leakage_check.json": {
+      "sha256": "c3d26982c4d63dca6bc817f01d589b5d096ff10cbb2dcaaf8557172d1e0ac9cc"
+    }
+  },
+  "checks": {
+    "sha256::artifacts/preflight/pilot/pilot_end_to_end_report.json": true,
+    "sha256::artifacts/preflight/ssl/gt_bbox_alignment_report.json": true,
+    "sha256::artifacts/preflight/ssl/pseudo_bbox_alignment_report.json": true,
+    "sha256::artifacts/preflight/ssl/ema_timing_test.json": true,
+    "sha256::artifacts/preflight/resume/resume_equivalence_test.json": true,
+    "sha256::artifacts/preflight/seed/training_seed_invariance_audit.json": true,
+    "sha256::artifacts/preflight/seed/seed_propagation_audit.json": true,
+    "sha256::artifacts/preflight/seed/dataloader_worker_seed_audit.json": true,
+    "sha256::artifacts/preflight/firewall/hidden_u_gt_firewall_report.json": true,
+    "sha256::artifacts/preflight/firewall/test_firewall_preflight.json": true,
+    "sha256::data/manifests/leakage_check_report.json": true,
+    "sha256::data/manifests/phase2F_leakage_check.json": true,
+    "group::code_completes_intended_path": true,
+    "group::image_annotation_alignment": true,
+    "group::pseudo_box_transform_alignment": true,
+    "group::ema_timing": true,
+    "group::checkpoint_save_select_resume": true,
+    "group::protocol_seed_reproducibility": true,
+    "group::hidden_u_and_test_firewall": true,
+    "group::no_data_leakage": true,
+    "governance::scientific_protocol_change_false": true,
+    "governance::performance_driven_tuning_false": true,
+    "governance::official_training_not_authorized": true,
+    "governance::final_test_not_authorized": true
+  },
+  "check_count": 24,
+  "failed_checks": [],
+  "all_checks_pass": true,
+  "overall_pass": true
+}
