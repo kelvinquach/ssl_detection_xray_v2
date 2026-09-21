@@ -371,7 +371,7 @@ def main() -> int:
         architecture=architecture,
         budget="1pct",
     )
-    if hidden_u.get("all_checks") is not True:
+    if hidden_u.get("all_checks_pass") is not True:
         raise RuntimeError("Hidden-U execution firewall did not PASS")
 
     seed_observation = set_global_seed(
