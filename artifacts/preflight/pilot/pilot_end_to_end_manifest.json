@@ -1,0 +1,100 @@
+{
+    "schema_version":  "1.1",
+    "artifact_type":  "PILOT_END_TO_END_MANIFEST",
+    "task":  "S7.P01",
+    "tracker_action":  "Lock tiny end-to-end pilot manifest",
+    "status":  "LOCKED_PRE_EXECUTION",
+    "execution_status":  "NOT_STARTED",
+    "scientific_protocol_change":  false,
+    "base_git_head":  "81b9096629151b60853dc206f29935f994ab775d",
+    "branch":  "implementation/s7",
+    "governance":  {
+                       "scientific_source_sha256":  "b6881ce90da9194f88fd9664b51dc96bdf112145949e3a89705f16b06853c681",
+                       "implementation_contract_sha256":  "d274f98402e0492039a9da0bdfed538102fc6ca155f4f7870525c55c46aa0e1d",
+                       "artifact_contract_sha256":  "222270bfe62f64074ec1cc9c0436a68bd3b0766b92900a1457511ba4535d4ccc"
+                   },
+    "isolation":  {
+                      "run_type":  "PILOT",
+                      "condition_role":  "PILOT",
+                      "runtime_root":  "artifacts/runs/pilot",
+                      "official_runtime_root":  "artifacts/runs/official",
+                      "pilot_to_official_rename_prohibited":  true,
+                      "eligible_for_final_test":  false,
+                      "official_training_authorized":  false,
+                      "final_evaluation_status":  "NOT_AUTHORIZED",
+                      "test_access_authorized":  false,
+                      "test_accessed":  false,
+                      "test_access_reason":  "FINAL_ONLY",
+                      "hidden_unlabeled_gt_accessed":  false,
+                      "performance_driven_tuning_prohibited":  true
+                  },
+    "purpose":  {
+                    "non_official_tiny_end_to_end":  true,
+                    "same_implementation_family_as_planned_official_path":  true,
+                    "exercise_ssl_path":  true,
+                    "exercise_pseudo_label_path":  true,
+                    "exercise_ema_path":  true,
+                    "exercise_validation_path":  true,
+                    "exercise_best_last_checkpoint_path":  true,
+                    "performance_assessment":  false,
+                    "seed_or_hyperparameter_selection":  false
+                },
+    "operational_shortening":  {
+                                   "allowed_by_canonical_contract":  true,
+                                   "pilot_expected_optimizer_updates":  1,
+                                   "pilot_max_iters":  1,
+                                   "pilot_val_interval":  1,
+                                   "official_scientific_update_budget_unchanged":  true,
+                                   "official_configs_modified":  false
+                               },
+    "shared_validation_config":  {
+                                     "path":  "configs/ssl/s5_06_ssl_scientific_validation_common.py",
+                                     "sha256":  "14232e84c4e36b1627ee7bd74c8346075c63ef3d8a9a347ccb57adbf63469f10",
+                                     "validation_ann_file":  "/workspace/ssod/data/coco/instances_val.json",
+                                     "test_dataloader_attached":  false,
+                                     "test_evaluator_attached":  false
+                                 },
+    "conditions":  [
+                       {
+                           "pilot_run_id":  "PILOT_SSL_R50_E2E_001",
+                           "method":  "SSL",
+                           "architecture":  "R50",
+                           "label_budget":  "1pct",
+                           "pilot_config":  "configs/pilot/s7_p01_ssl_r50_tiny_e2e.py",
+                           "pilot_config_sha256":  "b1e8408cea2ab8c95c5d841f6b862bc7e7e83c8e64347d4f9b84ece463a53041",
+                           "parent_official_family_config":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_1pct.py",
+                           "parent_official_family_config_sha256":  "d76c4b66025369e6f2ee9b90ba0671a9c5ae31d62a1001033571497221f0539a",
+                           "resolved_model_type":  "EmptyPseudoSafeSoftTeacher",
+                           "expected_optimizer_updates":  1,
+                           "runtime_path":  "artifacts/runs/pilot/PILOT_SSL_R50_E2E_001/attempt_001",
+                           "execution_status":  "NOT_STARTED"
+                       },
+                       {
+                           "pilot_run_id":  "PILOT_SSL_SWIN_E2E_001",
+                           "method":  "SSL",
+                           "architecture":  "SWIN",
+                           "label_budget":  "1pct",
+                           "pilot_config":  "configs/pilot/s7_p01_ssl_swin_t_tiny_e2e.py",
+                           "pilot_config_sha256":  "9d6b3a8298692c2af30c7e6bd3b00ea864527e484cbd0b9dd53864d9aa2c3dd6",
+                           "parent_official_family_config":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_1pct.py",
+                           "parent_official_family_config_sha256":  "3fce5bf62d2864088abfb143acc1287205cdc259495df45d2ea5ab71f476ef56",
+                           "resolved_model_type":  "EmptyPseudoSafeSoftTeacher",
+                           "expected_optimizer_updates":  1,
+                           "runtime_path":  "artifacts/runs/pilot/PILOT_SSL_SWIN_E2E_001/attempt_001",
+                           "execution_status":  "NOT_STARTED"
+                       }
+                   ],
+    "required_runtime_assertions":  [
+                                        "teacher_initialized_from_student_at_t0",
+                                        "ssl_labeled_and_unlabeled_paths_exercised",
+                                        "pseudo_label_generation_path_exercised",
+                                        "empty_pseudo_safe_path_supported",
+                                        "optimizer_actual_update_count_equals_1",
+                                        "ema_update_count_matches_optimizer_updates",
+                                        "validation_uses_fixed_validation_only",
+                                        "best_last_checkpoint_path_exercised",
+                                        "test_access_count_equals_0",
+                                        "pilot_runtime_isolated_from_official_runtime"
+                                    ],
+    "next_stage":  "S7.P02"
+}
