@@ -15,7 +15,8 @@ from mmengine.runner import Runner
 
 TRAINING_SEED = 204886845
 PARTITION_SEED = 42
-ATTEMPT_ID = "attempt_001"
+LOCKED_ATTEMPT_ID = "attempt_001"
+RETRY_ATTEMPT_ID = "attempt_002"
 
 MANIFEST_REL = Path(
     "artifacts/preflight/pilot/pilot_end_to_end_manifest.json"
@@ -70,6 +71,16 @@ def parse_args() -> argparse.Namespace:
             "PILOT_SSL_R50_E2E_001",
             "PILOT_SSL_SWIN_E2E_001",
         ],
+    )
+    parser.add_argument(
+        "--attempt-id",
+        default=LOCKED_ATTEMPT_ID,
+        choices=[LOCKED_ATTEMPT_ID, RETRY_ATTEMPT_ID],
+    )
+    parser.add_argument(
+        "--retry-of",
+        default=None,
+        choices=[LOCKED_ATTEMPT_ID],
     )
     return parser.parse_args()
 
@@ -169,7 +180,8 @@ def verify_s7p01_lock(
         raise RuntimeError("Pilot condition was already marked started")
 
     expected_runtime = (
-        f"artifacts/runs/pilot/{condition['pilot_run_id']}/{ATTEMPT_ID}"
+        f"artifacts/runs/pilot/{condition['pilot_run_id']}/"
+        f"{LOCKED_ATTEMPT_ID}"
     )
     if condition.get("runtime_path") != expected_runtime:
         raise RuntimeError("Locked pilot runtime path mismatch")
@@ -191,6 +203,8 @@ def build_run_manifest(
     repo_root: Path,
     condition: dict[str, Any],
     architecture: str,
+    attempt_id: str,
+    retry_of: str | None,
 ) -> dict[str, Any]:
     from src.utils.run_manifest import (
         evaluator_identity,
@@ -217,7 +231,8 @@ def build_run_manifest(
     payload: dict[str, Any] = {
         "schema_version": governance["schema_version"],
         "run_id": condition["pilot_run_id"],
-        "attempt_id": ATTEMPT_ID,
+        "attempt_id": attempt_id,
+        "retry_of": retry_of,
         "run_type": "PILOT",
         "condition_role": "PILOT",
         "method": "SSL",
@@ -269,6 +284,28 @@ def build_run_manifest(
     }
     payload.update(EXPECTED_SSL)
     return payload
+
+
+def build_retry_deviation(
+    *,
+    run_id: str,
+    attempt_id: str,
+    retry_of: str | None,
+) -> dict[str, Any]:
+    return {
+        "run_id": run_id,
+        "attempt_id": attempt_id,
+        "retry_of": retry_of,
+        "training_seed": TRAINING_SEED,
+        "technical_failure": False,
+        "failure_reason": None,
+        "retry_required": False,
+        "retry_reason": None,
+        "same_seed_confirmed": True,
+        "scientific_protocol_changed": False,
+        "controlled_revision_id": None,
+        "researcher_approval": None,
+    }
 
 
 def configure_runner(
@@ -338,12 +375,55 @@ def main() -> int:
     if architecture is None:
         raise RuntimeError("Unsupported locked pilot architecture")
 
-    work_dir = (repo_root / str(condition["runtime_path"])).resolve()
+    locked_work_dir = (
+        repo_root / str(condition["runtime_path"])
+    ).resolve()
     expected_parent = (
         repo_root / "artifacts" / "runs" / "pilot" / args.run_id
     ).resolve()
+    if locked_work_dir.parent != expected_parent:
+        raise RuntimeError("Locked pilot runtime escaped pilot namespace")
+    if locked_work_dir.name != LOCKED_ATTEMPT_ID:
+        raise RuntimeError("Locked pilot initial attempt identity mismatch")
+
+    if args.attempt_id == LOCKED_ATTEMPT_ID:
+        if args.retry_of is not None:
+            raise RuntimeError("Initial attempt cannot declare retry_of")
+    else:
+        if (
+            args.attempt_id != RETRY_ATTEMPT_ID
+            or args.retry_of != LOCKED_ATTEMPT_ID
+        ):
+            raise RuntimeError("Invalid controlled technical retry request")
+        prior_dir = (expected_parent / args.retry_of).resolve()
+        prior_manifest_path = prior_dir / "run_manifest.json"
+        prior_retry_path = prior_dir / "retry_deviation.json"
+        if not prior_manifest_path.is_file():
+            raise RuntimeError("Prior attempt run_manifest.json is missing")
+        if not prior_retry_path.is_file():
+            raise RuntimeError("Prior attempt retry_deviation.json is missing")
+        prior_manifest = load_json(prior_manifest_path)
+        prior_retry = load_json(prior_retry_path)
+        if prior_manifest.get("run_id") != args.run_id:
+            raise RuntimeError("Prior attempt run_id mismatch")
+        if prior_manifest.get("attempt_id") != LOCKED_ATTEMPT_ID:
+            raise RuntimeError("Prior attempt_id mismatch")
+        if prior_manifest.get("training_seed") != TRAINING_SEED:
+            raise RuntimeError("Prior attempt training seed mismatch")
+        if prior_manifest.get("training_status") == "CLOSED_VERIFIED":
+            raise RuntimeError("Valid closed attempt cannot be retried")
+        if prior_retry.get("technical_failure") is not True:
+            raise RuntimeError("Prior attempt is not marked technical failure")
+        if prior_retry.get("retry_required") is not True:
+            raise RuntimeError("Prior attempt is not authorized for retry")
+        if prior_retry.get("same_seed_confirmed") is not True:
+            raise RuntimeError("Prior retry record lacks same-seed confirmation")
+        if prior_retry.get("scientific_protocol_changed") is not False:
+            raise RuntimeError("Retry cannot change scientific protocol")
+
+    work_dir = (expected_parent / args.attempt_id).resolve()
     if work_dir.parent != expected_parent:
-        raise RuntimeError("Pilot work_dir escaped locked pilot namespace")
+        raise RuntimeError("Pilot work_dir escaped pilot namespace")
     if work_dir.exists():
         raise RuntimeError(
             f"Refusing to overwrite existing pilot attempt: {work_dir}"
@@ -400,14 +480,24 @@ def main() -> int:
         repo_root=repo_root,
         condition=condition,
         architecture=architecture,
+        attempt_id=args.attempt_id,
+        retry_of=args.retry_of,
     )
     write_json(work_dir / "run_manifest.json", run_manifest)
+
+    retry_deviation = build_retry_deviation(
+        run_id=args.run_id,
+        attempt_id=args.attempt_id,
+        retry_of=args.retry_of,
+    )
+    write_json(work_dir / "retry_deviation.json", retry_deviation)
 
     launch_context = {
         "schema_version": "1.0",
         "task": "S7.P02",
         "run_id": args.run_id,
-        "attempt_id": ATTEMPT_ID,
+        "attempt_id": args.attempt_id,
+        "retry_of": args.retry_of,
         "status": "PRE_RUN_PASS",
         "git_commit": git_head(repo_root),
         "s7_p01_manifest": MANIFEST_REL.as_posix(),
@@ -433,8 +523,21 @@ def main() -> int:
     }
     write_json(work_dir / "pilot_launch_context.json", launch_context)
 
-    runner = Runner.from_cfg(cfg)
-    runner.train()
+    try:
+        runner = Runner.from_cfg(cfg)
+        runner.train()
+    except Exception as exc:
+        retry_deviation["technical_failure"] = True
+        retry_deviation["failure_reason"] = (
+            f"{type(exc).__name__}: {exc}"
+        )
+        retry_deviation["retry_required"] = True
+        retry_deviation["retry_reason"] = "TECHNICAL_FAILURE_ONLY"
+        write_json(
+            work_dir / "retry_deviation.json",
+            retry_deviation,
+        )
+        raise
 
     official_after = tree_state(official_root)
     isolation_pass = (
@@ -591,7 +694,8 @@ def main() -> int:
         "schema_version": "1.0",
         "task": "S7.P02",
         "run_id": args.run_id,
-        "attempt_id": ATTEMPT_ID,
+        "attempt_id": args.attempt_id,
+        "retry_of": args.retry_of,
         "status": "PASS" if all_runtime_assertions_pass else "FAIL",
         "runner_train_returned": True,
         "pilot_runtime_path": str(work_dir),
@@ -600,6 +704,7 @@ def main() -> int:
         "official_runtime_after": official_after,
         "runtime_assertions": runtime_assertions,
         "training_summary": summary,
+        "retry_deviation": "retry_deviation.json",
         "pilot_runtime_observation":
             observation_path.relative_to(work_dir).as_posix(),
         "checkpoint_index":
