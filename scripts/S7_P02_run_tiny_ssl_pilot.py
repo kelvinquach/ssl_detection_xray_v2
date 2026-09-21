@@ -304,6 +304,8 @@ def configure_runner(
         allow_failed_imports=False,
     )
 
+    __import__(observer_module)
+
     hooks = list(cfg.get("custom_hooks", []))
     if not any(
         isinstance(hook, dict)
