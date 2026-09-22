@@ -1,0 +1,144 @@
+{
+    "schema_version":  "1.0",
+    "task":  "S7.24",
+    "closure_group":  "PF24",
+    "artifact_type":  "FROZEN_CONFIG_MANIFEST",
+    "status":  "PASS",
+    "scientific_protocol_change":  false,
+    "git_commit":  "78ef7fa5ebbd987cfd1df03569f312edbd371822",
+    "frozen_experimental_configuration":  {
+                                              "path":  "artifacts/frozen/FROZEN_EXPERIMENTAL_CONFIGURATION.yaml",
+                                              "sha256":  "f937ec2e9bd6d5368eb5b968cbaa31ad595d18edce92f996b14963d275e58526"
+                                          },
+    "executable_config_count":  18,
+    "supervised_config_count":  10,
+    "ssl_config_count":  8,
+    "executable_configs":  [
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "R50-FPN",
+                                   "budget":  "1pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_1pct.py",
+                                   "sha256":  "accdf4de45411f95134a17ada082317e2da4c63f2560c818f590308d2a0b9c5a"
+                               },
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "R50-FPN",
+                                   "budget":  "5pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_5pct.py",
+                                   "sha256":  "6db8d1d4ed54bfed627f0798fed29c4f474092b8176ec7a79bb8585c62ce6cb5"
+                               },
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "R50-FPN",
+                                   "budget":  "10pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_10pct.py",
+                                   "sha256":  "ebf77f11f305c9422edde2fd7d1df191b6f32d48df2dc38420b13b39caddbce6"
+                               },
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "R50-FPN",
+                                   "budget":  "20pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_20pct.py",
+                                   "sha256":  "278967ea5b3bec4b6379ef448b43e5ac2736b7a51dfc45a12f2c30009c839ccf"
+                               },
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "R50-FPN",
+                                   "budget":  "100pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_100pct.py",
+                                   "sha256":  "660e37ae43fc3f013614f63d1820214fdc9bcefef3a645da4ab5223ba7dc7481"
+                               },
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "Swin-T-FPN",
+                                   "budget":  "1pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_1pct.py",
+                                   "sha256":  "c067c331c8bec3261fad93da3f131d7bf9415b0f8dbb138e21daf9b79c12e1f4"
+                               },
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "Swin-T-FPN",
+                                   "budget":  "5pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_5pct.py",
+                                   "sha256":  "de476d662ab207a5b4844b6fed100022f52b92ce7e51a05e4fb9a6428f67412a"
+                               },
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "Swin-T-FPN",
+                                   "budget":  "10pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_10pct.py",
+                                   "sha256":  "ed588940c749c2eacfae5063321fb1710e2c99bc6e525d1d34fde82ab7fce35f"
+                               },
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "Swin-T-FPN",
+                                   "budget":  "20pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_20pct.py",
+                                   "sha256":  "23343f0d95d9539e09fa7980307dce990198f224fd2cdd1ae6dbfdafcc1f79c1"
+                               },
+                               {
+                                   "method":  "SUP",
+                                   "architecture":  "Swin-T-FPN",
+                                   "budget":  "100pct",
+                                   "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_100pct.py",
+                                   "sha256":  "6f73f19e2ad5ba876d88c9db8140fa32d0ff295afacab9838d76dea9e9fb66de"
+                               },
+                               {
+                                   "method":  "SSL",
+                                   "architecture":  "R50-FPN",
+                                   "budget":  "1pct",
+                                   "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_1pct.py",
+                                   "sha256":  "d76c4b66025369e6f2ee9b90ba0671a9c5ae31d62a1001033571497221f0539a"
+                               },
+                               {
+                                   "method":  "SSL",
+                                   "architecture":  "R50-FPN",
+                                   "budget":  "5pct",
+                                   "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_5pct.py",
+                                   "sha256":  "5eb9450eb123da4c6bc7eabb4b9cc4d37d81a99d8f8089f2601e438eec3d21e1"
+                               },
+                               {
+                                   "method":  "SSL",
+                                   "architecture":  "R50-FPN",
+                                   "budget":  "10pct",
+                                   "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_10pct.py",
+                                   "sha256":  "11cab476a73411512c86837382c881b37cdd9cbae1bfb3b15cf1e0ba4b02d870"
+                               },
+                               {
+                                   "method":  "SSL",
+                                   "architecture":  "R50-FPN",
+                                   "budget":  "20pct",
+                                   "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_20pct.py",
+                                   "sha256":  "0303beb8c63d67480af81de06517eb25a95c8fdcf8073af0da47e3bfef99ec6d"
+                               },
+                               {
+                                   "method":  "SSL",
+                                   "architecture":  "Swin-T-FPN",
+                                   "budget":  "1pct",
+                                   "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_1pct.py",
+                                   "sha256":  "3fce5bf62d2864088abfb143acc1287205cdc259495df45d2ea5ab71f476ef56"
+                               },
+                               {
+                                   "method":  "SSL",
+                                   "architecture":  "Swin-T-FPN",
+                                   "budget":  "5pct",
+                                   "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_5pct.py",
+                                   "sha256":  "b67c7449aa93901944abb5d0a434b59728de776f9ff33176e29a9e865f54d527"
+                               },
+                               {
+                                   "method":  "SSL",
+                                   "architecture":  "Swin-T-FPN",
+                                   "budget":  "10pct",
+                                   "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_10pct.py",
+                                   "sha256":  "b2bdc1ded47b94803f73563299c8a0838fd1a6015bd4a6c250225206472ec9fb"
+                               },
+                               {
+                                   "method":  "SSL",
+                                   "architecture":  "Swin-T-FPN",
+                                   "budget":  "20pct",
+                                   "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_20pct.py",
+                                   "sha256":  "15acb3b0e8be95e8040f17e1a47ad7d95e77b1767b7b002779b36f6994a03269"
+                               }
+                           ]
+}

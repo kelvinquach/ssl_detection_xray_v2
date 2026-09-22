@@ -1,0 +1,345 @@
+{
+    "schema_version":  "1.0",
+    "task":  "S7.24",
+    "closure_group":  "PF24",
+    "artifact_type":  "SUP_SSL_PAIRING_CONFIG_DIFF_REPORT",
+    "status":  "PASS",
+    "scientific_protocol_change":  false,
+    "git_commit":  "78ef7fa5ebbd987cfd1df03569f312edbd371822",
+    "pair_count":  8,
+    "required_match_contract":  {
+                                    "same_train_val_test_membership":  true,
+                                    "same_L_b":  true,
+                                    "same_architecture":  true,
+                                    "same_detector_family":  true,
+                                    "same_preprocessing_input_representation":  true,
+                                    "same_training_seed_mapping":  true,
+                                    "same_optimizer_recipe_within_architecture":  true,
+                                    "same_total_optimizer_update_budget":  true,
+                                    "same_effective_labeled_batch":  true,
+                                    "same_validation_test_evaluator_config":  true,
+                                    "same_checkpoint_selection_metric_family":  true
+                                },
+    "intended_ssl_only_differences":  [
+                                          "SSL adds U_b",
+                                          "Teacher/Student + EMA",
+                                          "weak/strong unlabeled streams",
+                                          "pseudo-labeling/filtering",
+                                          "unsupervised loss"
+                                      ],
+    "observed_labeled_supervision_exposure_note":  "Observed labeled-supervision exposure is not claimed from config diff; it must be rechecked post-run from training_summary.json.",
+    "pairs":  [
+                  {
+                      "architecture":  "R50-FPN",
+                      "budget":  "1pct",
+                      "sup_config":  {
+                                         "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_1pct.py",
+                                         "sha256":  "accdf4de45411f95134a17ada082317e2da4c63f2560c818f590308d2a0b9c5a"
+                                     },
+                      "ssl_config":  {
+                                         "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_1pct.py",
+                                         "sha256":  "d76c4b66025369e6f2ee9b90ba0671a9c5ae31d62a1001033571497221f0539a"
+                                     },
+                      "expected_optimizer_updates":  1032,
+                      "required_match":  {
+                                             "train_val_test_membership":  true,
+                                             "labeled_subset_L_b":  true,
+                                             "architecture":  true,
+                                             "detector_family":  true,
+                                             "preprocessing_input_representation":  true,
+                                             "training_seed_mapping":  true,
+                                             "optimizer_recipe_within_architecture":  true,
+                                             "total_optimizer_update_budget":  true,
+                                             "effective_labeled_batch":  true,
+                                             "validation_test_evaluator_config":  true,
+                                             "checkpoint_selection_metric_family":  true
+                                         },
+                      "intended_ssl_only_differences":  [
+                                                            "U_b unlabeled stream",
+                                                            "Teacher/Student + EMA",
+                                                            "weak/strong unlabeled streams",
+                                                            "pseudo-labeling/filtering",
+                                                            "unsupervised loss"
+                                                        ],
+                      "observed_labeled_supervision_exposure_status":  "DEFER_TO_POST_RUN_TRAINING_SUMMARY"
+                  },
+                  {
+                      "architecture":  "R50-FPN",
+                      "budget":  "5pct",
+                      "sup_config":  {
+                                         "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_5pct.py",
+                                         "sha256":  "6db8d1d4ed54bfed627f0798fed29c4f474092b8176ec7a79bb8585c62ce6cb5"
+                                     },
+                      "ssl_config":  {
+                                         "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_5pct.py",
+                                         "sha256":  "5eb9450eb123da4c6bc7eabb4b9cc4d37d81a99d8f8089f2601e438eec3d21e1"
+                                     },
+                      "expected_optimizer_updates":  2064,
+                      "required_match":  {
+                                             "train_val_test_membership":  true,
+                                             "labeled_subset_L_b":  true,
+                                             "architecture":  true,
+                                             "detector_family":  true,
+                                             "preprocessing_input_representation":  true,
+                                             "training_seed_mapping":  true,
+                                             "optimizer_recipe_within_architecture":  true,
+                                             "total_optimizer_update_budget":  true,
+                                             "effective_labeled_batch":  true,
+                                             "validation_test_evaluator_config":  true,
+                                             "checkpoint_selection_metric_family":  true
+                                         },
+                      "intended_ssl_only_differences":  [
+                                                            "U_b unlabeled stream",
+                                                            "Teacher/Student + EMA",
+                                                            "weak/strong unlabeled streams",
+                                                            "pseudo-labeling/filtering",
+                                                            "unsupervised loss"
+                                                        ],
+                      "observed_labeled_supervision_exposure_status":  "DEFER_TO_POST_RUN_TRAINING_SUMMARY"
+                  },
+                  {
+                      "architecture":  "R50-FPN",
+                      "budget":  "10pct",
+                      "sup_config":  {
+                                         "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_10pct.py",
+                                         "sha256":  "ebf77f11f305c9422edde2fd7d1df191b6f32d48df2dc38420b13b39caddbce6"
+                                     },
+                      "ssl_config":  {
+                                         "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_10pct.py",
+                                         "sha256":  "11cab476a73411512c86837382c881b37cdd9cbae1bfb3b15cf1e0ba4b02d870"
+                                     },
+                      "expected_optimizer_updates":  2064,
+                      "required_match":  {
+                                             "train_val_test_membership":  true,
+                                             "labeled_subset_L_b":  true,
+                                             "architecture":  true,
+                                             "detector_family":  true,
+                                             "preprocessing_input_representation":  true,
+                                             "training_seed_mapping":  true,
+                                             "optimizer_recipe_within_architecture":  true,
+                                             "total_optimizer_update_budget":  true,
+                                             "effective_labeled_batch":  true,
+                                             "validation_test_evaluator_config":  true,
+                                             "checkpoint_selection_metric_family":  true
+                                         },
+                      "intended_ssl_only_differences":  [
+                                                            "U_b unlabeled stream",
+                                                            "Teacher/Student + EMA",
+                                                            "weak/strong unlabeled streams",
+                                                            "pseudo-labeling/filtering",
+                                                            "unsupervised loss"
+                                                        ],
+                      "observed_labeled_supervision_exposure_status":  "DEFER_TO_POST_RUN_TRAINING_SUMMARY"
+                  },
+                  {
+                      "architecture":  "R50-FPN",
+                      "budget":  "20pct",
+                      "sup_config":  {
+                                         "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_20pct.py",
+                                         "sha256":  "278967ea5b3bec4b6379ef448b43e5ac2736b7a51dfc45a12f2c30009c839ccf"
+                                     },
+                      "ssl_config":  {
+                                         "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_20pct.py",
+                                         "sha256":  "0303beb8c63d67480af81de06517eb25a95c8fdcf8073af0da47e3bfef99ec6d"
+                                     },
+                      "expected_optimizer_updates":  2064,
+                      "required_match":  {
+                                             "train_val_test_membership":  true,
+                                             "labeled_subset_L_b":  true,
+                                             "architecture":  true,
+                                             "detector_family":  true,
+                                             "preprocessing_input_representation":  true,
+                                             "training_seed_mapping":  true,
+                                             "optimizer_recipe_within_architecture":  true,
+                                             "total_optimizer_update_budget":  true,
+                                             "effective_labeled_batch":  true,
+                                             "validation_test_evaluator_config":  true,
+                                             "checkpoint_selection_metric_family":  true
+                                         },
+                      "intended_ssl_only_differences":  [
+                                                            "U_b unlabeled stream",
+                                                            "Teacher/Student + EMA",
+                                                            "weak/strong unlabeled streams",
+                                                            "pseudo-labeling/filtering",
+                                                            "unsupervised loss"
+                                                        ],
+                      "observed_labeled_supervision_exposure_status":  "DEFER_TO_POST_RUN_TRAINING_SUMMARY"
+                  },
+                  {
+                      "architecture":  "Swin-T-FPN",
+                      "budget":  "1pct",
+                      "sup_config":  {
+                                         "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_1pct.py",
+                                         "sha256":  "c067c331c8bec3261fad93da3f131d7bf9415b0f8dbb138e21daf9b79c12e1f4"
+                                     },
+                      "ssl_config":  {
+                                         "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_1pct.py",
+                                         "sha256":  "3fce5bf62d2864088abfb143acc1287205cdc259495df45d2ea5ab71f476ef56"
+                                     },
+                      "expected_optimizer_updates":  1032,
+                      "required_match":  {
+                                             "train_val_test_membership":  true,
+                                             "labeled_subset_L_b":  true,
+                                             "architecture":  true,
+                                             "detector_family":  true,
+                                             "preprocessing_input_representation":  true,
+                                             "training_seed_mapping":  true,
+                                             "optimizer_recipe_within_architecture":  true,
+                                             "total_optimizer_update_budget":  true,
+                                             "effective_labeled_batch":  true,
+                                             "validation_test_evaluator_config":  true,
+                                             "checkpoint_selection_metric_family":  true
+                                         },
+                      "intended_ssl_only_differences":  [
+                                                            "U_b unlabeled stream",
+                                                            "Teacher/Student + EMA",
+                                                            "weak/strong unlabeled streams",
+                                                            "pseudo-labeling/filtering",
+                                                            "unsupervised loss"
+                                                        ],
+                      "observed_labeled_supervision_exposure_status":  "DEFER_TO_POST_RUN_TRAINING_SUMMARY"
+                  },
+                  {
+                      "architecture":  "Swin-T-FPN",
+                      "budget":  "5pct",
+                      "sup_config":  {
+                                         "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_5pct.py",
+                                         "sha256":  "de476d662ab207a5b4844b6fed100022f52b92ce7e51a05e4fb9a6428f67412a"
+                                     },
+                      "ssl_config":  {
+                                         "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_5pct.py",
+                                         "sha256":  "b67c7449aa93901944abb5d0a434b59728de776f9ff33176e29a9e865f54d527"
+                                     },
+                      "expected_optimizer_updates":  2064,
+                      "required_match":  {
+                                             "train_val_test_membership":  true,
+                                             "labeled_subset_L_b":  true,
+                                             "architecture":  true,
+                                             "detector_family":  true,
+                                             "preprocessing_input_representation":  true,
+                                             "training_seed_mapping":  true,
+                                             "optimizer_recipe_within_architecture":  true,
+                                             "total_optimizer_update_budget":  true,
+                                             "effective_labeled_batch":  true,
+                                             "validation_test_evaluator_config":  true,
+                                             "checkpoint_selection_metric_family":  true
+                                         },
+                      "intended_ssl_only_differences":  [
+                                                            "U_b unlabeled stream",
+                                                            "Teacher/Student + EMA",
+                                                            "weak/strong unlabeled streams",
+                                                            "pseudo-labeling/filtering",
+                                                            "unsupervised loss"
+                                                        ],
+                      "observed_labeled_supervision_exposure_status":  "DEFER_TO_POST_RUN_TRAINING_SUMMARY"
+                  },
+                  {
+                      "architecture":  "Swin-T-FPN",
+                      "budget":  "10pct",
+                      "sup_config":  {
+                                         "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_10pct.py",
+                                         "sha256":  "ed588940c749c2eacfae5063321fb1710e2c99bc6e525d1d34fde82ab7fce35f"
+                                     },
+                      "ssl_config":  {
+                                         "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_10pct.py",
+                                         "sha256":  "b2bdc1ded47b94803f73563299c8a0838fd1a6015bd4a6c250225206472ec9fb"
+                                     },
+                      "expected_optimizer_updates":  2064,
+                      "required_match":  {
+                                             "train_val_test_membership":  true,
+                                             "labeled_subset_L_b":  true,
+                                             "architecture":  true,
+                                             "detector_family":  true,
+                                             "preprocessing_input_representation":  true,
+                                             "training_seed_mapping":  true,
+                                             "optimizer_recipe_within_architecture":  true,
+                                             "total_optimizer_update_budget":  true,
+                                             "effective_labeled_batch":  true,
+                                             "validation_test_evaluator_config":  true,
+                                             "checkpoint_selection_metric_family":  true
+                                         },
+                      "intended_ssl_only_differences":  [
+                                                            "U_b unlabeled stream",
+                                                            "Teacher/Student + EMA",
+                                                            "weak/strong unlabeled streams",
+                                                            "pseudo-labeling/filtering",
+                                                            "unsupervised loss"
+                                                        ],
+                      "observed_labeled_supervision_exposure_status":  "DEFER_TO_POST_RUN_TRAINING_SUMMARY"
+                  },
+                  {
+                      "architecture":  "Swin-T-FPN",
+                      "budget":  "20pct",
+                      "sup_config":  {
+                                         "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_20pct.py",
+                                         "sha256":  "23343f0d95d9539e09fa7980307dce990198f224fd2cdd1ae6dbfdafcc1f79c1"
+                                     },
+                      "ssl_config":  {
+                                         "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_20pct.py",
+                                         "sha256":  "15acb3b0e8be95e8040f17e1a47ad7d95e77b1767b7b002779b36f6994a03269"
+                                     },
+                      "expected_optimizer_updates":  2064,
+                      "required_match":  {
+                                             "train_val_test_membership":  true,
+                                             "labeled_subset_L_b":  true,
+                                             "architecture":  true,
+                                             "detector_family":  true,
+                                             "preprocessing_input_representation":  true,
+                                             "training_seed_mapping":  true,
+                                             "optimizer_recipe_within_architecture":  true,
+                                             "total_optimizer_update_budget":  true,
+                                             "effective_labeled_batch":  true,
+                                             "validation_test_evaluator_config":  true,
+                                             "checkpoint_selection_metric_family":  true
+                                         },
+                      "intended_ssl_only_differences":  [
+                                                            "U_b unlabeled stream",
+                                                            "Teacher/Student + EMA",
+                                                            "weak/strong unlabeled streams",
+                                                            "pseudo-labeling/filtering",
+                                                            "unsupervised loss"
+                                                        ],
+                      "observed_labeled_supervision_exposure_status":  "DEFER_TO_POST_RUN_TRAINING_SUMMARY"
+                  }
+              ],
+    "evidence_sources":  {
+                             "artifacts/frozen/FROZEN_EXPERIMENTAL_CONFIGURATION.yaml":  {
+                                                                                             "sha256":  "f937ec2e9bd6d5368eb5b968cbaa31ad595d18edce92f996b14963d275e58526"
+                                                                                         },
+                             "artifacts/frozen/frozen_config_manifest.json":  {
+                                                                                  "sha256":  "b2cfe9d9d84755ce7c2bf239ed2dfb04f50184f4f839ad5164a11a1af2b993d2"
+                                                                              },
+                             "artifacts/preflight/seed/training_seed_invariance_audit.json":  {
+                                                                                                  "sha256":  "209c9c3fd30da7771a4663e8bac5e5ab27c80cf79e912a4b36c193e0315b797a"
+                                                                                              },
+                             "artifacts/preflight/seed/seed_propagation_audit.json":  {
+                                                                                          "sha256":  "c6e8d5d9e3ec30af0851e94e26d4b3f95b1632f10203628da0e539d313b4f1c6"
+                                                                                      },
+                             "artifacts/preflight/sup/supervised_augmentation_manifest.json":  {
+                                                                                                   "sha256":  "d55bf46ec4d340c8f89b9710436b813164c4a5e182b35c36aab64b20f77d13df"
+                                                                                               },
+                             "artifacts/preflight/ssl/ssl_augmentation_manifest.json":  {
+                                                                                            "sha256":  "6e6fb0d680edd8f4a0da0a765cc9539c0b1a176257b910f67cea0907e8762ebb"
+                                                                                        },
+                             "artifacts/preflight/sup/sup_r50_preflight.json":  {
+                                                                                    "sha256":  "a0a7de1901aef232186820590331826a3c4ec062835f9db467ddd661eab62e9a"
+                                                                                },
+                             "artifacts/preflight/sup/sup_swin_preflight.json":  {
+                                                                                     "sha256":  "88839e66ed130e6addf4bb397d79a87f99d734a4e423a63dbba0f73e7ef3750b"
+                                                                                 },
+                             "artifacts/preflight/ssl/ssl_r50_preflight.json":  {
+                                                                                    "sha256":  "604d1db93403cf58e4b123ef8fb7308d428214cac1bf943cff8120a20308695e"
+                                                                                },
+                             "artifacts/preflight/ssl/ssl_swin_preflight.json":  {
+                                                                                     "sha256":  "696e76139e8d8477e3d4d6312b68cb5b7616e5fe6b37aa716150a7d4e10e347d"
+                                                                                 },
+                             "artifacts/preflight/evaluation/coco_evaluator_golden_test.json":  {
+                                                                                                    "sha256":  "8eab0773c0c06ed98e4f31a41bf4d5433d6eee341fdc120c3a77f70d3df332eb"
+                                                                                                }
+                         },
+    "failed_checks":  [
+
+                      ],
+    "all_checks_pass":  true,
+    "overall_pass":  true
+}

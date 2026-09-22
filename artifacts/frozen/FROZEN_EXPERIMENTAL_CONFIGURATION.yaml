@@ -1,0 +1,291 @@
+schema_version: "1.0"
+task: "S7.24"
+closure_group: "PF24"
+artifact_type: "FROZEN_EXPERIMENTAL_CONFIGURATION"
+scientific_protocol_change: false
+parameters:
+  partition_seed:
+    factor: "partition_seed"
+    value: 42
+    scientific_role: "fixed data partition and labeled-subset construction seed"
+    source: "IMPLEMENTATION_HANDOFF.md#5.1"
+    change_permission: "PROHIBITED"
+  training_seed_policy:
+    factor: "training_seed_policy"
+    value: "10_prespecified_locked_training_seeds"
+    scientific_role: "paired stochastic replication policy shared by SUP and SSL"
+    source: "IMPLEMENTATION_HANDOFF.md#5.2"
+    change_permission: "PROHIBITED"
+  training_seed_list:
+    factor: "training_seed_list"
+    value: [204886845, 1480646854, 1798418854, 2045683682, 1814859839, 1603952859, 1878351743, 875651179, 477581743, 869675675]
+    scientific_role: "exact ordered operational training-seed list"
+    source: "IMPLEMENTATION_HANDOFF.md / Phase_2F1_seed_protocol"
+    change_permission: "PROHIBITED"
+  labeled_data_budget_main:
+    factor: "labeled_data_budget_main"
+    levels: ["1pct", "5pct", "10pct", "20pct"]
+    scientific_role: "image-level labeled-data budgets for paired SUP-SSL Main experiments"
+    source: "IMPLEMENTATION_HANDOFF.md#3,#6"
+    change_permission: "PROHIBITED"
+  sup_reference_budget:
+    factor: "sup_reference_budget"
+    value: "100pct"
+    scientific_role: "fully supervised reference condition"
+    source: "IMPLEMENTATION_HANDOFF.md#10"
+    change_permission: "PROHIBITED"
+  architecture_pair:
+    factor: "architecture"
+    levels: ["R50-FPN", "Swin-T-FPN"]
+    scientific_role: "official detector-backbone architecture pair"
+    source: "IMPLEMENTATION_HANDOFF.md#8"
+    change_permission: "PROHIBITED"
+  paradigm:
+    factor: "paradigm"
+    levels: ["SUP", "SSL"]
+    scientific_role: "paired supervised versus semi-supervised comparison"
+    source: "IMPLEMENTATION_HANDOFF.md#6"
+    change_permission: "PROHIBITED"
+  detector_family:
+    factor: "detector_family"
+    value: "Faster R-CNN + FPN"
+    scientific_role: "shared detector family within paired comparisons"
+    source: "IMPLEMENTATION_HANDOFF.md#8"
+    change_permission: "PROHIBITED"
+  pretraining:
+    factor: "backbone_pretraining"
+    value:
+      R50: "ImageNet-1K pretrained"
+      Swin-T: "ImageNet-1K pretrained; checkpoint SHA256 9f71c168d837d1b99dd1dc29e14990a7a9e8bdc5f673d46b04fe36fe15590ad3; backbone-only; convert_weights=True"
+      detector_level_coco_initialization: "PROHIBITED"
+    scientific_role: "locked backbone initialization policy"
+    source: "IMPLEMENTATION_HANDOFF.md#8"
+    change_permission: "PROHIBITED"
+  input_representation:
+    factor: "input_representation"
+    value: "stored JPEG grayscale 1-channel; model input replicated to 3 identical channels R=G=B"
+    scientific_role: "shared image representation"
+    source: "IMPLEMENTATION_HANDOFF.md#8"
+    change_permission: "PROHIBITED"
+  resize_pad:
+    factor: "resize_pad"
+    value:
+      scale: [1333, 800]
+      keep_ratio: true
+      pad_size_divisor: 32
+    scientific_role: "shared spatial preprocessing"
+    source: "IMPLEMENTATION_HANDOFF.md#8"
+    change_permission: "PROHIBITED"
+  supervised_augmentation:
+    factor: "supervised_augmentation"
+    value: "Load -> Resize -> Pack; no flip/crop/rotation/mosaic/aggressive photometric augmentation"
+    scientific_role: "Main labeled-stream augmentation"
+    source: "IMPLEMENTATION_HANDOFF.md#9.1"
+    change_permission: "PROHIBITED"
+  effective_labeled_batch:
+    factor: "effective_labeled_batch"
+    value: 4
+    scientific_role: "paired labeled-supervision batch exposure"
+    source: "IMPLEMENTATION_HANDOFF.md#9.2,#13"
+    change_permission: "PROHIBITED"
+  r50_optimizer:
+    factor: "R50_optimizer"
+    value:
+      optimizer: "SGD"
+      lr: 0.005
+      momentum: 0.9
+      weight_decay: 0.0001
+    scientific_role: "architecture-specific optimizer recipe"
+    source: "IMPLEMENTATION_HANDOFF.md#9.3"
+    change_permission: "PROHIBITED"
+  swin_optimizer:
+    factor: "Swin-T_optimizer"
+    value:
+      optimizer: "AdamW"
+      lr: 0.000025
+      betas: [0.9, 0.999]
+      weight_decay: 0.05
+      native_swin_no_decay_rules: "retained"
+    scientific_role: "architecture-specific optimizer recipe"
+    source: "IMPLEMENTATION_HANDOFF.md#9.4"
+    change_permission: "PROHIBITED"
+  numerical_rules:
+    factor: "numerical_rules"
+    value:
+      AMP: "ON"
+      gradient_clipping: "OFF"
+      all_backbone_stages_trainable: true
+      R50_norm_eval: true
+      R50_bn_running_stats_updated: false
+      R50_bn_affine_trainable: true
+    scientific_role: "locked numerical/training-mode rules"
+    source: "IMPLEMENTATION_HANDOFF.md#9.5"
+    change_permission: "PROHIBITED"
+  optimizer_update_budget:
+    factor: "optimizer_update_budget"
+    value:
+      1pct: 1032
+      5pct: 2064
+      10pct: 2064
+      20pct: 2064
+      100pct_sup: 10284
+    scientific_role: "actual optimizer-update budget"
+    source: "IMPLEMENTATION_HANDOFF.md#10"
+    change_permission: "PROHIBITED"
+  scheduler_relative_drop_positions:
+    factor: "scheduler_relative_drop_positions"
+    value: ["2/3", "11/12"]
+    basis: "ACTUAL_OPTIMIZER_UPDATE"
+    scientific_role: "relative learning-rate drop positions"
+    source: "ARTIFACT_AND_EVIDENCE_CONTRACT.md#22"
+    change_permission: "PROHIBITED"
+  scheduler_milestones:
+    factor: "scheduler_milestones"
+    value:
+      1pct: [688, 946]
+      5pct: [1376, 1892]
+      10pct: [1376, 1892]
+      20pct: [1376, 1892]
+      100pct_sup: [6856, 9427]
+    scientific_role: "absolute LR milestones in actual optimizer updates"
+    source: "IMPLEMENTATION_HANDOFF.md#10; ARTIFACT_AND_EVIDENCE_CONTRACT.md#22"
+    change_permission: "PROHIBITED"
+  validation_interval:
+    factor: "validation_interval"
+    value: 172
+    basis: "ACTUAL_OPTIMIZER_UPDATE"
+    scientific_role: "fixed validation cadence"
+    source: "IMPLEMENTATION_HANDOFF.md#10"
+    change_permission: "PROHIBITED"
+  ssl_teacher_student:
+    factor: "ssl_teacher_student"
+    value:
+      Student: "optimized by gradient descent"
+      Teacher: "EMA model"
+      Teacher_architecture: "same as Student"
+      initialization: "Teacher(t0)=Student(t0)"
+      supervised_burn_in: false
+      resume_rule: "restore both Student and Teacher; do not resync Teacher from Student"
+    scientific_role: "Main SSL teacher-student semantics"
+    source: "IMPLEMENTATION_HANDOFF.md#11"
+    change_permission: "PROHIBITED"
+  ema:
+    factor: "EMA"
+    value:
+      momentum: 0.001
+      skip_buffers: true
+      update_timing: "once per actual Student optimizer update"
+      amp_skipped_step_behavior: "EMA update also skipped"
+    scientific_role: "Teacher update rule"
+    source: "IMPLEMENTATION_HANDOFF.md#11.2"
+    change_permission: "PROHIBITED"
+  ssl_weak_augmentation:
+    factor: "ssl_weak_augmentation"
+    value: "Resize + standard preprocessing + padding; no flip/crop/rotation/photometric augmentation"
+    scientific_role: "Teacher weak-view pipeline"
+    source: "IMPLEMENTATION_HANDOFF.md#12.1"
+    change_permission: "PROHIBITED"
+  ssl_strong_augmentation:
+    factor: "ssl_strong_augmentation"
+    value:
+      pipeline: "Resize + grayscale brightness U(0.90,1.10) + grayscale contrast U(0.90,1.10)"
+      channel_constraint: "R=G=B"
+      geometry: "no geometric transform"
+      random_erasing: false
+      mosaic: false
+    scientific_role: "Student strong-view pipeline"
+    source: "IMPLEMENTATION_HANDOFF.md#12.2"
+    change_permission: "PROHIBITED"
+  ssl_loss:
+    factor: "ssl_loss"
+    value:
+      formula: "L_total = L_sup + 4 * L_unsup"
+      sup_weight: 1
+      unsup_weight: 4
+      burn_in: false
+      ramp_up: false
+    scientific_role: "Main SSL loss weighting"
+    source: "IMPLEMENTATION_HANDOFF.md#13"
+    change_permission: "PROHIBITED"
+  ssl_sampling:
+    factor: "ssl_sampling"
+    value:
+      labeled_to_unlabeled_ratio: "1:1"
+      effective_labeled_batch: 4
+      effective_unlabeled_batch: 4
+    scientific_role: "paired SSL stream composition"
+    source: "IMPLEMENTATION_HANDOFF.md#13"
+    change_permission: "PROHIBITED"
+  pseudo_thresholds:
+    factor: "pseudo_thresholds"
+    value:
+      detector_score_floor: 0.05
+      initial_pseudo_score: 0.50
+      RPN_pseudo_threshold: 0.90
+      RCNN_classification_threshold: 0.90
+    scientific_role: "Main pseudo-label acceptance thresholds"
+    source: "IMPLEMENTATION_HANDOFF.md#14.1"
+    change_permission: "PROHIBITED"
+  pseudo_nms:
+    factor: "pseudo_nms"
+    value:
+      RPN_NMS_IoU: 0.70
+      RPN_max: 1000
+      RCNN_NMS_IoU: 0.50
+      RCNN_max: 100
+    scientific_role: "Main pseudo-label NMS/proposal limits"
+    source: "IMPLEMENTATION_HANDOFF.md#14.2"
+    change_permission: "PROHIBITED"
+  pseudo_regression_reliability:
+    factor: "pseudo_regression_reliability"
+    value:
+      jitter_times: 10
+      jitter_scale: 0.06
+      reg_uncertainty_threshold: 0.02
+      min_pseudo_bbox_wh: [0.01, 0.01]
+      regression_set_rule: "initial_score > 0.50 AND reg_uncertainty < 0.02"
+      classification_score_0_90_required_for_regression_set: false
+    scientific_role: "regression pseudo-label reliability filter"
+    source: "IMPLEMENTATION_HANDOFF.md#14.3"
+    change_permission: "PROHIBITED"
+  checkpoint_rules:
+    factor: "checkpoint_rules"
+    value:
+      SUP: "BEST=argmax validation bbox mAP@[0.50:0.95], STRICT > tie rule, retain BEST+LAST, LATEST_RESUME operational only"
+      SSL: "official model=EMA Teacher; BEST EMA Teacher by validation Teacher bbox mAP@[0.50:0.95]; retain LAST EMA Teacher separately"
+      SSL_roles: "BEST -> official detection; LAST -> Q_pseudo on fixed validation"
+    scientific_role: "scientific checkpoint selection and retention"
+    source: "IMPLEMENTATION_HANDOFF.md#16"
+    change_permission: "PROHIBITED"
+  qpseudo:
+    factor: "Q_pseudo"
+    value:
+      primary_metric: "PL-mAP@[0.50:0.95]"
+      checkpoint: "LAST EMA Teacher"
+      dataset: "fixed validation"
+      pseudo_set: "accepted RCNN classification pseudo labels"
+      hidden_U_GT: "PROHIBITED"
+      test_Q_pseudo: "PROHIBITED"
+    scientific_role: "pseudo-label quality analysis contract"
+    source: "IMPLEMENTATION_HANDOFF.md#17"
+    change_permission: "PROHIBITED"
+  evaluation:
+    factor: "evaluation"
+    value:
+      primary_endpoint: "bbox mAP@[0.50:0.95]"
+      COCO_IoU: "0.50:0.05:0.95"
+      useCats: 1
+      maxDets: 100
+      extra_fixed_score_threshold_before_AP: false
+      operating_point_tau_eval: 0.50
+      operating_point_IoU_match: 0.50
+      operating_point_matching: "deterministic score-descending greedy, category-aware, one-to-one after detector-native NMS/max100"
+    scientific_role: "locked detector evaluation protocol"
+    source: "IMPLEMENTATION_HANDOFF.md#18"
+    change_permission: "PROHIBITED"
+  test_firewall:
+    factor: "test_firewall"
+    value: "FINAL_ONLY"
+    scientific_role: "test isolation from development, tuning and checkpoint selection"
+    source: "IMPLEMENTATION_HANDOFF.md#19"
+    change_permission: "PROHIBITED"
