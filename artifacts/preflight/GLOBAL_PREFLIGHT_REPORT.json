@@ -1,0 +1,282 @@
+{
+    "schema_version":  "1.1",
+    "task":  "S7.26",
+    "artifact_type":  "GLOBAL_PREFLIGHT_REPORT",
+    "status":  "PASS",
+    "git_commit":  "8114e0b361f723a2674c8627d055adc0fde21f32",
+    "scientific_protocol_change":  false,
+    "researcher_authorization":  false,
+    "closure_group_count":  25,
+    "checks":  [
+                   {
+                       "check_id":  "PF01",
+                       "name":  "data_membership_seed",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/data/split_membership_audit.json",
+                                              "artifacts/preflight/data/labeled_unlabeled_membership_audit.json",
+                                              "artifacts/preflight/seed/training_seed_invariance_audit.json"
+                                          ],
+                       "status":  "PASS",
+                       "evidence_note":  "Two data-membership artifacts were reconfirmed directly on Vast in S7.26 Verification 5; training-seed invariance evidence is tracked locally."
+                   },
+                   {
+                       "check_id":  "PF02",
+                       "name":  "dataloader_sampler_worker_stochasticity",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/seed/seed_propagation_audit.json",
+                                              "artifacts/preflight/seed/dataloader_worker_seed_audit.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF03",
+                       "name":  "sup_r50_execution_path",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/sup/sup_r50_preflight.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF04",
+                       "name":  "sup_swin_t_execution_path",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/sup/sup_swin_preflight.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF05",
+                       "name":  "ssl_r50_execution_path",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/ssl/ssl_r50_preflight.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF06",
+                       "name":  "ssl_swin_t_execution_path",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/ssl/ssl_swin_preflight.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF07",
+                       "name":  "scheduler_update_1pct",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/sup/schedule_1pct_preflight.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF08",
+                       "name":  "scheduler_2064_and_100pct_10284_reference_path",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/sup/schedule_2064_preflight.json",
+                                              "artifacts/preflight/sup/schedule_100pct_10284_preflight.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF09",
+                       "name":  "image_gt_bbox_geometry_alignment",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/ssl/gt_bbox_alignment_report.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF10",
+                       "name":  "image_pseudo_bbox_geometry_alignment",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/ssl/pseudo_bbox_alignment_report.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF11",
+                       "name":  "teacher_initialization",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/ssl/teacher_initialization_test.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF12",
+                       "name":  "ema_timing",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/ssl/ema_timing_test.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF13",
+                       "name":  "amp_skipped_step_ema_skip",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/ssl/amp_ema_skip_test.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF14",
+                       "name":  "empty_pseudo_label_behavior",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/ssl/empty_pseudo_batch_test.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF15",
+                       "name":  "zero_gt_handling",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/ssl/zero_gt_test.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF16",
+                       "name":  "hidden_u_gt_firewall",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/firewall/hidden_u_gt_firewall_report.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF17",
+                       "name":  "checkpoint_best_last_logic",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/sup/sup_best_last_checkpoint_preflight.json",
+                                              "artifacts/preflight/ssl/ssl_best_last_checkpoint_repair_preflight.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF18",
+                       "name":  "qpseudo_last_teacher_validation",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/evaluation/qpseudo_path_golden_test.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF19",
+                       "name":  "coco_evaluator",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/evaluation/coco_evaluator_golden_test.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF20",
+                       "name":  "operating_point_metrics",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/evaluation/operating_point_golden_test.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF21",
+                       "name":  "resume_path",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/resume/resume_equivalence_test.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF22",
+                       "name":  "run_manifest_seed_provenance_entrypoint_dataloader_augmentation",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/sup/supervised_entrypoint_manifest.json",
+                                              "artifacts/preflight/ssl/ssl_entrypoint_manifest.json",
+                                              "artifacts/preflight/seed/training_seed_invariance_audit.json",
+                                              "artifacts/preflight/seed/seed_propagation_audit.json",
+                                              "artifacts/preflight/seed/dataloader_worker_seed_audit.json",
+                                              "artifacts/preflight/sup/supervised_augmentation_manifest.json",
+                                              "artifacts/preflight/ssl/ssl_augmentation_manifest.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF23",
+                       "name":  "pilot_official_isolation_and_test_firewall",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/pilot/pilot_end_to_end_report.json",
+                                              "artifacts/preflight/pilot/pilot_reproducibility_and_leakage_report.json",
+                                              "artifacts/preflight/firewall/test_firewall_preflight.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF24",
+                       "name":  "frozen_executable_configs_hashability_and_sup_ssl_pairing",
+                       "expected":  "PASS",
+                       "observed":  "PASS",
+                       "evidence_paths":  [
+                                              "artifacts/frozen/FROZEN_EXPERIMENTAL_CONFIGURATION.yaml",
+                                              "artifacts/frozen/frozen_config_manifest.json",
+                                              "artifacts/preflight/pairing/sup_ssl_pairing_config_diff_report.json"
+                                          ],
+                       "status":  "PASS"
+                   },
+                   {
+                       "check_id":  "PF25",
+                       "name":  "no_unresolved_protocol_relevant_warning",
+                       "expected":  "TRUE",
+                       "observed":  "TRUE",
+                       "evidence_paths":  [
+                                              "artifacts/preflight/GLOBAL_PREFLIGHT_REPORT.json#PF25"
+                                          ],
+                       "status":  "PASS",
+                       "evidence_note":  "S7.25 closed PASS after direct warning inventory and negative-fixture disambiguation; unresolved protocol-relevant warning count is zero."
+                   }
+               ],
+    "unresolved_protocol_relevant_warnings":  0,
+    "all_required_checks_pass":  true,
+    "official_training_authorized":  false
+}
