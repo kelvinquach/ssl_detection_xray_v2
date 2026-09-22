@@ -1,0 +1,123 @@
+{
+    "schema_version":  "1.0",
+    "artifact_type":  "SUPERVISED_ENTRYPOINT_MANIFEST",
+    "task":  "S7.22",
+    "closure_group":  "PF22",
+    "status":  "PASS",
+    "method":  "SUP",
+    "scientific_protocol_change":  false,
+    "official_training_authorized":  false,
+    "official_training_executed":  false,
+    "git_commit":  "91953f33d5cb87b01207c3346933c5e53082249b",
+    "entrypoint":  {
+                       "type":  "MMDETECTION_INSTALLED_TRAIN_SCRIPT",
+                       "path":  "/opt/conda/lib/python3.10/site-packages/mmdet/.mim/tools/train.py",
+                       "sha256":  "5f55afe19febf1c9c20d50204492f7f83e021f0f17c57609e7b265d45af92cf0",
+                       "mmdet_version":  "3.3.0",
+                       "mmengine_version":  "0.10.7",
+                       "help_smoke_test":  "PASS",
+                       "verified_source_semantics":  {
+                                                         "config_load":  "Config.fromfile(args.config)",
+                                                         "config_load_line":  68,
+                                                         "runner_construction":  "Runner.from_cfg(cfg)",
+                                                         "runner_construction_line":  110,
+                                                         "training_call":  "runner.train()",
+                                                         "training_call_line":  117
+                                                     },
+                       "verified_command_interface":  "python \u003centrypoint_path\u003e \u003cconfig\u003e [--work-dir WORK_DIR]"
+                   },
+    "final_config_family":  {
+                                "count":  10,
+                                "load_status":  "PASS",
+                                "configs":  [
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_1pct.py",
+                                                    "sha256":  "accdf4de45411f95134a17ada082317e2da4c63f2560c818f590308d2a0b9c5a"
+                                                },
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_5pct.py",
+                                                    "sha256":  "6db8d1d4ed54bfed627f0798fed29c4f474092b8176ec7a79bb8585c62ce6cb5"
+                                                },
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_10pct.py",
+                                                    "sha256":  "ebf77f11f305c9422edde2fd7d1df191b6f32d48df2dc38420b13b39caddbce6"
+                                                },
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_20pct.py",
+                                                    "sha256":  "278967ea5b3bec4b6379ef448b43e5ac2736b7a51dfc45a12f2c30009c839ccf"
+                                                },
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_r50_fpn_sup_100pct.py",
+                                                    "sha256":  "660e37ae43fc3f013614f63d1820214fdc9bcefef3a645da4ab5223ba7dc7481"
+                                                },
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_1pct.py",
+                                                    "sha256":  "c067c331c8bec3261fad93da3f131d7bf9415b0f8dbb138e21daf9b79c12e1f4"
+                                                },
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_5pct.py",
+                                                    "sha256":  "de476d662ab207a5b4844b6fed100022f52b92ce7e51a05e4fb9a6428f67412a"
+                                                },
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_10pct.py",
+                                                    "sha256":  "ed588940c749c2eacfae5063321fb1710e2c99bc6e525d1d34fde82ab7fce35f"
+                                                },
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_20pct.py",
+                                                    "sha256":  "23343f0d95d9539e09fa7980307dce990198f224fd2cdd1ae6dbfdafcc1f79c1"
+                                                },
+                                                {
+                                                    "path":  "configs/supervised/s3_13_faster_rcnn_swin_t_fpn_sup_100pct.py",
+                                                    "sha256":  "6f73f19e2ad5ba876d88c9db8140fa32d0ff295afacab9838d76dea9e9fb66de"
+                                                }
+                                            ]
+                            },
+    "seed_evidence":  [
+                          {
+                              "path":  "artifacts/preflight/seed/training_seed_invariance_audit.json",
+                              "sha256":  "209c9c3fd30da7771a4663e8bac5e5ab27c80cf79e912a4b36c193e0315b797a"
+                          },
+                          {
+                              "path":  "artifacts/preflight/seed/seed_propagation_audit.json",
+                              "sha256":  "c6e8d5d9e3ec30af0851e94e26d4b3f95b1632f10203628da0e539d313b4f1c6"
+                          },
+                          {
+                              "path":  "artifacts/preflight/seed/dataloader_worker_seed_audit.json",
+                              "sha256":  "f7fa227e60f62139c8ecdd48eb0356bac92873b4f7cf81963be631d069232921"
+                          }
+                      ],
+    "augmentation_evidence":  {
+                                  "path":  "artifacts/preflight/sup/supervised_augmentation_manifest.json",
+                                  "sha256":  "d55bf46ec4d340c8f89b9710436b813164c4a5e182b35c36aab64b20f77d13df",
+                                  "status":  "PASS"
+                              },
+    "runtime_data_evidence":  [
+                                  {
+                                      "path":  "/workspace/ssod/artifacts/preflight/data/dataset_loader_manifest.json",
+                                      "sha256":  "00701cc16255123e3cd4a4385c4baebdc59a5bcf9a921ac1862217ef3b431f16",
+                                      "status":  "PASS"
+                                  },
+                                  {
+                                      "path":  "/workspace/ssod/artifacts/preflight/data/class_mapping_audit.json",
+                                      "sha256":  "b1f3f2d675827554d1d6f169419cb009d4e41fdf01f5e74c7775a63285fed2a4",
+                                      "status":  "PASS"
+                                  }
+                              ],
+    "checks":  {
+                   "entrypoint_exists_in_locked_runtime":  true,
+                   "entrypoint_sha256_verified":  true,
+                   "entrypoint_help_smoke_test_pass":  true,
+                   "entrypoint_source_semantics_verified":  true,
+                   "all_10_final_sup_configs_hash_verified":  true,
+                   "all_10_final_sup_configs_load_pass":  true,
+                   "seed_direct_evidence_present":  true,
+                   "dataloader_direct_evidence_pass":  true,
+                   "class_mapping_direct_evidence_pass":  true,
+                   "supervised_augmentation_direct_evidence_pass":  true,
+                   "official_training_remains_unauthorized":  true
+               },
+    "failed_checks":  [
+
+                      ],
+    "all_checks_pass":  true
+}

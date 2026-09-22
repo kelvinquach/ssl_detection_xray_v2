@@ -1,0 +1,141 @@
+{
+    "schema_version":  "1.0",
+    "artifact_type":  "SSL_ENTRYPOINT_MANIFEST",
+    "task":  "S7.22",
+    "closure_group":  "PF22",
+    "status":  "PASS",
+    "method":  "SSL",
+    "scientific_protocol_change":  false,
+    "official_training_authorized":  false,
+    "official_training_executed":  false,
+    "git_commit":  "91953f33d5cb87b01207c3346933c5e53082249b",
+    "entrypoint":  {
+                       "type":  "MMDETECTION_INSTALLED_TRAIN_SCRIPT",
+                       "path":  "/opt/conda/lib/python3.10/site-packages/mmdet/.mim/tools/train.py",
+                       "sha256":  "5f55afe19febf1c9c20d50204492f7f83e021f0f17c57609e7b265d45af92cf0",
+                       "mmdet_version":  "3.3.0",
+                       "mmengine_version":  "0.10.7",
+                       "help_smoke_test":  "PASS",
+                       "verified_source_semantics":  {
+                                                         "config_load":  "Config.fromfile(args.config)",
+                                                         "config_load_line":  68,
+                                                         "runner_construction":  "Runner.from_cfg(cfg)",
+                                                         "runner_construction_line":  110,
+                                                         "training_call":  "runner.train()",
+                                                         "training_call_line":  117
+                                                     },
+                       "verified_command_interface":  "python \u003centrypoint_path\u003e \u003cconfig\u003e [--work-dir WORK_DIR]"
+                   },
+    "final_config_family":  {
+                                "count":  8,
+                                "load_status":  "PASS",
+                                "configs":  [
+                                                {
+                                                    "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_1pct.py",
+                                                    "sha256":  "d76c4b66025369e6f2ee9b90ba0671a9c5ae31d62a1001033571497221f0539a"
+                                                },
+                                                {
+                                                    "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_5pct.py",
+                                                    "sha256":  "5eb9450eb123da4c6bc7eabb4b9cc4d37d81a99d8f8089f2601e438eec3d21e1"
+                                                },
+                                                {
+                                                    "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_10pct.py",
+                                                    "sha256":  "11cab476a73411512c86837382c881b37cdd9cbae1bfb3b15cf1e0ba4b02d870"
+                                                },
+                                                {
+                                                    "path":  "configs/ssl/s5_06_soft_teacher_r50_fpn_scientific_eval_20pct.py",
+                                                    "sha256":  "0303beb8c63d67480af81de06517eb25a95c8fdcf8073af0da47e3bfef99ec6d"
+                                                },
+                                                {
+                                                    "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_1pct.py",
+                                                    "sha256":  "3fce5bf62d2864088abfb143acc1287205cdc259495df45d2ea5ab71f476ef56"
+                                                },
+                                                {
+                                                    "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_5pct.py",
+                                                    "sha256":  "b67c7449aa93901944abb5d0a434b59728de776f9ff33176e29a9e865f54d527"
+                                                },
+                                                {
+                                                    "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_10pct.py",
+                                                    "sha256":  "b2bdc1ded47b94803f73563299c8a0838fd1a6015bd4a6c250225206472ec9fb"
+                                                },
+                                                {
+                                                    "path":  "configs/ssl/s5_06_soft_teacher_swin_t_fpn_scientific_eval_20pct.py",
+                                                    "sha256":  "15acb3b0e8be95e8040f17e1a47ad7d95e77b1767b7b002779b36f6994a03269"
+                                                }
+                                            ]
+                            },
+    "seed_evidence":  [
+                          {
+                              "path":  "artifacts/preflight/seed/training_seed_invariance_audit.json",
+                              "sha256":  "209c9c3fd30da7771a4663e8bac5e5ab27c80cf79e912a4b36c193e0315b797a"
+                          },
+                          {
+                              "path":  "artifacts/preflight/seed/seed_propagation_audit.json",
+                              "sha256":  "c6e8d5d9e3ec30af0851e94e26d4b3f95b1632f10203628da0e539d313b4f1c6"
+                          },
+                          {
+                              "path":  "artifacts/preflight/seed/dataloader_worker_seed_audit.json",
+                              "sha256":  "f7fa227e60f62139c8ecdd48eb0356bac92873b4f7cf81963be631d069232921"
+                          }
+                      ],
+    "ssl_execution_evidence":  [
+                                   {
+                                       "path":  "scripts/S4_17_validate_ssl_resume_equivalence.py",
+                                       "sha256":  "4b62081eb11b7cf7cbb5871e42f3ace341f626606548c0878757801673ebe529"
+                                   },
+                                   {
+                                       "path":  "scripts/S7_P02_run_tiny_ssl_pilot.py",
+                                       "sha256":  "8f7b4e524636d2e858bb8feba5d581feca548d1cba9a986bf6d65b6b2cb6fc03"
+                                   },
+                                   {
+                                       "path":  "artifacts/preflight/resume/resume_equivalence_test.json",
+                                       "sha256":  "f92db6919196d9f2f3098053017af57a115896c4544ef5ecc249c097a0ad5e80",
+                                       "status":  "PASS"
+                                   },
+                                   {
+                                       "path":  "artifacts/preflight/ssl/ssl_r50_preflight.json",
+                                       "sha256":  "604d1db93403cf58e4b123ef8fb7308d428214cac1bf943cff8120a20308695e",
+                                       "status":  "PASS"
+                                   },
+                                   {
+                                       "path":  "artifacts/preflight/ssl/ssl_swin_preflight.json",
+                                       "sha256":  "696e76139e8d8477e3d4d6312b68cb5b7616e5fe6b37aa716150a7d4e10e347d",
+                                       "status":  "PASS"
+                                   }
+                               ],
+    "augmentation_evidence":  {
+                                  "path":  "artifacts/preflight/ssl/ssl_augmentation_manifest.json",
+                                  "sha256":  "6e6fb0d680edd8f4a0da0a765cc9539c0b1a176257b910f67cea0907e8762ebb",
+                                  "status":  "PASS"
+                              },
+    "runtime_data_evidence":  [
+                                  {
+                                      "path":  "/workspace/ssod/artifacts/preflight/data/dataset_loader_manifest.json",
+                                      "sha256":  "00701cc16255123e3cd4a4385c4baebdc59a5bcf9a921ac1862217ef3b431f16",
+                                      "status":  "PASS"
+                                  },
+                                  {
+                                      "path":  "/workspace/ssod/artifacts/preflight/data/class_mapping_audit.json",
+                                      "sha256":  "b1f3f2d675827554d1d6f169419cb009d4e41fdf01f5e74c7775a63285fed2a4",
+                                      "status":  "PASS"
+                                  }
+                              ],
+    "checks":  {
+                   "entrypoint_exists_in_locked_runtime":  true,
+                   "entrypoint_sha256_verified":  true,
+                   "entrypoint_help_smoke_test_pass":  true,
+                   "entrypoint_source_semantics_verified":  true,
+                   "all_8_final_ssl_configs_hash_verified":  true,
+                   "all_8_final_ssl_configs_load_pass":  true,
+                   "seed_direct_evidence_present":  true,
+                   "ssl_execution_direct_evidence_present":  true,
+                   "dataloader_direct_evidence_pass":  true,
+                   "class_mapping_direct_evidence_pass":  true,
+                   "ssl_augmentation_direct_evidence_pass":  true,
+                   "official_training_remains_unauthorized":  true
+               },
+    "failed_checks":  [
+
+                      ],
+    "all_checks_pass":  true
+}
