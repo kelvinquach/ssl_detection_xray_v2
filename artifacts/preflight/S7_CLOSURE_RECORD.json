@@ -1,0 +1,67 @@
+{
+    "schema_version":  "1.0",
+    "stage":  "S7",
+    "task":  "S7.27",
+    "gate":  "Close S7",
+    "status":  "CLOSED / PASS",
+    "exact_git_commit":  "7b595496ae8bd0acc14b6b1e22b64d10d89d08d0",
+    "working_tree_clean":  true,
+    "official_training_authorized":  false,
+    "final_test_authorized":  false,
+    "global_preflight_closed":  true,
+    "verification":  {
+                         "PF01":  "PASS",
+                         "PF02":  "PASS",
+                         "PF03":  "PASS",
+                         "PF04":  "PASS",
+                         "PF05":  "PASS",
+                         "PF06":  "PASS",
+                         "PF07":  "PASS",
+                         "PF08":  "PASS",
+                         "PF09":  "PASS",
+                         "PF10":  "PASS",
+                         "PF11":  "PASS",
+                         "PF12":  "PASS",
+                         "PF13":  "PASS",
+                         "PF14":  "PASS",
+                         "PF15":  "PASS",
+                         "PF16":  "PASS",
+                         "PF17":  "PASS",
+                         "PF18":  "PASS",
+                         "PF19":  "PASS",
+                         "PF20":  "PASS",
+                         "PF21":  "PASS",
+                         "PF22":  "PASS",
+                         "PF23":  "PASS",
+                         "PF24":  "PASS",
+                         "PF25":  "PASS"
+                     },
+    "closure_groups":  {
+                           "PILOT_IMPLEMENTATION_PREFLIGHT":  "CLOSED / PASS",
+                           "ALL_25_CLOSURE_GROUPS":  "PASS",
+                           "NO_UNTESTED_OFFICIAL_EXECUTION_PATH":  "TRUE",
+                           "NO_UNRESOLVED_PROTOCOL_RELEVANT_WARNING":  "TRUE"
+                       },
+    "evidence":  {
+                     "GLOBAL_PREFLIGHT_REPORT":  "artifacts/preflight/GLOBAL_PREFLIGHT_REPORT.json"
+                 },
+    "evidence_sha256":  {
+                            "GLOBAL_PREFLIGHT_REPORT":  "1c0cf21a6ab9546d320a7595e17e992721012f7129ea744913f8719b5175373e"
+                        },
+    "closure_scope":  {
+                          "all_pf01_to_pf25_verified":  true,
+                          "global_preflight_report_pass":  true,
+                          "global_preflight_closed":  true,
+                          "no_untested_official_execution_path":  true,
+                          "unresolved_protocol_relevant_warning_count":  0,
+                          "scientific_protocol_changed":  false,
+                          "researcher_authorization":  false,
+                          "official_training_authorized":  false,
+                          "final_test_authorized":  false,
+                          "test_remains_closed":  true,
+                          "does_not_authorize_official_training":  true,
+                          "does_not_authorize_final_test":  true,
+                          "does_not_authorize_git_push":  true
+                      },
+    "acceptance":  "S7=CLOSED / PASS"
+}
