@@ -1,0 +1,40 @@
+{
+    "schema_version":  "1.0",
+    "stage":  "S8",
+    "task":  "S8.11",
+    "gate":  "Close S8",
+    "status":  "CLOSED / PASS",
+    "exact_git_commit":  "01f1750d49baea46c2d177082d5f3ea3c7a482e1",
+    "working_tree_clean":  true,
+    "official_training_authorized":  true,
+    "final_test_authorized":  false,
+    "global_preflight_closed":  true,
+    "verification":  {
+                         "S8.01":  "PASS",
+                         "S8.02":  "PASS",
+                         "S8.03":  "PASS",
+                         "S8.04":  "PASS",
+                         "S8.05":  "PASS",
+                         "S8.06":  "PASS",
+                         "S8.07":  "PASS",
+                         "S8.08":  "PASS",
+                         "S8.09":  "PASS",
+                         "S8.10":  "PASS"
+                     },
+    "closure_scope":  {
+                          "all_s8_01_to_s8_10_verified":  true,
+                          "frozen_manifests_valid":  true,
+                          "researcher_authorization":  true,
+                          "official_training_authorized":  true,
+                          "global_preflight_closed":  true,
+                          "unresolved_protocol_relevant_warning_count":  0,
+                          "scientific_protocol_changed":  false,
+                          "final_test_authorized":  false,
+                          "test_access_authorized":  false,
+                          "test_access_reason":  "FINAL_ONLY",
+                          "test_remains_closed":  true,
+                          "does_not_authorize_final_test":  true,
+                          "does_not_authorize_git_push":  true
+                      },
+    "acceptance":  "S8=CLOSED / PASS"
+}

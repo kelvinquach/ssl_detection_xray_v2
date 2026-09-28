@@ -1,0 +1,60 @@
+{
+  "artifact_type": "VAST_RUNTIME_ENVIRONMENT",
+  "captured_at_utc": "2026-09-28T07:17:57.146774Z",
+  "docker": {
+    "digest_match": true,
+    "expected_digest": "sha256:fab1b1ea8850527e5728de526b3d53f063355e84cb3a0d8c75e3a7890411d989",
+    "expected_image": "quachthainguyen/sslxray-runtime",
+    "expected_image_uuid": "quachthainguyen/sslxray-runtime:gate-i-20260828",
+    "expected_tag": "gate-i-20260828",
+    "observed_image_uuid": "quachthainguyen/sslxray-runtime:gate-i-20260828",
+    "observed_registry_digest": "sha256:fab1b1ea8850527e5728de526b3d53f063355e84cb3a0d8c75e3a7890411d989"
+  },
+  "gpu": {
+    "cuda_visible_devices": null,
+    "driver_supported_cuda": "13.0",
+    "memory_total_mib": 32768,
+    "name": "Tesla V100-SXM2-32GB",
+    "nvidia_driver": "580.142",
+    "vast_device_idxs": "0"
+  },
+  "instance": {
+    "container_id": "53131745",
+    "container_label": "C.53131745",
+    "hostname": "c6d112a80a71",
+    "vast_actual_status": "running",
+    "vast_device_idxs": "0"
+  },
+  "openmmlab": {
+    "mmcv": "2.1.0",
+    "mmdet": "3.3.0",
+    "mmengine": "0.10.7"
+  },
+  "os": {
+    "kernel": "6.17.0-23-generic",
+    "platform": "Linux-6.17.0-23-generic-x86_64-with-glibc2.31",
+    "pretty_name": "Ubuntu 20.04.6 LTS",
+    "version_id": "20.04"
+  },
+  "python": {
+    "version": "3.10.13"
+  },
+  "pytorch": {
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "cuda_runtime": "11.8",
+    "cudnn_enabled": true,
+    "cudnn_version": 8700,
+    "version": "2.1.0"
+  },
+  "schema_version": "1.1",
+  "status": "PASS",
+  "verifier": {
+    "evidence_mode": "STANDALONE_BOOTSTRAP",
+    "fail_count_before_evidence_write": 0,
+    "pass_count_before_evidence_write": 21,
+    "script_sha256": "e2ede1efd558cad72ee0452ade63e90ed93634745e9175721f082799639867a4",
+    "startup_entrypoint_warning_present": true,
+    "warning_count": 2
+  }
+}

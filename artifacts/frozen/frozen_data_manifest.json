@@ -1,0 +1,111 @@
+{
+    "schema_version":  "1.1",
+    "artifact_type":  "FROZEN_DATA_MANIFEST",
+    "status":  "PASS",
+    "partition_seed":  42,
+    "seed_policy":  "PRE_SPECIFIED_LOCKED_NO_SEED_SEARCH",
+    "fixed_split_membership_hash_rule":  {
+                                             "source":  "02E_C0_R2_exact_constrained_candidate_split.py",
+                                             "stable_id_key":  "str(value)",
+                                             "sort":  "sorted(values, key=stable_id_key)",
+                                             "serialization":  "newline-joined str(image_id), no trailing newline",
+                                             "encoding":  "UTF-8",
+                                             "digest":  "SHA-256"
+                                         },
+    "train":  {
+                  "image_count":  3426,
+                  "no_finding_count":  350,
+                  "membership_sha256":  "628b9bb8ba25129a928abe994b101b4c4efd5588d389feb60da6de2a371fa11a",
+                  "coco_sha256":  "0f3c37a6f1b5bcc6971b01fd4c69c7a2a3a1e8bee145c11488c7a658dcbbebe3"
+              },
+    "val":  {
+                "image_count":  734,
+                "no_finding_count":  75,
+                "membership_sha256":  "87c23ebed4d1e6965731fc0b31245859f49e777119813c6152efde3531ba58c6",
+                "coco_sha256":  "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
+            },
+    "test":  {
+                 "image_count":  734,
+                 "no_finding_count":  75,
+                 "membership_sha256":  "1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37",
+                 "coco_sha256":  "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4"
+             },
+    "labeled_membership_hash_rule":  {
+                                         "source":  "02F_build_labeled_unlabeled.py",
+                                         "input_requirement":  "canonical integer image IDs",
+                                         "sort":  "numeric ascending",
+                                         "serialization":  "decimal str(image_id) joined by LF, no trailing LF",
+                                         "encoding":  "UTF-8",
+                                         "digest":  "SHA-256",
+                                         "note":  "Intentionally differs from Phase 2E sort-key=str(value) convention."
+                                     },
+    "budgets":  {
+                    "1pct":  {
+                                 "labeled_image_count":  34,
+                                 "unlabeled_image_count":  3392,
+                                 "labeled_no_finding_count":  3,
+                                 "labeled_membership_sha256":  "c54e7d61e84b7cfce68c04a795783b5c5d01331d2aa9c754fb1ae1dbae4ba071",
+                                 "unlabeled_membership_sha256_observed_not_locked":  "535f470b0b2ed504dfd388de3fd3053c60ebdcc0649e8ceac6d6f252c16df521",
+                                 "labeled_coco_sha256":  "1e267c547a8f535f6a69088da4735bd12c0188fae1b49e9d785b3e1e6883df98",
+                                 "unlabeled_coco_sha256":  "d2e1d0923f97ced05c1c4e319312d82d42e615defb55412d3c5e83e97486e3f5"
+                             },
+                    "5pct":  {
+                                 "labeled_image_count":  171,
+                                 "unlabeled_image_count":  3255,
+                                 "labeled_no_finding_count":  17,
+                                 "labeled_membership_sha256":  "c4db3b5f7a5b0f391ad883ef665c3d341af3ef6afb3fc553e71f1c4ef17ee50b",
+                                 "unlabeled_membership_sha256_observed_not_locked":  "233a2761039e8ec88fc435e07b574dc41a7c9623cf28acaf6058c7ef12a844c1",
+                                 "labeled_coco_sha256":  "ebb98f32cad612fe48adbbd6b5da8aa5db10bec478d1c7fd9288a9a93bbc3763",
+                                 "unlabeled_coco_sha256":  "9b2c128a751a70db4c4680c0fd584cc34907bcda569567c3f9fb96af0722e387"
+                             },
+                    "10pct":  {
+                                  "labeled_image_count":  343,
+                                  "unlabeled_image_count":  3083,
+                                  "labeled_no_finding_count":  35,
+                                  "labeled_membership_sha256":  "fc008d31505227544087ba474613075a8cd077587df9d6b13146b378f5a3a7d6",
+                                  "unlabeled_membership_sha256_observed_not_locked":  "a27b0489d2898edd74bb8683e8db206d77b8fa6ba804aeb637137aa7efd7c0d1",
+                                  "labeled_coco_sha256":  "6814b5b9ba8dfcd4af483d97c1a6b7e7ab26914bdd02bbb923502b43ecf2fdf6",
+                                  "unlabeled_coco_sha256":  "894c2de257cd5a33b60e00d782a5322a288f3d9a2b7c637ab29ad3419cce9260"
+                              },
+                    "20pct":  {
+                                  "labeled_image_count":  685,
+                                  "unlabeled_image_count":  2741,
+                                  "labeled_no_finding_count":  70,
+                                  "labeled_membership_sha256":  "6f4aaba6be147983d56007c49ada234dfcabe7ec2f936f28f8cd240999b8417e",
+                                  "unlabeled_membership_sha256_observed_not_locked":  "e5267dfdccf523eecca7392ff5040f20f14445dccdd89998cd92204d475ca8c3",
+                                  "labeled_coco_sha256":  "6a8b5bf9c59baea41eefb0611e15a387257255b6fc59a3de607bfc2e80801a14",
+                                  "unlabeled_coco_sha256":  "60699d361d86b61b66ad9c9553be555a23808adb53746cead0b190064df4d5bb"
+                              }
+                },
+    "unlabeled_membership_semantics":  {
+                                           "definition":  "U_b = T \\\\ L_b",
+                                           "independently_locked_unlabeled_membership_hash":  false,
+                                           "unlabeled_coco_sha256_locked":  true,
+                                           "all_U_equal_exact_train_complement":  true,
+                                           "all_L_U_disjoint":  true,
+                                           "all_L_U_union_equals_train":  true
+                                       },
+    "nesting":  {
+                    "L1_subset_L5":  true,
+                    "L5_subset_L10":  true,
+                    "L10_subset_L20":  true,
+                    "L20_subset_train":  true,
+                    "U20_subset_U10":  true,
+                    "U10_subset_U5":  true,
+                    "U5_subset_U1":  true
+                },
+    "dataset_identity":  {
+                             "destination_tree_sha256":  "0587000e016a6c46612fa5d7d7e7fae996c98bae58adb5165633607b9863295a",
+                             "image_union":  4894,
+                             "annotation_union":  36096,
+                             "category_count":  14
+                         },
+    "source_evidence_sha256":  {
+                                   "split_membership_audit":  "5b43f017b628aea1bfa1445a6e8f9385fec709d66bce5e797dab96970798d9fd",
+                                   "labeled_unlabeled_membership_audit":  "3b5b82aba1ab89e5248f37f684660a5d639185f94147b8eb0922234699bb10dd",
+                                   "class_mapping_audit":  "74254f0e17a354a008053fe76075b0b7670b1124410f635623e42f1c150196ed",
+                                   "dataset_loader_manifest":  "4564d22a7127be4b409171d5001d5bc66d311dd974f322b7c51918f6405ca920",
+                                   "dataset_transfer_manifest":  "1587cdc0926217a2b04be36bc9e16fe0fa09f9f076376055c9d637dc13388939",
+                                   "dataset_integrity_report":  "c0bfb5a9a36e786910c8c58602de3acb54d6f80a5434a8f03435de4919b9f3a0"
+                               }
+}
