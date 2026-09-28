@@ -2,6 +2,11 @@
     "schema_version":  "1.1",
     "status":  "PASS",
     "hash_basis":  "GIT_BLOB_CONTENT_SHA256",
+    "priority_order":  [
+                           "sn-article.tex",
+                           "IMPLEMENTATION_HANDOFF.md",
+                           "ARTIFACT_AND_EVIDENCE_CONTRACT.md"
+                       ],
     "git_commit":  "3643459c86fd9e51bdb0a322a50f7f3703184d2a",
     "scientific_source_name":  "sn-article.tex",
     "scientific_source_sha256":  "b6881ce90da9194f88fd9664b51dc96bdf112145949e3a89705f16b06853c681",
