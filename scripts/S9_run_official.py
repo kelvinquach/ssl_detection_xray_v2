@@ -604,6 +604,92 @@ def _configure_mmdetection(
     return cfg
 
 
+def _run_qpseudo_after_training(
+    repo_root: Path,
+    attempt_dir: Path,
+    runner,
+) -> None:
+    """Materialize the three required S9.09 Q_pseudo artifacts for SSL."""
+    import hashlib
+
+    import torch
+    from mmengine.config import Config
+
+    from src.evaluation.qpseudo import (
+        FIXED_VALIDATION_SHA256,
+        accepted_rcnn_classification_predictions,
+        evaluate_qpseudo_predictions,
+        load_last_ema_teacher_checkpoint,
+        write_qpseudo_artifacts,
+    )
+
+    checkpoint_path = (
+        attempt_dir
+        / "checkpoints"
+        / "last_ema_teacher.pth"
+    )
+    runtime_val = Path(
+        "/workspace/ssod/data/coco/instances_val.json"
+    )
+    acceptance_config = (
+        repo_root
+        / "configs/evaluation/s5_06_qpseudo_acceptance.py"
+    )
+    evaluator_config = (
+        repo_root
+        / "configs/evaluation/s5_02_coco_secondary_evaluator.py"
+    )
+
+    def sha256(file_path: Path) -> str:
+        digest = hashlib.sha256()
+        with file_path.open("rb") as handle:
+            for chunk in iter(
+                lambda: handle.read(1024 * 1024),
+                b"",
+            ):
+                digest.update(chunk)
+        return digest.hexdigest()
+
+    load_last_ema_teacher_checkpoint(
+        runner.model,
+        checkpoint_path,
+    )
+
+    runner.model.eval()
+    data_samples = []
+    with torch.no_grad():
+        for batch in runner.val_loop.dataloader:
+            data_samples.extend(
+                runner.model.test_step(batch)
+            )
+
+    predictions = accepted_rcnn_classification_predictions(
+        data_samples
+    )
+    evaluator_cfg = Config.fromfile(
+        str(evaluator_config)
+    ).val_evaluator
+    metrics = evaluate_qpseudo_predictions(
+        predictions,
+        runtime_val,
+        evaluator_cfg,
+    )
+    write_qpseudo_artifacts(
+        output_dir=attempt_dir / "pseudo",
+        predictions=predictions,
+        metrics=metrics,
+        checkpoint_sha256=sha256(checkpoint_path),
+        validation_split_sha256=FIXED_VALIDATION_SHA256,
+        pseudo_acceptance_config_sha256=sha256(
+            acceptance_config
+        ),
+        evaluator_config_sha256=sha256(
+            evaluator_config
+        ),
+        ann_file=runtime_val,
+    )
+
+
 def _execute_one(
     repo_root: Path,
     row: dict[str, str],
@@ -758,6 +844,12 @@ def _execute_one(
     try:
         runner = Runner.from_cfg(cfg)
         runner.train()
+        if str(row["method"]).strip() == "SSL":
+            _run_qpseudo_after_training(
+                repo_root,
+                attempt_dir,
+                runner,
+            )
         backup.finalize()
     except Exception as exc:
         retry_deviation["technical_failure"] = True
