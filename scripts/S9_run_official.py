@@ -175,6 +175,40 @@ def _select_run(
     return matches[0]
 
 
+def _select_scope(
+    rows: list[dict[str, str]],
+    scope: str,
+) -> list[dict[str, str]]:
+    if scope != "sup-low-label":
+        raise OfficialLauncherError(
+            f"Unsupported official scope: {scope!r}"
+        )
+
+    selected = [
+        row
+        for row in rows
+        if str(row["method"]).strip() == "SUP"
+        and str(row["condition_role"]).strip()
+        == "MAIN_LOW_LABEL"
+    ]
+
+    if len(selected) != 80:
+        raise OfficialLauncherError(
+            "SUP low-label scope must contain exactly "
+            f"80 rows; observed={len(selected)}"
+        )
+
+    if any(
+        _canonical_budget(row["budget"]) == "100pct"
+        for row in selected
+    ):
+        raise OfficialLauncherError(
+            "SUP low-label scope contains 100pct row."
+        )
+
+    return selected
+
+
 def _inventory_selectors(
     row: dict[str, str],
 ) -> dict[str, Any]:
@@ -458,12 +492,24 @@ def main() -> int:
         )
     )
 
-    parser.add_argument(
-        "--run-id",
+    selector = parser.add_mutually_exclusive_group(
         required=True,
+    )
+
+    selector.add_argument(
+        "--run-id",
         help=(
             "Exact run_id from "
             "official_run_inventory.csv."
+        ),
+    )
+
+    selector.add_argument(
+        "--scope",
+        choices=("sup-low-label",),
+        help=(
+            "Select the exact 80 SUP MAIN_LOW_LABEL "
+            "official inventory rows."
         ),
     )
 
@@ -494,46 +540,115 @@ def main() -> int:
 
     try:
         rows = _load_inventory(repo_root)
-        row = _select_run(
-            rows,
-            args.run_id,
-        )
 
-        _assert_inventory_state(row)
+        if args.run_id is not None:
+            row = _select_run(
+                rows,
+                args.run_id,
+            )
 
-        if args.execute:
-            _execute_one(
-                repo_root,
-                row,
-            )
-            print(
-                "OFFICIAL_LAUNCH_RESULT="
-                "TRAIN_RETURNED"
-            )
+            _assert_inventory_state(row)
+
+            if args.execute:
+                _execute_one(
+                    repo_root,
+                    row,
+                )
+                print(
+                    "OFFICIAL_LAUNCH_RESULT="
+                    "TRAIN_RETURNED"
+                )
+            else:
+                pre_run = _verify_one(
+                    repo_root,
+                    row,
+                )
+
+                print(
+                    "RUN_ID="
+                    + str(row["run_id"]).strip()
+                )
+                print(
+                    "LAUNCH_STATUS="
+                    + str(pre_run["launch_status"])
+                )
+                print(
+                    "ALL_CHECKS_PASS="
+                    + str(pre_run["all_checks_pass"])
+                )
+                print(
+                    "EXECUTION_REQUESTED=False"
+                )
+                print(
+                    "MMDETECTION_TRAINING_CALLED=False"
+                )
         else:
-            pre_run = _verify_one(
-                repo_root,
-                row,
+            scoped_rows = _select_scope(
+                rows,
+                args.scope,
             )
 
-            print(
-                "RUN_ID="
-                + str(row["run_id"]).strip()
-            )
-            print(
-                "LAUNCH_STATUS="
-                + str(pre_run["launch_status"])
-            )
-            print(
-                "ALL_CHECKS_PASS="
-                + str(pre_run["all_checks_pass"])
-            )
-            print(
-                "EXECUTION_REQUESTED=False"
-            )
-            print(
-                "MMDETECTION_TRAINING_CALLED=False"
-            )
+            for row in scoped_rows:
+                _assert_inventory_state(row)
+
+            if args.execute:
+                for row in scoped_rows:
+                    _execute_one(
+                        repo_root,
+                        row,
+                    )
+
+                print(
+                    "OFFICIAL_SCOPE_RESULT="
+                    "TRAIN_RETURNED"
+                )
+                print(
+                    "SCOPE="
+                    + str(args.scope)
+                )
+                print(
+                    "SCOPE_ROW_COUNT="
+                    + str(len(scoped_rows))
+                )
+            else:
+                verify_pass_count = 0
+
+                for row in scoped_rows:
+                    pre_run = _verify_one(
+                        repo_root,
+                        row,
+                    )
+
+                    if (
+                        not pre_run["all_checks_pass"]
+                        or pre_run["launch_status"] != "PASS"
+                    ):
+                        raise OfficialLauncherError(
+                            "Scoped pre-run verification "
+                            "failed for "
+                            + str(row["run_id"]).strip()
+                        )
+
+                    verify_pass_count += 1
+
+                print(
+                    "SCOPE="
+                    + str(args.scope)
+                )
+                print(
+                    "SCOPE_ROW_COUNT="
+                    + str(len(scoped_rows))
+                )
+                print(
+                    "VERIFY_PASS_COUNT="
+                    + str(verify_pass_count)
+                )
+                print(
+                    "EXECUTION_REQUESTED=False"
+                )
+                print(
+                    "MMDETECTION_TRAINING_CALLED=False"
+                )
 
         return 0
 
