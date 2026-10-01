@@ -608,14 +608,19 @@ def _execute_one(
     repo_root: Path,
     row: dict[str, str],
     attempt_id: str,
+    *,
+    recover: bool = False,
 ) -> None:
     run_id = str(row["run_id"]).strip()
 
-    _validate_attempt_request(
-        repo_root,
-        row,
-        attempt_id,
-    )
+    if recover:
+        _attempt_number(attempt_id)
+    else:
+        _validate_attempt_request(
+            repo_root,
+            row,
+            attempt_id,
+        )
 
     attempt_dir = _attempt_directory(
         repo_root,
@@ -623,7 +628,13 @@ def _execute_one(
         attempt_id,
     )
 
-    if attempt_dir.exists():
+    if recover:
+        if attempt_dir.exists():
+            raise OfficialLauncherError(
+                "Same-attempt recovery requires the local "
+                f"attempt directory to be absent: {attempt_dir}"
+            )
+    elif attempt_dir.exists():
         raise OfficialLauncherError(
             "Official attempt directory "
             f"already exists: {attempt_dir}"
@@ -643,38 +654,111 @@ def _execute_one(
             "Pre-run assertions did not PASS."
         )
 
-    cfg = _configure_mmdetection(
+    from src.utils.s9_active_backup import (
+        ActiveBackupManager,
+        recover_official_attempt,
+        validate_backup_runtime,
+    )
+
+    if not recover:
+        validate_backup_runtime(repo_root)
+
+    if recover:
+        recovery = recover_official_attempt(
+            repo_root,
+            run_id,
+            attempt_id,
+        )
+        latest_resume_path = Path(
+            recovery["latest_resume_path"]
+        )
+
+        retry_path = attempt_dir / "retry_deviation.json"
+        if not retry_path.is_file():
+            raise OfficialLauncherError(
+                "Recovered retry_deviation.json is missing."
+            )
+
+        recovered_retry = json.loads(
+            retry_path.read_text(encoding="utf-8-sig")
+        )
+        if recovered_retry.get("run_id") != run_id:
+            raise OfficialLauncherError(
+                "Recovered retry record run_id mismatch."
+            )
+        if recovered_retry.get("attempt_id") != attempt_id:
+            raise OfficialLauncherError(
+                "Recovered retry record attempt_id mismatch."
+            )
+        if (
+            int(recovered_retry.get("training_seed"))
+            != int(str(row["training_seed"]).strip())
+        ):
+            raise OfficialLauncherError(
+                "Recovered retry record training seed mismatch."
+            )
+        if recovered_retry.get("scientific_protocol_changed") is not False:
+            raise OfficialLauncherError(
+                "Recovered attempt changes scientific protocol."
+            )
+        if recovered_retry.get("technical_failure") is not False:
+            raise OfficialLauncherError(
+                "Same-attempt recovery is forbidden after recorded technical failure."
+            )
+        if recovered_retry.get("retry_required") is not False:
+            raise OfficialLauncherError(
+                "Same-attempt recovery is forbidden when technical retry is required."
+            )
+        if recovered_retry.get("retry_reason") is not None:
+            raise OfficialLauncherError(
+                "Same-attempt recovery requires no recorded retry reason."
+            )
+
+        cfg = _configure_mmdetection(
+            repo_root,
+            expected,
+            attempt_dir,
+        )
+        cfg.resume = True
+        cfg.load_from = str(latest_resume_path)
+        retry_deviation = recovered_retry
+    else:
+        cfg = _configure_mmdetection(
+            repo_root,
+            expected,
+            attempt_dir,
+        )
+
+        if attempt_id != INITIAL_ATTEMPT_ID:
+            cfg.resume = False
+            cfg.load_from = None
+
+        _write_json(
+            attempt_dir / "pre_run_assertions.json",
+            pre_run,
+        )
+
+        retry_deviation = _retry_deviation_payload(
+            row,
+            attempt_id,
+        )
+        _write_json(
+            attempt_dir / "retry_deviation.json",
+            retry_deviation,
+        )
+
+    backup = ActiveBackupManager(
         repo_root,
-        expected,
         attempt_dir,
     )
-
-    if attempt_id != INITIAL_ATTEMPT_ID:
-        cfg.resume = False
-        cfg.load_from = None
-
-    # Artifact contract requires pre_run_assertions.json
-    # in the official attempt directory immediately
-    # before the training launch.
-    _write_json(
-        attempt_dir / "pre_run_assertions.json",
-        pre_run,
-    )
-
-    retry_deviation = _retry_deviation_payload(
-        row,
-        attempt_id,
-    )
-    _write_json(
-        attempt_dir / "retry_deviation.json",
-        retry_deviation,
-    )
+    backup.start()
 
     from mmengine.runner import Runner
 
     try:
         runner = Runner.from_cfg(cfg)
         runner.train()
+        backup.finalize()
     except Exception as exc:
         retry_deviation["technical_failure"] = True
         retry_deviation["failure_reason"] = (
@@ -688,8 +772,9 @@ def _execute_one(
             attempt_dir / "retry_deviation.json",
             retry_deviation,
         )
+        backup.record_failure_state()
+        backup.stop()
         raise
-
 
 def _verify_one(
     repo_root: Path,
@@ -753,6 +838,17 @@ def main() -> int:
         ),
     )
 
+    parser.add_argument(
+        "--recover",
+        action="store_true",
+        help=(
+            "Recover the exact same official attempt "
+            "from verified durable backup and resume "
+            "from checkpoints/latest_resume.pth. "
+            "Requires --run-id and --execute."
+        ),
+    )
+
     args = parser.parse_args()
 
     repo_root = (
@@ -768,6 +864,16 @@ def main() -> int:
         )
 
     try:
+        if args.recover and args.run_id is None:
+            raise OfficialLauncherError(
+                "--recover requires exact --run-id; "
+                "scope recovery is forbidden."
+            )
+        if args.recover and not args.execute:
+            raise OfficialLauncherError(
+                "--recover requires --execute."
+            )
+
         rows = _load_inventory(repo_root)
 
         if args.run_id is not None:
@@ -778,17 +884,21 @@ def main() -> int:
 
             _assert_inventory_state(row)
 
-            _validate_attempt_request(
-                repo_root,
-                row,
-                args.attempt_id,
-            )
+            if args.recover:
+                _attempt_number(args.attempt_id)
+            else:
+                _validate_attempt_request(
+                    repo_root,
+                    row,
+                    args.attempt_id,
+                )
 
             if args.execute:
                 _execute_one(
                     repo_root,
                     row,
                     args.attempt_id,
+                    recover=args.recover,
                 )
                 print(
                     "OFFICIAL_LAUNCH_RESULT="
