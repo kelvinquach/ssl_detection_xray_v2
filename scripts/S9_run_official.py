@@ -179,34 +179,59 @@ def _select_scope(
     rows: list[dict[str, str]],
     scope: str,
 ) -> list[dict[str, str]]:
-    if scope != "sup-low-label":
-        raise OfficialLauncherError(
-            f"Unsupported official scope: {scope!r}"
-        )
+    if scope == "sup-low-label":
+        selected = [
+            row
+            for row in rows
+            if str(row["method"]).strip() == "SUP"
+            and str(row["condition_role"]).strip()
+            == "MAIN_LOW_LABEL"
+        ]
 
-    selected = [
-        row
-        for row in rows
-        if str(row["method"]).strip() == "SUP"
-        and str(row["condition_role"]).strip()
-        == "MAIN_LOW_LABEL"
-    ]
+        if len(selected) != 80:
+            raise OfficialLauncherError(
+                "SUP low-label scope must contain exactly "
+                f"80 rows; observed={len(selected)}"
+            )
 
-    if len(selected) != 80:
-        raise OfficialLauncherError(
-            "SUP low-label scope must contain exactly "
-            f"80 rows; observed={len(selected)}"
-        )
+        if any(
+            _canonical_budget(row["budget"]) == "100pct"
+            for row in selected
+        ):
+            raise OfficialLauncherError(
+                "SUP low-label scope contains 100pct row."
+            )
 
-    if any(
-        _canonical_budget(row["budget"]) == "100pct"
-        for row in selected
-    ):
-        raise OfficialLauncherError(
-            "SUP low-label scope contains 100pct row."
-        )
+        return selected
 
-    return selected
+    if scope == "sup-reference":
+        selected = [
+            row
+            for row in rows
+            if str(row["method"]).strip() == "SUP"
+            and str(row["condition_role"]).strip()
+            == "SUP_REFERENCE"
+        ]
+
+        if len(selected) != 20:
+            raise OfficialLauncherError(
+                "SUP reference scope must contain exactly "
+                f"20 rows; observed={len(selected)}"
+            )
+
+        if any(
+            _canonical_budget(row["budget"]) != "100pct"
+            for row in selected
+        ):
+            raise OfficialLauncherError(
+                "SUP reference scope contains non-100pct row."
+            )
+
+        return selected
+
+    raise OfficialLauncherError(
+        f"Unsupported official scope: {scope!r}"
+    )
 
 
 def _inventory_selectors(
@@ -506,10 +531,9 @@ def main() -> int:
 
     selector.add_argument(
         "--scope",
-        choices=("sup-low-label",),
+        choices=("sup-low-label", "sup-reference"),
         help=(
-            "Select the exact 80 SUP MAIN_LOW_LABEL "
-            "official inventory rows."
+            "Select a locked official inventory scope."
         ),
     )
 
