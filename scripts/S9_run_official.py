@@ -229,6 +229,31 @@ def _select_scope(
 
         return selected
 
+    if scope == "ssl-low-label":
+        selected = [
+            row
+            for row in rows
+            if str(row["method"]).strip() == "SSL"
+            and str(row["condition_role"]).strip()
+            == "MAIN_LOW_LABEL"
+        ]
+
+        if len(selected) != 80:
+            raise OfficialLauncherError(
+                "SSL low-label scope must contain exactly "
+                f"80 rows; observed={len(selected)}"
+            )
+
+        if any(
+            _canonical_budget(row["budget"]) == "100pct"
+            for row in selected
+        ):
+            raise OfficialLauncherError(
+                "SSL low-label scope contains 100pct row."
+            )
+
+        return selected
+
     raise OfficialLauncherError(
         f"Unsupported official scope: {scope!r}"
     )
@@ -531,7 +556,7 @@ def main() -> int:
 
     selector.add_argument(
         "--scope",
-        choices=("sup-low-label", "sup-reference"),
+        choices=("sup-low-label", "sup-reference", "ssl-low-label"),
         help=(
             "Select a locked official inventory scope."
         ),
