@@ -400,15 +400,147 @@ def _build_pre_run_assertions(
     return payload, expected
 
 
+def _attempt_number(attempt_id: str) -> int:
+    value = str(attempt_id).strip()
+    prefix = "attempt_"
+
+    if not value.startswith(prefix):
+        raise OfficialLauncherError(
+            f"Invalid official attempt_id: {attempt_id!r}"
+        )
+
+    suffix = value[len(prefix):]
+
+    if not suffix.isdigit():
+        raise OfficialLauncherError(
+            f"Invalid official attempt_id: {attempt_id!r}"
+        )
+
+    number = int(suffix)
+
+    if number < 1 or f"attempt_{number:03d}" != value:
+        raise OfficialLauncherError(
+            f"Invalid official attempt_id: {attempt_id!r}"
+        )
+
+    return number
+
+
+def _retry_deviation_payload(
+    row: dict[str, str],
+    attempt_id: str,
+) -> dict[str, Any]:
+    return {
+        "run_id": str(row["run_id"]).strip(),
+        "attempt_id": attempt_id,
+        "training_seed": int(
+            str(row["training_seed"]).strip()
+        ),
+        "technical_failure": False,
+        "failure_reason": None,
+        "retry_required": False,
+        "retry_reason": None,
+        "same_seed_confirmed": True,
+        "scientific_protocol_changed": False,
+        "controlled_revision_id": None,
+        "researcher_approval": None,
+    }
+
+
+def _validate_attempt_request(
+    repo_root: Path,
+    row: dict[str, str],
+    attempt_id: str,
+) -> None:
+    attempt_number = _attempt_number(attempt_id)
+
+    if attempt_number == 1:
+        return
+
+    run_id = str(row["run_id"]).strip()
+    training_seed = int(
+        str(row["training_seed"]).strip()
+    )
+    prior_attempt_id = (
+        f"attempt_{attempt_number - 1:03d}"
+    )
+    prior_retry_path = (
+        repo_root
+        / OFFICIAL_RUN_ROOT
+        / run_id
+        / prior_attempt_id
+        / "retry_deviation.json"
+    )
+
+    if not prior_retry_path.is_file():
+        raise OfficialLauncherError(
+            "Prior attempt retry_deviation.json "
+            f"is missing: {prior_retry_path}"
+        )
+
+    prior_retry = json.loads(
+        prior_retry_path.read_text(
+            encoding="utf-8-sig",
+        )
+    )
+
+    if prior_retry.get("run_id") != run_id:
+        raise OfficialLauncherError(
+            "Prior retry record run_id mismatch."
+        )
+
+    if (
+        prior_retry.get("attempt_id")
+        != prior_attempt_id
+    ):
+        raise OfficialLauncherError(
+            "Prior retry record attempt_id mismatch."
+        )
+
+    if (
+        int(prior_retry.get("training_seed"))
+        != training_seed
+    ):
+        raise OfficialLauncherError(
+            "Prior retry record training seed mismatch."
+        )
+
+    if prior_retry.get("technical_failure") is not True:
+        raise OfficialLauncherError(
+            "Prior attempt is not marked technical failure."
+        )
+
+    if prior_retry.get("retry_required") is not True:
+        raise OfficialLauncherError(
+            "Prior attempt is not authorized for retry."
+        )
+
+    if prior_retry.get("same_seed_confirmed") is not True:
+        raise OfficialLauncherError(
+            "Prior retry record lacks same-seed confirmation."
+        )
+
+    if (
+        prior_retry.get("scientific_protocol_changed")
+        is not False
+    ):
+        raise OfficialLauncherError(
+            "Technical retry cannot change scientific protocol."
+        )
+
+
 def _attempt_directory(
     repo_root: Path,
     run_id: str,
+    attempt_id: str,
 ) -> Path:
+    _attempt_number(attempt_id)
+
     return (
         repo_root
         / OFFICIAL_RUN_ROOT
         / run_id
-        / INITIAL_ATTEMPT_ID
+        / attempt_id
     )
 
 
@@ -475,17 +607,25 @@ def _configure_mmdetection(
 def _execute_one(
     repo_root: Path,
     row: dict[str, str],
+    attempt_id: str,
 ) -> None:
     run_id = str(row["run_id"]).strip()
+
+    _validate_attempt_request(
+        repo_root,
+        row,
+        attempt_id,
+    )
 
     attempt_dir = _attempt_directory(
         repo_root,
         run_id,
+        attempt_id,
     )
 
     if attempt_dir.exists():
         raise OfficialLauncherError(
-            "Initial official attempt directory "
+            "Official attempt directory "
             f"already exists: {attempt_dir}"
         )
 
@@ -493,6 +633,7 @@ def _execute_one(
         repo_root,
         row,
     )
+    pre_run["attempt_id"] = attempt_id
 
     if (
         not pre_run["all_checks_pass"]
@@ -508,6 +649,10 @@ def _execute_one(
         attempt_dir,
     )
 
+    if attempt_id != INITIAL_ATTEMPT_ID:
+        cfg.resume = False
+        cfg.load_from = None
+
     # Artifact contract requires pre_run_assertions.json
     # in the official attempt directory immediately
     # before the training launch.
@@ -516,10 +661,34 @@ def _execute_one(
         pre_run,
     )
 
+    retry_deviation = _retry_deviation_payload(
+        row,
+        attempt_id,
+    )
+    _write_json(
+        attempt_dir / "retry_deviation.json",
+        retry_deviation,
+    )
+
     from mmengine.runner import Runner
 
-    runner = Runner.from_cfg(cfg)
-    runner.train()
+    try:
+        runner = Runner.from_cfg(cfg)
+        runner.train()
+    except Exception as exc:
+        retry_deviation["technical_failure"] = True
+        retry_deviation["failure_reason"] = (
+            f"{type(exc).__name__}: {exc}"
+        )
+        retry_deviation["retry_required"] = True
+        retry_deviation["retry_reason"] = (
+            "TECHNICAL_FAILURE_ONLY"
+        )
+        _write_json(
+            attempt_dir / "retry_deviation.json",
+            retry_deviation,
+        )
+        raise
 
 
 def _verify_one(
@@ -563,6 +732,17 @@ def main() -> int:
     )
 
     parser.add_argument(
+        "--attempt-id",
+        default=INITIAL_ATTEMPT_ID,
+        help=(
+            "Official attempt identity. "
+            "Initial execution uses attempt_001; "
+            "technical retry uses the next attempt_NNN "
+            "for the same logical run and exact seed."
+        ),
+    )
+
+    parser.add_argument(
         "--execute",
         action="store_true",
         help=(
@@ -598,10 +778,17 @@ def main() -> int:
 
             _assert_inventory_state(row)
 
+            _validate_attempt_request(
+                repo_root,
+                row,
+                args.attempt_id,
+            )
+
             if args.execute:
                 _execute_one(
                     repo_root,
                     row,
+                    args.attempt_id,
                 )
                 print(
                     "OFFICIAL_LAUNCH_RESULT="
@@ -632,6 +819,12 @@ def main() -> int:
                     "MMDETECTION_TRAINING_CALLED=False"
                 )
         else:
+            if args.attempt_id != INITIAL_ATTEMPT_ID:
+                raise OfficialLauncherError(
+                    "Non-initial technical retry "
+                    "requires --run-id."
+                )
+
             scoped_rows = _select_scope(
                 rows,
                 args.scope,
@@ -645,6 +838,7 @@ def main() -> int:
                     _execute_one(
                         repo_root,
                         row,
+                        args.attempt_id,
                     )
 
                 print(
