@@ -593,6 +593,101 @@ def _configure_mmdetection(
             "test_evaluator."
         )
 
+    if expected["method"] == "SUP":
+        evaluation_cfg = Config.fromfile(
+            str(
+                repo_root
+                / "configs/evaluation/s5_02_coco_secondary_evaluator.py"
+            )
+        )
+
+        custom_imports = cfg.get("custom_imports", {})
+        imports = list(custom_imports.get("imports", []))
+        protocol_metric_module = "src.metrics.protocol_coco_metric"
+        sup_summary_module = "src.utils.sup_training_summary_hook"
+
+        if protocol_metric_module not in imports:
+            imports.append(protocol_metric_module)
+        if sup_summary_module not in imports:
+            imports.append(sup_summary_module)
+
+        cfg.custom_imports = dict(
+            imports=imports,
+            allow_failed_imports=False,
+        )
+        cfg.val_dataloader = deepcopy(
+            evaluation_cfg.val_dataloader
+        )
+        cfg.val_evaluator = deepcopy(
+            evaluation_cfg.val_evaluator
+        )
+        cfg.val_cfg = deepcopy(
+            evaluation_cfg.val_cfg
+        )
+
+        custom_hooks = list(cfg.get("custom_hooks", []))
+        budget_hooks = [
+            hook
+            for hook in custom_hooks
+            if hook.get("type") == "ActualUpdateBudgetSchedulerHook"
+        ]
+        if len(budget_hooks) != 1:
+            raise OfficialLauncherError(
+                "Official SUP config must contain exactly one "
+                "ActualUpdateBudgetSchedulerHook."
+            )
+
+        target_updates = budget_hooks[0].get("target_updates")
+        if (
+            isinstance(target_updates, bool)
+            or not isinstance(target_updates, int)
+            or target_updates <= 0
+        ):
+            raise OfficialLauncherError(
+                "Official SUP target_updates must be a positive integer."
+            )
+
+        if any(
+            hook.get("type") == "SupervisedTrainingSummaryHook"
+            for hook in custom_hooks
+        ):
+            raise OfficialLauncherError(
+                "Official SUP config unexpectedly already contains "
+                "SupervisedTrainingSummaryHook."
+            )
+
+        custom_hooks.append(
+            dict(
+                type="SupervisedTrainingSummaryHook",
+                expected_optimizer_updates=int(target_updates),
+                effective_labeled_batch=4,
+                priority="LOW",
+            )
+        )
+        cfg.custom_hooks = custom_hooks
+
+    custom_imports = cfg.get("custom_imports", {})
+    imports = list(custom_imports.get("imports", []))
+    seed_runtime_module = "src.utils.official_seed_runtime_hook"
+    if seed_runtime_module not in imports:
+        imports.append(seed_runtime_module)
+    cfg.custom_imports = dict(
+        imports=imports,
+        allow_failed_imports=False,
+    )
+
+    custom_hooks = list(cfg.get("custom_hooks", []))
+    if any(
+        hook.get("type") == "OfficialSeedRuntimeHook"
+        for hook in custom_hooks
+    ):
+        raise OfficialLauncherError(
+            "Official config unexpectedly already contains "
+            "OfficialSeedRuntimeHook."
+        )
+    custom_hooks.append(dict(type="OfficialSeedRuntimeHook"))
+    cfg.custom_hooks = custom_hooks
+
     cfg.work_dir = str(attempt_dir)
 
     cfg.randomness = {
@@ -740,6 +835,18 @@ def _execute_one(
             "Pre-run assertions did not PASS."
         )
 
+    from src.utils.official_run_root_manifest import (
+        ensure_official_run_root_manifest,
+    )
+
+    ensure_official_run_root_manifest(
+        run_root=attempt_dir.parent,
+        run_id=run_id,
+        attempt_id=attempt_id,
+        expected=expected,
+        recovery=recover,
+    )
+
     from src.utils.s9_active_backup import (
         ActiveBackupManager,
         recover_official_attempt,
@@ -833,6 +940,78 @@ def _execute_one(
             retry_deviation,
         )
 
+    if recover:
+        from src.utils.official_attempt_closure import (
+            validate_official_run_manifest,
+        )
+
+        validate_official_run_manifest(
+            attempt_dir=attempt_dir,
+            run_id=run_id,
+            attempt_id=attempt_id,
+            expected=expected,
+        )
+    else:
+        from src.utils.official_run_manifest import (
+            materialize_official_run_manifest,
+        )
+
+        materialize_official_run_manifest(
+            repo_root=repo_root,
+            attempt_dir=attempt_dir,
+            run_id=run_id,
+            attempt_id=attempt_id,
+            expected=expected,
+        )
+
+
+    from src.utils.official_resolved_config import (
+        materialize_official_resolved_config,
+    )
+
+    materialize_official_resolved_config(
+        attempt_dir=attempt_dir,
+        cfg=cfg,
+    )
+
+
+    from src.utils.official_data_provenance import (
+        materialize_official_data_provenance,
+    )
+
+    materialize_official_data_provenance(
+        repo_root=repo_root,
+        attempt_dir=attempt_dir,
+        expected=expected,
+        cfg=cfg,
+    )
+
+
+    from src.utils.official_seed_runtime_hook import (
+        begin_official_seed_runtime_observation,
+        finish_official_seed_runtime_observation,
+        prepare_official_seed_runtime_context,
+    )
+
+    prepare_official_seed_runtime_context(
+        repo_root=repo_root,
+        attempt_dir=attempt_dir,
+        expected=expected,
+        recovery=recover,
+    )
+
+    from src.utils.official_environment_reference import (
+        materialize_official_environment_reference,
+    )
+
+    materialize_official_environment_reference(
+        repo_root=repo_root,
+        attempt_dir=attempt_dir,
+        run_id=run_id,
+        attempt_id=attempt_id,
+        recovery=recover,
+    )
+
     backup = ActiveBackupManager(
         repo_root,
         attempt_dir,
@@ -840,9 +1019,36 @@ def _execute_one(
     backup.start()
 
     from mmengine.runner import Runner
+    from src.utils.official_attempt_closure import (
+        close_official_attempt,
+    )
+    from src.utils.official_logical_run_status import (
+        set_official_logical_run_in_progress,
+        set_official_logical_run_technical_failure,
+    )
+
+    set_official_logical_run_in_progress(
+        run_root=attempt_dir.parent,
+        run_id=run_id,
+        attempt_id=attempt_id,
+        training_seed=int(str(row["training_seed"]).strip()),
+        recovery=recover,
+    )
+    backup.sync(
+        "logical_run_status_in_progress",
+        raise_on_error=True,
+    )
 
     try:
-        runner = Runner.from_cfg(cfg)
+        begin_official_seed_runtime_observation(
+            attempt_dir=attempt_dir,
+        )
+        try:
+            runner = Runner.from_cfg(cfg)
+        finally:
+            finish_official_seed_runtime_observation(
+                attempt_dir=attempt_dir,
+            )
         runner.train()
         if str(row["method"]).strip() == "SSL":
             _run_qpseudo_after_training(
@@ -850,7 +1056,15 @@ def _execute_one(
                 attempt_dir,
                 runner,
             )
-        backup.finalize()
+        close_official_attempt(
+            attempt_dir=attempt_dir,
+            run_id=run_id,
+            attempt_id=attempt_id,
+            expected=expected,
+            validation_interval=int(
+                cfg.train_cfg.val_interval
+            ),
+        )
     except Exception as exc:
         retry_deviation["technical_failure"] = True
         retry_deviation["failure_reason"] = (
@@ -864,10 +1078,22 @@ def _execute_one(
             attempt_dir / "retry_deviation.json",
             retry_deviation,
         )
-        backup.record_failure_state()
+        try:
+            set_official_logical_run_technical_failure(
+                run_root=attempt_dir.parent,
+                run_id=run_id,
+                attempt_id=attempt_id,
+                training_seed=int(
+                    str(row["training_seed"]).strip()
+                ),
+            )
+        finally:
+            backup.record_failure_state()
         backup.stop()
         raise
 
+
+    backup.finalize()
 def _verify_one(
     repo_root: Path,
     row: dict[str, str],

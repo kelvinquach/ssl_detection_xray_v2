@@ -2,20 +2,24 @@
 
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
 from typing import Any, Optional
 
 from mmengine.hooks import Hook
+from mmengine.model import is_model_wrapper
 from mmdet.registry import HOOKS
 
-from src.utils.actual_update_validation_loop import (
-    RUNNER_VALIDATION_HISTORY_ATTR,
-)
 from src.utils.optimizer_update_counter import (
     ActualOptimizerUpdateCounter,
 )
-from src.utils.resume_checkpoint_hook import RUNNER_COUNTER_ATTR
+from src.utils.official_train_log_runtime import OfficialTrainLogRuntime
+from src.utils.resume_checkpoint_hook import (
+    RUNNER_COUNTER_ATTR,
+    RUNNER_PENDING_RESUME_STATE_ATTR,
+    RUNNER_TRAINING_SUMMARY_STATE_ATTR,
+)
 
 
 @HOOKS.register_module()
@@ -68,6 +72,7 @@ class SSLTrainingSummaryHook(Hook):
         self._unlabeled_images = 0
         self._amp_skipped_steps = 0
         self._ema_updates = 0
+        self._train_log_runtime: Optional[OfficialTrainLogRuntime] = None
 
     @staticmethod
     def _counter(runner: Any) -> ActualOptimizerUpdateCounter:
@@ -151,12 +156,86 @@ class SSLTrainingSummaryHook(Hook):
         counter = self._counter(runner)
         self._last_updates = counter.count
 
-        if self._last_updates != 0:
-            raise RuntimeError(
-                "S4.13 SSLTrainingSummaryHook currently requires a "
-                "fresh non-resumed run. Resume accounting is owned by "
-                "the later resume-equivalence task."
+        if self._last_updates == 0:
+            self._labeled_images = 0
+            self._unlabeled_images = 0
+            self._amp_skipped_steps = 0
+            self._ema_updates = 0
+        else:
+            pending_state = getattr(
+                runner,
+                RUNNER_PENDING_RESUME_STATE_ATTR,
+                None,
             )
+            if not isinstance(pending_state, dict):
+                raise RuntimeError(
+                    "Resumed SSL summary requires pending protocol resume state."
+                )
+            summary_state = pending_state.get("training_summary_state")
+            if not isinstance(summary_state, dict):
+                raise RuntimeError(
+                    "Resumed SSL summary is missing training_summary_state."
+                )
+
+            required = (
+                "labeled_images_consumed_total",
+                "unlabeled_images_consumed_total",
+                "amp_skipped_step_count",
+                "ema_update_count",
+            )
+            for key in required:
+                value = summary_state.get(key)
+                if (
+                    isinstance(value, bool)
+                    or not isinstance(value, int)
+                    or value < 0
+                ):
+                    raise RuntimeError(
+                        f"Invalid resumed SSL training-summary field {key!r}."
+                    )
+
+            self._labeled_images = int(
+                summary_state["labeled_images_consumed_total"]
+            )
+            self._unlabeled_images = int(
+                summary_state["unlabeled_images_consumed_total"]
+            )
+            self._amp_skipped_steps = int(
+                summary_state["amp_skipped_step_count"]
+            )
+            self._ema_updates = int(
+                summary_state["ema_update_count"]
+            )
+
+            if (
+                self._labeled_images
+                != self._last_updates * self.effective_labeled_batch
+            ):
+                raise RuntimeError(
+                    "Resumed labeled exposure does not match restored updates."
+                )
+            if (
+                self._unlabeled_images
+                != self._last_updates * self.effective_unlabeled_batch
+            ):
+                raise RuntimeError(
+                    "Resumed unlabeled exposure does not match restored updates."
+                )
+            if self._ema_updates != self._last_updates:
+                raise RuntimeError(
+                    "Resumed EMA count does not match restored updates."
+                )
+
+        setattr(
+            runner,
+            RUNNER_TRAINING_SUMMARY_STATE_ATTR,
+            {
+                "labeled_images_consumed_total": int(self._labeled_images),
+                "unlabeled_images_consumed_total": int(self._unlabeled_images),
+                "amp_skipped_step_count": int(self._amp_skipped_steps),
+                "ema_update_count": int(self._ema_updates),
+            },
+        )
 
         accumulative_counts = getattr(
             runner.optim_wrapper,
@@ -168,12 +247,22 @@ class SSLTrainingSummaryHook(Hook):
                 "S4.13 requires accumulative_counts=1."
             )
 
+        self._train_log_runtime = OfficialTrainLogRuntime(
+            runner,
+            restored_optimizer_updates=int(self._last_updates),
+        )
+
     def before_train_iter(
         self,
         runner: Any,
         batch_idx: int,
         data_batch: Any = None,
     ) -> None:
+        model = runner.model
+        if is_model_wrapper(model):
+            model = model.module
+        setattr(model, "_official_last_pseudo_counts", None)
+
         self._scale_before = self._loss_scale(runner)
 
     def after_train_iter(
@@ -238,6 +327,107 @@ class SSLTrainingSummaryHook(Hook):
             # updates exactly once for this same authoritative delta.
             self._ema_updates += 1
 
+            runtime = self._train_log_runtime
+            if not isinstance(runtime, OfficialTrainLogRuntime):
+                raise RuntimeError(
+                    "OFFICIAL_SSL_TRAIN_LOG_RUNTIME_NOT_INITIALIZED"
+                )
+
+            if scale_after is None:
+                raise RuntimeError(
+                    "OFFICIAL_SSL_AMP_SCALE_UNAVAILABLE"
+                )
+
+            model = runner.model
+            if is_model_wrapper(model):
+                model = model.module
+
+            pseudo_counts = getattr(
+                model,
+                "_official_last_pseudo_counts",
+                None,
+            )
+            if not isinstance(pseudo_counts, dict):
+                raise RuntimeError(
+                    "OFFICIAL_SSL_PSEUDO_COUNTS_UNAVAILABLE"
+                )
+
+            required_pseudo_fields = (
+                "pseudo_count",
+                "classification_pseudo_count",
+                "regression_pseudo_count",
+            )
+            for field in required_pseudo_fields:
+                value = pseudo_counts.get(field)
+                if (
+                    isinstance(value, bool)
+                    or not isinstance(value, int)
+                    or value < 0
+                ):
+                    raise RuntimeError(
+                        f"OFFICIAL_SSL_INVALID_PSEUDO_COUNT:{field}"
+                    )
+
+            if (
+                pseudo_counts["classification_pseudo_count"]
+                > pseudo_counts["pseudo_count"]
+                or pseudo_counts["regression_pseudo_count"]
+                > pseudo_counts["pseudo_count"]
+            ):
+                raise RuntimeError(
+                    "OFFICIAL_SSL_PSEUDO_SUBSET_COUNT_EXCEEDS_BASE"
+                )
+
+            loss_total = runtime.output_value(outputs, "loss")
+            loss_supervised = runtime.loss_sum_by_prefix(
+                outputs,
+                "sup_",
+            )
+            loss_unsupervised = runtime.loss_sum_by_prefix(
+                outputs,
+                "unsup_",
+            )
+
+            runtime.logger.log_optimizer_update(
+                {
+                    "optimizer_update": int(current),
+                    "raw_iteration": int(runner.iter) + 1,
+                    "learning_rate": runtime.learning_rate(runner),
+                    "loss_total": loss_total,
+                    "loss_supervised": loss_supervised,
+                    "amp_scale": float(scale_after),
+                    "optimizer_step_executed": True,
+                    "elapsed_seconds": runtime.elapsed_seconds(),
+                    "gpu_memory_allocated_mb": (
+                        runtime.gpu_memory_allocated_mb()
+                    ),
+                    "labeled_microbatches_consumed_cumulative": (
+                        int(current)
+                    ),
+                    "labeled_images_consumed_cumulative": int(
+                        self._labeled_images
+                    ),
+                    "loss_unsupervised": loss_unsupervised,
+                    "pseudo_count": int(
+                        pseudo_counts["pseudo_count"]
+                    ),
+                    "classification_pseudo_count": int(
+                        pseudo_counts["classification_pseudo_count"]
+                    ),
+                    "regression_pseudo_count": int(
+                        pseudo_counts["regression_pseudo_count"]
+                    ),
+                    "unlabeled_microbatches_consumed_cumulative": (
+                        int(current)
+                    ),
+                    "unlabeled_images_consumed_cumulative": int(
+                        self._unlabeled_images
+                    ),
+                    "ema_step_executed": True,
+                },
+                ssl=True,
+            )
+
         else:
             amp_skip = (
                 self._scale_before is not None
@@ -256,18 +446,44 @@ class SSLTrainingSummaryHook(Hook):
 
         self._last_updates = current
 
+        setattr(
+            runner,
+            RUNNER_TRAINING_SUMMARY_STATE_ATTR,
+            {
+                "labeled_images_consumed_total": int(self._labeled_images),
+                "unlabeled_images_consumed_total": int(self._unlabeled_images),
+                "amp_skipped_step_count": int(self._amp_skipped_steps),
+                "ema_update_count": int(self._ema_updates),
+            },
+        )
+
+    @staticmethod
+    def _validation_event_count(runner: Any) -> int:
+        path = (
+            Path(runner.work_dir)
+            / "metrics"
+            / "validation"
+            / "validation_history.csv"
+        )
+        if not path.is_file():
+            return 0
+
+        with path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            if reader.fieldnames is None:
+                raise RuntimeError(
+                    "validation_history.csv is missing its header."
+                )
+            if "optimizer_update" not in reader.fieldnames:
+                raise RuntimeError(
+                    "validation_history.csv is missing optimizer_update."
+                )
+            return sum(1 for _ in reader)
+
     def after_train(self, runner: Any) -> None:
         counter = self._counter(runner)
 
-        history = getattr(
-            runner,
-            RUNNER_VALIDATION_HISTORY_ATTR,
-            [],
-        )
-        if not isinstance(history, list):
-            raise RuntimeError(
-                "Validation history must be a list."
-            )
+        validation_events_observed = self._validation_event_count(runner)
 
         observed_updates = int(counter.count)
 
@@ -285,7 +501,7 @@ class SSLTrainingSummaryHook(Hook):
             "unlabeled_images_consumed_total":
                 int(self._unlabeled_images),
             "validation_events_observed":
-                len(history),
+                validation_events_observed,
             "amp_skipped_step_count":
                 int(self._amp_skipped_steps),
             "ema_update_count":
@@ -310,7 +526,12 @@ class SSLTrainingSummaryHook(Hook):
             ),
         }
 
-        path = Path(runner.work_dir) / "training_summary.json"
+        path = (
+            Path(runner.work_dir)
+            / "metrics"
+            / "validation"
+            / "training_summary.json"
+        )
         path.parent.mkdir(parents=True, exist_ok=True)
 
         temp_path = path.with_suffix(".json.tmp")

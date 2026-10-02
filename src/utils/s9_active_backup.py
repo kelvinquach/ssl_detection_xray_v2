@@ -231,6 +231,15 @@ class ActiveBackupManager:
         self.attempt_id = relative.parts[-1]
         self.runtime = validate_backup_runtime(self.repo_root)
         self.remote_root = self.runtime["backup_root"] + "/" + relative.as_posix()
+        self.run_root = self.attempt_dir.parent
+        self.remote_run_root = (
+            self.runtime["backup_root"]
+            + "/"
+            + relative.parent.as_posix()
+        )
+        self.run_root_manifest_path = (
+            self.run_root / "run_root_manifest.json"
+        )
         self.manifest_path = self.attempt_dir / "backup_sync_manifest.json"
 
         self._verified: dict[str, dict[str, Any]] = {}
@@ -247,6 +256,192 @@ class ActiveBackupManager:
         self._thread: threading.Thread | None = None
         self._last_periodic = time.monotonic()
         self._critical_signatures: dict[str, tuple[int, int]] = {}
+        self._run_root_manifest_verified: dict[str, Any] | None = None
+        self._logical_run_status_verified: dict[str, Any] | None = None
+
+    def _copy_verify_run_root_manifest(self) -> dict[str, Any]:
+        source = self.run_root_manifest_path
+        if not source.is_file():
+            raise BackupRuntimeError(
+                "run_root_manifest.json is missing before backup."
+            )
+
+        snapshot, size_bytes, sha256 = self._snapshot(source)
+        try:
+            previous = self._run_root_manifest_verified
+            if previous is not None:
+                if (
+                    previous.get("sha256") != sha256
+                    or previous.get("size_bytes") != size_bytes
+                ):
+                    raise BackupRuntimeError(
+                        "Immutable run_root_manifest.json changed after verified backup."
+                    )
+                if (
+                    previous.get("verification_status") == "PASS"
+                    and previous.get("destination")
+                    == self.remote_run_root + "/run_root_manifest.json"
+                ):
+                    return previous
+
+            remote = self.remote_run_root + "/run_root_manifest.json"
+            _run(
+                [
+                    self.runtime["rclone"],
+                    "--config",
+                    self.runtime["rclone_conf"],
+                    "copyto",
+                    str(snapshot),
+                    remote,
+                ],
+                "run_root_manifest backup copy",
+            )
+
+            listing = _run(
+                [
+                    self.runtime["rclone"],
+                    "--config",
+                    self.runtime["rclone_conf"],
+                    "lsf",
+                    remote,
+                ],
+                "run_root_manifest remote presence check",
+            )
+            if "run_root_manifest.json" not in {
+                line.strip()
+                for line in listing.stdout.splitlines()
+                if line.strip()
+            }:
+                raise BackupRuntimeError(
+                    "Remote run_root_manifest.json is missing."
+                )
+
+            fd, verify_name = tempfile.mkstemp(
+                dir=str(self.attempt_dir / ".backup_tmp"),
+                prefix="run-root-manifest.roundtrip.",
+                suffix=".json",
+            )
+            os.close(fd)
+            verify = Path(verify_name)
+            try:
+                verify.unlink()
+                _run(
+                    [
+                        self.runtime["rclone"],
+                        "--config",
+                        self.runtime["rclone_conf"],
+                        "copyto",
+                        remote,
+                        str(verify),
+                    ],
+                    "run_root_manifest round-trip restore",
+                )
+                if (
+                    verify.stat().st_size != size_bytes
+                    or _sha256(verify) != sha256
+                ):
+                    raise BackupRuntimeError(
+                        "run_root_manifest remote checksum/byte verification failed."
+                    )
+            finally:
+                if verify.exists():
+                    verify.unlink()
+
+            entry = {
+                "path": "run_root_manifest.json",
+                "source_scope": "LOGICAL_RUN_ROOT",
+                "source_path": str(source),
+                "destination": remote,
+                "size_bytes": size_bytes,
+                "sha256": sha256,
+                "copy_timestamp_utc": _utc_now(),
+                "verification_status": "PASS",
+            }
+            self._run_root_manifest_verified = entry
+            return entry
+        finally:
+            if snapshot.exists():
+                snapshot.unlink()
+
+    def _copy_verify_logical_run_status(self) -> dict[str, Any] | None:
+        source = self.run_root / "logical_run_status.json"
+        if not source.exists():
+            return None
+        if not source.is_file():
+            raise BackupRuntimeError(
+                "logical_run_status.json path is not a file."
+            )
+
+        snapshot, size_bytes, sha256 = self._snapshot(source)
+        try:
+            previous = self._logical_run_status_verified
+            if (
+                previous is not None
+                and previous.get("sha256") == sha256
+                and previous.get("size_bytes") == size_bytes
+                and previous.get("verification_status") == "PASS"
+            ):
+                return previous
+
+            remote = self.remote_run_root + "/logical_run_status.json"
+            _run(
+                [
+                    self.runtime["rclone"],
+                    "--config",
+                    self.runtime["rclone_conf"],
+                    "copyto",
+                    str(snapshot),
+                    remote,
+                ],
+                "logical_run_status backup copy",
+            )
+
+            fd, verify_name = tempfile.mkstemp(
+                dir=str(self.attempt_dir / ".backup_tmp"),
+                prefix="logical-run-status.roundtrip.",
+                suffix=".json",
+            )
+            os.close(fd)
+            verify = Path(verify_name)
+            try:
+                verify.unlink()
+                _run(
+                    [
+                        self.runtime["rclone"],
+                        "--config",
+                        self.runtime["rclone_conf"],
+                        "copyto",
+                        remote,
+                        str(verify),
+                    ],
+                    "logical_run_status round-trip restore",
+                )
+                if (
+                    verify.stat().st_size != size_bytes
+                    or _sha256(verify) != sha256
+                ):
+                    raise BackupRuntimeError(
+                        "logical_run_status remote checksum/byte verification failed."
+                    )
+            finally:
+                if verify.exists():
+                    verify.unlink()
+
+            entry = {
+                "path": "logical_run_status.json",
+                "source_scope": "LOGICAL_RUN_ROOT",
+                "source_path": str(source),
+                "destination": remote,
+                "size_bytes": size_bytes,
+                "sha256": sha256,
+                "copy_timestamp_utc": _utc_now(),
+                "verification_status": "PASS",
+            }
+            self._logical_run_status_verified = entry
+            return entry
+        finally:
+            if snapshot.exists():
+                snapshot.unlink()
 
     def _required_from_artifact_manifest(self) -> set[str]:
         path = self.attempt_dir / "artifact_manifest.json"
@@ -427,6 +622,8 @@ class ActiveBackupManager:
             "attempt_id": self.attempt_id,
             "source_path": str(self.attempt_dir),
             "destination_identity": self.remote_root,
+            "run_root_manifest": self._run_root_manifest_verified,
+            "logical_run_status": self._logical_run_status_verified,
             "file_count": len(files),
             "bytes": sum(int(item["size_bytes"]) for item in files),
             "files": files,
@@ -485,6 +682,8 @@ class ActiveBackupManager:
             try:
                 self._status = "HEALTHY"
                 self._last_error = None
+                self._copy_verify_run_root_manifest()
+                self._copy_verify_logical_run_status()
                 for relative, source in self._existing_files():
                     self._copy_verify(relative, source)
                 self._update_recovery_point()
@@ -769,6 +968,57 @@ def recover_official_attempt(
                 "Remote backup destination identity mismatch."
             )
 
+        logical_status = manifest.get("logical_run_status")
+        if (
+            not isinstance(logical_status, dict)
+            or logical_status.get("verification_status") != "PASS"
+            or logical_status.get("path") != "logical_run_status.json"
+            or logical_status.get("source_scope") != "LOGICAL_RUN_ROOT"
+        ):
+            raise BackupRuntimeError(
+                "Remote backup lacks verified logical_run_status.json."
+            )
+        logical_size = logical_status.get("size_bytes")
+        logical_sha = logical_status.get("sha256")
+        if (
+            isinstance(logical_size, bool)
+            or not isinstance(logical_size, int)
+            or logical_size <= 0
+            or not isinstance(logical_sha, str)
+            or len(logical_sha) != 64
+            or any(
+                ch not in "0123456789abcdef"
+                for ch in logical_sha.lower()
+            )
+        ):
+            raise BackupRuntimeError(
+                "Remote logical_run_status evidence is invalid."
+            )
+        remote_run_root = (
+            runtime["backup_root"]
+            + "/"
+            + relative_attempt.parent.as_posix()
+        )
+        expected_logical_remote = (
+            remote_run_root + "/logical_run_status.json"
+        )
+        if logical_status.get("destination") != expected_logical_remote:
+            raise BackupRuntimeError(
+                "Remote logical_run_status destination mismatch."
+            )
+        logical_status_path = (
+            repo_root
+            / "artifacts"
+            / "runs"
+            / "official"
+            / run_id
+            / "logical_run_status.json"
+        )
+        if logical_status_path.exists():
+            raise BackupRuntimeError(
+                "Recovery requires logical_run_status.json to be absent locally."
+            )
+
         recovery_point = manifest.get(
             "LATEST_VERIFIED_DURABLE_RECOVERY_POINT"
         )
@@ -857,7 +1107,17 @@ def recover_official_attempt(
             )
 
         attempt_dir.mkdir(parents=True, exist_ok=False)
+        logical_status_restored = False
         try:
+            _download_verified_file(
+                runtime=runtime,
+                remote=expected_logical_remote,
+                destination=logical_status_path,
+                expected_size=int(logical_size),
+                expected_sha256=str(logical_sha),
+            )
+            logical_status_restored = True
+
             for rel, item in sorted(by_path.items()):
                 _download_verified_file(
                     runtime=runtime,
@@ -925,6 +1185,8 @@ def recover_official_attempt(
         except Exception:
             if attempt_dir.exists():
                 shutil.rmtree(attempt_dir)
+            if logical_status_restored and logical_status_path.exists():
+                logical_status_path.unlink()
             raise
 
         return {

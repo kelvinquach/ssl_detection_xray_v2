@@ -21,6 +21,7 @@ import torch
 from mmengine.hooks import Hook
 from mmdet.registry import HOOKS
 
+from src.utils.classwise_validation_artifact import write_classwise_validation_ap
 from src.utils.optimizer_update_counter import ActualOptimizerUpdateCounter
 from src.utils.resume_checkpoint_hook import RUNNER_COUNTER_ATTR
 from src.utils.run_manifest import file_sha256
@@ -150,6 +151,7 @@ class SSLBestLastCheckpointHook(Hook):
         return {
             "validation_history": validation_dir / "validation_history.csv",
             "validation_best": validation_dir / "validation_best_teacher.json",
+            "classwise_validation": validation_dir / "classwise_validation_ap.csv",
             "checkpoint_index": checkpoint_dir / "checkpoint_index.json",
             "best": checkpoint_dir / "best_ema_teacher.pth",
             "last": checkpoint_dir / "last_ema_teacher.pth",
@@ -379,6 +381,11 @@ class SSLBestLastCheckpointHook(Hook):
                 "tie_break": BEST_TIE_BREAK,
             }
             _write_json_atomic(paths["validation_best"], validation_best)
+
+            write_classwise_validation_ap(
+                paths["classwise_validation"],
+                metrics,
+            )
 
             self._upsert_checkpoint_index(
                 paths["checkpoint_index"],
