@@ -49,6 +49,73 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _yaml_safe_value(value: Any, *, path: str) -> Any:
+    if value is None or isinstance(value, (bool, int, float, str)):
+        return value
+
+    if isinstance(value, Path):
+        return str(value)
+
+    if isinstance(value, dict):
+        normalized: dict[str, Any] = {}
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise OfficialResolvedConfigError(
+                    "Resolved config contains non-string mapping key "
+                    f"at {path}: "
+                    f"{type(key).__module__}.{type(key).__qualname__}."
+                )
+            normalized[key] = _yaml_safe_value(
+                item,
+                path=f"{path}.{key}",
+            )
+        return normalized
+
+    if isinstance(value, (list, tuple)):
+        return [
+            _yaml_safe_value(
+                item,
+                path=f"{path}[{index}]",
+            )
+            for index, item in enumerate(value)
+        ]
+
+    if isinstance(value, type):
+        return {
+            "__python_type__": (
+                f"{value.__module__}.{value.__qualname__}"
+            ),
+        }
+
+    value_type = type(value)
+    if (
+        value_type.__module__ == "__future__"
+        and value_type.__name__ == "_Feature"
+    ):
+        optional_release = value.getOptionalRelease()
+        mandatory_release = value.getMandatoryRelease()
+        return {
+            "__python_object__": "__future__._Feature",
+            "optional_release": (
+                list(optional_release)
+                if optional_release is not None
+                else None
+            ),
+            "mandatory_release": (
+                list(mandatory_release)
+                if mandatory_release is not None
+                else None
+            ),
+            "compiler_flag": int(value.compiler_flag),
+        }
+
+    raise OfficialResolvedConfigError(
+        "Resolved config contains unsupported YAML value "
+        f"at {path}: "
+        f"{value_type.__module__}.{value_type.__qualname__}."
+    )
+
+
 def materialize_official_resolved_config(
     *,
     attempt_dir: Path,
@@ -68,6 +135,11 @@ def materialize_official_resolved_config(
         raise OfficialResolvedConfigError(
             "Resolved config must materialize as a non-empty mapping."
         )
+
+    payload = _yaml_safe_value(
+        payload,
+        path="root",
+    )
 
     try:
         rendered = yaml.safe_dump(

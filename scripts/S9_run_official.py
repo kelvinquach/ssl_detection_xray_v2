@@ -940,88 +940,6 @@ def _execute_one(
             retry_deviation,
         )
 
-    if recover:
-        from src.utils.official_attempt_closure import (
-            validate_official_run_manifest,
-        )
-
-        validate_official_run_manifest(
-            attempt_dir=attempt_dir,
-            run_id=run_id,
-            attempt_id=attempt_id,
-            expected=expected,
-        )
-    else:
-        from src.utils.official_run_manifest import (
-            materialize_official_run_manifest,
-        )
-
-        materialize_official_run_manifest(
-            repo_root=repo_root,
-            attempt_dir=attempt_dir,
-            run_id=run_id,
-            attempt_id=attempt_id,
-            expected=expected,
-        )
-
-
-    from src.utils.official_resolved_config import (
-        materialize_official_resolved_config,
-    )
-
-    materialize_official_resolved_config(
-        attempt_dir=attempt_dir,
-        cfg=cfg,
-    )
-
-
-    from src.utils.official_data_provenance import (
-        materialize_official_data_provenance,
-    )
-
-    materialize_official_data_provenance(
-        repo_root=repo_root,
-        attempt_dir=attempt_dir,
-        expected=expected,
-        cfg=cfg,
-    )
-
-
-    from src.utils.official_seed_runtime_hook import (
-        begin_official_seed_runtime_observation,
-        finish_official_seed_runtime_observation,
-        prepare_official_seed_runtime_context,
-    )
-
-    prepare_official_seed_runtime_context(
-        repo_root=repo_root,
-        attempt_dir=attempt_dir,
-        expected=expected,
-        recovery=recover,
-    )
-
-    from src.utils.official_environment_reference import (
-        materialize_official_environment_reference,
-    )
-
-    materialize_official_environment_reference(
-        repo_root=repo_root,
-        attempt_dir=attempt_dir,
-        run_id=run_id,
-        attempt_id=attempt_id,
-        recovery=recover,
-    )
-
-    backup = ActiveBackupManager(
-        repo_root,
-        attempt_dir,
-    )
-    backup.start()
-
-    from mmengine.runner import Runner
-    from src.utils.official_attempt_closure import (
-        close_official_attempt,
-    )
     from src.utils.official_logical_run_status import (
         set_official_logical_run_in_progress,
         set_official_logical_run_technical_failure,
@@ -1034,12 +952,94 @@ def _execute_one(
         training_seed=int(str(row["training_seed"]).strip()),
         recovery=recover,
     )
-    backup.sync(
-        "logical_run_status_in_progress",
-        raise_on_error=True,
-    )
+
+    backup = None
 
     try:
+        if recover:
+            from src.utils.official_attempt_closure import (
+                validate_official_run_manifest,
+            )
+
+            validate_official_run_manifest(
+                attempt_dir=attempt_dir,
+                run_id=run_id,
+                attempt_id=attempt_id,
+                expected=expected,
+            )
+        else:
+            from src.utils.official_run_manifest import (
+                materialize_official_run_manifest,
+            )
+
+            materialize_official_run_manifest(
+                repo_root=repo_root,
+                attempt_dir=attempt_dir,
+                run_id=run_id,
+                attempt_id=attempt_id,
+                expected=expected,
+            )
+
+        from src.utils.official_resolved_config import (
+            materialize_official_resolved_config,
+        )
+
+        materialize_official_resolved_config(
+            attempt_dir=attempt_dir,
+            cfg=cfg,
+        )
+
+        from src.utils.official_data_provenance import (
+            materialize_official_data_provenance,
+        )
+
+        materialize_official_data_provenance(
+            repo_root=repo_root,
+            attempt_dir=attempt_dir,
+            expected=expected,
+            cfg=cfg,
+        )
+
+        from src.utils.official_seed_runtime_hook import (
+            begin_official_seed_runtime_observation,
+            finish_official_seed_runtime_observation,
+            prepare_official_seed_runtime_context,
+        )
+
+        prepare_official_seed_runtime_context(
+            repo_root=repo_root,
+            attempt_dir=attempt_dir,
+            expected=expected,
+            recovery=recover,
+        )
+
+        from src.utils.official_environment_reference import (
+            materialize_official_environment_reference,
+        )
+
+        materialize_official_environment_reference(
+            repo_root=repo_root,
+            attempt_dir=attempt_dir,
+            run_id=run_id,
+            attempt_id=attempt_id,
+            recovery=recover,
+        )
+
+        backup = ActiveBackupManager(
+            repo_root,
+            attempt_dir,
+        )
+        backup.start()
+        backup.sync(
+            "logical_run_status_in_progress",
+            raise_on_error=True,
+        )
+
+        from mmengine.runner import Runner
+        from src.utils.official_attempt_closure import (
+            close_official_attempt,
+        )
+
         begin_official_seed_runtime_observation(
             attempt_dir=attempt_dir,
         )
@@ -1088,10 +1088,10 @@ def _execute_one(
                 ),
             )
         finally:
-            backup.record_failure_state()
-        backup.stop()
+            if backup is not None:
+                backup.record_failure_state()
+                backup.stop()
         raise
-
 
     backup.finalize()
 def _verify_one(
