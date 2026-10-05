@@ -372,13 +372,24 @@ def _observe_sampler_seed(
     base_training_seed: int,
 ) -> tuple[int, str, dict[str, Any]]:
     sampler = getattr(loader, "sampler", None)
+    sampler_path = "train_loop.dataloader.sampler"
+
+    seed = getattr(sampler, "seed", None) if sampler is not None else None
+    if isinstance(seed, bool) or not isinstance(seed, int):
+        batch_sampler = getattr(loader, "batch_sampler", None)
+        inner_sampler = getattr(batch_sampler, "sampler", None)
+        inner_seed = getattr(inner_sampler, "seed", None)
+        if not isinstance(inner_seed, bool) and isinstance(inner_seed, int):
+            sampler = inner_sampler
+            seed = inner_seed
+            sampler_path = "train_loop.dataloader.batch_sampler.sampler"
+
     if sampler is None:
         raise OfficialSeedRuntimeError(
-            "Runtime train dataloader has no sampler."
+            "Runtime train dataloader has no observable sampler."
         )
 
     sampler_type = type(sampler).__name__
-    seed = getattr(sampler, "seed", None)
 
     if isinstance(seed, bool) or not isinstance(seed, int):
         raise OfficialSeedRuntimeError(
@@ -389,6 +400,7 @@ def _observe_sampler_seed(
     sampler_seed_policy: dict[str, Any] = {
         "sampler_type": sampler_type,
         "sampler_module": type(sampler).__module__,
+        "sampler_observation_path": sampler_path,
         "base_training_seed": int(base_training_seed),
         "observed_sampler_seed": observed,
         "relation_to_base_training_seed": (
@@ -727,7 +739,7 @@ class OfficialSeedRuntimeHook(Hook):
             "cuda_initial_seeds_observed": cuda_initial_seeds,
             "sampler_type_observed": sampler_type,
             "sampler_seed_observation_method":
-                "runtime train_loop.dataloader.sampler.seed",
+                sampler_seed_policy["sampler_observation_path"] + ".seed",
             "worker_runtime_metadata": worker_runtime_metadata,
             "membership_identity_before_seed_application":
                 context[
