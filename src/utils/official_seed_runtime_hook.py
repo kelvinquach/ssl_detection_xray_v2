@@ -22,7 +22,7 @@ from typing import Any
 import numpy as np
 import torch
 from mmengine.hooks import Hook
-from mmdet.registry import HOOKS
+from mmengine.registry import HOOKS
 
 
 class OfficialSeedRuntimeError(RuntimeError):
