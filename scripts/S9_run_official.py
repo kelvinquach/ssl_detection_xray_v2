@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import sys
 from copy import deepcopy
 from pathlib import Path
@@ -1014,6 +1015,8 @@ def _execute_one(
             expected=expected,
             recovery=recover,
         )
+
+        os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
         from src.utils.official_environment_reference import (
             materialize_official_environment_reference,
