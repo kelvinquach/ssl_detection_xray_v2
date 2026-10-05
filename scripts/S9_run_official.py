@@ -581,6 +581,8 @@ def _configure_mmdetection(
         )
     )
 
+    cfg.default_scope = "mmdet"
+
     if cfg.get("test_dataloader", None) is not None:
         raise OfficialLauncherError(
             "Official training config exposes "
