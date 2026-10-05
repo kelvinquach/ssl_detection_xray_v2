@@ -1040,6 +1040,17 @@ def _execute_one(
             close_official_attempt,
         )
 
+        from mmengine.utils import import_modules_from_strings
+
+        runtime_custom_imports = cfg.get("custom_imports", {})
+        import_modules_from_strings(
+            runtime_custom_imports.get("imports", []),
+            allow_failed_imports=runtime_custom_imports.get(
+                "allow_failed_imports",
+                False,
+            ),
+        )
+
         mmengine_namespace_only_keys = (
             "annotations",
             "Path",
