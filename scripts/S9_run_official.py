@@ -1040,6 +1040,17 @@ def _execute_one(
             close_official_attempt,
         )
 
+        mmengine_namespace_only_keys = (
+            "annotations",
+            "Path",
+            "SSOD_ROOT",
+            "COCO_ROOT",
+            "MMDET_IMAGE_ROOT",
+        )
+        for key in mmengine_namespace_only_keys:
+            if key in cfg:
+                cfg.pop(key)
+
         begin_official_seed_runtime_observation(
             attempt_dir=attempt_dir,
         )
