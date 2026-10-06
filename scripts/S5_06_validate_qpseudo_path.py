@@ -590,6 +590,65 @@ def main():
             len(class_keys),
         )
 
+        zero_samples = [
+            make_sample(i, i - 1, 0.90)
+            for i in range(1, 15)
+        ]
+        zero_accepted = accepted_rcnn_classification_predictions(
+            zero_samples
+        )
+        zero_accepted_count = sum(
+            int(row["accepted_count"])
+            for row in zero_accepted
+        )
+        check(
+            "metric::zero_accepted_fixture_count",
+            zero_accepted_count == 0,
+            zero_accepted_count,
+        )
+
+        zero_metrics = evaluate_qpseudo_predictions(
+            zero_accepted,
+            fixture,
+            evaluator_cfg,
+        )
+        zero_required = (
+            "coco/bbox_mAP",
+            "coco/bbox_mAP_50",
+            "coco/bbox_mAP_75",
+            "coco/AR_50_95_max100",
+        )
+        check(
+            "metric::zero_accepted_aggregate_metrics",
+            all(
+                key in zero_metrics
+                and float(zero_metrics[key]) == 0.0
+                for key in zero_required
+            ),
+            {key: zero_metrics.get(key) for key in zero_required},
+        )
+        zero_class_keys = [
+            key
+            for key in zero_metrics
+            if "/classwise/" in key
+        ]
+        check(
+            "metric::zero_accepted_classwise_metrics",
+            len(zero_class_keys) == 42
+            and all(
+                float(zero_metrics[key]) == 0.0
+                for key in zero_class_keys
+            ),
+            {
+                "count": len(zero_class_keys),
+                "nonzero": [
+                    key
+                    for key in zero_class_keys
+                    if float(zero_metrics[key]) != 0.0
+                ],
+            },
+        )
+
         prod = td / "pseudo"
         artifacts = write_qpseudo_artifacts(
             output_dir=prod,
