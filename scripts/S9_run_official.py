@@ -180,6 +180,14 @@ def _select_scope(
     rows: list[dict[str, str]],
     scope: str,
 ) -> list[dict[str, str]]:
+    if scope == "all":
+        if len(rows) != 180:
+            raise OfficialLauncherError(
+                "Full official scope must contain exactly "
+                f"180 rows; observed={len(rows)}"
+            )
+        return list(rows)
+
     if scope == "sup-low-label":
         selected = [
             row
@@ -347,6 +355,134 @@ def _assert_inventory_state(
             "Final-test firewall state is not "
             "NOT_AUTHORIZED."
         )
+
+
+def _classify_scope_row_runtime_state(
+    repo_root: Path,
+    row: dict[str, str],
+) -> dict[str, str | None]:
+    run_id = str(row["run_id"]).strip()
+    training_seed = int(
+        str(row["training_seed"]).strip()
+    )
+    status_path = (
+        repo_root
+        / OFFICIAL_RUN_ROOT
+        / run_id
+        / "logical_run_status.json"
+    )
+
+    if not status_path.exists():
+        return {
+            "state": "FRESH",
+            "attempt_id": None,
+        }
+
+    if not status_path.is_file():
+        raise OfficialLauncherError(
+            "Logical-run status path is not a file: "
+            f"{status_path}"
+        )
+
+    try:
+        payload = json.loads(
+            status_path.read_text(encoding="utf-8-sig")
+        )
+    except (OSError, json.JSONDecodeError) as exc:
+        raise OfficialLauncherError(
+            "Logical-run status is unreadable: "
+            f"{status_path}"
+        ) from exc
+
+    if not isinstance(payload, dict):
+        raise OfficialLauncherError(
+            "Logical-run status must be a JSON object."
+        )
+
+    required_fields = {
+        "schema_version",
+        "run_id",
+        "training_seed",
+        "training_status",
+        "attempt_used",
+        "training_completed",
+        "training_valid",
+        "eligible_for_final_test",
+        "final_evaluation_status",
+        "training_completion_report_path",
+        "artifact_manifest_path",
+    }
+    if set(payload) != required_fields:
+        raise OfficialLauncherError(
+            "Logical-run status schema fields mismatch."
+        )
+
+    if payload.get("schema_version") != "1.1":
+        raise OfficialLauncherError(
+            "Logical-run status schema version mismatch."
+        )
+
+    if payload.get("run_id") != run_id:
+        raise OfficialLauncherError(
+            "Logical-run status run_id mismatch."
+        )
+
+    if payload.get("training_seed") != training_seed:
+        raise OfficialLauncherError(
+            "Logical-run status training_seed mismatch."
+        )
+
+    if payload.get("final_evaluation_status") != "NOT_AUTHORIZED":
+        raise OfficialLauncherError(
+            "Logical-run final-test firewall state mismatch."
+        )
+
+    state = str(payload.get("training_status", "")).strip()
+    completed = payload.get("training_completed")
+    valid = payload.get("training_valid")
+    eligible = payload.get("eligible_for_final_test")
+    attempt_id = payload.get("attempt_used")
+
+    if not isinstance(attempt_id, str) or not attempt_id:
+        raise OfficialLauncherError(
+            "Logical-run status attempt_used is invalid."
+        )
+    _attempt_number(attempt_id)
+
+    if state == "CLOSED_VERIFIED":
+        if (
+            completed is not True
+            or valid is not True
+            or eligible is not True
+            or not payload.get("training_completion_report_path")
+            or not payload.get("artifact_manifest_path")
+        ):
+            raise OfficialLauncherError(
+                "CLOSED_VERIFIED logical-run status is inconsistent."
+            )
+        return {
+            "state": state,
+            "attempt_id": attempt_id,
+        }
+
+    if state in {"IN_PROGRESS", "TECHNICAL_FAILURE"}:
+        if (
+            completed is not False
+            or valid is not False
+            or eligible is not False
+        ):
+            raise OfficialLauncherError(
+                "Unfinished logical-run status is inconsistent."
+            )
+        return {
+            "state": state,
+            "attempt_id": attempt_id,
+        }
+
+    raise OfficialLauncherError(
+        "Unsupported logical-run training_status: "
+        f"{state!r}"
+    )
 
 
 def _build_pre_run_assertions(
@@ -1155,7 +1291,7 @@ def main() -> int:
 
     selector.add_argument(
         "--scope",
-        choices=("sup-low-label", "sup-reference", "ssl-low-label"),
+        choices=("all", "sup-low-label", "sup-reference", "ssl-low-label"),
         help=(
             "Select a locked official inventory scope."
         ),
@@ -1285,11 +1421,39 @@ def main() -> int:
                 args.scope,
             )
 
-            for row in scoped_rows:
-                _assert_inventory_state(row)
+            if not args.execute or args.scope != "all":
+                for row in scoped_rows:
+                    _assert_inventory_state(row)
 
             if args.execute:
                 for row in scoped_rows:
+                    if args.scope == "all":
+                        runtime_state = (
+                            _classify_scope_row_runtime_state(
+                                repo_root,
+                                row,
+                            )
+                        )
+                        state = runtime_state["state"]
+
+                        if state == "CLOSED_VERIFIED":
+                            print(
+                                "SKIP_COMPLETED_VALID="
+                                + str(row["run_id"]).strip()
+                            )
+                            continue
+
+                        if state != "FRESH":
+                            raise OfficialLauncherError(
+                                "Full official scope requires "
+                                "single-run resolution before continuing: "
+                                f"run_id={str(row['run_id']).strip()} "
+                                f"state={state} "
+                                f"attempt_id={runtime_state['attempt_id']}"
+                            )
+
+                        _assert_inventory_state(row)
+
                     _execute_one(
                         repo_root,
                         row,
