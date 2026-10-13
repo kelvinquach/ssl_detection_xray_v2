@@ -1,0 +1,62 @@
+{
+  "artifact_manifest_complete_count": 180,
+  "attempt_count": 189,
+  "backup_pass_healthy_count": 180,
+  "checks": {
+    "artifact_manifests_complete_180": true,
+    "backup_pass_healthy_180": true,
+    "closed_verified_180": true,
+    "direct_remote_backup_complete": true,
+    "direct_remote_latest_resume_180": true,
+    "final_test_not_accessed": true,
+    "inventory_exact_180": true,
+    "missing_non_resume_required_zero": true,
+    "no_replacement_seed": true,
+    "qpseudo_complete_and_bound_80": true,
+    "ssl_low_label_80": true,
+    "sup_low_label_80": true,
+    "sup_reference_20": true,
+    "unique_run_ids_180": true
+  },
+  "closed_verified_count": 180,
+  "cold_tiered_durable_latest_resume_count": 141,
+  "direct_remote_audit": {
+    "expected_successful_attempt_files": 3840,
+    "latest_resume_expected": 180,
+    "latest_resume_remote_present": 180,
+    "latest_resume_remote_size_match": 180,
+    "remote_files_listed": 4468,
+    "remote_present": 3840,
+    "remote_size_match": 3840
+  },
+  "expected_total_runs": 180,
+  "failure_count": 0,
+  "failures": [],
+  "final_evaluation_status_counts": {
+    "NOT_AUTHORIZED": 180
+  },
+  "final_test_accessed": false,
+  "git_commit": "9ff4319292a65e42475cd4c89c242ab402edf3e7",
+  "group_counts": {
+    "SSL_LOW_LABEL": 80,
+    "SUP_LOW_LABEL": 80,
+    "SUP_REFERENCE": 20
+  },
+  "inventory_path": "artifacts/results/official_run_inventory.csv",
+  "inventory_rows": 180,
+  "local_required_artifact_entries": 3519,
+  "logical_state_counts": {
+    "CLOSED_VERIFIED": 180
+  },
+  "missing_non_resume_required_count": 0,
+  "no_replacement_seed": true,
+  "qpseudo_complete_count": 80,
+  "required_artifact_entries": 3660,
+  "retry_seed_integrity_pass_count": 189,
+  "schema_version": "1.1",
+  "stage": "S9.10",
+  "status": "PASS",
+  "task": "OFFICIAL_TRAINING_COMPLETENESS",
+  "technical_failure_attempt_count": 9,
+  "unique_run_id_count": 180
+}
