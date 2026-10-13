@@ -383,7 +383,10 @@ def main() -> int:
             extract_s9_11_effective_scientific_fields(
                 cfg=cfg,
                 ablation_family=str(row["family"]).strip(),
-                ablation_level=str(row["ablation_config_id"]).strip(),
+                ablation_config_id=str(
+                    row["ablation_config_id"]
+                ).strip(),
+                ablation_level=str(row["level"]).strip(),
             )
         )
 

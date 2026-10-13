@@ -1132,6 +1132,11 @@ def _execute_one(
                         "ablation_family"
                     ]
                 ),
+                ablation_config_id=str(
+                    expected[
+                        "ablation_config_id"
+                    ]
+                ),
                 ablation_level=str(
                     expected[
                         "ablation_level"

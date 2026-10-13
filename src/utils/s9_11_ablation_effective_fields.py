@@ -426,6 +426,7 @@ def extract_s9_11_effective_scientific_fields(
     *,
     cfg: Any,
     ablation_family: str,
+    ablation_config_id: str,
     ablation_level: str,
 ) -> dict[str, Any]:
     """Extract and OFAT-validate one resolved non-Main S9.11 config."""
@@ -434,6 +435,10 @@ def extract_s9_11_effective_scientific_fields(
 
     family = str(
         ablation_family
+    ).strip().upper()
+
+    config_id = str(
+        ablation_config_id
     ).strip().upper()
 
     level = str(
@@ -497,14 +502,14 @@ def extract_s9_11_effective_scientific_fields(
     )
 
     if family == "CONFIDENCE_THRESHOLD":
-        if level not in VALID_C_LEVELS:
+        if config_id not in VALID_C_LEVELS:
             raise AblationEffectiveFieldsError(
                 "CONFIDENCE_LEVEL_INVALID"
             )
 
         if not _same_float(
             cls_pseudo_threshold,
-            VALID_C_LEVELS[level],
+            VALID_C_LEVELS[config_id],
         ):
             raise AblationEffectiveFieldsError(
                 "CONFIDENCE_THRESHOLD_RESOLVED_VALUE_MISMATCH"
@@ -527,7 +532,7 @@ def extract_s9_11_effective_scientific_fields(
             )
 
     elif family == "STRONG_PHOTOMETRIC_AUGMENTATION":
-        if level not in VALID_A_LEVELS:
+        if config_id not in VALID_A_LEVELS:
             raise AblationEffectiveFieldsError(
                 "AUGMENTATION_LEVEL_INVALID"
             )
@@ -541,12 +546,12 @@ def extract_s9_11_effective_scientific_fields(
             )
 
         expected_brightness, expected_contrast = (
-            VALID_A_LEVELS[level]
+            VALID_A_LEVELS[config_id]
         )
 
         if (
             augmentation["augmentation_variant"]
-            != level
+            != config_id
         ):
             raise AblationEffectiveFieldsError(
                 "AUGMENTATION_VARIANT_RESOLVED_VALUE_MISMATCH"
@@ -577,7 +582,7 @@ def extract_s9_11_effective_scientific_fields(
             )
 
     elif family == "REGRESSION_PSEUDO_LABEL_FILTERING":
-        if level not in VALID_F_LEVELS:
+        if config_id not in VALID_F_LEVELS:
             raise AblationEffectiveFieldsError(
                 "REGRESSION_LEVEL_INVALID"
             )
@@ -600,7 +605,7 @@ def extract_s9_11_effective_scientific_fields(
 
         if (
             regression["regression_filter_variant"]
-            != level
+            != config_id
         ):
             raise AblationEffectiveFieldsError(
                 "REGRESSION_VARIANT_RESOLVED_VALUE_MISMATCH"
