@@ -264,6 +264,153 @@ class AblationActiveBackupManager(
         self._thread.start()
 
 
+    def finalize(self) -> None:
+        """Finalize durable backup, then cold-tier local recovery-only files."""
+        super().finalize()
+
+        manifest = _load_json(
+            self.manifest_path
+        )
+
+        if (
+            manifest.get("verification_status")
+            != "PASS"
+            or manifest.get("BACKUP_WORKER_STATUS")
+            != "HEALTHY"
+            or manifest.get("last_error")
+            is not None
+            or manifest.get("last_sync_reason")
+            != "run_completion_final_forced_sync"
+        ):
+            raise BackupRuntimeError(
+                "Ablation cold-tier requires a verified "
+                "final forced backup."
+            )
+
+        logical_status = _load_json(
+            self.run_root
+            / "logical_run_status.json"
+        )
+
+        if (
+            logical_status.get("training_status")
+            != "CLOSED_VERIFIED"
+            or logical_status.get("training_completed")
+            is not True
+            or logical_status.get("training_valid")
+            is not True
+            or logical_status.get("eligible_for_final_test")
+            is not False
+            or logical_status.get("validation_only")
+            is not True
+            or logical_status.get("test_access_authorized")
+            is not False
+            or logical_status.get("final_test_accessed")
+            is not False
+        ):
+            raise BackupRuntimeError(
+                "Ablation cold-tier requires CLOSED_VERIFIED "
+                "validation-only firewall-safe logical-run state."
+            )
+
+        recovery = manifest.get(
+            "LATEST_VERIFIED_DURABLE_RECOVERY_POINT"
+        )
+
+        if not isinstance(recovery, dict):
+            raise BackupRuntimeError(
+                "Ablation cold-tier requires a durable "
+                "latest-resume recovery point."
+            )
+
+        latest_rel = recovery.get("path")
+
+        if latest_rel != "checkpoints/latest_resume.pth":
+            raise BackupRuntimeError(
+                "Ablation durable recovery path is invalid."
+            )
+
+        latest_path = (
+            self.attempt_dir
+            / latest_rel
+        )
+
+        if not latest_path.is_file():
+            raise BackupRuntimeError(
+                "Local ablation latest_resume.pth is missing "
+                "before cold-tier."
+            )
+
+        latest_size = latest_path.stat().st_size
+        latest_sha256 = _sha256(
+            latest_path
+        )
+
+        if (
+            int(recovery.get("size_bytes", -1))
+            != latest_size
+            or recovery.get("sha256")
+            != latest_sha256
+        ):
+            raise BackupRuntimeError(
+                "Local ablation latest_resume.pth does not "
+                "match durable recovery identity."
+            )
+
+        latest_manifest_entry = next(
+            (
+                item
+                for item in manifest.get("files", [])
+                if (
+                    isinstance(item, dict)
+                    and item.get("path")
+                    == latest_rel
+                    and item.get("verification_status")
+                    == "PASS"
+                    and item.get("sha256")
+                    == latest_sha256
+                    and int(item.get("size_bytes", -1))
+                    == latest_size
+                )
+            ),
+            None,
+        )
+
+        if latest_manifest_entry is None:
+            raise BackupRuntimeError(
+                "Verified backup manifest does not bind "
+                "ablation latest_resume.pth."
+            )
+
+        epoch_paths = sorted(
+            path
+            for path in self.attempt_dir.glob(
+                "epoch_*.pth"
+            )
+            if path.is_file()
+        )
+
+        epoch_bytes = sum(
+            path.stat().st_size
+            for path in epoch_paths
+        )
+
+        for path in epoch_paths:
+            path.unlink()
+
+        latest_path.unlink()
+
+        print(
+            "S9_11_POST_BACKUP_COLD_TIER=PASS "
+            f"RUN_ID={self.run_id} "
+            f"ATTEMPT_ID={self.attempt_id} "
+            f"EPOCH_FILES_DELETED={len(epoch_paths)} "
+            "LATEST_RESUME_DELETED=1 "
+            f"BYTES_FREED={epoch_bytes + latest_size}"
+        )
+
+
+
 def recover_ablation_attempt(
     repo_root: Path,
     run_id: str,
