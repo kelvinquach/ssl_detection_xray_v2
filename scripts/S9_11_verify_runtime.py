@@ -248,11 +248,18 @@ def _official_main_attempt(
             + str(status.get("training_status"))
         )
 
-    if status.get("final_test_accessed") is not False:
-        raise RuntimePreflightError(
-            "MAIN_FINAL_TEST_ACCESS_INVALID:"
-            + main_run_id
-        )
+    if "final_test_accessed" in status:
+        if status.get("final_test_accessed") is not False:
+            raise RuntimePreflightError(
+                "MAIN_FINAL_TEST_ACCESS_INVALID:"
+                + main_run_id
+            )
+    else:
+        if status.get("final_evaluation_status") != "NOT_AUTHORIZED":
+            raise RuntimePreflightError(
+                "MAIN_LEGACY_FINAL_TEST_FIREWALL_INVALID:"
+                + main_run_id
+            )
 
     attempt_id = status.get("attempt_used")
 
@@ -339,14 +346,6 @@ def main() -> int:
             "MAIN_CONFIG_EXPOSES_TEST_EVALUATOR"
         )
 
-    main_fields = (
-        extract_s9_11_effective_scientific_fields(
-            cfg=main_cfg,
-            ablation_family="MAIN",
-            ablation_level="MAIN",
-        )
-    )
-
     config_rows: dict[str, dict[str, str]] = {}
 
     for row in rows:
@@ -384,7 +383,7 @@ def main() -> int:
             extract_s9_11_effective_scientific_fields(
                 cfg=cfg,
                 ablation_family=str(row["family"]).strip(),
-                ablation_level=str(row["level"]).strip(),
+                ablation_level=str(row["ablation_config_id"]).strip(),
             )
         )
 
@@ -437,18 +436,53 @@ def main() -> int:
         str(QPSEUDO_CONFIG)
     )
 
-    thresholds = sorted(
-        {
-            round(value, 12)
-            for value in _find_qpseudo_threshold(
-                qpseudo_cfg.to_dict()
-            )
-        }
+    qpseudo_initial_thr = float(
+        qpseudo_cfg.get("pseudo_label_initial_score_thr")
+    )
+    qpseudo_rpn_thr = float(
+        qpseudo_cfg.get("rpn_pseudo_thr")
+    )
+    qpseudo_cls_thr = float(
+        qpseudo_cfg.get("cls_pseudo_thr")
+    )
+    qpseudo_comparator = str(
+        qpseudo_cfg.get("acceptance_comparator")
+    )
+    qpseudo_checkpoint_role = str(
+        qpseudo_cfg.get("checkpoint_role")
+    )
+    qpseudo_pseudo_set = str(
+        qpseudo_cfg.get("pseudo_set")
     )
 
-    if 0.90 not in thresholds:
+    if abs(qpseudo_initial_thr - 0.50) > 1e-12:
         raise RuntimePreflightError(
-            "QPSEUDO_FIXED_090_THRESHOLD_NOT_FOUND"
+            "QPSEUDO_INITIAL_THRESHOLD_MISMATCH"
+        )
+
+    if abs(qpseudo_rpn_thr - 0.90) > 1e-12:
+        raise RuntimePreflightError(
+            "QPSEUDO_RPN_THRESHOLD_MISMATCH"
+        )
+
+    if abs(qpseudo_cls_thr - 0.90) > 1e-12:
+        raise RuntimePreflightError(
+            "QPSEUDO_CLS_THRESHOLD_MISMATCH"
+        )
+
+    if qpseudo_comparator != "STRICT_GREATER":
+        raise RuntimePreflightError(
+            "QPSEUDO_ACCEPTANCE_COMPARATOR_MISMATCH"
+        )
+
+    if qpseudo_checkpoint_role != "LAST_EMA_TEACHER":
+        raise RuntimePreflightError(
+            "QPSEUDO_CHECKPOINT_ROLE_MISMATCH"
+        )
+
+    if qpseudo_pseudo_set != "accepted_rcnn_classification":
+        raise RuntimePreflightError(
+            "QPSEUDO_PSEUDO_SET_MISMATCH"
         )
 
     current_snapshot = _current_snapshot(REPO_ROOT)
@@ -544,7 +578,7 @@ def main() -> int:
         f"{main_runtime_matches}"
     )
     print("MAIN_CONFIG_IMPORTED=TRUE")
-    print("MAIN_EFFECTIVE_FIELDS_EXTRACTED=TRUE")
+    print("MAIN_CONFIG_SEPARATE_FROM_ABLATION_FAMILY_EXTRACTOR=TRUE")
     print("NON_MAIN_EFFECTIVE_FIELDS_EXTRACTED=TRUE")
     print("QPSEUDO_FIXED_MEASUREMENT_THRESHOLD=0.90")
     print("QPSEUDO_VARIANT_AWARE_THRESHOLD=FALSE")
