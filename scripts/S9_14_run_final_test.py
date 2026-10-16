@@ -191,48 +191,49 @@ def main() -> int:
         test_accessed=True,
     )
 
-    # This ledger write occurs before the first canonical test-file open so that
-    # any interruption during verification cannot under-report test access.
-    verify_test_file_before_build()
-    record_test_access(
-        evidence,
-        timestamp_utc=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        status="TEST_FILE_VERIFIED",
-        test_accessed=True,
-    )
-
-    checkpoint = Path(evidence["checkpoint_path"])
-    attempt_dir = checkpoint.parent.parent
-    if attempt_dir.name != evidence["attempt_used"]:
-        raise RuntimeError(
-            f"Attempt-directory mismatch: {attempt_dir.name!r} != "
-            f"{evidence['attempt_used']!r}"
-        )
-    if attempt_dir.parent.name != evidence["run_id"]:
-        raise RuntimeError(
-            f"Run-directory mismatch: {attempt_dir.parent.name!r} != "
-            f"{evidence['run_id']!r}"
-        )
-
-    output_dir = attempt_dir / "evaluation" / "final_test"
-    if (output_dir / "final_evaluation_report.json").exists():
-        raise RuntimeError(
-            "Final-test CLOSED_VERIFIED artifact already exists; refusing duplicate test access"
-        )
-
-    cfg_path = ROOT / evidence["executable_config_path"]
-    if not cfg_path.is_file():
-        raise RuntimeError(f"Executable config missing: {cfg_path}")
-
-    cfg = build_final_test_config(
-        cfg_path,
-        work_dir=output_dir / "runtime",
-        evaluator_config_sha256=evidence["evaluator_config_sha256"],
-    )
-
-    backup = FinalTestActiveBackupManager(ROOT, attempt_dir)
-    backup.start_final_test()
+    backup = None
     try:
+        # This ledger write occurs before the first canonical test-file open so that
+        # any interruption during verification cannot under-report test access.
+        verify_test_file_before_build()
+        record_test_access(
+            evidence,
+            timestamp_utc=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            status="TEST_FILE_VERIFIED",
+            test_accessed=True,
+        )
+
+        checkpoint = Path(evidence["checkpoint_path"])
+        attempt_dir = checkpoint.parent.parent
+        if attempt_dir.name != evidence["attempt_used"]:
+            raise RuntimeError(
+                f"Attempt-directory mismatch: {attempt_dir.name!r} != "
+                f"{evidence['attempt_used']!r}"
+            )
+        if attempt_dir.parent.name != evidence["run_id"]:
+            raise RuntimeError(
+                f"Run-directory mismatch: {attempt_dir.parent.name!r} != "
+                f"{evidence['run_id']!r}"
+            )
+
+        output_dir = attempt_dir / "evaluation" / "final_test"
+        if (output_dir / "final_evaluation_report.json").exists():
+            raise RuntimeError(
+                "Final-test CLOSED_VERIFIED artifact already exists; refusing duplicate test access"
+            )
+
+        cfg_path = ROOT / evidence["executable_config_path"]
+        if not cfg_path.is_file():
+            raise RuntimeError(f"Executable config missing: {cfg_path}")
+
+        cfg = build_final_test_config(
+            cfg_path,
+            work_dir=output_dir / "runtime",
+            evaluator_config_sha256=evidence["evaluator_config_sha256"],
+        )
+
+        backup = FinalTestActiveBackupManager(ROOT, attempt_dir)
+        backup.start_final_test()
         runner = Runner.from_cfg(cfg)
         evaluation_model_role = load_selected_weights(
             runner.model,
@@ -311,10 +312,12 @@ def main() -> int:
             status="TECHNICAL_FAILURE_AFTER_AUTHORIZED_ACCESS",
             test_accessed=True,
         )
-        backup.record_failure_state()
+        if backup is not None:
+            backup.record_failure_state()
         raise
     finally:
-        backup.stop()
+        if backup is not None:
+            backup.stop()
 
 
 if __name__ == "__main__":
