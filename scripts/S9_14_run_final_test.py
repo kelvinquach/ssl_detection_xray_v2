@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 INVENTORY = ROOT / "artifacts/final_test/eligible_model_inventory.csv"
 AUTHORIZATION = ROOT / "artifacts/final_test/FINAL_TEST_AUTHORIZATION.json"
 PRE_GATE = ROOT / "artifacts/final_test/PRE_FINAL_TEST_GATE_REPORT.json"
+ACCESS_AUDIT = ROOT / "artifacts/final_test/test_access_audit.json"
 
 EXPECTED_EVALUATOR_SHA = "43079be37ab97cbbd58d0fdeaf171b9ebfe8272399d2b32800bbfbd8505d72a9"
 EXPECTED_TEST_SPLIT_SHA = "1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37"
@@ -26,6 +27,48 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def record_test_access(evidence: dict, *, timestamp_utc: str, status: str, test_accessed: bool) -> None:
+    """Persist campaign-level authorized test-access evidence before/after access."""
+    ACCESS_AUDIT.parent.mkdir(parents=True, exist_ok=True)
+    if ACCESS_AUDIT.exists():
+        payload = json.loads(ACCESS_AUDIT.read_text(encoding="utf-8"))
+    else:
+        payload = {
+            "schema_version": "S9.14",
+            "authorization_sha256": evidence["authorization_sha256"],
+            "eligible_model_inventory_sha256": sha256(INVENTORY),
+            "evaluator_config_sha256": evidence["evaluator_config_sha256"],
+            "test_split_sha256": evidence["test_split_sha256"],
+            "runs": {},
+        }
+    for key, expected in (
+        ("authorization_sha256", evidence["authorization_sha256"]),
+        ("eligible_model_inventory_sha256", sha256(INVENTORY)),
+        ("evaluator_config_sha256", evidence["evaluator_config_sha256"]),
+        ("test_split_sha256", evidence["test_split_sha256"]),
+    ):
+        if payload.get(key) != expected:
+            raise RuntimeError(f"test_access_audit identity mismatch for {key}")
+    run = payload["runs"].setdefault(
+        evidence["run_id"],
+        {
+            "run_id": evidence["run_id"],
+            "authorized": True,
+            "checkpoint_role": evidence["checkpoint_role"],
+            "checkpoint_sha256": evidence["checkpoint_sha256"],
+            "access_started_at_utc": timestamp_utc,
+        },
+    )
+    if run.get("checkpoint_sha256") != evidence["checkpoint_sha256"]:
+        raise RuntimeError("test_access_audit checkpoint SHA256 mismatch")
+    run["status"] = status
+    run["test_accessed"] = bool(test_accessed)
+    run["last_updated_at_utc"] = timestamp_utc
+    tmp = ACCESS_AUDIT.with_name(ACCESS_AUDIT.name + ".tmp")
+    tmp.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    tmp.replace(ACCESS_AUDIT)
 
 
 def scalar(value: str):
@@ -140,8 +183,23 @@ def main() -> int:
     from src.metrics.protocol_coco_metric import ProtocolCocoMetric
     from src.utils.s9_14_final_test_backup import FinalTestActiveBackupManager
 
-    # This is the first point at which the canonical test annotation is opened.
+    access_started = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    record_test_access(
+        evidence,
+        timestamp_utc=access_started,
+        status="AUTHORIZED_ACCESS_STARTED",
+        test_accessed=True,
+    )
+
+    # This ledger write occurs before the first canonical test-file open so that
+    # any interruption during verification cannot under-report test access.
     verify_test_file_before_build()
+    record_test_access(
+        evidence,
+        timestamp_utc=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        status="TEST_FILE_VERIFIED",
+        test_accessed=True,
+    )
 
     checkpoint = Path(evidence["checkpoint_path"])
     attempt_dir = checkpoint.parent.parent
@@ -236,11 +294,23 @@ def main() -> int:
             authorized=True,
         )
         backup.finalize()
+        record_test_access(
+            evidence,
+            timestamp_utc=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            status="CLOSED_VERIFIED",
+            test_accessed=True,
+        )
         print(json.dumps(report, indent=2, sort_keys=True))
         print("S9_14_FINAL_TEST_RUN=CLOSED_VERIFIED")
         print("FINAL_TEST_ACCESSED=True")
         return 0
     except Exception:
+        record_test_access(
+            evidence,
+            timestamp_utc=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            status="TECHNICAL_FAILURE_AFTER_AUTHORIZED_ACCESS",
+            test_accessed=True,
+        )
         backup.record_failure_state()
         raise
     finally:
