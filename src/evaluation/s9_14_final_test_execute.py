@@ -64,6 +64,8 @@ def build_final_test_config(
             f"{evaluator_config_sha256} != {EXPECTED_EVALUATOR_SHA256}"
         )
     cfg = Config.fromfile(str(executable_config_path))
+    for key in ("COCO_ROOT", "MMDET_IMAGE_ROOT", "Path", "SSOD_ROOT", "annotations"):
+        cfg.pop(key, None)
     if "DATASETS" not in cfg or "test" not in cfg.DATASETS:
         raise RuntimeError("Official config has no canonical DATASETS['test']")
 
