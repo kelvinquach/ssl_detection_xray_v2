@@ -64,15 +64,25 @@ def build_final_test_config(
             f"{evaluator_config_sha256} != {EXPECTED_EVALUATOR_SHA256}"
         )
     cfg = Config.fromfile(str(executable_config_path))
-    if "val_dataloader" not in cfg:
-        raise RuntimeError("Official config has no val_dataloader to adapt")
+    if "DATASETS" not in cfg or "test" not in cfg.DATASETS:
+        raise RuntimeError("Official config has no canonical DATASETS['test']")
 
-    test_dataloader = copy.deepcopy(cfg.val_dataloader)
-    dataset = test_dataloader["dataset"]
-    dataset["ann_file"] = str(TEST_ANN)
-    dataset["test_mode"] = True
+    dataset = copy.deepcopy(cfg.DATASETS["test"])
+    if str(dataset.get("ann_file")) != str(TEST_ANN):
+        raise RuntimeError(
+            f"Canonical test ann_file mismatch: {dataset.get('ann_file')!r}"
+        )
+    if dataset.get("test_mode") is not True:
+        raise RuntimeError("Canonical test dataset must have test_mode=True")
 
-    cfg.test_dataloader = test_dataloader
+    cfg.test_dataloader = dict(
+        batch_size=1,
+        num_workers=2,
+        persistent_workers=True,
+        drop_last=False,
+        sampler=dict(type="DefaultSampler", shuffle=False),
+        dataset=dataset,
+    )
     cfg.test_cfg = dict(type="TestLoop")
     cfg.test_evaluator = [
         dict(
