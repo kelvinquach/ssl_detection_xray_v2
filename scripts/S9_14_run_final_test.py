@@ -149,18 +149,174 @@ def preaccess_guards(row: dict) -> dict:
     }
 
 
+FINAL_TEST_FILES = (
+    "coco_metrics.json",
+    "operating_point_metrics.json",
+    "classwise_ap.csv",
+    "negative_metrics.json",
+    "detections.json",
+    "evaluation_manifest.json",
+    "final_evaluation_report.json",
+)
+
+
+def _closure_state(row: dict) -> bool:
+    run_id = row["s9_12.run_id"]
+    attempt = row["s9_12.attempt_used"]
+    attempt_dir = ROOT / "artifacts" / "runs" / "official" / run_id / attempt
+    output_dir = attempt_dir / "evaluation" / "final_test"
+    report_path = output_dir / "final_evaluation_report.json"
+
+    present = [name for name in FINAL_TEST_FILES if (output_dir / name).is_file()]
+    if not report_path.is_file():
+        if present:
+            raise RuntimeError(
+                f"Partial final-test artifacts exist for {run_id}; refusing automatic re-access: {present}"
+            )
+        return False
+
+    if len(present) != len(FINAL_TEST_FILES):
+        raise RuntimeError(
+            f"Incomplete CLOSED_VERIFIED artifact set for {run_id}: {len(present)}/7"
+        )
+
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    if (
+        report.get("run_id") != run_id
+        or report.get("final_evaluation_status") != "CLOSED_VERIFIED"
+    ):
+        raise RuntimeError(f"Existing final-test report is not CLOSED_VERIFIED for {run_id}")
+
+    backup_path = attempt_dir / "backup_sync_manifest.json"
+    if not backup_path.is_file():
+        raise RuntimeError(f"Final-test backup manifest missing for {run_id}")
+    backup = json.loads(backup_path.read_text(encoding="utf-8"))
+    if not (
+        backup.get("backup_scope") == "S9_14_FINAL_TEST"
+        and backup.get("last_sync_reason") == "run_completion_final_forced_sync"
+        and backup.get("verification_status") == "PASS"
+    ):
+        raise RuntimeError(f"Final-test backup closure is invalid for {run_id}")
+
+    backup_files = {item.get("path"): item for item in backup.get("files", [])}
+    for name in FINAL_TEST_FILES:
+        rel = f"evaluation/final_test/{name}"
+        local = output_dir / name
+        entry = backup_files.get(rel)
+        if not (
+            isinstance(entry, dict)
+            and entry.get("verification_status") == "PASS"
+            and entry.get("size_bytes") == local.stat().st_size
+            and entry.get("sha256") == sha256(local)
+        ):
+            raise RuntimeError(f"Final-test backup verification mismatch for {run_id}: {rel}")
+
+    if not ACCESS_AUDIT.is_file():
+        raise RuntimeError("test_access_audit.json missing")
+    audit = json.loads(ACCESS_AUDIT.read_text(encoding="utf-8"))
+    access = audit.get("runs", {}).get(run_id)
+    if not (
+        isinstance(access, dict)
+        and access.get("status") == "CLOSED_VERIFIED"
+        and access.get("test_accessed") is True
+        and access.get("authorized") is True
+        and access.get("checkpoint_sha256") == row["selected_checkpoint.sha256"]
+    ):
+        raise RuntimeError(f"Final-test access closure is invalid for {run_id}")
+    return True
+
+
+def _run_scope_all(execute: bool) -> int:
+    rows = load_inventory()
+    run_ids = [row["s9_12.run_id"] for row in rows]
+    if len(rows) != 180 or len(set(run_ids)) != 180:
+        raise RuntimeError(
+            f"Eligible campaign identity mismatch: rows={len(rows)} unique={len(set(run_ids))}"
+        )
+
+    closed = 0
+    pending = 0
+    for row in rows:
+        if _closure_state(row):
+            closed += 1
+        else:
+            pending += 1
+
+    print("=== S9.14 SCOPE ALL ===")
+    print("MODE=" + ("EXECUTE" if execute else "DRY_RUN"))
+    print(f"ELIGIBLE_TOTAL={len(rows)}")
+    print(f"ALREADY_CLOSED={closed}")
+    print(f"REMAINING={pending}")
+
+    if not execute:
+        for row in rows:
+            preaccess_guards(row)
+        print("S9_14_SCOPE_ALL_PREACCESS_DRY_RUN=PASS")
+        print("FINAL_TEST_ACCESSED=False")
+        return 0
+
+    import subprocess
+
+    for index, row in enumerate(rows, start=1):
+        run_id = row["s9_12.run_id"]
+        if _closure_state(row):
+            print(f"[{index:03d}/180] SKIP_ALREADY_CLOSED {run_id}", flush=True)
+            continue
+
+        print(f"[{index:03d}/180] START {run_id}", flush=True)
+        proc = subprocess.run(
+            [
+                sys.executable,
+                "-u",
+                str(Path(__file__).resolve()),
+                "--run-id",
+                run_id,
+                "--execute",
+            ],
+            cwd=str(ROOT),
+        )
+        if proc.returncode != 0:
+            print(
+                f"[{index:03d}/180] FAIL_STOP {run_id} RETURN_CODE={proc.returncode}",
+                flush=True,
+            )
+            return proc.returncode or 1
+        if not _closure_state(row):
+            raise RuntimeError(f"Post-run closure verification failed for {run_id}")
+        print(f"[{index:03d}/180] CLOSED_VERIFIED {run_id}", flush=True)
+
+    total_closed = sum(1 for row in rows if _closure_state(row))
+    print("=== S9.14 CAMPAIGN SUMMARY ===")
+    print(f"TOTAL_CLOSED_VERIFIED={total_closed}")
+    print("S9_14_CAMPAIGN_COMPLETE=" + str(total_closed == 180))
+    if total_closed != 180:
+        raise RuntimeError(f"Campaign closed count is {total_closed}, expected 180")
+    return 0
+
+
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument("--run-id", required=True)
+    target = p.add_mutually_exclusive_group(required=True)
+    target.add_argument("--run-id")
+    target.add_argument("--scope", choices=("all",))
     p.add_argument("--execute", action="store_true")
     return p.parse_args()
 
 
 def main() -> int:
     args = parse_args()
+    if args.scope == "all":
+        return _run_scope_all(args.execute)
+
     row = select_row(args.run_id)
     evidence = preaccess_guards(row)
     print(json.dumps({"mode": "EXECUTE" if args.execute else "DRY_RUN", **evidence}, indent=2))
+
+    if _closure_state(row):
+        print("S9_14_FINAL_TEST_RUN=ALREADY_CLOSED_VERIFIED")
+        print("FINAL_TEST_ACCESSED=False")
+        return 0
+
     if not args.execute:
         print("S9_14_PREACCESS_DRY_RUN=PASS")
         print("FINAL_TEST_ACCESSED=False")
