@@ -8,9 +8,13 @@ import argparse
 import csv
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 INVENTORY = ROOT / "artifacts/final_test/eligible_model_inventory.csv"
 AUTHORIZATION = ROOT / "artifacts/final_test/FINAL_TEST_AUTHORIZATION.json"
 PRE_GATE = ROOT / "artifacts/final_test/PRE_FINAL_TEST_GATE_REPORT.json"
