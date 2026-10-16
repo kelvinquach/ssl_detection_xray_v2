@@ -108,11 +108,9 @@ def build_final_test_config(
         ),
     ]
     cfg.work_dir = str(work_dir)
-    existing_hooks = list(getattr(cfg, "custom_hooks", []) or [])
-    existing_hooks.append(
+    cfg.custom_hooks = [
         dict(type="FinalTestPredictionRetentionHook", max_dets_per_image=100)
-    )
-    cfg.custom_hooks = existing_hooks
+    ]
     cfg.load_from = None
     cfg.resume = False
     return cfg
