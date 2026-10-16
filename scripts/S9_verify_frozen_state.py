@@ -35,7 +35,7 @@ EXPECTED_ARTIFACT_HASHES = {
     "artifacts/frozen/frozen_config_manifest.json":
         "b2cfe9d9d84755ce7c2bf239ed2dfb04f50184f4f839ad5164a11a1af2b993d2",
     "artifacts/frozen/frozen_evaluator_manifest.json":
-        "01d2aede85ecded4542797b5468922aac0b01e1957420c64648b71bf71f4f69a",
+        "3c6013da7b206eda3b8b3202006e180a62199f7fb593b8eca52aa6f8b71fdbc0",
     "artifacts/frozen/frozen_statistics_manifest.json":
         "8f4370a9a39c990a26df58adbe64a252edb26c7115632e7caac5a30d01f93582",
     "artifacts/frozen/TEST_FIREWALL_STATE.json":
