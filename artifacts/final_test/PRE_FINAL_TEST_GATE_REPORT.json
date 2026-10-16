@@ -1,0 +1,102 @@
+{
+  "artifact": "artifacts/final_test/PRE_FINAL_TEST_GATE_REPORT.json",
+  "fail_count": 0,
+  "final_test_accessed": false,
+  "gate_count": 15,
+  "gates": [
+    {
+      "evidence_summary": "80/80",
+      "gate": 1,
+      "requirement": "80/80 low-label SUP CLOSED_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "20/20",
+      "gate": 2,
+      "requirement": "20/20 SUP100 reference CLOSED_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "80/80",
+      "gate": 3,
+      "requirement": "80/80 SSL CLOSED_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "rows=180,groups=18,groups_with_10_seeds=18,seed_map_consistent=True",
+      "gate": 4,
+      "requirement": "all valid official seeds retained",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "replacement_seed_violation_count=0",
+      "gate": 5,
+      "requirement": "no replacement seed",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "eligible=180,bad_best_checkpoint=0",
+      "gate": 6,
+      "requirement": "all BEST scientific checkpoints locked + hashed",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "ssl=80,bad_last_teacher=0",
+      "gate": 7,
+      "requirement": "all SSL LAST Teacher required for Q_pseudo locked + hashed",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "official_valid=80/80,official_files=80,ablation_files=90",
+      "gate": 8,
+      "requirement": "Q_pseudo validation artifacts complete",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "rows=90,missing=0,bad=0",
+      "gate": 9,
+      "requirement": "ablation validation campaign complete per prespecified OFAT",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "rows=90,bad=0",
+      "gate": 10,
+      "requirement": "non-Main ablation final-test eligibility=false",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "verifier_rc=0,EVALUATOR_FREEZE_GATE=PASS",
+      "gate": 11,
+      "requirement": "official evaluator frozen + hashed",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "verifier_rc=0,STATISTICS_FREEZE_GATE=PASS",
+      "gate": 12,
+      "requirement": "statistical implementation frozen + fixture-tested",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "global_unresolved=0,controlled_revision_nonnull=0,scientific_deviation=0",
+      "gate": 13,
+      "requirement": "no unresolved controlled revision",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "rows=180,unique_run_ids=180,sha256=8cf0e38f2fd7e0af5353669b806bf6e1c8c9237a8c10442d18294f412482e509",
+      "gate": 14,
+      "requirement": "eligible model inventory complete",
+      "status": "PASS"
+    },
+    {
+      "evidence_summary": "TEST_FIREWALL_GATE=PASS,official_test_bad=0,ablation_test_bad=0",
+      "gate": 15,
+      "requirement": "test firewall zero unauthorized access events",
+      "status": "PASS"
+    }
+  ],
+  "head": "e41faf53c875db3dd7d076c644996c635d744a02",
+  "overall_status": "PASS",
+  "pass_count": 15,
+  "task": "S9.12.C_PRE_FINAL_TEST_GATE"
+}
