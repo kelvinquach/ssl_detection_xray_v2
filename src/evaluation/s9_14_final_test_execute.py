@@ -67,16 +67,29 @@ def build_final_test_config(
     for key in ("COCO_ROOT", "MMDET_IMAGE_ROOT", "Path", "SSOD_ROOT", "annotations"):
         cfg.pop(key, None)
     cfg.default_scope = "mmdet"
-    if "DATASETS" not in cfg or "test" not in cfg.DATASETS:
-        raise RuntimeError("Official config has no canonical DATASETS['test']")
-
-    dataset = copy.deepcopy(cfg.DATASETS["test"])
-    if str(dataset.get("ann_file")) != str(TEST_ANN):
-        raise RuntimeError(
-            f"Canonical test ann_file mismatch: {dataset.get('ann_file')!r}"
-        )
-    if dataset.get("test_mode") is not True:
-        raise RuntimeError("Canonical test dataset must have test_mode=True")
+    if "DATASETS" in cfg and "test" in cfg.DATASETS:
+        dataset = copy.deepcopy(cfg.DATASETS["test"])
+        if str(dataset.get("ann_file")) != str(TEST_ANN):
+            raise RuntimeError(
+                f"Canonical SUP test ann_file mismatch: {dataset.get('ann_file')!r}"
+            )
+        if dataset.get("test_mode") is not True:
+            raise RuntimeError("Canonical SUP test dataset must have test_mode=True")
+    else:
+        val_dataloader = cfg.get("val_dataloader", None)
+        if val_dataloader is None or val_dataloader.get("dataset", None) is None:
+            raise RuntimeError(
+                "Official config has neither DATASETS['test'] nor val_dataloader.dataset"
+            )
+        dataset = copy.deepcopy(val_dataloader["dataset"])
+        expected_val_ann = "/workspace/ssod/data/coco/instances_val.json"
+        if str(dataset.get("ann_file")) != expected_val_ann:
+            raise RuntimeError(
+                f"Canonical SSL validation ann_file mismatch: {dataset.get('ann_file')!r}"
+            )
+        if dataset.get("test_mode") is not True:
+            raise RuntimeError("Canonical SSL evaluation dataset must have test_mode=True")
+        dataset["ann_file"] = str(TEST_ANN)
 
     cfg.test_dataloader = dict(
         batch_size=1,
