@@ -1,0 +1,77 @@
+{
+  "SAFE_TO_TERMINATE_VAST_INSTANCE": true,
+  "ablation_remote_only_recovery": {
+    "count": 90,
+    "durable_recovery_binding_pass": 90,
+    "pass": true,
+    "path": "checkpoints/latest_resume.pth",
+    "unexpected_remote_only_artifacts": 0,
+    "verification_status_pass": 90
+  },
+  "artifact_type": "POST_FINAL_TEST_PRESERVATION_REPORT",
+  "campaign_control_preservation": {
+    "campaign_logs_roundtrip_verified": 2,
+    "canonical_control_files_roundtrip_verified": 7,
+    "pass": true,
+    "qualitative_retained_artifacts_roundtrip_verified": 1
+  },
+  "canonical_attempt_preservation": {
+    "ablation_canonical_attempts": 90,
+    "canonical_attempts_total": 270,
+    "destination_errors": 0,
+    "missing_remote": 0,
+    "official_canonical_attempts": 180,
+    "pass": true,
+    "remote_entries_expected": 7800,
+    "remote_entries_present_size_match": 7800,
+    "size_mismatch": 0
+  },
+  "closure_completed_at_utc": "2026-10-18T06:54:00.944119+00:00",
+  "final_test_artifact_durability": {
+    "artifacts_expected": 1260,
+    "artifacts_remote_restore_sha256_verified": 1260,
+    "pass": true,
+    "remote_failures": 0,
+    "runs_remote_restore_sha256_verified": 180
+  },
+  "final_test_campaign": {
+    "campaign_complete": true,
+    "closed_verified": 180,
+    "eligible_models": 180,
+    "final_test_accessed": true
+  },
+  "generated_at_utc": "2026-10-18T06:51:58.898136+00:00",
+  "mapping_deferred_to": "S9.15",
+  "mapping_performed": false,
+  "noncanonical_technical_attempts": {
+    "attempt_paths": [
+      "artifacts/runs/official/OFF_SSL_R50_B01_S01/attempt_001",
+      "artifacts/runs/official/OFF_SSL_SWIN_B01_S01/attempt_001",
+      "artifacts/runs/official/OFF_SUP_R50_B01_S01/attempt_002",
+      "artifacts/runs/official/OFF_SUP_R50_B01_S01/attempt_003",
+      "artifacts/runs/official/OFF_SUP_R50_B01_S01/attempt_004",
+      "artifacts/runs/official/OFF_SUP_R50_B01_S01/attempt_005",
+      "artifacts/runs/official/OFF_SUP_R50_B01_S01/attempt_006",
+      "artifacts/runs/official/OFF_SUP_R50_B01_S01/attempt_007"
+    ],
+    "count": 8,
+    "excluded_from_canonical_result_set": true,
+    "retained_as_recovery_provenance": true
+  },
+  "preservation_report_self_preservation": {
+    "final_report_remote_path": "gdrive:SSOD_Backup/vast_54286944/artifacts/final_test/POST_FINAL_TEST_PRESERVATION_REPORT.json",
+    "final_report_roundtrip_verification_required_before_local_activation": true,
+    "phase1_report_sha256": "8975fff4dd08d3f039c10d3f75fdc18dedfa8a4fc340e1ca418ec83b698b75b3",
+    "phase1_roundtrip_verified": true
+  },
+  "preservation_status": "PASS",
+  "safe_to_terminate_pending_conditions": [],
+  "schema_version": "1.0",
+  "scientific_protocol_changed": false,
+  "scope_guards": {
+    "mapping_deferred_to_s9_15": true,
+    "official_final_test_results_materialized": false,
+    "training_validation_ablation_final_test_mapping_performed": false
+  },
+  "stage": "S9.14"
+}
