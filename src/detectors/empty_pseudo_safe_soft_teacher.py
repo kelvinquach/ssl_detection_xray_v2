@@ -27,6 +27,49 @@ class EmptyPseudoSafeSoftTeacher(SoftTeacher):
             for data_sample in batch_data_samples
         )
 
+        classification_pseudo = 0
+        regression_pseudo = 0
+
+        for data_sample in batch_data_samples:
+            instances = data_sample.gt_instances
+
+            if "scores" not in instances or "reg_uncs" not in instances:
+                raise RuntimeError(
+                    "OFFICIAL_PSEUDO_COUNT_EVIDENCE_FIELDS_MISSING"
+                )
+
+            classification_pseudo += int(
+                (
+                    instances.scores
+                    > self.semi_train_cfg.cls_pseudo_thr
+                )
+                .sum()
+                .item()
+            )
+
+            regression_pseudo += int(
+                (
+                    instances.reg_uncs
+                    < self.semi_train_cfg.reg_pseudo_thr
+                )
+                .sum()
+                .item()
+            )
+
+        if (
+            classification_pseudo > total_pseudo
+            or regression_pseudo > total_pseudo
+        ):
+            raise RuntimeError(
+                "OFFICIAL_PSEUDO_COUNT_EVIDENCE_EXCEEDS_BASE_SET"
+            )
+
+        self._official_last_pseudo_counts = {
+            "pseudo_count": int(total_pseudo),
+            "classification_pseudo_count": int(classification_pseudo),
+            "regression_pseudo_count": int(regression_pseudo),
+        }
+
         if total_pseudo == 0:
             zero = next(
                 parameter

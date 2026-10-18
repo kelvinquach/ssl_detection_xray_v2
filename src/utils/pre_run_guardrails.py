@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -25,12 +27,81 @@ from src.utils.unlabeled_firewall import (
 SUPPORTED_METHODS = {"SUP", "SSL"}
 SUPPORTED_ARCHITECTURES = {"R50-FPN", "Swin-T-FPN"}
 SUPPORTED_LOW_LABEL_BUDGETS = {"1pct", "5pct", "10pct", "20pct"}
+SUPPORTED_SUP_REFERENCE_BUDGETS = {"100pct"}
 LOCKED_PARTITION_SEED = 42
 CANONICAL_SCIENTIFIC_SOURCE = "sn-article.tex"
 
 
 class PreRunGuardrailError(RuntimeError):
     """Raised when a pre-run identity assertion blocks execution."""
+
+
+def _repo_relative_path(
+    repo_root: Path,
+    path: Path,
+) -> str:
+    """Return one repository-relative POSIX path."""
+    return (
+        Path(path)
+        .resolve()
+        .relative_to(Path(repo_root).resolve())
+        .as_posix()
+    )
+
+
+def _git_blob_content_sha256(
+    repo_root: Path,
+    path: Path,
+) -> str:
+    """Hash committed file content using the canonical Git-blob basis."""
+    repo_root = Path(repo_root).resolve()
+    rel_path = _repo_relative_path(repo_root, path)
+
+    process = subprocess.run(
+        ["git", "show", f"HEAD:{rel_path}"],
+        cwd=repo_root,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    if process.returncode != 0:
+        raise PreRunGuardrailError(
+            "Cannot read canonical Git content for "
+            f"{rel_path}: "
+            + process.stderr.decode(
+                "utf-8",
+                errors="replace",
+            ).strip()
+        )
+
+    return hashlib.sha256(process.stdout).hexdigest()
+
+
+def _worktree_matches_head(
+    repo_root: Path,
+    path: Path,
+) -> bool:
+    """Require current worktree content to match HEAD under Git semantics."""
+    repo_root = Path(repo_root).resolve()
+    rel_path = _repo_relative_path(repo_root, path)
+
+    process = subprocess.run(
+        [
+            "git",
+            "diff",
+            "--quiet",
+            "HEAD",
+            "--",
+            rel_path,
+        ],
+        cwd=repo_root,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+
+    return process.returncode == 0
 
 
 def verify_locked_source_integrity(
@@ -70,19 +141,49 @@ def verify_locked_source_integrity(
         "artifact_contract_exists":
             artifact_path.is_file(),
 
+        "scientific_source_worktree_matches_head":
+            scientific_path.is_file()
+            and _worktree_matches_head(
+                repo_root,
+                scientific_path,
+            ),
+
+        "implementation_contract_worktree_matches_head":
+            implementation_path.is_file()
+            and _worktree_matches_head(
+                repo_root,
+                implementation_path,
+            ),
+
+        "artifact_contract_worktree_matches_head":
+            artifact_path.is_file()
+            and _worktree_matches_head(
+                repo_root,
+                artifact_path,
+            ),
+
         "scientific_source_hash_matches_lock":
             scientific_path.is_file()
-            and file_sha256(scientific_path)
+            and _git_blob_content_sha256(
+                repo_root,
+                scientific_path,
+            )
             == scientific["scientific_source_sha256"],
 
         "implementation_contract_hash_matches_lock":
             implementation_path.is_file()
-            and file_sha256(implementation_path)
+            and _git_blob_content_sha256(
+                repo_root,
+                implementation_path,
+            )
             == implementation["implementation_contract_sha256"],
 
         "artifact_contract_hash_matches_lock":
             artifact_path.is_file()
-            and file_sha256(artifact_path)
+            and _git_blob_content_sha256(
+                repo_root,
+                artifact_path,
+            )
             == artifact["artifact_contract_sha256"],
 
         "implementation_manifest_scientific_hash_consistent":
@@ -230,6 +331,131 @@ def locked_seed_identity(
     }
 
 
+def _sup_reference_data_identity(
+    repo_root: Path,
+) -> dict[str, str]:
+    """Build the frozen full-train identity for 100%-SUP reference runs."""
+    repo_root = Path(repo_root).resolve()
+
+    split_path = (
+        repo_root
+        / "data"
+        / "manifests"
+        / "split_lock_manifest.json"
+    )
+    frozen_data_path = (
+        repo_root
+        / "artifacts"
+        / "frozen"
+        / "frozen_data_manifest.json"
+    )
+
+    split = load_json(split_path)
+    frozen_data = load_json(frozen_data_path)
+
+    if frozen_data.get("status") != "PASS":
+        raise PreRunGuardrailError(
+            "Frozen data manifest is not PASS."
+        )
+
+    train = frozen_data["train"]
+
+    if (
+        train["membership_sha256"]
+        != split["image_id_sha256"]["train"]
+    ):
+        raise PreRunGuardrailError(
+            "100%-SUP train membership does not match "
+            "the fixed train split."
+        )
+
+    return {
+        "dataset_manifest_sha256": file_sha256(split_path),
+        "train_split_sha256":
+            split["image_id_sha256"]["train"],
+        "val_split_sha256":
+            split["image_id_sha256"]["val"],
+        "test_split_sha256":
+            split["image_id_sha256"]["test"],
+        "labeled_manifest_sha256":
+            train["coco_sha256"],
+        "unlabeled_manifest_sha256":
+            "NOT_APPLICABLE",
+        "full_train_membership_sha256":
+            train["membership_sha256"],
+        "full_train_coco_sha256":
+            train["coco_sha256"],
+    }
+
+
+def _frozen_executable_config_identity(
+    repo_root: Path,
+    *,
+    method: str,
+    architecture: str,
+    budget: str,
+) -> dict[str, str]:
+    """Resolve and verify exactly one frozen executable config."""
+    repo_root = Path(repo_root).resolve()
+
+    manifest_path = (
+        repo_root
+        / "artifacts"
+        / "frozen"
+        / "frozen_config_manifest.json"
+    )
+    manifest = load_json(manifest_path)
+
+    matches = [
+        item
+        for item in manifest["executable_configs"]
+        if item["method"] == method
+        and item["architecture"] == architecture
+        and item["budget"] == budget
+    ]
+
+    if len(matches) != 1:
+        raise PreRunGuardrailError(
+            "Expected exactly one frozen executable config for "
+            f"{method}/{architecture}/{budget}; "
+            f"observed={len(matches)}"
+        )
+
+    item = matches[0]
+    config_path = repo_root / item["path"]
+
+    if not config_path.is_file():
+        raise PreRunGuardrailError(
+            "Frozen executable config is missing: "
+            f"{item['path']}"
+        )
+
+    if not _worktree_matches_head(
+        repo_root,
+        config_path,
+    ):
+        raise PreRunGuardrailError(
+            "Frozen executable config differs from HEAD: "
+            f"{item['path']}"
+        )
+
+    observed_sha256 = _git_blob_content_sha256(
+        repo_root,
+        config_path,
+    )
+
+    if observed_sha256 != item["sha256"]:
+        raise PreRunGuardrailError(
+            "Frozen executable config hash mismatch: "
+            f"{item['path']}"
+        )
+
+    return {
+        "executable_config_path": item["path"],
+        "executable_config_sha256": item["sha256"],
+    }
+
+
 def _protocol_config_identity(
     repo_root: Path,
     *,
@@ -271,7 +497,7 @@ def build_expected_pre_run_identity(
     budget: str,
     seed_index: int,
 ) -> dict[str, Any]:
-    """Materialize the canonical pre-run identity for one low-label cell."""
+    """Materialize the canonical pre-run identity for one official run."""
     repo_root = Path(repo_root).resolve()
 
     if method not in SUPPORTED_METHODS:
@@ -284,9 +510,16 @@ def build_expected_pre_run_identity(
             f"Unsupported architecture: {architecture!r}"
         )
 
-    if budget not in SUPPORTED_LOW_LABEL_BUDGETS:
+    is_low_label = budget in SUPPORTED_LOW_LABEL_BUDGETS
+    is_sup_reference = (
+        method == "SUP"
+        and budget in SUPPORTED_SUP_REFERENCE_BUDGETS
+    )
+
+    if not is_low_label and not is_sup_reference:
         raise PreRunGuardrailError(
-            f"Unsupported S2.14 low-label budget: {budget!r}"
+            "Unsupported official method/budget combination: "
+            f"{method}/{budget}"
         )
 
     source_checks = verify_locked_source_integrity(repo_root)
@@ -323,7 +556,20 @@ def build_expected_pre_run_identity(
         governance_root / "artifact_contract_manifest.json"
     )
 
-    data = fixed_data_identity(repo_root, budget=budget)
+    if is_sup_reference:
+        data = _sup_reference_data_identity(repo_root)
+    else:
+        data = fixed_data_identity(
+            repo_root,
+            budget=budget,
+        )
+
+    config_identity = _frozen_executable_config_identity(
+        repo_root,
+        method=method,
+        architecture=architecture,
+        budget=budget,
+    )
 
     _, preprocessing_sha = preprocessing_identity(repo_root)
     _, labeled_pipeline_sha = labeled_pipeline_identity(repo_root)
@@ -340,7 +586,14 @@ def build_expected_pre_run_identity(
         / "d4_training_protocol.yaml"
     )
 
-    update_budget = training["optimizer_update_budget"][budget]
+    update_budget_key = (
+        "100pct_sup"
+        if is_sup_reference
+        else budget
+    )
+    update_budget = training[
+        "optimizer_update_budget"
+    ][update_budget_key]
 
     expected = {
         "method": method,
@@ -349,6 +602,11 @@ def build_expected_pre_run_identity(
         "seed_index": seed_index,
         "training_seed": training_seed,
         "partition_seed": LOCKED_PARTITION_SEED,
+        "condition_role": (
+            "SUP_REFERENCE"
+            if is_sup_reference
+            else "MAIN_LOW_LABEL"
+        ),
 
         "scientific_source_name":
             scientific["scientific_source_name"],
@@ -359,6 +617,7 @@ def build_expected_pre_run_identity(
         "artifact_contract_sha256":
             artifact["artifact_contract_sha256"],
 
+        **config_identity,
         **data,
 
         "preprocessing_config_sha256": preprocessing_sha,

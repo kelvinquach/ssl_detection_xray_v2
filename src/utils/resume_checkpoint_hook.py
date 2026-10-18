@@ -19,6 +19,7 @@ from src.utils.resume_state import (
 RUNNER_COUNTER_ATTR = "_s2_actual_optimizer_update_counter"
 RUNNER_PENDING_RESUME_STATE_ATTR = "_s2_pending_protocol_resume_state"
 RUNNER_PENDING_RNG_RESTORE_ATTR = "_s2_pending_rng_restore"
+RUNNER_TRAINING_SUMMARY_STATE_ATTR = "_s9_training_summary_state"
 
 
 @HOOKS.register_module()
@@ -47,6 +48,7 @@ class ProtocolResumeCheckpointHook(Hook):
         setattr(runner, RUNNER_COUNTER_ATTR, counter)
         setattr(runner, RUNNER_PENDING_RESUME_STATE_ATTR, None)
         setattr(runner, RUNNER_PENDING_RNG_RESTORE_ATTR, False)
+        setattr(runner, RUNNER_TRAINING_SUMMARY_STATE_ATTR, None)
 
     def before_save_checkpoint(
         self,
@@ -61,10 +63,24 @@ class ProtocolResumeCheckpointHook(Hook):
                 "Actual optimizer-update counter is unavailable at checkpoint save."
             )
 
-        checkpoint[PROTOCOL_RESUME_STATE_KEY] = build_protocol_resume_state(
+        state = build_protocol_resume_state(
             training_seed=int(runner.seed),
             update_counter=counter,
         )
+
+        summary_state = getattr(
+            runner,
+            RUNNER_TRAINING_SUMMARY_STATE_ATTR,
+            None,
+        )
+        if summary_state is not None:
+            if not isinstance(summary_state, dict):
+                raise RuntimeError(
+                    "Training-summary resume state must be a dict."
+                )
+            state["training_summary_state"] = dict(summary_state)
+
+        checkpoint[PROTOCOL_RESUME_STATE_KEY] = state
 
     def after_load_checkpoint(
         self,
@@ -111,4 +127,5 @@ __all__ = [
     "RUNNER_COUNTER_ATTR",
     "RUNNER_PENDING_RESUME_STATE_ATTR",
     "RUNNER_PENDING_RNG_RESTORE_ATTR",
+    "RUNNER_TRAINING_SUMMARY_STATE_ATTR",
 ]

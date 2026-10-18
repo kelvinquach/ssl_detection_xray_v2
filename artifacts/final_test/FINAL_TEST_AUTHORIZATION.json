@@ -1,0 +1,9 @@
+{
+  "authorization_timestamp_utc": "2026-10-16T09:59:36Z",
+  "scientific_source_sha256": "b6881ce90da9194f88fd9664b51dc96bdf112145949e3a89705f16b06853c681",
+  "frozen_protocol_config_manifest_sha256": "b2cfe9d9d84755ce7c2bf239ed2dfb04f50184f4f839ad5164a11a1af2b993d2",
+  "eligible_model_inventory_sha256": "8cf0e38f2fd7e0af5353669b806bf6e1c8c9237a8c10442d18294f412482e509",
+  "evaluator_manifest_sha256": "3c6013da7b206eda3b8b3202006e180a62199f7fb593b8eca52aa6f8b71fdbc0",
+  "statistical_implementation_manifest_sha256": "8f4370a9a39c990a26df58adbe64a252edb26c7115632e7caac5a30d01f93582",
+  "researcher_authorization": true
+}

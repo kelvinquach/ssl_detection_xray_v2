@@ -337,6 +337,25 @@ def _evaluate_qpseudo_predictions_unchecked(
     cfg = _validate_evaluator_config(evaluator_cfg)
     cfg["ann_file"] = str(ann_file)
 
+    accepted_total = sum(
+        int(row["accepted_count"])
+        for row in predictions
+    )
+    if accepted_total == 0:
+        zero_metrics = {
+            "coco/bbox_mAP": 0.0,
+            "coco/bbox_mAP_50": 0.0,
+            "coco/bbox_mAP_75": 0.0,
+            "coco/AR_50_95_max100": 0.0,
+        }
+        for category in categories:
+            class_name = str(category["name"])
+            prefix = f"coco/classwise/{class_name}/"
+            zero_metrics[prefix + "AP_50_95"] = 0.0
+            zero_metrics[prefix + "AP50"] = 0.0
+            zero_metrics[prefix + "AP75"] = 0.0
+        return zero_metrics
+
     metric = ProtocolCocoMetric(**{
         key: value
         for key, value in cfg.items()

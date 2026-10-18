@@ -10,7 +10,7 @@ train_dataloader = dict(
     num_workers=2,
     persistent_workers=True,
     sampler=dict(type="DefaultSampler", shuffle=True),
-    batch_sampler=dict(type="AspectRatioBatchSampler"),
+    batch_sampler=dict(type="AspectRatioBatchSampler", drop_last=True),
     dataset=_base_.DATASETS["L_1pct"],
 )
 

@@ -23,6 +23,7 @@ from typing import Any, Dict, Optional
 from mmengine.hooks import Hook
 from mmengine.registry import HOOKS
 
+from src.utils.classwise_validation_artifact import write_classwise_validation_ap
 from src.utils.optimizer_update_counter import ActualOptimizerUpdateCounter
 from src.utils.resume_checkpoint_hook import RUNNER_COUNTER_ATTR
 from src.utils.run_manifest import file_sha256
@@ -139,6 +140,7 @@ class SupervisedBestLastCheckpointHook(Hook):
             "checkpoint_dir": checkpoint_dir,
             "validation_history": validation_dir / "validation_history.csv",
             "validation_best": validation_dir / "validation_best.json",
+            "classwise_validation": validation_dir / "classwise_validation_ap.csv",
             "checkpoint_index": checkpoint_dir / "checkpoint_index.json",
             "best": checkpoint_dir / "best_model.pth",
             "last": checkpoint_dir / "last_model.pth",
@@ -338,6 +340,11 @@ class SupervisedBestLastCheckpointHook(Hook):
             _write_json_atomic(
                 paths["validation_best"],
                 validation_best,
+            )
+
+            write_classwise_validation_ap(
+                paths["classwise_validation"],
+                metrics,
             )
 
             self._upsert_checkpoint_index(

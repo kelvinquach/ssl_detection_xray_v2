@@ -1,0 +1,1809 @@
+{
+  "authorization_sha256": "67cb73b0c041437cb591883c8e7d762189da48d56a089919972112e087e4b448",
+  "eligible_model_inventory_sha256": "8cf0e38f2fd7e0af5353669b806bf6e1c8c9237a8c10442d18294f412482e509",
+  "evaluator_config_sha256": "43079be37ab97cbbd58d0fdeaf171b9ebfe8272399d2b32800bbfbd8505d72a9",
+  "runs": {
+    "OFF_SSL_R50_B01_S01": {
+      "access_started_at_utc": "2026-10-17T04:06:18.882950Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "7a7b6872dd979e7d60bc28aad453dba776c164b3242e76077d7aa51b037e026b",
+      "last_updated_at_utc": "2026-10-17T04:40:51.550679Z",
+      "run_id": "OFF_SSL_R50_B01_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B01_S02": {
+      "access_started_at_utc": "2026-10-17T04:40:56.108420Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "0e8fbbefa6347e08f1104208d34f04a8c1b1a8a48c97d4f8467002919770b1fa",
+      "last_updated_at_utc": "2026-10-17T04:47:56.985851Z",
+      "run_id": "OFF_SSL_R50_B01_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B01_S03": {
+      "access_started_at_utc": "2026-10-17T04:48:01.573123Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "f49c430bd5be0a24bd8e4e88e16c039fac1e31ef4cb1cc0378c53d9bb134cad6",
+      "last_updated_at_utc": "2026-10-17T04:55:37.253030Z",
+      "run_id": "OFF_SSL_R50_B01_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B01_S04": {
+      "access_started_at_utc": "2026-10-17T04:55:41.795477Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "515d9561e2643272a3264cbbb46350c8c1aace7d63c9031f80aee0e98e1bb5e5",
+      "last_updated_at_utc": "2026-10-17T05:02:48.327268Z",
+      "run_id": "OFF_SSL_R50_B01_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B01_S05": {
+      "access_started_at_utc": "2026-10-17T05:02:52.858923Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "717e3651a93c77bde07ca5fda1b8c9f67ef39b806ad281e2d3b466eda1171a9b",
+      "last_updated_at_utc": "2026-10-17T05:09:57.286969Z",
+      "run_id": "OFF_SSL_R50_B01_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B01_S06": {
+      "access_started_at_utc": "2026-10-17T05:10:01.792277Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "dfb2cec9f43c2473949334b6173867d2db8fc2e8b10317217e2e6eea544f939a",
+      "last_updated_at_utc": "2026-10-17T05:17:23.896995Z",
+      "run_id": "OFF_SSL_R50_B01_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B01_S07": {
+      "access_started_at_utc": "2026-10-17T05:17:28.469153Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "5e704f01384f994f82924ee7dfc33e3e5eff113c238e5d49860561037a5f4084",
+      "last_updated_at_utc": "2026-10-17T05:24:49.922714Z",
+      "run_id": "OFF_SSL_R50_B01_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B01_S08": {
+      "access_started_at_utc": "2026-10-17T05:24:54.497910Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "55e43c8f04e9edfe7481bad78d022b2bc8944ccc1bd68061fa2bc34f0a3d8b4f",
+      "last_updated_at_utc": "2026-10-17T05:32:57.982007Z",
+      "run_id": "OFF_SSL_R50_B01_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B01_S09": {
+      "access_started_at_utc": "2026-10-17T05:33:02.542340Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "0baa50823e3d47376d9e6e42541980d893729cd098250333d17894469df8b0c4",
+      "last_updated_at_utc": "2026-10-17T05:40:05.319405Z",
+      "run_id": "OFF_SSL_R50_B01_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B01_S10": {
+      "access_started_at_utc": "2026-10-17T05:40:09.884842Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "52eea6cddfb29970d976ec6bf29a15bab6c01bd30e0785648fe0aad7ba03a758",
+      "last_updated_at_utc": "2026-10-17T05:47:34.992871Z",
+      "run_id": "OFF_SSL_R50_B01_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S01": {
+      "access_started_at_utc": "2026-10-17T05:47:39.601075Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "d49604103bb9b58303c58f376316227f235348dde7a92220999aca98089e18ef",
+      "last_updated_at_utc": "2026-10-17T05:55:44.999694Z",
+      "run_id": "OFF_SSL_R50_B05_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S02": {
+      "access_started_at_utc": "2026-10-17T05:55:49.455614Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "bfa7d9b96d24bb22a77603127a76362a009e3906f0bc68f24705d6aa0c15ba7e",
+      "last_updated_at_utc": "2026-10-17T06:03:57.590417Z",
+      "run_id": "OFF_SSL_R50_B05_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S03": {
+      "access_started_at_utc": "2026-10-17T06:04:02.034006Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "1a08876a036065b08650e6b80bdfb5aa92977891d725b5c612cf226a718a1dab",
+      "last_updated_at_utc": "2026-10-17T06:11:14.100804Z",
+      "run_id": "OFF_SSL_R50_B05_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S04": {
+      "access_started_at_utc": "2026-10-17T06:11:18.541245Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "12c9f6b06976741290ea9e1407a733da3129f59181a7ae107f17778e4c3c0c61",
+      "last_updated_at_utc": "2026-10-17T06:18:12.375976Z",
+      "run_id": "OFF_SSL_R50_B05_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S05": {
+      "access_started_at_utc": "2026-10-17T06:18:16.872920Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "2fb4eca50f0b30e5c601ba0a1acf0547ef8ff777f29c804c84c2753d27b56f8d",
+      "last_updated_at_utc": "2026-10-17T06:25:16.374437Z",
+      "run_id": "OFF_SSL_R50_B05_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S06": {
+      "access_started_at_utc": "2026-10-17T06:25:20.846342Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "a9e2f5d9692bf68c691caa61db2625c0cc30ce65195ec40364e09025664f0281",
+      "last_updated_at_utc": "2026-10-17T06:32:06.754739Z",
+      "run_id": "OFF_SSL_R50_B05_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S07": {
+      "access_started_at_utc": "2026-10-17T06:32:11.226943Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "b11f54cfc6989648154a545a38a2d32d9a83c4bd1ae6a2851ee8f7a1c2578d68",
+      "last_updated_at_utc": "2026-10-17T06:38:51.576819Z",
+      "run_id": "OFF_SSL_R50_B05_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S08": {
+      "access_started_at_utc": "2026-10-17T06:38:55.994459Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "effe092fbb2f81b890af24040e303c4003c2a2a6d524d4e8d501752f0ffaa147",
+      "last_updated_at_utc": "2026-10-17T06:45:40.984106Z",
+      "run_id": "OFF_SSL_R50_B05_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S09": {
+      "access_started_at_utc": "2026-10-17T06:45:45.481486Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "c7ea27c6ad4b937168ad6a795848b4269cbd4112d39b8ac6c7e107c454fede38",
+      "last_updated_at_utc": "2026-10-17T06:56:04.192041Z",
+      "run_id": "OFF_SSL_R50_B05_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B05_S10": {
+      "access_started_at_utc": "2026-10-17T06:56:08.687505Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "c5dfa7578890620acc0921dfcf54819821d371e6ed52b4b7d0f4d7d2a44222e7",
+      "last_updated_at_utc": "2026-10-17T07:02:50.032802Z",
+      "run_id": "OFF_SSL_R50_B05_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S01": {
+      "access_started_at_utc": "2026-10-17T07:02:54.601183Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "34f4735de08b34d9be23d6920c3166c5e430547c53446d356fc55632463ce90e",
+      "last_updated_at_utc": "2026-10-17T07:11:06.628787Z",
+      "run_id": "OFF_SSL_R50_B10_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S02": {
+      "access_started_at_utc": "2026-10-17T07:11:11.077710Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "e6c4dd0868f32f87bc122d171258f5a7ab3ab281ce5d48a74b4347f5d78c9caf",
+      "last_updated_at_utc": "2026-10-17T07:19:10.363658Z",
+      "run_id": "OFF_SSL_R50_B10_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S03": {
+      "access_started_at_utc": "2026-10-17T07:19:14.792831Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "890dba68d9719041ec8e5a6d69f1f15599cbbbfb4d211b2dd2f5e0dd2a80b619",
+      "last_updated_at_utc": "2026-10-17T07:25:57.295045Z",
+      "run_id": "OFF_SSL_R50_B10_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S04": {
+      "access_started_at_utc": "2026-10-17T07:26:01.746823Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "9991596d76dcf2f8d9ee95eb5b3bdb94e5d721d3df141a36a86f0e1ee80e72cd",
+      "last_updated_at_utc": "2026-10-17T07:32:43.351634Z",
+      "run_id": "OFF_SSL_R50_B10_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S05": {
+      "access_started_at_utc": "2026-10-17T07:32:47.787371Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "14e2bfad3d07666abae2b04f6640d516667ffeb6f99d8f430283a790ab4681b0",
+      "last_updated_at_utc": "2026-10-17T07:40:57.741956Z",
+      "run_id": "OFF_SSL_R50_B10_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S06": {
+      "access_started_at_utc": "2026-10-17T07:41:02.264076Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "cc477bf00436186495d85d20b75f66a9352a6c08b2bcf5ca459c546aa2abfa83",
+      "last_updated_at_utc": "2026-10-17T07:48:13.400443Z",
+      "run_id": "OFF_SSL_R50_B10_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S07": {
+      "access_started_at_utc": "2026-10-17T07:48:17.873341Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "c93845c3300e8a4064a8e0a1fbd17c2b939e295cf7bc0e0111fe5e52bf827387",
+      "last_updated_at_utc": "2026-10-17T07:55:41.994474Z",
+      "run_id": "OFF_SSL_R50_B10_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S08": {
+      "access_started_at_utc": "2026-10-17T07:55:46.449137Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "321d4b5e0a5922453c16e441c8c4df035dd21dca5e2be6e624f9f70a9b972195",
+      "last_updated_at_utc": "2026-10-17T08:02:44.526827Z",
+      "run_id": "OFF_SSL_R50_B10_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S09": {
+      "access_started_at_utc": "2026-10-17T08:02:48.978935Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "6afad6e023473cd7475b75e8156710ff64011794e753596c315bbb7c4d964eba",
+      "last_updated_at_utc": "2026-10-17T08:10:31.282398Z",
+      "run_id": "OFF_SSL_R50_B10_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B10_S10": {
+      "access_started_at_utc": "2026-10-17T08:10:35.788413Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "f523fc9d208673b6e348c91128a3274a3feb37c2cfbd9b645b112ecf72705a89",
+      "last_updated_at_utc": "2026-10-17T08:17:21.169494Z",
+      "run_id": "OFF_SSL_R50_B10_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S01": {
+      "access_started_at_utc": "2026-10-17T08:17:25.589187Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "77ddf1753285485c0e53b6886e49b6ad12e48a359377eb7e4553379026e8be5a",
+      "last_updated_at_utc": "2026-10-17T08:24:17.212951Z",
+      "run_id": "OFF_SSL_R50_B20_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S02": {
+      "access_started_at_utc": "2026-10-17T08:24:21.796250Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "7c5de46e764a008d21094420abec6618c14645f675d19140ef688cd2c8591265",
+      "last_updated_at_utc": "2026-10-17T08:31:08.342251Z",
+      "run_id": "OFF_SSL_R50_B20_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S03": {
+      "access_started_at_utc": "2026-10-17T08:31:12.754103Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "0cbf986e462dfa97dd2850aa5e690d94213e59d32dd5624daa1e63f0b9384044",
+      "last_updated_at_utc": "2026-10-17T08:38:07.101747Z",
+      "run_id": "OFF_SSL_R50_B20_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S04": {
+      "access_started_at_utc": "2026-10-17T08:38:11.478102Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "7a3edbe04f301246b9c71463ac1036fcafaf3cbd696d552e38fc4ed4a2837213",
+      "last_updated_at_utc": "2026-10-17T08:46:38.576938Z",
+      "run_id": "OFF_SSL_R50_B20_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S05": {
+      "access_started_at_utc": "2026-10-17T08:46:43.172426Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "ea34f9ee561aa90162d7d9bec29a7dfca7cd5cf5cdf1b818461f776c1e210e4d",
+      "last_updated_at_utc": "2026-10-17T08:54:40.210284Z",
+      "run_id": "OFF_SSL_R50_B20_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S06": {
+      "access_started_at_utc": "2026-10-17T08:54:44.601051Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "b4c789f234b304690f50e2833ff9f4c1b81d3aad779f1e886eaaca15200eded8",
+      "last_updated_at_utc": "2026-10-17T09:03:57.294763Z",
+      "run_id": "OFF_SSL_R50_B20_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S07": {
+      "access_started_at_utc": "2026-10-17T09:04:01.750017Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "4278e96e8cc6024b68c50830d0b017460e4ab260e5a97de264f31e767a9b404d",
+      "last_updated_at_utc": "2026-10-17T09:10:55.919729Z",
+      "run_id": "OFF_SSL_R50_B20_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S08": {
+      "access_started_at_utc": "2026-10-17T09:11:00.349991Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "4e68a107672a2b6844c03e563a5046c845649a4d8d1fa138cf8193421b6d972f",
+      "last_updated_at_utc": "2026-10-17T09:17:56.668984Z",
+      "run_id": "OFF_SSL_R50_B20_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S09": {
+      "access_started_at_utc": "2026-10-17T09:18:01.097744Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "faacfc7f5ef9c1848d446ec0a14f3c47ee1b1e0d95937e1a5d819dac0f3a0e5f",
+      "last_updated_at_utc": "2026-10-17T09:24:38.573745Z",
+      "run_id": "OFF_SSL_R50_B20_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_R50_B20_S10": {
+      "access_started_at_utc": "2026-10-17T09:24:43.055556Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "e84e0ee1ac2e6cee8b4aa82fddb556d978500931c6fdd5a5566784c0de068e26",
+      "last_updated_at_utc": "2026-10-17T09:31:42.019265Z",
+      "run_id": "OFF_SSL_R50_B20_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S01": {
+      "access_started_at_utc": "2026-10-17T09:31:46.480717Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "3b37d271a24291d1f03903c0bd2bb329fd74a26323f2525b136a978c08860bc2",
+      "last_updated_at_utc": "2026-10-17T09:38:40.332548Z",
+      "run_id": "OFF_SSL_SWIN_B01_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S02": {
+      "access_started_at_utc": "2026-10-17T09:38:44.870501Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "b8a6602e77c1bf99600160f12b4fd991edb1fcd39516b57b69b23d1c1bbb63bb",
+      "last_updated_at_utc": "2026-10-17T09:45:57.377405Z",
+      "run_id": "OFF_SSL_SWIN_B01_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S03": {
+      "access_started_at_utc": "2026-10-17T09:46:01.873754Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "6a5784df8f2150dfc1d7bbe19330a5e4d5fc8e8a258af59ce7a4dd6530be3d5e",
+      "last_updated_at_utc": "2026-10-17T09:53:00.519465Z",
+      "run_id": "OFF_SSL_SWIN_B01_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S04": {
+      "access_started_at_utc": "2026-10-17T09:53:05.064412Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "27d664ff1dffbfd756d7ff873aa9e8e2e2b425f415dc94c08165839536993a11",
+      "last_updated_at_utc": "2026-10-17T10:00:07.057002Z",
+      "run_id": "OFF_SSL_SWIN_B01_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S05": {
+      "access_started_at_utc": "2026-10-17T10:00:11.505488Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "761063d0d0c9e2a5331285879b62c79ed5f782f26b6374e925f2b5d0c962d8bc",
+      "last_updated_at_utc": "2026-10-17T10:07:47.750768Z",
+      "run_id": "OFF_SSL_SWIN_B01_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S06": {
+      "access_started_at_utc": "2026-10-17T10:07:52.292223Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "8bd360916917ab145cf16fc33582064b4c51763f8aa800ef3e9304e0829055c9",
+      "last_updated_at_utc": "2026-10-17T10:15:18.849549Z",
+      "run_id": "OFF_SSL_SWIN_B01_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S07": {
+      "access_started_at_utc": "2026-10-17T10:15:23.363669Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "db265e665aaf7c553be542b65b371e5a9568fc4f4599a91e8b2805c751f889f3",
+      "last_updated_at_utc": "2026-10-17T10:22:16.341175Z",
+      "run_id": "OFF_SSL_SWIN_B01_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S08": {
+      "access_started_at_utc": "2026-10-17T10:22:20.792886Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "075daa1ec4be352bd7361e851faa460cabf4f5f0bfc1aca3a764bc5bb4699392",
+      "last_updated_at_utc": "2026-10-17T10:29:14.919648Z",
+      "run_id": "OFF_SSL_SWIN_B01_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S09": {
+      "access_started_at_utc": "2026-10-17T10:29:19.383943Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "bf2b1ec038f73f7c3cc1ae768e7aa8112130b001a7ee8fbbcaf348afb8d14426",
+      "last_updated_at_utc": "2026-10-17T10:39:45.974020Z",
+      "run_id": "OFF_SSL_SWIN_B01_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B01_S10": {
+      "access_started_at_utc": "2026-10-17T10:39:50.560916Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "ddcbc942dfa31e4afc31b85c15e92b93495dfb49074afca8a2a4ff03a56275e4",
+      "last_updated_at_utc": "2026-10-17T10:47:10.868947Z",
+      "run_id": "OFF_SSL_SWIN_B01_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S01": {
+      "access_started_at_utc": "2026-10-17T10:47:15.393180Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "37856ebbcc5cd9bfcc911b55ee362bcd9229b3e501a1250c699a12df3f112b6e",
+      "last_updated_at_utc": "2026-10-17T10:54:25.184570Z",
+      "run_id": "OFF_SSL_SWIN_B05_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S02": {
+      "access_started_at_utc": "2026-10-17T10:54:29.675795Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "63a872cd12e7990c8461e2c8ecaaa10a5ebdceb917cbacfcab744cb45cfa4288",
+      "last_updated_at_utc": "2026-10-17T11:01:27.245995Z",
+      "run_id": "OFF_SSL_SWIN_B05_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S03": {
+      "access_started_at_utc": "2026-10-17T11:01:31.686675Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "b5a722e4fa3b880488f40d4759d2db6e5a413325917e1d3b424635deac83f9a5",
+      "last_updated_at_utc": "2026-10-17T11:09:28.081178Z",
+      "run_id": "OFF_SSL_SWIN_B05_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S04": {
+      "access_started_at_utc": "2026-10-17T11:09:32.562675Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "fda0cd70deee3cb4641c6eb6922fd71a62feecd3608c563c1a9f9c009d81f76e",
+      "last_updated_at_utc": "2026-10-17T11:17:58.031998Z",
+      "run_id": "OFF_SSL_SWIN_B05_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S05": {
+      "access_started_at_utc": "2026-10-17T11:18:02.498329Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "bffb98f0fa56ef1eff2916020ea4dd88f8974fd8983f818ae9df1b05142b9c9f",
+      "last_updated_at_utc": "2026-10-17T11:26:05.322105Z",
+      "run_id": "OFF_SSL_SWIN_B05_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S06": {
+      "access_started_at_utc": "2026-10-17T11:26:09.850036Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "efb6ea91c3a2d929fa0d76cee6282ad33be983dc07c221aa1de3e6a1cdfd7ee2",
+      "last_updated_at_utc": "2026-10-17T11:34:32.867911Z",
+      "run_id": "OFF_SSL_SWIN_B05_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S07": {
+      "access_started_at_utc": "2026-10-17T11:34:37.272923Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "8f191367ce27a0e2788587e51e6d11ce89607f97004f2ef233c6ae5490127a31",
+      "last_updated_at_utc": "2026-10-17T11:42:43.747190Z",
+      "run_id": "OFF_SSL_SWIN_B05_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S08": {
+      "access_started_at_utc": "2026-10-17T11:42:48.177624Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "da1f213ecca1cab191c6e67fb8f3700d93c3e31704fa6e882e4337700dfda6ad",
+      "last_updated_at_utc": "2026-10-17T11:49:35.732514Z",
+      "run_id": "OFF_SSL_SWIN_B05_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S09": {
+      "access_started_at_utc": "2026-10-17T11:49:40.162378Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "11ef4c459c5a0a0bfc2e3d3c599fa7a0d2f35cd1e59fcf2adf465d5347c48daf",
+      "last_updated_at_utc": "2026-10-17T11:56:21.993850Z",
+      "run_id": "OFF_SSL_SWIN_B05_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B05_S10": {
+      "access_started_at_utc": "2026-10-17T11:56:26.443496Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "9c8054a6687b44a09477c13388a54a58121b511011db630b76bd2ebd149f0a70",
+      "last_updated_at_utc": "2026-10-17T12:03:12.697585Z",
+      "run_id": "OFF_SSL_SWIN_B05_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S01": {
+      "access_started_at_utc": "2026-10-17T12:03:17.084160Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "a752667d19941c4bd1e4ee5292dc407b906374c50a263423b6249b6681ecbf20",
+      "last_updated_at_utc": "2026-10-17T12:09:56.526570Z",
+      "run_id": "OFF_SSL_SWIN_B10_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S02": {
+      "access_started_at_utc": "2026-10-17T12:10:00.974812Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "ad7d0b59aa1eb40449d25f8f06b4f1ad633f2135a4b6e0186a8776563d11fba3",
+      "last_updated_at_utc": "2026-10-17T12:16:41.215170Z",
+      "run_id": "OFF_SSL_SWIN_B10_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S03": {
+      "access_started_at_utc": "2026-10-17T12:16:45.695212Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "a7d763524107246cc87d2cb34cbb8a32aeeb05fa3f8f1dfb90078403fbfe2396",
+      "last_updated_at_utc": "2026-10-17T12:23:33.426254Z",
+      "run_id": "OFF_SSL_SWIN_B10_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S04": {
+      "access_started_at_utc": "2026-10-17T12:23:37.884663Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "7e153221e058b0c9bd35a894f7cd63e750518aa015b7b9347587dd0a27bc8026",
+      "last_updated_at_utc": "2026-10-17T12:31:37.391814Z",
+      "run_id": "OFF_SSL_SWIN_B10_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S05": {
+      "access_started_at_utc": "2026-10-17T12:31:41.870930Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "d476a266f5564c193f3a6c813280479ff9d2912f56f6a1a505461f520cd5cbf7",
+      "last_updated_at_utc": "2026-10-17T12:38:54.497109Z",
+      "run_id": "OFF_SSL_SWIN_B10_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S06": {
+      "access_started_at_utc": "2026-10-17T12:38:58.953473Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "a992bfc5385d87d1f0eeffc83ef73b69e8be5f9bba2f4ed62d8df3d91ca418fb",
+      "last_updated_at_utc": "2026-10-17T12:46:16.759201Z",
+      "run_id": "OFF_SSL_SWIN_B10_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S07": {
+      "access_started_at_utc": "2026-10-17T12:46:21.200555Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "53da4b4ca97b4d3101ddf7d6623d2264ca9746fb1b85aeac5f6aaf232ab3f8c9",
+      "last_updated_at_utc": "2026-10-17T12:53:05.375603Z",
+      "run_id": "OFF_SSL_SWIN_B10_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S08": {
+      "access_started_at_utc": "2026-10-17T12:53:09.830524Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "ddfe56859bd3980d30441056d74f2fbd7df5212da334018964b115744de238df",
+      "last_updated_at_utc": "2026-10-17T13:00:30.729984Z",
+      "run_id": "OFF_SSL_SWIN_B10_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S09": {
+      "access_started_at_utc": "2026-10-17T13:00:35.195039Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "5c07895787317a70a7e9f478c11fd9b0120a5b6cfe350530681ed0b112f6bbcf",
+      "last_updated_at_utc": "2026-10-17T13:07:28.416256Z",
+      "run_id": "OFF_SSL_SWIN_B10_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B10_S10": {
+      "access_started_at_utc": "2026-10-17T13:07:32.851974Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "f8f4652bac6b23bbebca592a1781a2a8fe9576a1d6f468f41b6bc5aa2598ba59",
+      "last_updated_at_utc": "2026-10-17T13:14:38.428650Z",
+      "run_id": "OFF_SSL_SWIN_B10_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S01": {
+      "access_started_at_utc": "2026-10-17T13:14:42.893008Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "6eb6814d59fbe04684b913ea401affedb418fff5195e42a7760cbe43651ee257",
+      "last_updated_at_utc": "2026-10-17T13:22:31.884807Z",
+      "run_id": "OFF_SSL_SWIN_B20_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S02": {
+      "access_started_at_utc": "2026-10-17T13:22:36.375939Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "b06f47461e6935d3079330ff18294c6a30fe909eb16e59eea440914e49f5d708",
+      "last_updated_at_utc": "2026-10-17T13:30:04.324074Z",
+      "run_id": "OFF_SSL_SWIN_B20_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S03": {
+      "access_started_at_utc": "2026-10-17T13:30:08.771103Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "71e667e1e6abebe1dd0305fe0167e75392e36f485758fd7a764b95f785fd43d7",
+      "last_updated_at_utc": "2026-10-17T13:40:31.247697Z",
+      "run_id": "OFF_SSL_SWIN_B20_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S04": {
+      "access_started_at_utc": "2026-10-17T13:40:35.731431Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "58a8b6acadab5d5b5e9d91093353607fd1ebaa003e3cb4fa3dd0163eb72394c0",
+      "last_updated_at_utc": "2026-10-17T13:48:33.592836Z",
+      "run_id": "OFF_SSL_SWIN_B20_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S05": {
+      "access_started_at_utc": "2026-10-17T13:48:37.988168Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "663d6f612cff7931eb389c44f2d603d46821f078c604e0bca2c44c02b97f25e4",
+      "last_updated_at_utc": "2026-10-17T13:56:26.359479Z",
+      "run_id": "OFF_SSL_SWIN_B20_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S06": {
+      "access_started_at_utc": "2026-10-17T13:56:30.831450Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "af3eed5907eece3859b24c6f1e4d03597b943595e1674300aa80ae3bb92d0c53",
+      "last_updated_at_utc": "2026-10-17T14:04:06.184933Z",
+      "run_id": "OFF_SSL_SWIN_B20_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S07": {
+      "access_started_at_utc": "2026-10-17T14:04:10.616554Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "a5597e74d9295e997c07f1d6f90608096d3444aa516504f36a62ac7d90efe093",
+      "last_updated_at_utc": "2026-10-17T14:10:57.296141Z",
+      "run_id": "OFF_SSL_SWIN_B20_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S08": {
+      "access_started_at_utc": "2026-10-17T14:11:01.686031Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "53a899c99be9c7c788f330c9815902c67732e0f4e95a548e07646ee46b2a437c",
+      "last_updated_at_utc": "2026-10-17T14:17:57.213097Z",
+      "run_id": "OFF_SSL_SWIN_B20_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S09": {
+      "access_started_at_utc": "2026-10-17T14:18:01.682936Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "96e025f3d092784e5d08e5adf85ce2bf679c9735d7b02a735292c7a513942361",
+      "last_updated_at_utc": "2026-10-17T14:25:00.625449Z",
+      "run_id": "OFF_SSL_SWIN_B20_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SSL_SWIN_B20_S10": {
+      "access_started_at_utc": "2026-10-17T14:25:05.087103Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_EMA_TEACHER_CHECKPOINT",
+      "checkpoint_sha256": "28ad07f434078dce332019c205eecd9dd9282b1203d5791ac4a4669024d76f72",
+      "last_updated_at_utc": "2026-10-17T14:32:12.255247Z",
+      "run_id": "OFF_SSL_SWIN_B20_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S01": {
+      "access_started_at_utc": "2026-10-16T14:13:28.479273Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "aa5ce1385fa4b7eec7c4cf17eb8736ec2cc8ca2c0c152cc102ad153b6f11e994",
+      "last_updated_at_utc": "2026-10-16T15:26:05.705639Z",
+      "run_id": "OFF_SUP_R50_B01_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S02": {
+      "access_started_at_utc": "2026-10-16T15:54:54.384400Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "411f0dad2abf956e72d0adfb6474f3a5ed2958c42e01b9220ff9b527ff0eb41f",
+      "last_updated_at_utc": "2026-10-16T16:03:00.845444Z",
+      "run_id": "OFF_SUP_R50_B01_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S03": {
+      "access_started_at_utc": "2026-10-16T16:03:05.273261Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "9e432f4b5abb5ac593b2835b93924e9ef821b80a9f39738da0887f4cf46ceda0",
+      "last_updated_at_utc": "2026-10-16T16:11:21.774564Z",
+      "run_id": "OFF_SUP_R50_B01_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S04": {
+      "access_started_at_utc": "2026-10-16T16:11:26.212082Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "977dbb4b23fdeeccc2a9b15c177c603b7d666ad159f6c84a99d51c5e61f5aff1",
+      "last_updated_at_utc": "2026-10-16T16:19:28.628762Z",
+      "run_id": "OFF_SUP_R50_B01_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S05": {
+      "access_started_at_utc": "2026-10-16T16:19:33.060344Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "fdd60be13c4c877613020b222d2253594598608f6f9007cdb3367f5ff045d7bc",
+      "last_updated_at_utc": "2026-10-16T16:27:22.598621Z",
+      "run_id": "OFF_SUP_R50_B01_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S06": {
+      "access_started_at_utc": "2026-10-16T16:27:26.993139Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "25989b4a257012cf123d2691fa053edb90895168cae50fea7fb76c9bf3591fa7",
+      "last_updated_at_utc": "2026-10-16T16:35:45.444704Z",
+      "run_id": "OFF_SUP_R50_B01_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S07": {
+      "access_started_at_utc": "2026-10-16T16:35:49.857997Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "9a1ae8a46cdb0c649e67ae0216007ac0013c0b3b63d6f781aacf60fe4680b32b",
+      "last_updated_at_utc": "2026-10-16T16:44:36.201295Z",
+      "run_id": "OFF_SUP_R50_B01_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S08": {
+      "access_started_at_utc": "2026-10-16T16:44:40.596891Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "8a72b523c070ba02a53636f5ce768da4da056f37347c49553bb7c68ce8b82cb3",
+      "last_updated_at_utc": "2026-10-16T16:55:10.065398Z",
+      "run_id": "OFF_SUP_R50_B01_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S09": {
+      "access_started_at_utc": "2026-10-16T16:55:14.490415Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "1bd0358e384dc991a7fe3a815342366c6885f66540055000890a3de84346e756",
+      "last_updated_at_utc": "2026-10-16T17:04:34.178603Z",
+      "run_id": "OFF_SUP_R50_B01_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B01_S10": {
+      "access_started_at_utc": "2026-10-16T17:04:38.607507Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "d4fe4829329f1afb3e87fcbe8ffc0f2c6c192f58fa72be8b6e8ad13e205933cb",
+      "last_updated_at_utc": "2026-10-16T17:13:08.279333Z",
+      "run_id": "OFF_SUP_R50_B01_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S01": {
+      "access_started_at_utc": "2026-10-16T17:13:12.691241Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "2bf82824f621682e440680bd7f9f086d0a81b126fb31c54713ae7b5ef5a7a889",
+      "last_updated_at_utc": "2026-10-16T17:20:34.001352Z",
+      "run_id": "OFF_SUP_R50_B05_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S02": {
+      "access_started_at_utc": "2026-10-16T17:20:38.450101Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "e8c66aa890e5d746663fe607e0615c5bf44dc98e97abe9b4d96f5999a29e0f47",
+      "last_updated_at_utc": "2026-10-16T17:28:57.341834Z",
+      "run_id": "OFF_SUP_R50_B05_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S03": {
+      "access_started_at_utc": "2026-10-16T17:29:01.778258Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "e59369dae8f9adb1d1d9c11647ec4f40329ab028f4a59ea9b3436f7cecc32011",
+      "last_updated_at_utc": "2026-10-16T17:36:53.406070Z",
+      "run_id": "OFF_SUP_R50_B05_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S04": {
+      "access_started_at_utc": "2026-10-16T17:36:57.779867Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "b79a05609c2f745b1fc3c2333547ef5809e0c1b370bb0380fbc2f2c00cb0ee35",
+      "last_updated_at_utc": "2026-10-16T17:44:02.854617Z",
+      "run_id": "OFF_SUP_R50_B05_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S05": {
+      "access_started_at_utc": "2026-10-16T17:44:07.292025Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "838b9e3ada8ca888c7652f6a72e76d5df3009c9bd27f03a1063f75fd4fe13457",
+      "last_updated_at_utc": "2026-10-16T17:51:07.923554Z",
+      "run_id": "OFF_SUP_R50_B05_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S06": {
+      "access_started_at_utc": "2026-10-16T17:51:12.289030Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "613081382ba50b360590ea1944c5a468cb47f4a2437d24d13782ca8f1cdd52bd",
+      "last_updated_at_utc": "2026-10-16T17:59:23.830021Z",
+      "run_id": "OFF_SUP_R50_B05_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S07": {
+      "access_started_at_utc": "2026-10-16T17:59:28.184949Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "fb816dfe2386a7303f79e830fa3ad237440614b90d01074edd7cb81c573c767b",
+      "last_updated_at_utc": "2026-10-16T18:08:18.050747Z",
+      "run_id": "OFF_SUP_R50_B05_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S08": {
+      "access_started_at_utc": "2026-10-16T18:08:22.407259Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "667d5f32a64eb4dacd96e7c20369141b1061adcb6d92621d031b7e30fb302b2f",
+      "last_updated_at_utc": "2026-10-16T18:17:09.962004Z",
+      "run_id": "OFF_SUP_R50_B05_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S09": {
+      "access_started_at_utc": "2026-10-16T18:17:14.378927Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "ecf1284e0c2f70372858f1208a8f57269a4d598565dd173dcdd6d7cebf1b5d77",
+      "last_updated_at_utc": "2026-10-16T18:25:32.341722Z",
+      "run_id": "OFF_SUP_R50_B05_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B05_S10": {
+      "access_started_at_utc": "2026-10-16T18:25:36.752026Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "7d754d4158246421d3fda95e9cfcf49efed0eef759c8d23887fa6486dbeabb2f",
+      "last_updated_at_utc": "2026-10-16T18:32:42.703180Z",
+      "run_id": "OFF_SUP_R50_B05_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S01": {
+      "access_started_at_utc": "2026-10-17T01:38:08.371149Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "b75425d3a0f602fcf403ec7bc2f235e0245a258eb90205bb3c5c300104004cb5",
+      "last_updated_at_utc": "2026-10-17T01:45:21.673869Z",
+      "run_id": "OFF_SUP_R50_B100_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S02": {
+      "access_started_at_utc": "2026-10-17T01:45:26.079231Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "d9adc15f665271a6c72758c825cf1e9521dc264d526fdaf5a844cb52ef35938c",
+      "last_updated_at_utc": "2026-10-17T01:53:00.629630Z",
+      "run_id": "OFF_SUP_R50_B100_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S03": {
+      "access_started_at_utc": "2026-10-17T01:53:05.060802Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "f9cf168947e024d8f506b3b5f65086ad47c2847b2b59bf4da3a54451e4bdc272",
+      "last_updated_at_utc": "2026-10-17T02:00:08.457631Z",
+      "run_id": "OFF_SUP_R50_B100_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S04": {
+      "access_started_at_utc": "2026-10-17T02:00:12.883364Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "4d4abdad9c66947d45e86303a8be0ed834bd84ec060b2f6f4a0ee9edc3eaa328",
+      "last_updated_at_utc": "2026-10-17T02:06:41.504986Z",
+      "run_id": "OFF_SUP_R50_B100_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S05": {
+      "access_started_at_utc": "2026-10-17T02:06:45.965075Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "64cbb1373644b15726fb7fc439d9cf5f2e0fb9a1dc6f514a4a6642d2ba960640",
+      "last_updated_at_utc": "2026-10-17T02:13:38.794427Z",
+      "run_id": "OFF_SUP_R50_B100_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S06": {
+      "access_started_at_utc": "2026-10-17T02:13:43.261872Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "b3e7f387e3d9ad4688895dc07653dd1277a50307417e7a8a9a916d5ad0f5ec5f",
+      "last_updated_at_utc": "2026-10-17T02:20:44.052267Z",
+      "run_id": "OFF_SUP_R50_B100_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S07": {
+      "access_started_at_utc": "2026-10-17T02:20:48.446680Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "2a80da51e03259487dc2153d0e5306cb3cc25ed3ccebb7bf0be5cc0551951c8c",
+      "last_updated_at_utc": "2026-10-17T02:28:46.498600Z",
+      "run_id": "OFF_SUP_R50_B100_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S08": {
+      "access_started_at_utc": "2026-10-17T02:28:51.022248Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "ad9e5290dcbb0ac65f382357b01860974c958c600d19f7ed7d669e982e6faab0",
+      "last_updated_at_utc": "2026-10-17T02:36:40.002532Z",
+      "run_id": "OFF_SUP_R50_B100_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S09": {
+      "access_started_at_utc": "2026-10-17T02:36:44.379332Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "f6899184aef40b5e01d8ea2a63a0636594065ad6ba50231444f747d4ba39e0ec",
+      "last_updated_at_utc": "2026-10-17T02:45:04.363917Z",
+      "run_id": "OFF_SUP_R50_B100_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B100_S10": {
+      "access_started_at_utc": "2026-10-17T02:45:08.829942Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "3b2d99228621ec8598a38b59b884811b83d073d2ce053cecf65e2c6b7a0dcb27",
+      "last_updated_at_utc": "2026-10-17T02:53:09.332273Z",
+      "run_id": "OFF_SUP_R50_B100_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S01": {
+      "access_started_at_utc": "2026-10-16T18:32:47.155315Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "3278e2ae748fc00ad85cf3556c4a477f92bf8facc1139c3a811e5e2b5754aa80",
+      "last_updated_at_utc": "2026-10-16T18:40:21.421856Z",
+      "run_id": "OFF_SUP_R50_B10_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S02": {
+      "access_started_at_utc": "2026-10-16T18:40:25.881679Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "daaacf8c99f5ae2f181546474921ea1aa349c0cd95ea6455ae627cfcf09deb0f",
+      "last_updated_at_utc": "2026-10-16T18:47:43.048919Z",
+      "run_id": "OFF_SUP_R50_B10_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S03": {
+      "access_started_at_utc": "2026-10-16T18:47:47.450265Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "8eac24170fae56cf9ef8bfff2b71d3e3e475703a6688c9fb6fbab4de924e3de6",
+      "last_updated_at_utc": "2026-10-16T18:54:40.487019Z",
+      "run_id": "OFF_SUP_R50_B10_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S04": {
+      "access_started_at_utc": "2026-10-16T18:54:44.959475Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "1d58fec25070e04da8b28dc6ea7c07aa69c74aaff74f18295b57bc5d26021e89",
+      "last_updated_at_utc": "2026-10-16T19:01:32.645306Z",
+      "run_id": "OFF_SUP_R50_B10_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S05": {
+      "access_started_at_utc": "2026-10-16T19:01:37.080914Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "347680993f5009b7710b23a37d38a238ebbf475b3cd0e235224c79619a462f09",
+      "last_updated_at_utc": "2026-10-16T19:08:15.686429Z",
+      "run_id": "OFF_SUP_R50_B10_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S06": {
+      "access_started_at_utc": "2026-10-16T19:08:20.087045Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "52502b1efec027218260c308c4c6881765147dab83c8e2d6ccfdbb2011dded3f",
+      "last_updated_at_utc": "2026-10-16T19:15:08.921425Z",
+      "run_id": "OFF_SUP_R50_B10_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S07": {
+      "access_started_at_utc": "2026-10-16T19:15:13.368244Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "d716b816b4d334e4db46bef91edcf749d6a338d39cc73af1f1e6e9c8f1014607",
+      "last_updated_at_utc": "2026-10-16T19:23:24.684242Z",
+      "run_id": "OFF_SUP_R50_B10_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S08": {
+      "access_started_at_utc": "2026-10-16T19:23:29.083833Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "007d59d9302e21428dca4986f7e2aa32e1c553fb8bc0424bda50da1cadf12f33",
+      "last_updated_at_utc": "2026-10-16T19:31:39.818747Z",
+      "run_id": "OFF_SUP_R50_B10_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S09": {
+      "access_started_at_utc": "2026-10-16T19:31:44.318953Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "69462af44a4279aa4dbc71a391c513fa0b27b05a7b7772f75d7d8c3ec074b9f3",
+      "last_updated_at_utc": "2026-10-16T19:40:19.245167Z",
+      "run_id": "OFF_SUP_R50_B10_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B10_S10": {
+      "access_started_at_utc": "2026-10-16T19:40:23.665214Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "c94183977aecb0cb184b1aaceae0dda195e1d6fb35646ce69eb8dc9eba15ee6c",
+      "last_updated_at_utc": "2026-10-16T19:48:27.497787Z",
+      "run_id": "OFF_SUP_R50_B10_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S01": {
+      "access_started_at_utc": "2026-10-16T19:48:31.956632Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "8dff53a2bd7c102c55fa1cce03cfa799ab2053684c5a033dc8cb72c32f5e132f",
+      "last_updated_at_utc": "2026-10-16T19:56:17.370325Z",
+      "run_id": "OFF_SUP_R50_B20_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S02": {
+      "access_started_at_utc": "2026-10-16T19:56:21.885258Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "e94ca34ad16aac70d1a50ca785904ce75afad9895a8d8f12eebb4da5044012e1",
+      "last_updated_at_utc": "2026-10-16T20:02:41.414830Z",
+      "run_id": "OFF_SUP_R50_B20_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S03": {
+      "access_started_at_utc": "2026-10-16T20:02:45.895142Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "0d05f82e15676617694fcab702a16721b184896244830c13347acdf11bcdce2b",
+      "last_updated_at_utc": "2026-10-16T20:08:57.743881Z",
+      "run_id": "OFF_SUP_R50_B20_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S04": {
+      "access_started_at_utc": "2026-10-16T20:09:02.190189Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "310d22b3265134d6f3effe40378d8494f7379f95d04d83b417792d23e3a99ce6",
+      "last_updated_at_utc": "2026-10-16T20:15:33.638980Z",
+      "run_id": "OFF_SUP_R50_B20_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S05": {
+      "access_started_at_utc": "2026-10-16T20:15:38.086727Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "639e975a3bc9de3d32dcb83454d76fd2634bbb0c0c15c09dc8d57e73c3a64a0d",
+      "last_updated_at_utc": "2026-10-16T20:21:57.418192Z",
+      "run_id": "OFF_SUP_R50_B20_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S06": {
+      "access_started_at_utc": "2026-10-16T20:22:01.768339Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "1d947f59d6a76a397cd9d3e7b94e817b2df19f0091c2e8ce51d0668ace3ed1ad",
+      "last_updated_at_utc": "2026-10-16T20:28:56.584453Z",
+      "run_id": "OFF_SUP_R50_B20_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S07": {
+      "access_started_at_utc": "2026-10-16T20:29:01.032472Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "0836acdc9b9a5d13625b4b52d4ccdeab07d6f9356d06e51eb21a6b5214f260b4",
+      "last_updated_at_utc": "2026-10-16T20:36:08.192628Z",
+      "run_id": "OFF_SUP_R50_B20_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S08": {
+      "access_started_at_utc": "2026-10-16T20:36:12.667869Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "fd5136306c6b2ab2159530880a0fa5ec3815584161649e2dbdb0fd522b67acdf",
+      "last_updated_at_utc": "2026-10-16T20:42:55.601842Z",
+      "run_id": "OFF_SUP_R50_B20_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S09": {
+      "access_started_at_utc": "2026-10-16T20:43:00.068117Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "55bff4d1e3510845354244db4f07355e0db9d28c7442bfa6bb949f52979b7716",
+      "last_updated_at_utc": "2026-10-16T20:49:14.382638Z",
+      "run_id": "OFF_SUP_R50_B20_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_R50_B20_S10": {
+      "access_started_at_utc": "2026-10-16T20:49:18.877532Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "2ce2bc057b6bdc9c1520aa6524f6c4db26a49a16e3dbab861b2b424533ebdf5a",
+      "last_updated_at_utc": "2026-10-16T20:56:03.934909Z",
+      "run_id": "OFF_SUP_R50_B20_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S01": {
+      "access_started_at_utc": "2026-10-16T20:56:08.371085Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "6391864c9b3d858e26a4dc539b350d46b12b61466ca75b9b34a39021a8799f68",
+      "last_updated_at_utc": "2026-10-16T21:02:25.165124Z",
+      "run_id": "OFF_SUP_SWIN_B01_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S02": {
+      "access_started_at_utc": "2026-10-16T21:02:29.578773Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "73188d33b2de63c65123b8bd901d39cd43215f1197170a6ff3f427459771b027",
+      "last_updated_at_utc": "2026-10-16T21:08:57.881692Z",
+      "run_id": "OFF_SUP_SWIN_B01_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S03": {
+      "access_started_at_utc": "2026-10-16T21:09:02.289066Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "f49bf43066952ccb7b8b62b01abe59f31d32af1f85f40bce9558a30f5477f82c",
+      "last_updated_at_utc": "2026-10-16T21:15:26.145810Z",
+      "run_id": "OFF_SUP_SWIN_B01_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S04": {
+      "access_started_at_utc": "2026-10-16T21:15:30.556869Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "caf1e2d51756b91e39f058da00b28aaaaeb302bf7316e99b219d1d1b8d80db9f",
+      "last_updated_at_utc": "2026-10-16T21:22:07.769219Z",
+      "run_id": "OFF_SUP_SWIN_B01_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S05": {
+      "access_started_at_utc": "2026-10-16T21:22:12.168876Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "bc2bd7b69baabf26415591ae852ffe8284234bcce3aa388f81623e0cc3f04733",
+      "last_updated_at_utc": "2026-10-16T21:28:22.623480Z",
+      "run_id": "OFF_SUP_SWIN_B01_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S06": {
+      "access_started_at_utc": "2026-10-16T21:28:27.084277Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "efc62789279af5ffceda46ac73f8c05ebdd6298d4d234b3acaf9986b5bef63df",
+      "last_updated_at_utc": "2026-10-16T21:34:54.875295Z",
+      "run_id": "OFF_SUP_SWIN_B01_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S07": {
+      "access_started_at_utc": "2026-10-16T21:34:59.264067Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "51a44a63d94fcb18362752eced24ad155a43fb21394ad3a4f15bab4904e1aab8",
+      "last_updated_at_utc": "2026-10-16T21:43:42.908700Z",
+      "run_id": "OFF_SUP_SWIN_B01_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S08": {
+      "access_started_at_utc": "2026-10-16T21:43:47.365155Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "dd92e46ed99af1e7657a1695822fff880016efdf71457c71b2b4cd3e08b59363",
+      "last_updated_at_utc": "2026-10-16T21:50:03.562971Z",
+      "run_id": "OFF_SUP_SWIN_B01_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S09": {
+      "access_started_at_utc": "2026-10-16T21:50:07.925014Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "ba71f02e2ee660d58ed518caafc4b0caf20ba45c94c2efcf91ec221abc3ec603",
+      "last_updated_at_utc": "2026-10-16T21:56:22.062760Z",
+      "run_id": "OFF_SUP_SWIN_B01_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B01_S10": {
+      "access_started_at_utc": "2026-10-16T21:56:26.498712Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "f3ad628fbb8a91c0f35cb4da4cff902c82ebaeafb013304cbbf5aa7790c1e5a2",
+      "last_updated_at_utc": "2026-10-16T22:02:57.750894Z",
+      "run_id": "OFF_SUP_SWIN_B01_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S01": {
+      "access_started_at_utc": "2026-10-16T22:03:02.162365Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "7566e09a63582ae01745cae7ba46c75bbed3503fd1c946beaa343b10eaa5b1a6",
+      "last_updated_at_utc": "2026-10-16T22:09:30.523225Z",
+      "run_id": "OFF_SUP_SWIN_B05_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S02": {
+      "access_started_at_utc": "2026-10-16T22:09:34.904286Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "cffa6e382c1a6c97e81b2f53590af3fde0e419a44ebb9da643d3ddae518fe137",
+      "last_updated_at_utc": "2026-10-16T22:15:59.622472Z",
+      "run_id": "OFF_SUP_SWIN_B05_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S03": {
+      "access_started_at_utc": "2026-10-16T22:16:03.991627Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "fc74f77296956241eb923ee4474e9a0103815e0e694293b7e3b77d25b73b1856",
+      "last_updated_at_utc": "2026-10-16T22:23:02.043781Z",
+      "run_id": "OFF_SUP_SWIN_B05_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S04": {
+      "access_started_at_utc": "2026-10-16T22:23:06.453137Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "5ce32cff7007332916c2a2fe3bb094b12840d782836fd99d0fff60a1205790f8",
+      "last_updated_at_utc": "2026-10-16T22:30:03.912795Z",
+      "run_id": "OFF_SUP_SWIN_B05_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S05": {
+      "access_started_at_utc": "2026-10-16T22:30:08.374974Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "1806ab9af3ebf148d5829b146fd178205098de178d0d379b9ca67e3daeef6cbf",
+      "last_updated_at_utc": "2026-10-16T22:36:48.288885Z",
+      "run_id": "OFF_SUP_SWIN_B05_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S06": {
+      "access_started_at_utc": "2026-10-16T22:36:52.674645Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "505428d0b877da27d6904e4011dabae79cd7310364cb12d2f67d5a8d426fb75b",
+      "last_updated_at_utc": "2026-10-16T22:43:21.500941Z",
+      "run_id": "OFF_SUP_SWIN_B05_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S07": {
+      "access_started_at_utc": "2026-10-16T22:43:25.984520Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "0077567488e3a479dfaafa5a7c25ac3c5f3f4d66f34e3961754667ba8b0a210c",
+      "last_updated_at_utc": "2026-10-16T22:50:17.453150Z",
+      "run_id": "OFF_SUP_SWIN_B05_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S08": {
+      "access_started_at_utc": "2026-10-16T22:50:21.878464Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "10baa1df8ae69cbaf1741214dab81bc86095dc623bc5e6acf4f52bdee6f3a333",
+      "last_updated_at_utc": "2026-10-16T22:56:48.746889Z",
+      "run_id": "OFF_SUP_SWIN_B05_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S09": {
+      "access_started_at_utc": "2026-10-16T22:56:53.164500Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "4b369ef11f27b1ef713b71134b6658a3fcd50b23cf0beaaf5398623ff3f04ad4",
+      "last_updated_at_utc": "2026-10-16T23:03:13.639049Z",
+      "run_id": "OFF_SUP_SWIN_B05_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B05_S10": {
+      "access_started_at_utc": "2026-10-16T23:03:18.039756Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "f3bd903601fb73b4ac64fa30ac8429cba8990e3df74633442f58894db582534b",
+      "last_updated_at_utc": "2026-10-16T23:11:32.841991Z",
+      "run_id": "OFF_SUP_SWIN_B05_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S01": {
+      "access_started_at_utc": "2026-10-17T02:53:13.803972Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "439003f770f0429b94c66f4fad2d6396009520c55a02dd3101c9a4a7d35f6200",
+      "last_updated_at_utc": "2026-10-17T03:01:06.834412Z",
+      "run_id": "OFF_SUP_SWIN_B100_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S02": {
+      "access_started_at_utc": "2026-10-17T03:01:11.248932Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "0501ed882553935e7eeedc3af80f812a5402d6ca1cd2fb11db3fe3e917d37ea3",
+      "last_updated_at_utc": "2026-10-17T03:08:25.901524Z",
+      "run_id": "OFF_SUP_SWIN_B100_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S03": {
+      "access_started_at_utc": "2026-10-17T03:08:30.301859Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "3da14f829a847517eaca874d5270bdea885799e9a72a59db8139b28d8a269117",
+      "last_updated_at_utc": "2026-10-17T03:16:37.049860Z",
+      "run_id": "OFF_SUP_SWIN_B100_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S04": {
+      "access_started_at_utc": "2026-10-17T03:16:41.502932Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "e555683c02f4f6e04148748003e485be83dc12c30547661d4432a3944bc5c903",
+      "last_updated_at_utc": "2026-10-17T03:23:24.344199Z",
+      "run_id": "OFF_SUP_SWIN_B100_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S05": {
+      "access_started_at_utc": "2026-10-17T03:23:28.810641Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "8f550e5b45a5fd117e7c1144f937e9fe916839d1e51e9cf34ff487864f6f5387",
+      "last_updated_at_utc": "2026-10-17T03:30:40.517282Z",
+      "run_id": "OFF_SUP_SWIN_B100_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S06": {
+      "access_started_at_utc": "2026-10-17T03:30:44.966513Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "bd6984a1fbbadfd88c6815900f8cd9c8a1907add5d8125f5090513c3fcca10a2",
+      "last_updated_at_utc": "2026-10-17T03:38:24.307405Z",
+      "run_id": "OFF_SUP_SWIN_B100_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S07": {
+      "access_started_at_utc": "2026-10-17T03:38:28.686009Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "aad5f49d4113ee272ca734f9c77c40e1cd88294c009adae5f9671ff6e84b6c85",
+      "last_updated_at_utc": "2026-10-17T03:45:47.588576Z",
+      "run_id": "OFF_SUP_SWIN_B100_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S08": {
+      "access_started_at_utc": "2026-10-17T03:45:51.983548Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "c2947c3c0431298c74c7380f4b707420d22c58a571fb5fed7bf6d6818ad47c72",
+      "last_updated_at_utc": "2026-10-17T03:52:19.094119Z",
+      "run_id": "OFF_SUP_SWIN_B100_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S09": {
+      "access_started_at_utc": "2026-10-17T03:52:23.553051Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "0f727a6e42c1a85ef5e668492a7e4f981cad480a703015b5731d999b044ae706",
+      "last_updated_at_utc": "2026-10-17T03:59:49.734157Z",
+      "run_id": "OFF_SUP_SWIN_B100_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B100_S10": {
+      "access_started_at_utc": "2026-10-17T03:59:54.141953Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "46970d79d66857e8895a032ce8f74901126168ac8504fd3da59ccc9dd9e31d32",
+      "last_updated_at_utc": "2026-10-17T04:06:14.469824Z",
+      "run_id": "OFF_SUP_SWIN_B100_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S01": {
+      "access_started_at_utc": "2026-10-16T23:11:37.176485Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "6dfc5ae1612f57c710c968557b6f3eec1b63537c13b58bf895738d58a4a84fc9",
+      "last_updated_at_utc": "2026-10-16T23:19:05.353337Z",
+      "run_id": "OFF_SUP_SWIN_B10_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S02": {
+      "access_started_at_utc": "2026-10-16T23:19:09.877027Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "506cf16f98ac3356be8a4a0dfaba479d4deb0ae2e8cff44cfdb31b3cfba4127e",
+      "last_updated_at_utc": "2026-10-16T23:25:23.800240Z",
+      "run_id": "OFF_SUP_SWIN_B10_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S03": {
+      "access_started_at_utc": "2026-10-16T23:25:28.248111Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "12d27cf11cc842515b9b5b134d8a5f2cbadca987ebed0dcb2196a6a3f6b5a945",
+      "last_updated_at_utc": "2026-10-16T23:31:47.887049Z",
+      "run_id": "OFF_SUP_SWIN_B10_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S04": {
+      "access_started_at_utc": "2026-10-16T23:31:52.283405Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "2985750536047d6e1d0ca6247e7a8a4e9213eaace3b86c20f34754ba3536f519",
+      "last_updated_at_utc": "2026-10-16T23:38:10.320581Z",
+      "run_id": "OFF_SUP_SWIN_B10_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S05": {
+      "access_started_at_utc": "2026-10-16T23:38:14.754423Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "1bf9e8f0d9dc6c41c5a57fdbc8ad4b24d09209d5c4bf987a9ecf4639a0ad84c0",
+      "last_updated_at_utc": "2026-10-16T23:44:47.126961Z",
+      "run_id": "OFF_SUP_SWIN_B10_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S06": {
+      "access_started_at_utc": "2026-10-16T23:44:51.589307Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "6e7077570105adfff6c522345377b7930561abbd176ef3f28b44b21882869db9",
+      "last_updated_at_utc": "2026-10-16T23:52:44.077975Z",
+      "run_id": "OFF_SUP_SWIN_B10_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S07": {
+      "access_started_at_utc": "2026-10-16T23:52:48.535327Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "9c051bdfaac5edcceb6211427396177f61a25ab503d12cdfcbbfc8952ee2b68f",
+      "last_updated_at_utc": "2026-10-17T00:01:41.509204Z",
+      "run_id": "OFF_SUP_SWIN_B10_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S08": {
+      "access_started_at_utc": "2026-10-17T00:01:45.951127Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "b95b7a87b953cd8ce36807c5e669aa740d61ef3e4ca69042e876d6ce606c7576",
+      "last_updated_at_utc": "2026-10-17T00:08:09.795257Z",
+      "run_id": "OFF_SUP_SWIN_B10_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S09": {
+      "access_started_at_utc": "2026-10-17T00:08:14.314411Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "ba440b51e39541fb5ccb1579b6581b558f5682cf29a0c4ee9cf427310c2a8162",
+      "last_updated_at_utc": "2026-10-17T00:14:28.511346Z",
+      "run_id": "OFF_SUP_SWIN_B10_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B10_S10": {
+      "access_started_at_utc": "2026-10-17T00:14:32.897462Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "420cc17d9d22d387f83e080543d6088aefba0a7f8ac39b5c82aaeb058b74cc3b",
+      "last_updated_at_utc": "2026-10-17T00:20:50.044083Z",
+      "run_id": "OFF_SUP_SWIN_B10_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S01": {
+      "access_started_at_utc": "2026-10-17T00:20:54.512082Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "646ab7bd47d8ea71ddb07ccb5ad0e3f204761a1a2492a41594eb68e0f64e5341",
+      "last_updated_at_utc": "2026-10-17T00:27:16.420601Z",
+      "run_id": "OFF_SUP_SWIN_B20_S01",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S02": {
+      "access_started_at_utc": "2026-10-17T00:27:20.868520Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "76ed3b61fd3091ce0cb193cfba251d103a510dcba5d65c82b8843c538a5dabd7",
+      "last_updated_at_utc": "2026-10-17T00:34:41.691326Z",
+      "run_id": "OFF_SUP_SWIN_B20_S02",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S03": {
+      "access_started_at_utc": "2026-10-17T00:34:46.074402Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "e6055396582844d9b41970c806666dc209b015b3e3464bb7f6f26fd08dcf5ff6",
+      "last_updated_at_utc": "2026-10-17T00:42:18.297616Z",
+      "run_id": "OFF_SUP_SWIN_B20_S03",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S04": {
+      "access_started_at_utc": "2026-10-17T00:42:22.786425Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "261e16b6ea92bb31a2310c6662b96f5368fd7d3e3a78ba742e3214cd6999b8ad",
+      "last_updated_at_utc": "2026-10-17T00:48:39.082239Z",
+      "run_id": "OFF_SUP_SWIN_B20_S04",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S05": {
+      "access_started_at_utc": "2026-10-17T00:48:43.561282Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "949d071bf3b10e34402debe8f98f41cb7df0d91144002c64167904746544c08b",
+      "last_updated_at_utc": "2026-10-17T00:54:59.590376Z",
+      "run_id": "OFF_SUP_SWIN_B20_S05",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S06": {
+      "access_started_at_utc": "2026-10-17T00:55:04.074963Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "9569cfb1cf910d057f1b8bf694e7c14b4ad4b3031d8406d4d19638f081b1febe",
+      "last_updated_at_utc": "2026-10-17T01:03:29.459189Z",
+      "run_id": "OFF_SUP_SWIN_B20_S06",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S07": {
+      "access_started_at_utc": "2026-10-17T01:03:33.875304Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "0d968cc8250424925b28ae4973971cd7f664bf8c9f55fc70df1d7742183669bb",
+      "last_updated_at_utc": "2026-10-17T01:11:36.196349Z",
+      "run_id": "OFF_SUP_SWIN_B20_S07",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S08": {
+      "access_started_at_utc": "2026-10-17T01:11:40.692343Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "e81f6a31edadfff455bad29903e4617cb079c479a383561a4153a6baec79d973",
+      "last_updated_at_utc": "2026-10-17T01:21:52.863008Z",
+      "run_id": "OFF_SUP_SWIN_B20_S08",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S09": {
+      "access_started_at_utc": "2026-10-17T01:21:57.307522Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "cec2feaa544a343b6413751a3986fe3c05432b771f06373696249cff344e0049",
+      "last_updated_at_utc": "2026-10-17T01:29:56.041648Z",
+      "run_id": "OFF_SUP_SWIN_B20_S09",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    },
+    "OFF_SUP_SWIN_B20_S10": {
+      "access_started_at_utc": "2026-10-17T01:30:00.468514Z",
+      "authorized": true,
+      "checkpoint_role": "BEST_CHECKPOINT",
+      "checkpoint_sha256": "3c18b83d97a52e07779bf1cb3d5aa419d8dff73ff7a7bf368405e55afe9a5633",
+      "last_updated_at_utc": "2026-10-17T01:38:03.950812Z",
+      "run_id": "OFF_SUP_SWIN_B20_S10",
+      "status": "CLOSED_VERIFIED",
+      "test_accessed": true
+    }
+  },
+  "schema_version": "S9.14",
+  "test_split_sha256": "1f7903e069e872bf2e5fe13bb4d0fa257dc4a1c2c8290a621d3f7286ada66b37"
+}
