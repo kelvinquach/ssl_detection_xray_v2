@@ -1,0 +1,80 @@
+{
+  "analysis_role": "ROBUSTNESS",
+  "frozen_statistics_sources": {
+    "src/statistics/exact_sign_flip.py": "56f352002e0e69a308eaffc8456f598fae666f18811171e24949ee5d299fbf20",
+    "src/statistics/seed_summary.py": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f"
+  },
+  "generation_script": "scripts/S10_1_11_materialize_rq2_robustness.py",
+  "generation_script_sha256": "629a17a0ef8b0e06e16da6fbb92d7c57d44c83740d8d824808f12cc91fcf82be",
+  "representation_authority": "S10_IMPLEMENTATION_SCHEMA_MINIMAL_FROM_RQ2_ROBUSTNESS_CONTRACT",
+  "result": {
+    "alternative": "one-sided-greater",
+    "duplicate_statistics_counted_by_configuration": true,
+    "effect": "G_s",
+    "enumerated_configuration_count": 1024,
+    "equality_ties_included": true,
+    "exact_p_value": 1.0,
+    "extreme_configuration_count": 1024,
+    "extremeness_rule": "T_flip >= T_obs",
+    "observed_all_positive_configuration_included": true,
+    "observed_statistic": -0.011125,
+    "ordered_training_seeds": [
+      204886845,
+      1480646854,
+      1798418854,
+      2045683682,
+      1814859839,
+      1603952859,
+      1878351743,
+      875651179,
+      477581743,
+      869675675
+    ],
+    "plus_one_correction": false,
+    "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+    "rq": "RQ2",
+    "seed_effect_count": 10,
+    "seed_effects": [
+      -0.011375,
+      -0.01175,
+      -0.010374999999999999,
+      -0.01175,
+      -0.011375,
+      -0.011125000000000001,
+      -0.012,
+      -0.011625,
+      -0.010875,
+      -0.009000000000000001
+    ],
+    "sign_configuration_count": 1024,
+    "test_statistic": "arithmetic_mean_of_paired_seed_effects",
+    "zero_effect_count": 0,
+    "zero_effect_seed_retained": true
+  },
+  "rq": "RQ2",
+  "schema_version": "1.0.0",
+  "scientific_contract": {
+    "alternative": "one-sided-greater",
+    "equality_ties_included": true,
+    "extremeness_rule": "T_flip >= T_obs",
+    "input_effect": "G_s",
+    "method": "EXACT_SIGN_FLIP",
+    "plus_one_correction": false,
+    "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+    "seed_count": 10,
+    "sign_configuration_count": 1024,
+    "zero_effect_seed_retained": true
+  },
+  "source_artifact": "analysis/rq2/rq2_gain_by_seed.csv",
+  "source_sha256": "3e98c1b509b7c9d1c902ba2e28dc1d25de910dc556b037e3426c0ac0fea24ca2",
+  "statistical_environment_reference": {
+    "claim_scope": "REFERENCE_FOR_CURRENT_CANONICAL_PYTHON_IMPLEMENTATION_NOT_RETROACTIVE_EXECUTION_CLAIM",
+    "manifest_path": "artifacts/preflight/statistics/statistical_implementation_manifest.json",
+    "manifest_sha256": "eb2f5eb19164030d4e1435a181996315c6009aef61058ddfed10c13431f9f30e",
+    "numpy": "1.26.4",
+    "python": "3.10.13",
+    "s6_11_historical_python_version_recorded": false,
+    "scipy": "1.15.3"
+  },
+  "statistics_semantics": "FROZEN_S6_REUSE"
+}

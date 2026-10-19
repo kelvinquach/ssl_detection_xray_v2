@@ -1,0 +1,50 @@
+{
+  "analysis_role": "SENSITIVITY_ONLY",
+  "frozen_statistics_sources": {
+    "src/statistics/rq3_friedman.py": "499630d1983030addb51b529519a92cef34bb3840d22e0784e7f7319fff2fc1f",
+    "src/statistics/rq3_primary.py": "41ac57f7c4f9c19daef8f4f062001bcff1ff41b0af7b4683eb3459e436bf3676"
+  },
+  "representation_authority": "S10_IMPLEMENTATION_SCHEMA_MINIMAL_FROM_RQ3_CONTRACT",
+  "result": {
+    "budget_count": 4,
+    "budget_levels": [
+      "1%",
+      "5%",
+      "10%",
+      "20%"
+    ],
+    "df": 3,
+    "inferential_replication_unit": "TRAINING_SEED_TRAINED_RUN",
+    "input_effect": "B_b_s",
+    "multiplicity_family_added": false,
+    "n_subjects": 10,
+    "null_hypothesis": "NO_SYSTEMATIC_DIFFERENCE_IN_WITHIN_SEED_RANK_STRUCTURE_ACROSS_BUDGETS",
+    "p_value": 2.3278065917953752e-06,
+    "p_value_form": "RIGHT_TAIL_ASYMPTOTIC_CHI_SQUARE",
+    "posthoc": "NONE",
+    "primary_method": "GREENHOUSE_GEISSER_REPEATED_MEASURES_ANOVA",
+    "primary_method_unchanged": true,
+    "role": "SENSITIVITY_ONLY",
+    "statistic": 28.919999999999987,
+    "statistic_name": "friedman_chi_square",
+    "tie_handling": "STANDARD_FRIEDMAN_TIE_CORRECTION"
+  },
+  "rq": "RQ3",
+  "schema_version": "1.0.0",
+  "scientific_contract": {
+    "budget_levels": [
+      "1%",
+      "5%",
+      "10%",
+      "20%"
+    ],
+    "input_effect": "B_b_s",
+    "multiplicity_family_added": false,
+    "n_subjects": 10,
+    "posthoc": "NONE",
+    "primary_method_unchanged": true
+  },
+  "source_artifact": "artifacts/results/paired_effects.csv",
+  "source_sha256": "bad5a179711443636a13bd6501a1d90a7e8c5dadfb16b9c09df74bf502b727bb",
+  "statistics_semantics": "FROZEN_S6_REUSE"
+}
