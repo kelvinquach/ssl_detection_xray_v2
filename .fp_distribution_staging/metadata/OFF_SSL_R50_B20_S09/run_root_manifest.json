@@ -1,0 +1,12 @@
+{
+  "architecture": "R50-FPN",
+  "budget": "20pct",
+  "condition_role": "MAIN_LOW_LABEL",
+  "method": "SSL",
+  "partition_seed": 42,
+  "run_id": "OFF_SSL_R50_B20_S09",
+  "run_type": "OFFICIAL",
+  "schema_version": "1.1",
+  "seed_index": 9,
+  "training_seed": 477581743
+}

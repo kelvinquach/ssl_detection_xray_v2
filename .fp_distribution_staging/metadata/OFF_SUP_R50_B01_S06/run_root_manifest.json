@@ -1,0 +1,12 @@
+{
+  "architecture": "R50-FPN",
+  "budget": "1pct",
+  "condition_role": "MAIN_LOW_LABEL",
+  "method": "SUP",
+  "partition_seed": 42,
+  "run_id": "OFF_SUP_R50_B01_S06",
+  "run_type": "OFFICIAL",
+  "schema_version": "1.1",
+  "seed_index": 6,
+  "training_seed": 1603952859
+}

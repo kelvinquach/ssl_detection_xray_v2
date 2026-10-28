@@ -1,0 +1,30 @@
+{
+  "artifact_role": "SUPPLEMENTARY_BOUNDING_BOX_DENSITY",
+  "source_artifact": "reports/03A_bbox_count_per_image.csv",
+  "source_sha256": "4f7773ffcff76721d5a74b840af0d37c880d779c58937d404e93910b07802e98",
+  "row_count": 2,
+  "populations": {
+    "all_train_images": {
+      "n": 3426,
+      "mean": 7.373029772329247,
+      "sd_ddof1": 5.252660582729625,
+      "median": 6.0,
+      "p95": 17.0,
+      "max": 48.0
+    },
+    "positive_train_images_only": {
+      "n": 3076,
+      "mean": 8.211963589076722,
+      "sd_ddof1": 4.882548972439222,
+      "median": 7.0,
+      "p95": 18.0,
+      "max": 48.0
+    }
+  },
+  "bounding_box_annotation_total_consistency": 25260,
+  "statistics_recomputed": false,
+  "source_csv_byte_reused": true,
+  "interpretation_scope": "descriptive pre-training dataset characterization",
+  "independent_lesion_claim": false,
+  "status": "PASS"
+}

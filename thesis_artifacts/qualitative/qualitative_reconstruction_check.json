@@ -1,0 +1,126 @@
+{
+  "artifact_role": "QUALITATIVE_NO_FINDING_RECONSTRUCTION_CHECK",
+  "scientific_role": "DESCRIPTIVE_QUALITATIVE_ILLUSTRATION_ONLY",
+  "retraining_performed": false,
+  "new_final_test_evaluation_performed": false,
+  "case_reselection": false,
+  "model_reselection": false,
+  "threshold_tuning": false,
+  "tau_eval": 0.5,
+  "selected_case_ids": [
+    202,
+    1272,
+    3015
+  ],
+  "model_pair": {
+    "architecture": "R50-FPN",
+    "budget": "1pct",
+    "seed_index": 1,
+    "training_seed": 204886845,
+    "sup_run_id": "OFF_SUP_R50_B01_S01",
+    "sup_attempt_id": "attempt_008",
+    "ssl_run_id": "OFF_SSL_R50_B01_S01",
+    "ssl_attempt_id": "attempt_002"
+  },
+  "source_sha256": {
+    "case_selection_manifest": "c42f2c22bdfb61cb7bda6e97f113152810a909a3e6f095896f82a8b4a9791a04",
+    "selected_prediction_audit": "102f17051cf020be29dc87d61a447ce20d5296b8d2eb9de8315b6b2f40f1ee5b",
+    "instances_test": "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4",
+    "sup_detections": "89ca0b618312c9d7eeae52f627af4f94a5678ae6e6a137395b13d5f6feb8fc81",
+    "ssl_detections": "7298b997962878c4ebd56f0424e5f5a06b880715782855701184d5026fb03af9",
+    "locked_preview_png": "85e41a5896203a997c961886b26586530b0c8f96e2a5ec8f3120c7463e495e84",
+    "locked_preview_pdf": "b9b782f11db640c24f7aba1c582b2a4176afad93d63776dbcc6161a82ab0f61f"
+  },
+  "final_figure_sha256": {
+    "png": "85e41a5896203a997c961886b26586530b0c8f96e2a5ec8f3120c7463e495e84",
+    "pdf": "b9b782f11db640c24f7aba1c582b2a4176afad93d63776dbcc6161a82ab0f61f"
+  },
+  "final_figure_byte_identical_to_locked_preview": {
+    "png": true,
+    "pdf": true
+  },
+  "test_set": {
+    "image_count": 734,
+    "annotation_count": 5437
+  },
+  "cases": [
+    {
+      "rank": 1,
+      "image_id": 202,
+      "gt_annotation_count": 0,
+      "no_finding_zero_gt": true,
+      "sup_accepted_count": 2,
+      "ssl_accepted_count": 0,
+      "sup_accepted_predictions": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "score": 0.9338935017585754,
+          "bbox": [
+            729.18701171875,
+            1185.3853759765625,
+            950.9781494140625,
+            426.4144287109375
+          ]
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "score": 0.879677414894104,
+          "bbox": [
+            1075.0430908203125,
+            705.37646484375,
+            201.1212158203125,
+            248.22711181640625
+          ]
+        }
+      ],
+      "ssl_accepted_predictions": []
+    },
+    {
+      "rank": 2,
+      "image_id": 1272,
+      "gt_annotation_count": 0,
+      "no_finding_zero_gt": true,
+      "sup_accepted_count": 0,
+      "ssl_accepted_count": 0,
+      "sup_accepted_predictions": [],
+      "ssl_accepted_predictions": []
+    },
+    {
+      "rank": 3,
+      "image_id": 3015,
+      "gt_annotation_count": 0,
+      "no_finding_zero_gt": true,
+      "sup_accepted_count": 1,
+      "ssl_accepted_count": 0,
+      "sup_accepted_predictions": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "score": 0.9906248450279236,
+          "bbox": [
+            1309.6807861328125,
+            823.3131713867188,
+            310.7288818359375,
+            305.83282470703125
+          ]
+        }
+      ],
+      "ssl_accepted_predictions": []
+    }
+  ],
+  "expected_sup_counts": [
+    2,
+    0,
+    1
+  ],
+  "expected_ssl_counts": [
+    0,
+    0,
+    0
+  ],
+  "all_selected_cases_zero_gt": true,
+  "accepted_prediction_counts_match_locked_preview": true,
+  "qualitative_reconstruction_check": "PASS"
+}

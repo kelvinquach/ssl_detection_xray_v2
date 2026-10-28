@@ -1,0 +1,48 @@
+{
+  "source_artifact": "analysis/ablation/ablation_variant_summary.csv",
+  "source_rows": 36,
+  "variants": [
+    "C0",
+    "C1",
+    "C2",
+    "C3",
+    "A0",
+    "A1",
+    "A2",
+    "F0",
+    "F1"
+  ],
+  "metrics": [
+    "validation_bbox_mAP_50_95",
+    "validation_AP50",
+    "validation_AP75",
+    "Q_pseudo"
+  ],
+  "variant_metric_groups": 36,
+  "n_seeds": 10,
+  "ci_level": 0.95,
+  "sample_sd_ddof": 1,
+  "presentation_unit": "AP_points",
+  "presentation_conversion": "canonical raw AP values multiplied by 100",
+  "statistics_recomputed": false,
+  "formal_hypothesis_test_added": false,
+  "p_value_added": false,
+  "multiplicity_family_added": false,
+  "scientific_pattern_checks": {
+    "mAP_CI_contains_zero_9_of_9": true,
+    "AP75_CI_entirely_below_zero": [
+      "A2",
+      "C0",
+      "F1"
+    ],
+    "Qpseudo_CI_entirely_above_zero": [
+      "C0",
+      "C1"
+    ]
+  },
+  "outputs": {
+    "csv": "D:\\ssl_detection_xray_v2\\thesis_artifacts\\supplementary\\supp_ablation_full_effect_matrix.csv",
+    "latex": "D:\\ssl_detection_xray_v2\\thesis_artifacts\\supplementary\\supp_ablation_full_effect_matrix.tex"
+  },
+  "status": "PASS"
+}

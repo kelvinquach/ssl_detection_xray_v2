@@ -1,0 +1,24 @@
+{
+  "PL_AP50": 0.001,
+  "PL_AP75": 0.001,
+  "PL_mAP_50_95": 0.0,
+  "acceptance": {
+    "cls_pseudo_thr": 0.9,
+    "comparator": "STRICT_GREATER",
+    "native_max_per_img": 100,
+    "second_nms": false,
+    "topk_truncation": false
+  },
+  "accepted_pseudo_count": 1,
+  "checkpoint_role": "LAST_EMA_TEACHER",
+  "checkpoint_sha256": "4f95877f9960b4064bad5a775b947f5da5d5df70bc57b98249d5b305271956de",
+  "dataset": "fixed_validation",
+  "evaluator_config_sha256": "a370acb4c0e76662b515b80943e3870a514d24f6f138db71df3680f71c204f2f",
+  "hidden_u_gt_used": false,
+  "pseudo_acceptance_config_sha256": "bb748e521af2eaeefe197a06d75b3fff1b3200f032725d42af61cfd1e2cac1c1",
+  "pseudo_set": "accepted_rcnn_classification",
+  "schema_version": "1.0.0",
+  "test_used": false,
+  "validation_image_count": 734,
+  "validation_split_sha256": "33064f47ba690be13e9d418d8ec5d4a6a2bec8482c24ea3eadf83fb33d01762a"
+}

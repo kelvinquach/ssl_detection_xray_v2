@@ -1,0 +1,52 @@
+\begin{table*}[htbp]
+\centering
+\caption{Full descriptive ablation effect matrix on the validation set. Effects are paired differences (variant minus the same frozen Main configuration) across 10 training seeds, expressed in AP points. SD denotes the sample standard deviation of paired differences and CI denotes the two-sided 95\% confidence interval. These intervals are descriptive; no formal hypothesis test or multiplicity adjustment was performed for individual ablation variants.}
+\label{tab:supp_ablation_full_matrix}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.06}
+\begin{tabular}{lllrrrr}
+\toprule
+\textbf{Family} & \textbf{Variant} & \textbf{Metric} & \textbf{Mean $\Delta$} & \textbf{SD} & \textbf{95\% CI low} & \textbf{95\% CI high} \\
+\midrule
+Confidence & C0 & $\Delta$mAP & -0.120 & 0.215 & -0.274 & +0.034 \\
+Confidence & C0 & $\Delta$AP50 & -0.100 & 0.510 & -0.465 & +0.265 \\
+Confidence & C0 & $\Delta$AP75 & -0.230 & 0.295 & -0.441 & -0.019 \\
+Confidence & C0 & $\Delta Q_{\mathrm{pseudo}}$ & +0.260 & 0.184 & +0.129 & +0.391 \\
+Confidence & C1 & $\Delta$mAP & -0.100 & 0.183 & -0.231 & +0.031 \\
+Confidence & C1 & $\Delta$AP50 & -0.020 & 0.361 & -0.279 & +0.239 \\
+Confidence & C1 & $\Delta$AP75 & -0.170 & 0.295 & -0.381 & +0.041 \\
+Confidence & C1 & $\Delta Q_{\mathrm{pseudo}}$ & +0.090 & 0.057 & +0.049 & +0.131 \\
+Confidence & C2 & $\Delta$mAP & -0.070 & 0.279 & -0.270 & +0.130 \\
+Confidence & C2 & $\Delta$AP50 & +0.020 & 0.494 & -0.333 & +0.373 \\
+Confidence & C2 & $\Delta$AP75 & -0.160 & 0.433 & -0.469 & +0.149 \\
+Confidence & C2 & $\Delta Q_{\mathrm{pseudo}}$ & +0.020 & 0.063 & -0.025 & +0.065 \\
+Confidence & C3 & $\Delta$mAP & +0.000 & 0.262 & -0.188 & +0.188 \\
+Confidence & C3 & $\Delta$AP50 & +0.230 & 0.618 & -0.212 & +0.672 \\
+Confidence & C3 & $\Delta$AP75 & -0.080 & 0.282 & -0.282 & +0.122 \\
+Confidence & C3 & $\Delta Q_{\mathrm{pseudo}}$ & +0.010 & 0.032 & -0.013 & +0.033 \\
+\addlinespace
+Augmentation & A0 & $\Delta$mAP & -0.010 & 0.137 & -0.108 & +0.088 \\
+Augmentation & A0 & $\Delta$AP50 & +0.220 & 0.413 & -0.076 & +0.516 \\
+Augmentation & A0 & $\Delta$AP75 & -0.100 & 0.176 & -0.226 & +0.026 \\
+Augmentation & A0 & $\Delta Q_{\mathrm{pseudo}}$ & +0.000 & 0.047 & -0.034 & +0.034 \\
+Augmentation & A1 & $\Delta$mAP & +0.040 & 0.201 & -0.104 & +0.184 \\
+Augmentation & A1 & $\Delta$AP50 & +0.290 & 0.468 & -0.045 & +0.625 \\
+Augmentation & A1 & $\Delta$AP75 & -0.020 & 0.322 & -0.251 & +0.211 \\
+Augmentation & A1 & $\Delta Q_{\mathrm{pseudo}}$ & +0.020 & 0.063 & -0.025 & +0.065 \\
+Augmentation & A2 & $\Delta$mAP & -0.130 & 0.389 & -0.408 & +0.148 \\
+Augmentation & A2 & $\Delta$AP50 & +0.080 & 0.944 & -0.595 & +0.755 \\
+Augmentation & A2 & $\Delta$AP75 & -0.370 & 0.437 & -0.683 & -0.057 \\
+Augmentation & A2 & $\Delta Q_{\mathrm{pseudo}}$ & -0.010 & 0.032 & -0.033 & +0.013 \\
+\addlinespace
+Regression filtering & F0 & $\Delta$mAP & -0.090 & 0.202 & -0.235 & +0.055 \\
+Regression filtering & F0 & $\Delta$AP50 & -0.010 & 0.534 & -0.392 & +0.372 \\
+Regression filtering & F0 & $\Delta$AP75 & -0.220 & 0.424 & -0.523 & +0.083 \\
+Regression filtering & F0 & $\Delta Q_{\mathrm{pseudo}}$ & +0.010 & 0.057 & -0.031 & +0.051 \\
+Regression filtering & F1 & $\Delta$mAP & -0.130 & 0.258 & -0.315 & +0.055 \\
+Regression filtering & F1 & $\Delta$AP50 & -0.010 & 0.599 & -0.438 & +0.418 \\
+Regression filtering & F1 & $\Delta$AP75 & -0.270 & 0.271 & -0.464 & -0.076 \\
+Regression filtering & F1 & $\Delta Q_{\mathrm{pseudo}}$ & -0.010 & 0.032 & -0.033 & +0.013 \\
+\bottomrule
+\end{tabular}
+\end{table*}

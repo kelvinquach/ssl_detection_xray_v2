@@ -1,0 +1,26 @@
+{
+  "artifact_role": "SUPPLEMENTARY_DESCRIPTIVE_FP_DISTRIBUTION",
+  "source_predictions": "RETAINED_OFFICIAL_FINAL_TEST_DETECTIONS",
+  "source_location": "LOCAL_STAGING_COPIED_FROM_CANONICAL_GDRIVE_BACKUP",
+  "tau_eval": 0.5,
+  "new_model_evaluation_performed": false,
+  "formal_hypothesis_test_added": false,
+  "primary_estimand_changed": false,
+  "inferential_unit_changed": false,
+  "cross_seed_prediction_pooling_for_inference": false,
+  "test_image_count": 734,
+  "test_annotation_count": 5437,
+  "negative_image_count": 75,
+  "negative_definition": "zero_GT == is_negative_true == scope_label_no_finding",
+  "main_low_label_runs": 160,
+  "method_counts": {
+    "SSL": 80,
+    "SUP": 80
+  },
+  "detail_rows": 12000,
+  "run_summary_rows": 160,
+  "outputs": {
+    "detail": "D:\\ssl_detection_xray_v2\\analysis\\rq6\\fp_distribution\\fp_per_negative_image_campaign.csv",
+    "run_summary": "D:\\ssl_detection_xray_v2\\analysis\\rq6\\fp_distribution\\fp_distribution_run_summary.csv"
+  }
+}

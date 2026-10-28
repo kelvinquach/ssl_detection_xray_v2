@@ -1,0 +1,12 @@
+{
+  "architecture": "Swin-T-FPN",
+  "budget": "20pct",
+  "condition_role": "MAIN_LOW_LABEL",
+  "method": "SUP",
+  "partition_seed": 42,
+  "run_id": "OFF_SUP_SWIN_B20_S08",
+  "run_type": "OFFICIAL",
+  "schema_version": "1.1",
+  "seed_index": 8,
+  "training_seed": 875651179
+}
