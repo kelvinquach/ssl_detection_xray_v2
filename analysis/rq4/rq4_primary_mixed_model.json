@@ -1,0 +1,74 @@
+{
+  "analysis_role": "PRIMARY",
+  "frozen_statistics_image": "quachthainguyen/sslxray-statistics:s6-r4.5.3-20260423",
+  "frozen_statistics_immutable_reference": "quachthainguyen/sslxray-statistics@sha256:bb99a07178ba662bd2e84c5e03421007668b7e35856c83cb6ee816cffab15d37",
+  "frozen_statistics_oci_index_digest": "sha256:bb99a07178ba662bd2e84c5e03421007668b7e35856c83cb6ee816cffab15d37",
+  "frozen_statistics_sources": {
+    "artifacts/frozen/frozen_statistics_manifest.json": "8f4370a9a39c990a26df58adbe64a252edb26c7115632e7caac5a30d01f93582",
+    "scripts/S10_1_13_compute_rq4.R": "551b371cf8f53e4430640cb4f520b42b2d28842634029b4a943e863075128bfe",
+    "src/statistics/rq4_cr2_sensitivity.R": "9e9a21faf87c851ed9d74151d4b6c2860d70f2b143fb32ad4662dd2b0c049668",
+    "src/statistics/rq4_mixed_model.R": "6c92eaf928c203cd68917b1a1ebc7cd3fd0b6977e541e9e3df7962a3c08ff1d4"
+  },
+  "generation_script": "scripts/S10_1_13_materialize_rq4.py",
+  "generation_script_sha256": "3ffafbc05149ca176d4a3609a9cf76295f3807e002b8ae8d3c95d5058c040f28",
+  "observed_statistical_runtime": {
+    "R": "4.5.3",
+    "packages": {
+      "clubSandwich": "0.6.2",
+      "jsonlite": "2.0.0",
+      "lme4": "2.0.1",
+      "lmerTest": "3.2.1",
+      "pbkrtest": "0.5.5"
+    }
+  },
+  "raw_evidence_sha256": {
+    "S10_1_13_compute_rq4.R": "551b371cf8f53e4430640cb4f520b42b2d28842634029b4a943e863075128bfe",
+    "rq4_analysis_dataset.raw.csv": "fa2e8ab0bd8905995eec91b1212d0127708a4cfbe24e28e90ed6a8d745c6f847",
+    "rq4_cr2_sensitivity.raw.json": "88de43e2ab56212c55c54e45a52828fbb71caa7cd2dde28ba6631c27a75e0da0",
+    "rq4_diagnostics.raw.json": "54518d61630c7be74d3f05cdf2023cc248fce693851299be0747356419ec2308",
+    "rq4_primary_mixed_model.raw.json": "bb6f92511f938ebd419f5a3138363ebfc8c4a4439b56b1869fa95469f9e271fd",
+    "rq4_runtime_environment.raw.json": "e519676fe9d33f976e48031e08c62256aff97a1244fca78482e16393f51d2600",
+    "rq4_seed_influence.raw.csv": "d6aaabf1e25c895eb4bf5da6fc0e4a2ca60a1aba65bfdccde355bb9351ef10f5"
+  },
+  "representation_authority": "S10_IMPLEMENTATION_SCHEMA_MINIMAL_FROM_RQ4_CONTRACT",
+  "result": {
+    "beta_Q_alternative": "greater",
+    "convergence_messages": [],
+    "convergence_status": "CONVERGED",
+    "df": 66.27190138425928,
+    "effect_estimate": 0.0034226305921420197,
+    "effect_unit": "downstream AP-point change per +1 pseudo AP point",
+    "estimation": "REML",
+    "fixed_effect_inference": "Kenward-Roger",
+    "formula": "Y ~ X + architecture_budget_cell + (1 | training_seed)",
+    "n_architecture_budget_cells": 8,
+    "n_rows": 80,
+    "n_training_seeds": 10,
+    "one_sided_p_value": 0.13796448268749345,
+    "singularity_status": "NON_SINGULAR",
+    "standard_error": 0.003115520392954672,
+    "t_statistic": 1.0985742862995973,
+    "two_sided_95_ci": {
+      "high": 0.00964249143609349,
+      "low": -0.002797230251809452
+    }
+  },
+  "rq": "RQ4",
+  "schema_version": "1.0.0",
+  "scientific_contract": {
+    "association_only_not_causal": true,
+    "beta_Q_alternative": "greater",
+    "effect_unit": "downstream AP-point change per +1 pseudo AP point within architecture-budget cell",
+    "estimation": "REML",
+    "fixed_effect_inference": "Kenward-Roger",
+    "formula": "Y ~ X + architecture_budget_cell + (1 | training_seed)",
+    "question": "Within architecture-budget cells, is higher fixed-validation EMA-Teacher LAST-checkpoint Q_pseudo positively associated with downstream paired test delta mAP?"
+  },
+  "source_artifact": "artifacts/results/paired_effects.csv",
+  "source_sha256": "bad5a179711443636a13bd6501a1d90a7e8c5dadfb16b9c09df74bf502b727bb",
+  "statistical_environment_reference": "artifacts/preflight/environment/statistics_runtime_image_manifest.json",
+  "statistical_environment_reference_sha256": "10a92f95543100f88950cf439d52609e1accefa4cccb2d46aff5f3287e9a4197",
+  "statistical_runtime_provenance_bridge": "artifacts/preflight/statistics/s6_14_statistical_runtime_provenance_bridge.json",
+  "statistical_runtime_provenance_bridge_sha256": "b01c8df833021e1e686526dc98efd15f4c5b29a4d70fa4d1ae5522ebbc5452ba",
+  "statistics_semantics": "FROZEN_S6_REUSE"
+}

@@ -1,0 +1,13 @@
+{
+  "artifact_manifest_path": "attempt_001/artifact_manifest.json",
+  "attempt_used": "attempt_001",
+  "eligible_for_final_test": true,
+  "final_evaluation_status": "NOT_AUTHORIZED",
+  "run_id": "OFF_SUP_R50_B100_S09",
+  "schema_version": "1.1",
+  "training_completed": true,
+  "training_completion_report_path": "attempt_001/training_completion_report.json",
+  "training_seed": 477581743,
+  "training_status": "CLOSED_VERIFIED",
+  "training_valid": true
+}

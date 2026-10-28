@@ -1,0 +1,3 @@
+class_name,status,mean_paired_gain,sample_sd,sample_sd_ddof,n,df,ci_level,ci_sidedness,ci_low,ci_high,formal_p_value_required,undefined_training_seeds,missingness_policy,effect_unit
+Atelectasis,DEFINED,-0.0020750000000000005,0.0013218253372598902,1,10,9,0.95,two-sided,-0.0030205768835192296,-0.0011294231164807713,False,,PROPAGATE_NA_NO_AVAILABLE_CASE_MEAN,AP_POINTS
+Pneumothorax,DEFINED,-0.0011750000000000003,0.0011934427324155757,1,10,9,0.95,two-sided,-0.002028737500535077,-0.00032126249946492363,False,,PROPAGATE_NA_NO_AVAILABLE_CASE_MEAN,AP_POINTS

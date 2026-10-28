@@ -1,0 +1,1736 @@
+{
+  "schema_version": "1.0",
+  "purpose": "QUALITATIVE_SELECTED_CASE_PREDICTION_AUDIT",
+  "model_pair_selection_rule_id": "QUAL_MODEL_PAIR_CANONICAL_FIRST_V1",
+  "architecture": "R50-FPN",
+  "budget": "1pct",
+  "seed_index": 1,
+  "training_seed": 204886845,
+  "sup_run_id": "OFF_SUP_R50_B01_S01",
+  "sup_attempt": "attempt_008",
+  "ssl_run_id": "OFF_SSL_R50_B01_S01",
+  "ssl_attempt": "attempt_002",
+  "tau_eval": 0.5,
+  "case_manifest_sha256": "c42f2c22bdfb61cb7bda6e97f113152810a909a3e6f095896f82a8b4a9791a04",
+  "test_json_sha256": "e1a73110e92af2656276d6c532035afe474b6ac6f2b2f03849834c036e1c00a4",
+  "sup_detections_sha256": "89ca0b618312c9d7eeae52f627af4f94a5678ae6e6a137395b13d5f6feb8fc81",
+  "ssl_detections_sha256": "7298b997962878c4ebd56f0424e5f5a06b880715782855701184d5026fb03af9",
+  "cases": [
+    {
+      "selection_rule_id": "FT_ABNORMAL_HASH_V1",
+      "selection_rank": 1,
+      "image_id": 1206,
+      "file_name": "train/3ddd8b00908543e9d8a60f528452e59d.jpg",
+      "image_sha256": "e204efcafba6c5468389ad1c266adba047125ceca09e7bbdfc031b058ad30cd6",
+      "gt": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            998.0,
+            1441.0,
+            946.0,
+            381.0
+          ],
+          "annotation_id": 5427
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1289.0,
+            762.0,
+            284.0,
+            239.0
+          ],
+          "annotation_id": 9141
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1332.0,
+            771.0,
+            285.0,
+            377.0
+          ],
+          "annotation_id": 10362
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1010.0,
+            1391.0,
+            905.0,
+            436.0
+          ],
+          "annotation_id": 11927
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1308.0,
+            763.0,
+            263.0,
+            261.0
+          ],
+          "annotation_id": 16596
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1029.0,
+            1416.0,
+            889.0,
+            380.0
+          ],
+          "annotation_id": 18022
+        },
+        {
+          "category_id": 12,
+          "category_name": "Pleural thickening",
+          "bbox_xywh": [
+            813.0,
+            417.0,
+            296.0,
+            54.0
+          ],
+          "annotation_id": 31292
+        },
+        {
+          "category_id": 12,
+          "category_name": "Pleural thickening",
+          "bbox_xywh": [
+            1478.0,
+            379.0,
+            327.0,
+            80.0
+          ],
+          "annotation_id": 31396
+        }
+      ],
+      "sup_prediction_count_raw": 9,
+      "sup_prediction_count_tau_eval": 3,
+      "sup_predictions_tau_eval": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1285.685791015625,
+            803.513916015625,
+            288.107666015625,
+            242.05224609375
+          ],
+          "score": 0.9930526614189148
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1120.8126220703125,
+            1479.410888671875,
+            739.3665771484375,
+            259.40234375
+          ],
+          "score": 0.9665718078613281
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1102.490478515625,
+            755.5035400390625,
+            505.191650390625,
+            503.3338623046875
+          ],
+          "score": 0.925146758556366
+        }
+      ],
+      "ssl_prediction_count_raw": 100,
+      "ssl_prediction_count_tau_eval": 0,
+      "ssl_predictions_tau_eval": [],
+      "sup_top5_raw": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1285.685791015625,
+            803.513916015625,
+            288.107666015625,
+            242.05224609375
+          ],
+          "score": 0.9930526614189148
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1120.8126220703125,
+            1479.410888671875,
+            739.3665771484375,
+            259.40234375
+          ],
+          "score": 0.9665718078613281
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1102.490478515625,
+            755.5035400390625,
+            505.191650390625,
+            503.3338623046875
+          ],
+          "score": 0.925146758556366
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1035.607666015625,
+            1409.9893798828125,
+            854.1990966796875,
+            457.1854248046875
+          ],
+          "score": 0.31678009033203125
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1558.0008544921875,
+            1079.216552734375,
+            524.0587158203125,
+            793.6832275390625
+          ],
+          "score": 0.299599289894104
+        }
+      ],
+      "ssl_top5_raw": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1241.654541015625,
+            1438.1494140625,
+            466.44873046875,
+            433.230712890625
+          ],
+          "score": 0.13713976740837097
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1155.0848388671875,
+            1479.8189697265625,
+            757.361572265625,
+            725.7137451171875
+          ],
+          "score": 0.1295941323041916
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1166.0069580078125,
+            746.3106079101562,
+            418.6685791015625,
+            407.38177490234375
+          ],
+          "score": 0.12710756063461304
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            451.0594787597656,
+            1749.2308349609375,
+            1126.8063659667969,
+            491.3287353515625
+          ],
+          "score": 0.12095687538385391
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1287.8887939453125,
+            1890.6099853515625,
+            751.7254638671875,
+            722.7489013671875
+          ],
+          "score": 0.11550986021757126
+        }
+      ]
+    },
+    {
+      "selection_rule_id": "FT_ABNORMAL_HASH_V1",
+      "selection_rank": 2,
+      "image_id": 1059,
+      "file_name": "train/363999879bc614085397f192124c23b0.jpg",
+      "image_sha256": "39a7a4d1ec5cfa777eda309aaf1c456e4af1e76e6fd136dd1383e0f23d3fdc43",
+      "gt": [
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            483.0,
+            440.0,
+            640.0,
+            629.0
+          ],
+          "annotation_id": 2216
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1710.0,
+            514.0,
+            457.0,
+            592.0
+          ],
+          "annotation_id": 3441
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            492.0,
+            373.0,
+            617.0,
+            712.0
+          ],
+          "annotation_id": 4319
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1576.0,
+            346.0,
+            630.0,
+            749.0
+          ],
+          "annotation_id": 5643
+        },
+        {
+          "category_id": 10,
+          "category_name": "Other lesion",
+          "bbox_xywh": [
+            712.0,
+            1270.0,
+            317.0,
+            198.0
+          ],
+          "annotation_id": 11868
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            684.0,
+            401.0,
+            488.0,
+            407.0
+          ],
+          "annotation_id": 12530
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1710.0,
+            514.0,
+            457.0,
+            592.0
+          ],
+          "annotation_id": 13251
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1988.0,
+            1718.0,
+            355.0,
+            419.0
+          ],
+          "annotation_id": 13315
+        },
+        {
+          "category_id": 5,
+          "category_name": "Consolidation",
+          "bbox_xywh": [
+            671.0,
+            1202.0,
+            374.0,
+            341.0
+          ],
+          "annotation_id": 14989
+        },
+        {
+          "category_id": 10,
+          "category_name": "Other lesion",
+          "bbox_xywh": [
+            328.0,
+            1764.0,
+            688.0,
+            367.0
+          ],
+          "annotation_id": 16666
+        },
+        {
+          "category_id": 8,
+          "category_name": "Lung Opacity",
+          "bbox_xywh": [
+            2006.0,
+            1752.0,
+            210.0,
+            200.0
+          ],
+          "annotation_id": 21702
+        },
+        {
+          "category_id": 8,
+          "category_name": "Lung Opacity",
+          "bbox_xywh": [
+            1926.0,
+            1706.0,
+            367.0,
+            395.0
+          ],
+          "annotation_id": 26590
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1639.0,
+            297.0,
+            492.0,
+            559.0
+          ],
+          "annotation_id": 29846
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            483.0,
+            440.0,
+            640.0,
+            629.0
+          ],
+          "annotation_id": 29938
+        }
+      ],
+      "sup_prediction_count_raw": 13,
+      "sup_prediction_count_tau_eval": 2,
+      "sup_predictions_tau_eval": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1336.7384033203125,
+            817.2265625,
+            305.200927734375,
+            272.8831787109375
+          ],
+          "score": 0.9854714870452881
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            907.578857421875,
+            1647.8875732421875,
+            1297.528076171875,
+            437.3326416015625
+          ],
+          "score": 0.9575127363204956
+        }
+      ],
+      "ssl_prediction_count_raw": 100,
+      "ssl_prediction_count_tau_eval": 0,
+      "ssl_predictions_tau_eval": [],
+      "sup_top5_raw": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1336.7384033203125,
+            817.2265625,
+            305.200927734375,
+            272.8831787109375
+          ],
+          "score": 0.9854714870452881
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            907.578857421875,
+            1647.8875732421875,
+            1297.528076171875,
+            437.3326416015625
+          ],
+          "score": 0.9575127363204956
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1160.6241455078125,
+            802.8912963867188,
+            528.470703125,
+            324.33941650390625
+          ],
+          "score": 0.4628518223762512
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1128.2464599609375,
+            702.4312744140625,
+            557.3232421875,
+            625.1341552734375
+          ],
+          "score": 0.3280464708805084
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            287.8310241699219,
+            1301.740234375,
+            835.5027160644531,
+            627.6707763671875
+          ],
+          "score": 0.14844034612178802
+        }
+      ],
+      "ssl_top5_raw": [
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            727.2357177734375,
+            561.3252563476562,
+            290.69158935546875,
+            595.0032348632812
+          ],
+          "score": 0.15077240765094757
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            601.3807373046875,
+            666.1467895507812,
+            404.30328369140625,
+            395.13372802734375
+          ],
+          "score": 0.1396232396364212
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1717.4656982421875,
+            607.1610717773438,
+            401.3304443359375,
+            409.408935546875
+          ],
+          "score": 0.13631126284599304
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            603.4165649414062,
+            510.7011413574219,
+            404.56939697265625,
+            416.1288757324219
+          ],
+          "score": 0.13061277568340302
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1260.9112548828125,
+            757.738037109375,
+            407.053466796875,
+            408.6297607421875
+          ],
+          "score": 0.12649205327033997
+        }
+      ]
+    },
+    {
+      "selection_rule_id": "FT_ABNORMAL_HASH_V1",
+      "selection_rank": 3,
+      "image_id": 2845,
+      "file_name": "train/93ef5877b678e69cf43fa16bbae50b93.jpg",
+      "image_sha256": "860ab0e46bc5bd30ba97d8913fd929ff32ab0375dba7556072a56fa547829a16",
+      "gt": [
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            1954.0,
+            1083.0,
+            482.0,
+            861.0
+          ],
+          "annotation_id": 10588
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            624.0,
+            1172.0,
+            446.0,
+            792.0
+          ],
+          "annotation_id": 13537
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            616.0,
+            1078.0,
+            629.0,
+            860.0
+          ],
+          "annotation_id": 18750
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            615.0,
+            1107.0,
+            546.0,
+            877.0
+          ],
+          "annotation_id": 28045
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            1929.0,
+            818.0,
+            489.0,
+            1008.0
+          ],
+          "annotation_id": 28741
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            1931.0,
+            1063.0,
+            507.0,
+            651.0
+          ],
+          "annotation_id": 33975
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1533.0,
+            716.0,
+            283.0,
+            306.0
+          ],
+          "annotation_id": 34930
+        }
+      ],
+      "sup_prediction_count_raw": 17,
+      "sup_prediction_count_tau_eval": 2,
+      "sup_predictions_tau_eval": [
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1690.8353271484375,
+            958.4749145507812,
+            834.2366943359375,
+            942.8663940429688
+          ],
+          "score": 0.618190586566925
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            639.5762329101562,
+            1383.746337890625,
+            517.3268432617188,
+            550.8212890625
+          ],
+          "score": 0.5707611441612244
+        }
+      ],
+      "ssl_prediction_count_raw": 100,
+      "ssl_prediction_count_tau_eval": 0,
+      "ssl_predictions_tau_eval": [],
+      "sup_top5_raw": [
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1690.8353271484375,
+            958.4749145507812,
+            834.2366943359375,
+            942.8663940429688
+          ],
+          "score": 0.618190586566925
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            639.5762329101562,
+            1383.746337890625,
+            517.3268432617188,
+            550.8212890625
+          ],
+          "score": 0.5707611441612244
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            519.897705078125,
+            1027.1082763671875,
+            794.9527587890625,
+            1170.3629150390625
+          ],
+          "score": 0.44352638721466064
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            620.0249633789062,
+            1027.0457763671875,
+            634.4788208007812,
+            938.4205322265625
+          ],
+          "score": 0.3336876630783081
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1828.8201904296875,
+            906.9749755859375,
+            627.8822021484375,
+            559.5909423828125
+          ],
+          "score": 0.3175353407859802
+        }
+      ],
+      "ssl_top5_raw": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            691.6757202148438,
+            2119.853759765625,
+            1318.7341918945312,
+            610.856689453125
+          ],
+          "score": 0.1465069055557251
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            730.8558349609375,
+            1362.4996337890625,
+            479.477783203125,
+            503.530029296875
+          ],
+          "score": 0.13718511164188385
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            884.109619140625,
+            928.4885864257812,
+            337.538818359375,
+            706.4904174804688
+          ],
+          "score": 0.13383784890174866
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            914.0817260742188,
+            506.2385559082031,
+            476.72149658203125,
+            530.4275817871094
+          ],
+          "score": 0.13326486945152283
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1839.2042236328125,
+            376.36468505859375,
+            493.3912353515625,
+            498.88525390625
+          ],
+          "score": 0.13163192570209503
+        }
+      ]
+    },
+    {
+      "selection_rule_id": "FT_ABNORMAL_HASH_V1",
+      "selection_rank": 4,
+      "image_id": 2843,
+      "file_name": "train/93d04c587467e12a828828f907adecdb.jpg",
+      "image_sha256": "4ef61b1d26efacdce39f72d5abee827975b19981513b500f539d03e474e9f4eb",
+      "gt": [
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            1742.0,
+            1402.0,
+            514.0,
+            1026.0
+          ],
+          "annotation_id": 14911
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            1563.0,
+            1200.0,
+            666.0,
+            1220.0
+          ],
+          "annotation_id": 31417
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1914.0,
+            1786.0,
+            246.0,
+            509.0
+          ],
+          "annotation_id": 32445
+        },
+        {
+          "category_id": 6,
+          "category_name": "ILD",
+          "bbox_xywh": [
+            125.0,
+            1133.0,
+            691.0,
+            1248.0
+          ],
+          "annotation_id": 34635
+        }
+      ],
+      "sup_prediction_count_raw": 19,
+      "sup_prediction_count_tau_eval": 2,
+      "sup_predictions_tau_eval": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            946.6973266601562,
+            1729.6407470703125,
+            1058.9199829101562,
+            488.7320556640625
+          ],
+          "score": 0.802409827709198
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1280.5946044921875,
+            821.0826416015625,
+            269.2127685546875,
+            326.1595458984375
+          ],
+          "score": 0.7918474674224854
+        }
+      ],
+      "ssl_prediction_count_raw": 100,
+      "ssl_prediction_count_tau_eval": 0,
+      "ssl_predictions_tau_eval": [],
+      "sup_top5_raw": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            946.6973266601562,
+            1729.6407470703125,
+            1058.9199829101562,
+            488.7320556640625
+          ],
+          "score": 0.802409827709198
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1280.5946044921875,
+            821.0826416015625,
+            269.2127685546875,
+            326.1595458984375
+          ],
+          "score": 0.7918474674224854
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1698.1527099609375,
+            1521.3328857421875,
+            509.6839599609375,
+            723.7933349609375
+          ],
+          "score": 0.3480682969093323
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            213.9045867919922,
+            1156.5267333984375,
+            818.5652618408203,
+            1196.4781494140625
+          ],
+          "score": 0.3327161967754364
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1127.0811767578125,
+            821.2339477539062,
+            523.4423828125,
+            768.9598999023438
+          ],
+          "score": 0.21763060986995697
+        }
+      ],
+      "ssl_top5_raw": [
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            295.26031494140625,
+            1700.0986328125,
+            389.770263671875,
+            395.31591796875
+          ],
+          "score": 0.13298705220222473
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            598.8917236328125,
+            1552.5736083984375,
+            386.73968505859375,
+            389.905517578125
+          ],
+          "score": 0.127150759100914
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            443.0782470703125,
+            1351.2100830078125,
+            397.01141357421875,
+            409.76416015625
+          ],
+          "score": 0.1266818642616272
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            426.05810546875,
+            447.0706481933594,
+            410.20587158203125,
+            423.6971740722656
+          ],
+          "score": 0.12232086807489395
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            609.0637817382812,
+            1408.72998046875,
+            391.30914306640625,
+            389.05029296875
+          ],
+          "score": 0.1194894015789032
+        }
+      ]
+    },
+    {
+      "selection_rule_id": "FT_ABNORMAL_HASH_V1",
+      "selection_rank": 5,
+      "image_id": 1842,
+      "file_name": "train/60ba71ee189d4892f99bdbe3fa08f98a.jpg",
+      "image_sha256": "32fc80eb59f4b37b67bc791dd015ab786058a12b0bdf35824346a80ad8bf09ba",
+      "gt": [
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            604.0,
+            541.0,
+            387.0,
+            463.0
+          ],
+          "annotation_id": 3052
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1404.0,
+            402.0,
+            497.0,
+            742.0
+          ],
+          "annotation_id": 3900
+        },
+        {
+          "category_id": 5,
+          "category_name": "Consolidation",
+          "bbox_xywh": [
+            1401.0,
+            462.0,
+            502.0,
+            721.0
+          ],
+          "annotation_id": 4530
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            644.0,
+            629.0,
+            400.0,
+            418.0
+          ],
+          "annotation_id": 26619
+        },
+        {
+          "category_id": 8,
+          "category_name": "Lung Opacity",
+          "bbox_xywh": [
+            1404.0,
+            402.0,
+            497.0,
+            742.0
+          ],
+          "annotation_id": 29725
+        },
+        {
+          "category_id": 8,
+          "category_name": "Lung Opacity",
+          "bbox_xywh": [
+            1401.0,
+            462.0,
+            502.0,
+            721.0
+          ],
+          "annotation_id": 30377
+        },
+        {
+          "category_id": 5,
+          "category_name": "Consolidation",
+          "bbox_xywh": [
+            1392.0,
+            461.0,
+            517.0,
+            676.0
+          ],
+          "annotation_id": 31188
+        },
+        {
+          "category_id": 5,
+          "category_name": "Consolidation",
+          "bbox_xywh": [
+            1404.0,
+            402.0,
+            497.0,
+            742.0
+          ],
+          "annotation_id": 35623
+        }
+      ],
+      "sup_prediction_count_raw": 9,
+      "sup_prediction_count_tau_eval": 1,
+      "sup_predictions_tau_eval": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            990.135498046875,
+            1421.588623046875,
+            1114.14306640625,
+            383.1259765625
+          ],
+          "score": 0.6572144627571106
+        }
+      ],
+      "ssl_prediction_count_raw": 100,
+      "ssl_prediction_count_tau_eval": 0,
+      "ssl_predictions_tau_eval": [],
+      "sup_top5_raw": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            990.135498046875,
+            1421.588623046875,
+            1114.14306640625,
+            383.1259765625
+          ],
+          "score": 0.6572144627571106
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1708.6507568359375,
+            599.7319946289062,
+            412.0780029296875,
+            387.4893798828125
+          ],
+          "score": 0.49793753027915955
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1618.7479248046875,
+            680.1939086914062,
+            533.2113037109375,
+            324.51080322265625
+          ],
+          "score": 0.2045888602733612
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1569.762939453125,
+            387.4466552734375,
+            652.545654296875,
+            746.2451171875
+          ],
+          "score": 0.17520549893379211
+        },
+        {
+          "category_id": 11,
+          "category_name": "Pleural effusion",
+          "bbox_xywh": [
+            2220.8935546875,
+            1979.4510498046875,
+            75.361328125,
+            119.5902099609375
+          ],
+          "score": 0.12179001420736313
+        }
+      ],
+      "ssl_top5_raw": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            297.9176025390625,
+            2152.657958984375,
+            1092.2684326171875,
+            513.502685546875
+          ],
+          "score": 0.14659368991851807
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            783.341064453125,
+            366.3323669433594,
+            279.6822509765625,
+            601.0802917480469
+          ],
+          "score": 0.1464308351278305
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            720.6913452148438,
+            283.85601806640625,
+            284.88531494140625,
+            573.7509765625
+          ],
+          "score": 0.13841509819030762
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            405.0282897949219,
+            1955.554443359375,
+            1078.7718811035156,
+            502.233154296875
+          ],
+          "score": 0.124212346971035
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            561.8177490234375,
+            886.0548095703125,
+            385.92022705078125,
+            421.855224609375
+          ],
+          "score": 0.12390816956758499
+        }
+      ]
+    },
+    {
+      "selection_rule_id": "FT_ABNORMAL_HASH_V1",
+      "selection_rank": 6,
+      "image_id": 159,
+      "file_name": "train/07db76e6cc063ce8bb90de18216e8ccf.jpg",
+      "image_sha256": "94e59c67cd31c10eb483f5f58494c24c3863e1e7f366bd5eecbc84b91058d376",
+      "gt": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1064.0,
+            784.0,
+            257.0,
+            230.0
+          ],
+          "annotation_id": 24513
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1064.0,
+            769.0,
+            246.0,
+            332.0
+          ],
+          "annotation_id": 32294
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1050.0,
+            765.0,
+            253.0,
+            313.0
+          ],
+          "annotation_id": 35783
+        }
+      ],
+      "sup_prediction_count_raw": 4,
+      "sup_prediction_count_tau_eval": 1,
+      "sup_predictions_tau_eval": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1028.7828369140625,
+            805.3023071289062,
+            290.9088134765625,
+            269.64031982421875
+          ],
+          "score": 0.9875394105911255
+        }
+      ],
+      "ssl_prediction_count_raw": 100,
+      "ssl_prediction_count_tau_eval": 0,
+      "ssl_predictions_tau_eval": [],
+      "sup_top5_raw": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1028.7828369140625,
+            805.3023071289062,
+            290.9088134765625,
+            269.64031982421875
+          ],
+          "score": 0.9875394105911255
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1033.592529296875,
+            861.9732055664062,
+            275.226318359375,
+            138.81341552734375
+          ],
+          "score": 0.33011120557785034
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            601.8240966796875,
+            1717.2220458984375,
+            1011.09619140625,
+            329.7132568359375
+          ],
+          "score": 0.07902473956346512
+        },
+        {
+          "category_id": 7,
+          "category_name": "Infiltration",
+          "bbox_xywh": [
+            1093.453125,
+            730.8906860351562,
+            326.881591796875,
+            320.61468505859375
+          ],
+          "score": 0.07725181430578232
+        }
+      ],
+      "ssl_top5_raw": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            985.8167114257812,
+            1726.8455810546875,
+            412.32379150390625,
+            380.7689208984375
+          ],
+          "score": 0.13585776090621948
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            653.417724609375,
+            1856.9976806640625,
+            953.277099609375,
+            461.4036865234375
+          ],
+          "score": 0.13099797070026398
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            647.156982421875,
+            1596.2786865234375,
+            962.809326171875,
+            454.0826416015625
+          ],
+          "score": 0.12878449261188507
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            11.705801010131836,
+            1876.8497314453125,
+            1740.7457370758057,
+            917.9190673828125
+          ],
+          "score": 0.12869246304035187
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            471.4266052246094,
+            668.8687744140625,
+            256.4521789550781,
+            511.7255859375
+          ],
+          "score": 0.12342830002307892
+        }
+      ]
+    },
+    {
+      "selection_rule_id": "FT_NO_FINDING_HASH_V1",
+      "selection_rank": 1,
+      "image_id": 202,
+      "file_name": "train/0a475ad0b37bba0c638bbbe2ee5d355d.jpg",
+      "image_sha256": "41834476606e356884028837157dd9f55b94d25bcd03854d0c431d0eb9c2f032",
+      "gt": [],
+      "sup_prediction_count_raw": 5,
+      "sup_prediction_count_tau_eval": 2,
+      "sup_predictions_tau_eval": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            729.18701171875,
+            1185.3853759765625,
+            950.9781494140625,
+            426.4144287109375
+          ],
+          "score": 0.9338935017585754
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1075.0430908203125,
+            705.37646484375,
+            201.1212158203125,
+            248.22711181640625
+          ],
+          "score": 0.879677414894104
+        }
+      ],
+      "ssl_prediction_count_raw": 100,
+      "ssl_prediction_count_tau_eval": 0,
+      "ssl_predictions_tau_eval": [],
+      "sup_top5_raw": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            729.18701171875,
+            1185.3853759765625,
+            950.9781494140625,
+            426.4144287109375
+          ],
+          "score": 0.9338935017585754
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1075.0430908203125,
+            705.37646484375,
+            201.1212158203125,
+            248.22711181640625
+          ],
+          "score": 0.879677414894104
+        },
+        {
+          "category_id": 10,
+          "category_name": "Other lesion",
+          "bbox_xywh": [
+            4.149257659912109,
+            1345.834228515625,
+            1094.462802886963,
+            745.392578125
+          ],
+          "score": 0.12069626152515411
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            950.638427734375,
+            839.2276000976562,
+            625.316650390625,
+            787.7601928710938
+          ],
+          "score": 0.05273718386888504
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1013.9323120117188,
+            1269.05078125,
+            586.9076538085938,
+            325.123291015625
+          ],
+          "score": 0.05252285674214363
+        }
+      ],
+      "ssl_top5_raw": [
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            1242.5430908203125,
+            1990.3818359375,
+            365.724365234375,
+            329.82568359375
+          ],
+          "score": 0.13487814366817474
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            511.943359375,
+            1823.2537841796875,
+            369.35968017578125,
+            332.2662353515625
+          ],
+          "score": 0.12461774051189423
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            470.33544921875,
+            1936.984375,
+            369.220458984375,
+            324.904541015625
+          ],
+          "score": 0.12193986028432846
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            984.1251220703125,
+            1816.1749267578125,
+            867.443115234375,
+            424.1480712890625
+          ],
+          "score": 0.10317393392324448
+        },
+        {
+          "category_id": 4,
+          "category_name": "Cardiomegaly",
+          "bbox_xywh": [
+            823.0875854492188,
+            1900.69384765625,
+            843.7904663085938,
+            428.8125
+          ],
+          "score": 0.09786728769540787
+        }
+      ]
+    },
+    {
+      "selection_rule_id": "FT_NO_FINDING_HASH_V1",
+      "selection_rank": 2,
+      "image_id": 1272,
+      "file_name": "train/40c5bb0fb2daacf73f49b8cdfc278a27.jpg",
+      "image_sha256": "17a5b8a3d02df8b3fdf84f383b6b8f67fd134baa4d0b540d3ccf2017a9ed87a2",
+      "gt": [],
+      "sup_prediction_count_raw": 1,
+      "sup_prediction_count_tau_eval": 0,
+      "sup_predictions_tau_eval": [],
+      "ssl_prediction_count_raw": 100,
+      "ssl_prediction_count_tau_eval": 0,
+      "ssl_predictions_tau_eval": [],
+      "sup_top5_raw": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            977.1649780273438,
+            1827.0496826171875,
+            479.97381591796875,
+            375.8902587890625
+          ],
+          "score": 0.061540309339761734
+        }
+      ],
+      "ssl_top5_raw": [
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1449.954345703125,
+            357.8870849609375,
+            385.4947509765625,
+            405.60711669921875
+          ],
+          "score": 0.0999700129032135
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1174.9532470703125,
+            1616.3533935546875,
+            408.1439208984375,
+            400.021728515625
+          ],
+          "score": 0.09760204702615738
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1167.155029296875,
+            1465.3873291015625,
+            412.9849853515625,
+            393.0457763671875
+          ],
+          "score": 0.09507455676794052
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            549.5457763671875,
+            547.572265625,
+            283.90509033203125,
+            554.92919921875
+          ],
+          "score": 0.09503434598445892
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1482.635009765625,
+            478.337890625,
+            399.3603515625,
+            402.3392333984375
+          ],
+          "score": 0.09438926726579666
+        }
+      ]
+    },
+    {
+      "selection_rule_id": "FT_NO_FINDING_HASH_V1",
+      "selection_rank": 3,
+      "image_id": 3015,
+      "file_name": "train/9d42c5942895afd3391a8fb93a3991a8.jpg",
+      "image_sha256": "c707de3fbd591d85b78be51b940ebce97b82dbcedbb84e4777025fbfb2779c57",
+      "gt": [],
+      "sup_prediction_count_raw": 2,
+      "sup_prediction_count_tau_eval": 1,
+      "sup_predictions_tau_eval": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1309.6807861328125,
+            823.3131713867188,
+            310.7288818359375,
+            305.83282470703125
+          ],
+          "score": 0.9906248450279236
+        }
+      ],
+      "ssl_prediction_count_raw": 100,
+      "ssl_prediction_count_tau_eval": 0,
+      "ssl_predictions_tau_eval": [],
+      "sup_top5_raw": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1309.6807861328125,
+            823.3131713867188,
+            310.7288818359375,
+            305.83282470703125
+          ],
+          "score": 0.9906248450279236
+        },
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1331.3675537109375,
+            857.4505004882812,
+            281.51611328125,
+            160.02099609375
+          ],
+          "score": 0.2893264889717102
+        }
+      ],
+      "ssl_top5_raw": [
+        {
+          "category_id": 1,
+          "category_name": "Aortic enlargement",
+          "bbox_xywh": [
+            1189.573974609375,
+            781.3977661132812,
+            412.930908203125,
+            404.56256103515625
+          ],
+          "score": 0.1321236789226532
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            545.65576171875,
+            615.9588012695312,
+            423.57891845703125,
+            434.68524169921875
+          ],
+          "score": 0.12634223699569702
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            501.6822509765625,
+            1341.46923828125,
+            418.025146484375,
+            427.780517578125
+          ],
+          "score": 0.12078538537025452
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            602.6167602539062,
+            768.3012084960938,
+            425.44696044921875,
+            425.08123779296875
+          ],
+          "score": 0.11823464930057526
+        },
+        {
+          "category_id": 14,
+          "category_name": "Pulmonary fibrosis",
+          "bbox_xywh": [
+            1698.7584228515625,
+            977.71044921875,
+            419.7664794921875,
+            421.932373046875
+          ],
+          "score": 0.11505447328090668
+        }
+      ]
+    }
+  ]
+}

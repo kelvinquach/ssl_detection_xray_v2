@@ -1,0 +1,23 @@
+{
+  "formula": "Y ~ X + architecture_budget_cell + (1 | training_seed)",
+  "estimation": "REML",
+  "fixed_effect_inference": "Kenward-Roger",
+  "beta_Q_alternative": "greater",
+  "effect_unit": "downstream AP-point change per +1 pseudo AP point",
+  "effect_estimate": 0.0034226305921420197,
+  "standard_error": 0.0031155203929546719,
+  "df": 66.27190138425928,
+  "t_statistic": 1.0985742862995973,
+  "two_sided_95_ci": {
+    "low": -0.0027972302518094521,
+    "high": 0.0096424914360934907
+  },
+  "one_sided_p_value": 0.13796448268749345,
+  "convergence_status": "CONVERGED",
+  "convergence_messages": [],
+  "singularity_status": "NON_SINGULAR",
+  "n_rows": 80,
+  "n_training_seeds": 10,
+  "n_architecture_budget_cells": 8
+}
+

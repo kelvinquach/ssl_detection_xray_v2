@@ -1,0 +1,31 @@
+{
+  "analysis": "RQ4_CR2_SATTERTHWAITE_SENSITIVITY",
+  "sensitivity_only": true,
+  "replaces_primary_kr": false,
+  "formula": "Y ~ X_per_1_pseudo_AP_point + architecture_budget_cell",
+  "covariance_type": "CR2",
+  "cluster_variable": "training_seed",
+  "cluster_count": 10,
+  "architecture_budget_cell_count": 8,
+  "row_count": 80,
+  "df_method": "Satterthwaite",
+  "hypothesis": {
+    "null": "beta_Q <= 0",
+    "alternative": "beta_Q > 0",
+    "p_value_sidedness": "one-sided greater"
+  },
+  "effect": {
+    "term": "X_per_1_pseudo_AP_point",
+    "estimate": 0.0035839160839160854,
+    "standard_error_cr2": 0.0021795707836599759,
+    "t_statistic": 1.6443219512687295,
+    "df_satterthwaite": 6.0092305775938701,
+    "p_one_sided_greater": 0.075568754592777967,
+    "ci_level": 0.94999999999999996,
+    "ci_sidedness": "two-sided",
+    "ci_lower": -0.001747316321369089,
+    "ci_upper": 0.0089151484892012606,
+    "unit": "delta_mAP_test change per +1 pseudo AP point"
+  }
+}
+

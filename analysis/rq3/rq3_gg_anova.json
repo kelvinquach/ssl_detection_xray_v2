@@ -1,0 +1,69 @@
+{
+  "analysis_role": "SECONDARY_FORMAL_OMNIBUS",
+  "frozen_statistics_sources": {
+    "src/statistics/rq3_primary.py": "41ac57f7c4f9c19daef8f4f062001bcff1ff41b0af7b4683eb3459e436bf3676",
+    "src/statistics/seed_summary.py": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f"
+  },
+  "representation_authority": "S10_IMPLEMENTATION_SCHEMA_MINIMAL_FROM_RQ3_CONTRACT",
+  "result": {
+    "budget_count": 4,
+    "budget_levels": [
+      "1%",
+      "5%",
+      "10%",
+      "20%"
+    ],
+    "budget_means": [
+      -0.012099999999999998,
+      -0.00615,
+      -0.010450000000000001,
+      -0.0158
+    ],
+    "df_gg_denominator": 20.845132065562293,
+    "df_gg_numerator": 2.316125785062477,
+    "df_uncorrected_denominator": 27,
+    "df_uncorrected_numerator": 3,
+    "effect": "B_b_s",
+    "epsilon_gg": 0.772041928354159,
+    "f_statistic": 68.58928571428584,
+    "greenhouse_geisser_applied": true,
+    "greenhouse_geisser_policy": "ALWAYS",
+    "mauchly_diagnostic": {
+      "chi_square": 5.544990634830165,
+      "defined": true,
+      "df": 5,
+      "p_value": 0.3530377124581093,
+      "role": "DIAGNOSTIC_ONLY",
+      "used_to_select_primary_method": false,
+      "w": 0.4876992562898171
+    },
+    "mauchly_role": "DIAGNOSTIC_ONLY",
+    "n_subjects": 10,
+    "p_gg": 2.737467932962183e-10,
+    "primary_method": "ONE_WAY_REPEATED_MEASURES_ANOVA",
+    "replication_unit": "TRAINING_SEED_TRAINED_RUN"
+  },
+  "rq": "RQ3",
+  "schema_version": "1.0.0",
+  "scientific_contract": {
+    "architecture_count": 2,
+    "architecture_weight": 0.5,
+    "b_b_s_definition": "EQUAL_WEIGHT_MEAN_OF_R50_AND_SWIN_DELTA_MAP_WITHIN_BUDGET_AND_SEED",
+    "budget_levels": [
+      "1%",
+      "5%",
+      "10%",
+      "20%"
+    ],
+    "effect": "B_b_s",
+    "greenhouse_geisser_policy": "ALWAYS",
+    "hypothesis_direction": "NON_DIRECTIONAL",
+    "mauchly_role": "DIAGNOSTIC_ONLY",
+    "n_subjects": 10,
+    "primary_method": "ONE_WAY_REPEATED_MEASURES_ANOVA",
+    "primitive_effect": "delta_mAP_test=SSL-SUP"
+  },
+  "source_artifact": "artifacts/results/paired_effects.csv",
+  "source_sha256": "bad5a179711443636a13bd6501a1d90a7e8c5dadfb16b9c09df74bf502b727bb",
+  "statistics_semantics": "FROZEN_S6_REUSE"
+}

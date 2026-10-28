@@ -1,0 +1,19 @@
+{
+  "source_csv": "reports/03A_class_distribution.csv",
+  "source_csv_sha256": "59a0bfee13831412e3afa0ec5adb7b4bc1a6f0947be88562b9862087a112b7fa",
+  "source_figure": "plots/dataset/class_distribution.png",
+  "source_figure_sha256": "f12b146ae7a341983f6dea6f0bd3070d806ce3324c0acdc133901d3ac2d6acb0",
+  "row_count": 14,
+  "category_ids_complete_1_to_14": true,
+  "bbox_annotation_count_total": 25260,
+  "low_support_definition": "image-level prevalence < 5% in fixed training set",
+  "low_support_classes": [
+    "Atelectasis",
+    "Pneumothorax"
+  ],
+  "clinical_rarity_claim": false,
+  "statistics_recomputed": false,
+  "source_csv_byte_reused": true,
+  "source_figure_byte_reused": true,
+  "status": "PASS"
+}

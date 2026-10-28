@@ -1,0 +1,60 @@
+{
+  "analysis_role": "SECONDARY_FORMAL_HYPOTHESIS",
+  "frozen_implementation": {
+    "rq7_core_sha256": "3bc1d87feee80ecaad2ea00142f7dd56fb6491d4f2b626db005f32c1c44e6471",
+    "rq7_validator_sha256": "d14f7688f0c9af7c10d99ee6dfa3e76a2010913a3e6926216d81d0e14a861b7d",
+    "seed_summary_sha256": "2a404ac0f6097cad16816b550fcd1c9ca240fab5535854dc0fd5e4433e49ff3f",
+    "statistical_manifest_sha256": "eb2f5eb19164030d4e1435a181996315c6009aef61058ddfed10c13431f9f30e"
+  },
+  "hypothesis_direction": "NON_DIRECTIONAL",
+  "identity_normalization": {
+    "architecture": {
+      "R50-FPN": "R50",
+      "Swin-T-FPN": "Swin-T"
+    },
+    "budget": {
+      "10pct": "10%",
+      "1pct": "1%",
+      "20pct": "20%",
+      "5pct": "5%"
+    },
+    "semantic_change": false
+  },
+  "primary_result": {
+    "alternative": "two-sided",
+    "ci_high": 0.0020612075648578612,
+    "ci_level": 0.95,
+    "ci_low": -0.0004612075648578617,
+    "ci_sidedness": "two-sided",
+    "df": 9,
+    "effect": "D_s",
+    "effect_definition": "A_Swin-T_minus_A_R50",
+    "effect_estimate": 0.0007999999999999998,
+    "interpretation_scope": "DIFFERENCE_IN_SSL_GAIN_BETWEEN_ARCHITECTURES_NOT_ABSOLUTE_SUPERIORITY",
+    "n": 10,
+    "null_mean": 0.0,
+    "p_value": 0.18513455725443084,
+    "p_value_sidedness": "two-sided",
+    "replication_unit": "TRAINING_SEED_TRAINED_RUN",
+    "sample_sd": 0.0017630466055477188,
+    "sample_sd_ddof": 1,
+    "t_statistic": 1.434915061334282
+  },
+  "rq": "RQ7",
+  "scientific_contract": {
+    "absolute_swin_superiority_test": false,
+    "alternative": "two-sided",
+    "architecture_difference": "D_s=A_Swin-T,s-A_R50,s",
+    "architecture_gain": "A_{a,s}=mean_of_four_budget_delta_mAP_test_values",
+    "ci": "individual_two_sided_95_percent",
+    "df": 9,
+    "holm_f2_applied_here": false,
+    "n": 10,
+    "primitive_effect": "delta_mAP_test=SSL-SUP",
+    "replication_unit": "TRAINING_SEED_TRAINED_RUN"
+  },
+  "source_artifact": "artifacts/results/paired_effects.csv",
+  "source_sha256": "bad5a179711443636a13bd6501a1d90a7e8c5dadfb16b9c09df74bf502b727bb",
+  "statistics_reimplemented": false,
+  "statistics_semantics": "FROZEN_S6_REUSE"
+}
