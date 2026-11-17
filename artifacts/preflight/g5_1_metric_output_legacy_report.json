@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "validator": "validate_metric_output_contract.py",
+  "mode": "legacy",
+  "repo_root": "D:\\ssl_detection_xray_v2",
+  "run_root": null,
+  "status": "PASS",
+  "counts": {
+    "PASS": 5,
+    "FAIL": 0,
+    "BLOCKED": 0,
+    "WARN": 0
+  },
+  "findings": [
+    {
+      "level": "PASS",
+      "check": "legacy_final_test_master_header:exists",
+      "path": "D:\\ssl_detection_xray_v2\\artifacts\\final_test\\official_final_test_results.csv",
+      "detail": ""
+    },
+    {
+      "level": "PASS",
+      "check": "legacy_final_test_master_header",
+      "path": "D:\\ssl_detection_xray_v2\\artifacts\\final_test\\official_final_test_results.csv",
+      "detail": "36 columns exact match"
+    },
+    {
+      "level": "PASS",
+      "check": "legacy_paired_effects_header:exists",
+      "path": "D:\\ssl_detection_xray_v2\\artifacts\\results\\paired_effects.csv",
+      "detail": ""
+    },
+    {
+      "level": "PASS",
+      "check": "legacy_paired_effects_header",
+      "path": "D:\\ssl_detection_xray_v2\\artifacts\\results\\paired_effects.csv",
+      "detail": "18 columns exact match"
+    },
+    {
+      "level": "PASS",
+      "check": "legacy_final_test_master:numeric_semantics",
+      "path": "D:\\ssl_detection_xray_v2\\artifacts\\final_test\\official_final_test_results.csv",
+      "detail": "checked 180 rows"
+    }
+  ]
+}
