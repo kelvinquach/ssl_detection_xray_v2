@@ -804,6 +804,96 @@ B3 additionally requires U/H metrics below.
 
 ---
 
+
+## 15A. Candidate identity semantics — PRE-EXECUTION CLARIFICATION — LOCKED
+
+Clarification class:
+
+    PRE-EXECUTION CLARIFICATION
+    schema_version = "1.0.0"
+    B2/B3 scientific artifacts existing before clarification = 0
+
+This clarification does not add, remove, or rename any schema field.
+It fixes previously unspecified semantics of already-required candidate
+identity fields before any B2/B3 scientific execution.
+
+The authoritative stable candidate identity is the typed tuple:
+
+    (
+        run_id: str,
+        logical_batch_id: int,
+        image_id: int,
+        native_candidate_index: int
+    )
+
+Locked field semantics:
+
+- run_id:
+  exact logical-run identifier from the authoritative
+  "run_root_manifest.json", field "run_id".
+  During online training, it is retrieved from
+  Path(runner.work_dir).parent / "run_root_manifest.json".
+  During offline replay/evaluation, the same run_id MUST be carried from
+  the corresponding source logical-run manifest; a new run_id MUST NOT be
+  invented from the offline execution context.
+
+- logical_batch_id:
+  zero-based raw training-loop batch index for the currently consumed
+  logical batch; specifically MMEngine before_train_iter(batch_idx) /
+  current IterBasedTrainLoop self._iter.
+  It MUST NOT use ActualOptimizerUpdateCounter.
+
+- image_id:
+  integer DetDataSample.img_id of the image.
+
+- native_candidate_index:
+  zero-based position in that image's native Teacher ROI prediction result,
+  attached immediately after Teacher ROI prediction and BEFORE strict
+  initial score > 0.50 filtering and before B2 adaptive filtering/mining.
+
+candidate_id is the canonical compact JSON serialization of exactly the
+four-element typed stable identity tuple, with no insignificant whitespace.
+
+Example:
+
+    ["OFF_SSL_R50_B10_S01",17,42,3]
+
+Canonical construction:
+
+    json.dumps(
+        [run_id, logical_batch_id, image_id, native_candidate_index],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+
+candidate_id is an artifact/provenance representation. It is NOT the
+ordering primitive for scientific selection.
+
+Whenever deterministic candidate-ID ascending tie-breaking is required,
+the authoritative comparison MUST use lexicographic ascending order over
+the typed tuple:
+
+    run_id ASC as string
+    logical_batch_id ASC as integer
+    image_id ASC as integer
+    native_candidate_index ASC as integer
+
+Implementations MUST NOT use cryptographic hash order, Python object hash,
+bbox floating-point coordinates, or lexical sorting of the serialized
+candidate_id string as a substitute for typed tuple ordering.
+
+For candidates from the same run and logical batch, the effective
+tie-break reduces to:
+
+    image_id ASC
+    native_candidate_index ASC
+
+Resume/retry MUST reconstruct the same identity from the authoritative
+run manifest, resumed raw loop iteration, image identifier, and native
+Teacher ROI candidate position.
+
+---
+
 # 16. B2 reference candidate artifact — LOCKED
 
 File:

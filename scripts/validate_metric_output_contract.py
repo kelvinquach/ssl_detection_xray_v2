@@ -26,7 +26,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 SCHEMA_VERSION = "1.0.0"
 CONTRACT_FILENAME = "SSOD_VLM_METRIC_OUTPUT_CONTRACT_V1_0_LOCKED_VI.md"
-CONTRACT_SHA256 = "0316e7249ccaa681fe4762c6d4ed8095f23c94e7a9e916905fa974b629003c71"
+CONTRACT_SHA256 = "d14c1484499992ab5c8ba09abda0dbbd9562f4303309234b717790313655bb80"
 
 # ---------- Locked exact legacy schemas ----------
 VALIDATION_HISTORY_HEADER = [
@@ -403,6 +403,143 @@ def parquet_columns(path: Path) -> list[str] | None:
     return pq.ParquetFile(path).schema_arrow.names
 
 
+
+def canonical_candidate_id(
+    run_id: str,
+    logical_batch_id: int,
+    image_id: int,
+    native_candidate_index: int,
+) -> str:
+    return json.dumps(
+        [run_id, logical_batch_id, image_id, native_candidate_index],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+
+
+def candidate_identity_error(row: Mapping[str, Any]) -> str | None:
+    run_id = row.get("run_id")
+    logical_batch_id = row.get("logical_batch_id")
+    image_id = row.get("image_id")
+    native_candidate_index = row.get("native_candidate_index")
+    candidate_id = row.get("candidate_id")
+
+    if not isinstance(run_id, str) or not run_id:
+        return f"run_id must be non-empty str, got {run_id!r}"
+
+    if type(logical_batch_id) is not int or logical_batch_id < 0:
+        return (
+            "logical_batch_id must be non-negative int, "
+            f"got {logical_batch_id!r}"
+        )
+
+    if type(image_id) is not int:
+        return f"image_id must be int, got {image_id!r}"
+
+    if type(native_candidate_index) is not int or native_candidate_index < 0:
+        return (
+            "native_candidate_index must be non-negative int, "
+            f"got {native_candidate_index!r}"
+        )
+
+    if not isinstance(candidate_id, str):
+        return f"candidate_id must be str, got {candidate_id!r}"
+
+    expected = canonical_candidate_id(
+        run_id,
+        logical_batch_id,
+        image_id,
+        native_candidate_index,
+    )
+
+    if candidate_id != expected:
+        return f"candidate_id={candidate_id!r}; expected={expected!r}"
+
+    return None
+
+
+def check_candidate_identity_parquet(
+    audit: Audit,
+    path: Path,
+    check: str,
+) -> None:
+    if not path.exists():
+        return
+
+    try:
+        import pyarrow.parquet as pq
+    except Exception:
+        audit.blocked(
+            check,
+            path,
+            "pyarrow not installed; candidate identity cannot be verified",
+        )
+        return
+
+    fields = [
+        "run_id",
+        "logical_batch_id",
+        "image_id",
+        "native_candidate_index",
+        "candidate_id",
+    ]
+
+    try:
+        pf = pq.ParquetFile(path)
+
+        missing = [
+            k for k in fields
+            if k not in pf.schema_arrow.names
+        ]
+        if missing:
+            audit.fail(
+                check,
+                path,
+                f"missing identity fields={missing}",
+            )
+            return
+
+        checked = 0
+        errors = []
+
+        for batch in pf.iter_batches(
+            columns=fields,
+            batch_size=65536,
+        ):
+            for row in batch.to_pylist():
+                checked += 1
+                err = candidate_identity_error(row)
+
+                if err is not None:
+                    errors.append(f"row{checked}: {err}")
+
+                    if len(errors) >= 10:
+                        break
+
+            if len(errors) >= 10:
+                break
+
+        if errors:
+            audit.fail(
+                check,
+                path,
+                "; ".join(errors),
+            )
+        else:
+            audit.pass_(
+                check,
+                path,
+                f"{checked} candidate identities canonical and typed",
+            )
+
+    except Exception as e:
+        audit.fail(
+            check,
+            path,
+            f"cannot validate candidate identity: {e}",
+        )
+
+
 def check_parquet_schema(audit: Audit, path: Path, expected: Sequence[str], check: str, exact: bool = True) -> None:
     if not check_exists(audit, path, check + ":exists"):
         return
@@ -514,7 +651,18 @@ def validate_b2(audit: Audit, run_root: Path) -> None:
     validate_common_run(audit, run_root, "B2")
     # Flexible search: method_evidence is preferred canonical location.
     p = run_root / "method_evidence" / "b2_reference_selection.parquet"
-    check_parquet_schema(audit, p, B2_REFERENCE_FIELDS, "b2_reference_selection_schema", exact=True)
+    check_parquet_schema(
+        audit,
+        p,
+        B2_REFERENCE_FIELDS,
+        "b2_reference_selection_schema",
+        exact=True,
+    )
+    check_candidate_identity_parquet(
+        audit,
+        p,
+        "b2_reference_selection_candidate_identity",
+    )
 
 
 def validate_b3_offline(audit: Audit, run_root: Path) -> None:
@@ -523,8 +671,34 @@ def validate_b3_offline(audit: Audit, run_root: Path) -> None:
     vlm_dir = run_root / "vlm"
 
     manifest = check_json_keys(audit, vlm_dir / "offline_verification_manifest.json", ["protocol_version"], "offline_verification_manifest_minimum", exact=False)
-    check_parquet_schema(audit, method_dir / "teacher_candidate_pool.parquet", TEACHER_CANDIDATE_FIELDS, "teacher_candidate_pool_schema", exact=True)
-    check_parquet_schema(audit, method_dir / "b2_reference_selection.parquet", B2_REFERENCE_FIELDS, "b2_reference_selection_schema", exact=True)
+    teacher_pool = method_dir / "teacher_candidate_pool.parquet"
+    b2_reference = method_dir / "b2_reference_selection.parquet"
+
+    check_parquet_schema(
+        audit,
+        teacher_pool,
+        TEACHER_CANDIDATE_FIELDS,
+        "teacher_candidate_pool_schema",
+        exact=True,
+    )
+    check_candidate_identity_parquet(
+        audit,
+        teacher_pool,
+        "teacher_candidate_pool_candidate_identity",
+    )
+
+    check_parquet_schema(
+        audit,
+        b2_reference,
+        B2_REFERENCE_FIELDS,
+        "b2_reference_selection_schema",
+        exact=True,
+    )
+    check_candidate_identity_parquet(
+        audit,
+        b2_reference,
+        "b2_reference_selection_candidate_identity",
+    )
     req_rows = check_jsonl_schema(audit, vlm_dir / "vlm_request_manifest.jsonl", VLM_REQUEST_FIELDS, "vlm_request_schema", exact=True)
     res_rows = check_jsonl_schema(audit, vlm_dir / "vlm_response_cache.jsonl", VLM_RESPONSE_FIELDS, "vlm_response_schema", exact=True)
     check_parquet_schema(audit, vlm_dir / "b3_variant_selection.parquet", B3_VARIANT_FIELDS, "b3_variant_selection_schema", exact=True)
@@ -626,11 +800,54 @@ def self_test() -> tuple[Audit, Path]:
     j.write_text(json.dumps({k: 0 for k in TRAINING_SUMMARY_KEYS}), encoding="utf-8")
     check_json_keys(a, j, TRAINING_SUMMARY_KEYS, "selftest_json_keys", exact=True)
 
+    # Candidate identity positive/negative fixtures.
+    good_identity = {
+        "run_id": "SELFTEST_RUN",
+        "logical_batch_id": 17,
+        "image_id": 42,
+        "native_candidate_index": 3,
+        "candidate_id": canonical_candidate_id(
+            "SELFTEST_RUN",
+            17,
+            42,
+            3,
+        ),
+    }
+
+    err = candidate_identity_error(good_identity)
+
+    if err is None:
+        a.pass_(
+            "selftest_candidate_identity_positive",
+            td,
+        )
+    else:
+        a.fail(
+            "selftest_candidate_identity_positive",
+            td,
+            err,
+        )
+
+    bad_identity = dict(good_identity)
+    bad_identity["candidate_id"] = "c1"
+
+    if candidate_identity_error(bad_identity) is not None:
+        a.pass_(
+            "selftest_candidate_identity_negative_detected",
+            td,
+        )
+    else:
+        a.fail(
+            "selftest_candidate_identity_negative_detected",
+            td,
+            "non-canonical candidate_id was accepted",
+        )
+
     # JSONL VLM request fixture with all forbidden payload flags false.
     q = td / "vlm_request_manifest.jsonl"
     row = {k: None for k in VLM_REQUEST_FIELDS}
     row.update({
-        "request_id": "r1", "candidate_id": "c1", "analysis_role": "PRIMARY",
+        "request_id": "r1", "candidate_id": canonical_candidate_id("SELFTEST_RUN", 17, 42, 3), "analysis_role": "PRIMARY",
         "control_id": "NONE", "review_branch": "U", "review_order": 1,
         "model_id": "fixture", "model_revision": "fixture", "model_hash": "a"*64,
         "processor_hash": "b"*64, "prompt_hash": "c"*64, "renderer_hash": "d"*64,
