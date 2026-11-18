@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any, Dict, Optional
 
 from mmengine.hooks import Hook
+from mmengine.model import is_model_wrapper
 from mmengine.registry import HOOKS
 
 from src.utils.optimizer_update_counter import ActualOptimizerUpdateCounter
@@ -20,6 +21,47 @@ RUNNER_COUNTER_ATTR = "_s2_actual_optimizer_update_counter"
 RUNNER_PENDING_RESUME_STATE_ATTR = "_s2_pending_protocol_resume_state"
 RUNNER_PENDING_RNG_RESTORE_ATTR = "_s2_pending_rng_restore"
 RUNNER_TRAINING_SUMMARY_STATE_ATTR = "_s9_training_summary_state"
+
+SSL_NON_VLM_REFINEMENT_HISTORY_STATE_KEY = (
+    "ssl_non_vlm_refinement_committed_history_state"
+)
+
+
+def _unwrap_runner_model(runner: Any) -> Any:
+    """Return the underlying model when MMEngine wraps the model."""
+    model = runner.model
+    if is_model_wrapper(model):
+        model = model.module
+    return model
+
+
+def _get_non_vlm_refinement_history_interface(model: Any):
+    """Return optional SSL + REF history save/restore methods."""
+    history_getter = getattr(
+        model,
+        "get_non_vlm_refinement_history_state",
+        None,
+    )
+    history_restorer = getattr(
+        model,
+        "restore_non_vlm_refinement_history_state",
+        None,
+    )
+
+    getter_available = callable(history_getter)
+    restorer_available = callable(history_restorer)
+
+    if getter_available != restorer_available:
+        raise RuntimeError(
+            "SSL + REF model must implement both "
+            "get_non_vlm_refinement_history_state() and "
+            "restore_non_vlm_refinement_history_state()."
+        )
+
+    if not getter_available:
+        return None, None
+
+    return history_getter, history_restorer
 
 
 @HOOKS.register_module()
@@ -67,6 +109,21 @@ class ProtocolResumeCheckpointHook(Hook):
             training_seed=int(runner.seed),
             update_counter=counter,
         )
+
+        model = _unwrap_runner_model(runner)
+        history_getter, _ = _get_non_vlm_refinement_history_interface(
+            model
+        )
+
+        if history_getter is not None:
+            history_state = history_getter()
+            if not isinstance(history_state, dict):
+                raise RuntimeError(
+                    "SSL + REF committed history state must be a dictionary."
+                )
+            state[
+                SSL_NON_VLM_REFINEMENT_HISTORY_STATE_KEY
+            ] = history_state
 
         summary_state = getattr(
             runner,
@@ -118,6 +175,40 @@ class ProtocolResumeCheckpointHook(Hook):
             restore_rng=False,
         )
 
+        model = _unwrap_runner_model(runner)
+        _, history_restorer = _get_non_vlm_refinement_history_interface(
+            model
+        )
+
+        history_state_present = (
+            SSL_NON_VLM_REFINEMENT_HISTORY_STATE_KEY in state
+        )
+
+        if history_restorer is not None:
+            if not history_state_present:
+                raise KeyError(
+                    "SSL + REF checkpoint is missing committed "
+                    "confidence history state."
+                )
+
+            history_state = state[
+                SSL_NON_VLM_REFINEMENT_HISTORY_STATE_KEY
+            ]
+            if not isinstance(history_state, dict):
+                raise TypeError(
+                    "SSL + REF committed confidence history state "
+                    "must be a dictionary."
+                )
+
+            history_restorer(history_state)
+
+        elif history_state_present:
+            raise RuntimeError(
+                "Checkpoint contains SSL + REF committed confidence "
+                "history, but the current model does not support "
+                "SSL + REF history restore."
+            )
+
         setattr(runner, RUNNER_PENDING_RESUME_STATE_ATTR, state)
         setattr(runner, RUNNER_PENDING_RNG_RESTORE_ATTR, True)
 
@@ -128,4 +219,5 @@ __all__ = [
     "RUNNER_PENDING_RESUME_STATE_ATTR",
     "RUNNER_PENDING_RNG_RESTORE_ATTR",
     "RUNNER_TRAINING_SUMMARY_STATE_ATTR",
+    "SSL_NON_VLM_REFINEMENT_HISTORY_STATE_KEY",
 ]
